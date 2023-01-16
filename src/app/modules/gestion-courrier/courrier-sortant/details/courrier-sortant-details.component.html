@@ -1,0 +1,18 @@
+<ng-container *ngIf="courrier">
+    <div class="structure__header bd-b mt-3">
+        <div class="structure__header-banniere">
+            <div class="structure__header-banniere-designation">
+                <h5>({{ courrier.libelle}}) {{ courrier.courrier?.objet | titlecase}}</h5>
+                <p class="text-info mb-0">{{courrier.courrier.type.libelle}}/{{courrier.courrier.nature.libelle}}</p>
+                <p class="text-info mb-0">{{courrier.courrier?.statut?.libelle}}</p>
+                <p class="text-info mb-0" *ngIf="courrier.courrier?.cloture">{{courrier.courrier?.cloture.libelle}} {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}</p>
+                <p>
+                    <button (click)="onShowClotureCourrierForm()" class="btn btn-outline-info py-0"> Cloture</button>
+                    <button [routerLink]="['./home']" class="btn btn-outline-info py-0 mx-2"> Home</button>
+                    <button [routerLink]="['./tache']" class="btn btn-outline-info mx-2 py-0"> Gestion des taches</button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</ng-container>

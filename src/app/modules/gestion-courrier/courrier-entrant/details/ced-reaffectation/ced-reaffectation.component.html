@@ -1,0 +1,49 @@
+<div [class.loading]="is_loading_schema">
+    <div class="col-12 p-2 d-flex justify-content-center" *ngIf="(courrier.suivi_par_user.id == authService.user.id) && helper.authorisation.check('courrier entrant', 'ECRITURE', undefined)">
+        <button class="btn btn-primary" (click)="onShowAffectationForm()">Ajouter</button>
+    </div>
+    <ul class=" list-group list-group-flush" *ngIf="reaffectations && reaffectations.length; else emptyTemplate">
+        <li class="list-group-item" *ngFor="let reaffectation of reaffectations">
+            <div class="todo-indicator {{reaffectation.statut_bgcolor}}"></div>
+            <div class="widget-content p-0">
+                <div class="widget-content-wrapper">
+                    <div class="widget-content-left">
+                        <div class="widget-heading tx-16 tx-dark">
+                            <span>Reaffectation <span class="text-right">{{reaffectation.created_at | date:'mediumDate' : undefined : 'fr'}}</span></span>
+                            <br>
+                            <span>{{reaffectation?.affecter_par?.libelle}}</span> >
+                            <span>{{reaffectation.structure.libelle}}</span> >
+                            <span>{{reaffectation.suivi_par_user?.libelle}}</span>
+                        </div>
+                        <div class="widget-subheading">
+                            <p class="tx-12 text-dark">{{reaffectation.libelle}}</p>
+                        </div>
+                    </div>
+                    <div class="widget-content-right">
+                        <ng-container *ngIf="reaffectation.is_user && (!reaffectation.confirmation) && !reaffectation.annulation">
+                            <button class="border-0 m-2 btn-transition btn btn-sm btn-oblong btn-outline-success" (click)="onValidateReaffectation(reaffectation)">
+                            <i class="fal fa-check fa-2x"></i>
+                          </button>
+                            <button class="border-0 m-2 btn-transition btn btn-sm btn-oblong btn-outline-danger" (click)="onValidateReaffectation(reaffectation, false)">
+                            <i class="fal fa-times fa-2x"></i>
+                          </button>
+                        </ng-container>
+                        
+                        <span class="badge badge-info badge-outlined" *ngIf=" (!reaffectation.is_user) && (!reaffectation.confirmation) && !reaffectation.annulation">en cours</span>
+                        <span class="badge badge-success badge-outlined" *ngIf="reaffectation.confirmation">valider</span>
+                        <span class="badge badge-danger badge-outlined" *ngIf="reaffectation.annulation">annuler</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

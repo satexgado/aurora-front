@@ -1,0 +1,22 @@
+<div class="select-area d-md-flex justify-content-center" *ngIf="items && items.length < 6; else moreThanFive">
+    <div class="mx-2 flex-fill mb-2 cursor-pointer" *ngFor="let item of items" (click)="onSetSelected(item.id)">
+        <div class="card" [ngClass]="{'text-white': item.id == selected, 'bg-info': item.id && item.id == selected, 'bg-danger': (!item.id)&&item.id==selected}">
+            <div class="card-body text-center p-2">
+                <label class="card-subtitle cursor-pointer" [class.text-muted]="item.id != selected">
+                    <i class="fal" [class.fa-circle]="item.id != selected" [class.fa-check-circle]="item.id == selected"></i>  {{item.libelle | uppercase}}
+                </label>
+                <p class="card-text text-center" *ngIf="item.icon_class">
+                    <i [class]="item.icon_class"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #moreThanFive>
+    <select class="custom-select" mySelectFirstOption name="pageSize" [(ngModel)]="selected" [class.loading]="loading" [class.is-valid]="selected" (ngModelChange)="onChange(selected); onTouched(true);">
+        <ng-container *ngFor="let item of items">
+            <option [ngValue]="item.id">{{item.libelle}}</option>
+        </ng-container>
+    </select>
+</ng-template>

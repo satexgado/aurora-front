@@ -1,0 +1,500 @@
+<div class=" row row-xs clearfix pt-3  pl-2 pr-4" style="z-index: auto !important;">
+    <div class="col-lg-12 ">
+        <h5 class=""><i class="fad fa-calendar-star  " style="padding:6px; border-radius: 50%; "></i> Interface de Gestion des événements</h5>
+    </div>
+</div>
+<div class="row row-xs  mg-0 pd-0 p-0 clearfix" style="background: white ">
+    <div class="col-lg-12 mycard4">
+        <div class=" bg-facebook p-0 border-0  mg-0 pd-0">
+            <ul class="nav  mb-1  bd-b p-0" id="pills-tab" role="tablist" style="background: white ">
+                <li class="nav-item " [ngClass]="{'bg-light':item?.value!=currentobjet,'bg-blue':item?.value==currentobjet}" *ngFor="let item of objet">
+                    <a class="nav-link tx-ether media align-items-center" (click)="getEvent('/eventbyobjet/'+item?.value,item?.value)">
+                        <div class="mr-2">
+                            <div class="avatar avatar-xs">
+                                <span [class]="item?.color + ' avatar-initial rounded-circle op-5'">#</span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between  ">
+                            <div class="d-inline-block ">
+                                <h6 class="mb-0  tx-ether"> {{item?.value}}</h6>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 p-0">
+    <div class="row row-xs clearfix  mg-0 pd-0 p-0  ">
+        <div class=" col-lg-8 bg-light ">
+            <div class="d-flex justify-content-between mg-0 pd-0  ">
+                <div class="">
+                    <div class="form-group  pl-2">
+                        <div class="input-group pt-2" style="width:340px">
+                            <input type="text" class="form-control pd-y-10  tx-white" [(ngModel)]="searcheventText" placeholder="Recherche..." style="border-radius: 50px 50px 50px 50px; background-image: linear-gradient(to right,#f3f4f5,#f3f4f5); ">
+                        </div>
+                    </div>
+                </div>
+                <div class=" pt-2">
+                    <ul class="nav ">
+                        <li class="nav-item tx-ether">
+                            <a class="nav-link3  tx-yeto " (click)="getEvent(url)">
+                                <i class="fal fa-redo-alt  tx-14 " style="padding:6px; border-radius:50%"></i> Reactualiser
+                            </a>
+                        </li>
+                        <li class="nav-item tx-ether">
+                            <a class="nav-link3  tx-yeto " href="#objetevenementModal" data-toggle="modal">
+                                <i class="fal fa-plus  tx-14 " style="padding:6px; border-radius:50%"></i> Nouveau
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- |paginate: { id: 'event', itemsPerPage: 12, currentPage: p1 } -->
+            <div class="col-md-12 p-0 contentstdetail scroll-11" *ngIf="evenement && data==true">
+                <div class="col-md-12 p-0" *ngFor="let item of evenement | appFilter: searcheventText:'pays'; let i = index;">
+                    <div [ngClass]="{'mycard2':true,'bg-white':item?.id!=idevenement,'bg-blue':item?.id==idevenement}">
+                        <div class="list-group  pl-2 pb-1">
+                            <div class="  flex-column align-items-start pd-y-1">
+                                <div class="nav flex-column nav" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <div class="d-flex align-items-center bd-b ">
+                                        <span class="tx-14 bold tx-warning pt-2 pr-2">{{item?.date|date:'dd'}} </span>
+                                        <div class="tx-30 pd-y-20 pd-x-1  bg-white"></div>
+                                        <a class="nav-link  text-center " id="v-pills-home-tab" data-toggle="pill" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                            <span class="tx-14 bold tx-warning">{{item?.date|date:'LLLL'}} </span>
+                                            <div class="dropdown-divider mb-0 mt-0"></div>
+                                            <span class="tx-14 bold tx-warning "> {{item?.date|date:'yyyy'}}</span>
+                                        </a>
+                                        <div class=" justify-content-between pt-1">
+                                            <h6 class=" mb-0  tx-bold tx-center"> {{item?.libelle}} </h6>
+                                            <p class="mb-1 ">
+                                                <small class="tx-12 tx-yeto">{{item?.type}}</small>
+                                                <small class="tx-12 tx-yeto"> || </small>
+                                                <small class="tx-12 tx-warning">Lieu : {{item?.lieu}}</small>
+                                                <small class="tx-12 tx-yeto"> || </small>
+                                                <small class="tx-12 tx-warning"> {{item?.heure_debut}}</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center bg-white ">
+                                        <div class=" justify-content-between mr-4">
+                                            <p class="mg-0 tx-16 ">
+                                                <span class=" " (click)="getId(item,'comment',i)">
+                                                    <i class="fad fa-comment-alt-lines bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <span class="" (click)="getId(item,'shared',i)">
+                                                    <i class="fad fa-share-all bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <!-- <span class=" " (click)="getId(item,'fichier',i)">
+                                                    <i class="fad fa-file-pdf bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span> -->
+                                                <span class="" (click)="getId(item,'detail',i)">
+                                                    <i class="fad fa-eye bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <span class=" " (click)="getId(item,'update',i)">
+                                                    <i class="fad fa-pen bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <span class="" (click)="getId(item,'delete',i)">
+                                                    <i class="fad fa-trash bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <button class="pl-2 badge-info pointers badge " (click)="getId(item,'participant',i)" [disabled]="loardparticipant==true">
+                                                    <i *ngIf="loardparticipant == true" class="fas fa-spinner fa-spin"></i> Je participe
+                                                </button>
+                                            </p>
+                                        </div>
+                                        <a class="nav-link  ml-2  " id="v-pills-home-tab" data-toggle="pill" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                            <div class="d-flex flex-row" *ngIf="item?.participants[0]">
+                                                <div class="profiles">
+                                                    <ng-container *ngIf="item?.participants[0]?.participant?.photo">
+                                                        <img class="rounded-circle ml-2" [src]="item?.participants[0]?.participant?.photo" alt="card image" width="30" height="30">
+                                                    </ng-container>
+                                                    <ng-container *ngIf="!item?.participants[0]?.participant?.photo">
+                                                        <i class="fal fa-user fa-2x" style="padding:6px ;margin-left:2px ; border-radius:50%"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="item?.participants[1]">
+                                                        <ng-container *ngIf="item?.participants[1]?.participant?.photo">
+                                                            <img class="rounded-circle ml-2" [src]="item?.participants[1]?.participant?.photo" alt="card image" width="30" height="30">
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!item?.participants[1]?.participant?.photo">
+                                                            <i class="fal fa-user fa-2x" style="padding:6px ;margin-left:2px ; border-radius:50%"></i>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="item?.participants[2]">
+                                                            <ng-container *ngIf="item?.participants[2]?.participant?.photo">
+                                                                <img class="rounded-circle ml-2" [src]="item?.participants[2]?.participant?.photo" alt="card image" width="30" height="30">
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!item?.participants[2]?.participant?.photo">
+                                                                <i class="fal fa-user fa-2x" style="padding:6px ;margin-left:2px ; border-radius:50%"></i>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+
+                                                    <div class="avatar mg-l-10" *ngIf="item?.participants?.length>3">
+                                                        <span class="avatar-initial rounded-circle bg-yeto2 ">+{{item?.participants?.length - 3}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- <div class="col-md-12 mt-3">
+                    <div class="text-center">
+                        <pagination-controls (pageChange)="p1 = $event" autoHide="true" responsive="true" id="event"
+                          class="pagination-lg justify-content-center" previousLabel="Precedent}}"
+                          nextLabel="Suivant">
+                        </pagination-controls>
+                    </div>
+                </div> -->
+            </div>
+            <div class="col-md-12" *ngIf="!evenement">
+                <div class="col-md-12 text-center noData">
+                    <app-loarding></app-loarding>
+                </div>
+            </div>
+            <!-- NO DATA -->
+            <div *ngIf="data==false && evenement " class="col-md-12">
+                <br><br><br><br>
+                <div class="col-md-12 text-center noData">
+                    <app-no-data></app-no-data>
+                </div>
+                <br><br><br><br>
+            </div>
+        </div>
+        <div class=" col-lg-4 bg-light pl-4 pr-4">
+            <div class=" card  bg-white" *ngIf="!affichecomevent && !affichedetail">
+                <div class="row row-xs clearfix pt-4 bd-b pb-2 mg-0 pd-0  ">
+                    <div class="card-body pd-y-0 mg-b-20">
+                        <div class="custom-fieldset mb-4">
+                            <div class="clearfix">
+                                <label>Total Evenement</label>
+                            </div>
+                            <div class="d-flex align-items-center text-dark">
+                                <div class="wd-40 wd-md-50 ht-40 ht-md-50 mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded card-icon-danger">
+                                    <i class="icon-speedometer tx-danger tx-20"></i>
+                                </div>
+                                <div>
+                                    <h2 class="tx-20 tx-sm-18 tx-md-24 mb-0 mt-2 mt-sm-0 tx-normal tx-rubik tx-dark"><span class="counter">  {{evenement?.length}}</span></h2>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0" *ngIf="affichecomevent || affichedetail ">
+                <div class="card no-radius">
+                    <div class="col-md-12 p-0">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <a class="nav-link tx-14 tx-facebook" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false">&nbsp;{{detailevenement?.libelle}}</a>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="nav-link tx-14 tx-facebook pointers" (click)="resetevent()"><i
+                                        class="fal fa-times-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 p-0">
+                    <div class="card bd-l-0-force bd-t-0-force bd-b-0-force">
+                        <!-- <div class="card-body"> -->
+                        <div class="col-md-12 py-2" *ngIf="affichecomevent">
+                            <div class=" bd-t-0-force bd-b-0-force ">
+                                <app-commentaction [urlpost]=urlpost [url]=urlget [id]=idevenement> </app-commentaction>
+                            </div>
+                        </div>
+                        <div class="card bg-white " *ngIf="affichedetail">
+                            <div class="col-md-12" *ngIf="!detailevent">
+                                <div class="col-md-12 text-center noData">
+                                    <app-loarding></app-loarding>
+                                </div>
+                            </div>
+                            <div class="col-md-12 p-0 contentstdetail scroll-11" *ngIf="detailevent">
+                                <div class="row row-xs clearfix pt-4 bd-b pb-2 mg-0 pd-0  ">
+                                    <div class="col">
+                                        <div class=" text-center">
+                                            <i class="fad fa-calendar-star bg-light tx-40" style="padding:20px ; border-radius:50%"></i></div>
+                                        <h6 class="text-center tx-ether pt-2"> {{detailevent?.libelle}}</h6>
+                                        <p class="mb-1 text-center ">
+                                            <small class="tx-12 tx-yeto">{{detailevent?.type}}</small>
+                                            <small class="tx-12 tx-yeto"> || </small>
+                                            <small class="tx-12 tx-warning">Lieu : {{detailevent?.lieu}}</small>
+                                            <small class="tx-12 tx-yeto"> || </small>
+                                            <small class="tx-12"> {{detailevent?.date}}</small>
+                                            <small class="tx-12 tx-success"> {{detailevent?.heure_debut}}</small>
+                                            <small class="tx-16 tx-yeto"> à </small>
+                                            <small class="tx-12 tx-success"> {{detailevent?.heure_fin}}</small>
+                                        </p>
+                                        <p class="text-center">
+                                            <span class="">{{detailevent?.objet}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row row-xs clearfix pt-4 bd-b pb-2 mg-0 pd-0  bg-white">
+                                    <div class="col">
+
+                                        <p class="text-center">
+                                            {{detailevent?.description}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row row-xs clearfix pt-2 bd-b pb-4 mg-0 pd-0 ">
+                                    <div class="pl-2 ">
+                                        <h6 class="pt-2 pb-2"> Les participants</h6>
+                                    </div>
+                                    <div class="col-lg-12  pb-1 pt-1">
+                                        <div *ngIf="!detailevent?.participants[0] " class="col-md-12">
+                                            <div class="col-md-12 text-center noData">
+                                                <app-no-data></app-no-data>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row justify-item-center " *ngIf="detailevent?.participants[0]">
+                                            <div class="profiles">
+                                                <span *ngFor="let item of detailevent?.participants">
+                                                        <ng-container *ngIf="item?.participant?.photo">
+                                                            <img class="rounded-circle ml-2" [src]="item?.participant?.photo" alt="card image" width="30" height="30">
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!item?.participant?.photo">
+                                                            <i class="fal fa-user fa-2x" style="padding:6px ;margin-left:2px ; border-radius:50%"></i>
+                                                        </ng-container>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-xs mg-0 pd-0 clearfix pt-2 bg-white" *ngIf="detailevent?.files[0]">
+                                    <div class="col">
+                                        <div class="   ">
+                                            <div class="list-group  pl-2">
+                                                <div href="" class="  flex-column align-items-start pd-y-1">
+                                                    <div class="nav flex-column nav" id="v-pills-tab">
+                                                        <div class="">
+                                                            <table class="table   table-lg mb-0 border-0">
+                                                                <tbody>
+                                                                    <tr class="border-0 " *ngFor="let item of detailevent?.files">
+                                                                        <td class="text-center border-0">
+                                                                            <div class="">
+                                                                                <i class="fad fa-file-pdf tx-warning tx-30"></i>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="border-0">
+                                                                            <div class="tailledesc"><a [href]="StImg+'/evenement/'+item?.fichier" target="_blank">{{item?.nom_fichier}}</a></div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Update  -->
+<div class="col-md-3" style="margin-top:1.5%;">
+    <div class="modal fade" id="updateevenementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog  modal-right2 w-xl" role="document">
+            <div class="modal-content modal-content2 h-100 no-radius">
+                <div class="modal-header bg-white">
+                    <h5 class="modal-title tx-primary" id="exampleModalLongTitle">
+                        <i class="fad fa-pen tx-20"></i> Modifier
+                    </h5>
+                </div>
+                <div class="modal-body  scroll-11 mymodal">
+                    <div class="col-md-12" *ngIf="afficheupdate">
+                        <form [formGroup]="modifevenementForm">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Libellé</label>
+                                            <input type="text" formControlName="libelle" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Type</label>
+                                            <select formControlName="type" class="custom-select no-radius">
+                                                <option disabled selected value=""> Selectionner</option>
+                                                <option *ngFor="let item of type" [value]="item">{{item}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Objet</label>
+                                            <select formControlName="objet" class="custom-select no-radius">
+                                                <option disabled selected value=""> Selectionner</option>
+                                                <option *ngFor="let item of objet" [value]="item?.value">{{item?.value}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Lieu</label>
+                                            <input type="text" class="form-control" formControlName="lieu">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Date</label>
+                                            <input type="date" class="form-control" formControlName="date" (change)="verifyDate('date',modifevenementForm)">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Heure debut</label>
+                                            <input type="time" class="form-control" formControlName="heure_debut">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Heure fin</label>
+                                            <input type="time" class="form-control" formControlName="heure_fin" (change)="verifyDate('heure',modifevenementForm)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control" rows="3" formControlName="description"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12 text-center">
+                        <button type="reset" class="btn btn-brand btn-reddit" data-dismiss="modal" [disabled]="updatestatut == true" (click)="resetevent()"> <i
+                                class="fal fa-power-off"></i><span class="pd-x-10">Annuler</span></button>&nbsp;
+                        <button type="button" class="btn btn-brand btn-dropbox" [disabled]="modifevenementForm.invalid || updatestatut == true" (click)="updateValueevent()" *ngIf="afficheupdate">
+                            <i *ngIf="updatestatut == true" class="fas fa-spinner fa-spin"></i>
+                            <i class="fal fa-pen"></i><span class="pd-x-10">Modifier </span>
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-brand btn-success" [disabled]="modifevenementForm.invalid || updatestatut == true" (click)="updateValueevent('file')" *ngIf="afficheupdate">
+                            <i *ngIf="updatestatut == true" class="fas fa-spinner fa-spin"></i>
+                            <i class="fal fa-file-edit"></i><span class="pd-x-10">Fichier </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="objetevenementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-right2 w-xl" role="document">
+        <div class="modal-content modal-content2 h-100 no-radius">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title tx-primary" id="exampleModalLongTitle">
+                    <i class="fad fa-plus-circle tx-20"></i> Ajouter
+                </h5>
+            </div>
+            <div class="modal-body  scroll-11 mymodal">
+                <div class="col-md-12">
+                    <form [formGroup]="AddobjetevenementForm">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Libellé</label>
+                                        <input type="text" formControlName="libelle" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Type</label>
+                                        <select formControlName="type" class="custom-select no-radius">
+                                            <option disabled selected value=""> Selectionner</option>
+                                            <option *ngFor="let item of type" [value]="item">{{item}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Objet</label>
+                                        <select formControlName="objet" class="custom-select no-radius">
+                                            <option disabled selected value=""> Selectionner</option>
+                                            <option *ngFor="let item of objet" [value]="item?.value">{{item?.value}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Lieu</label>
+                                        <input type="text" class="form-control" formControlName="lieu">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Date</label>
+                                        <input type="date" class="form-control" formControlName="date" (change)="verifyDate('date',AddobjetevenementForm)">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Heure debut</label>
+                                        <input type="time" class="form-control" formControlName="heure_debut">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Heure fin</label>
+                                        <input type="time" class="form-control" formControlName="heure_fin" (change)="verifyDate('heure',AddobjetevenementForm)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" rows="3" formControlName="description"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button type="reset" (click)="resetevent()" class="btn btn-brand btn-reddit" data-dismiss="modal" [disabled]="loardstatut == true"> <i class="fal fa-power-off"></i><span
+                            class="pd-x-10">Annuler</span></button>&nbsp;
+                    <button type="button" class="btn btn-brand btn-dropbox" [disabled]="AddobjetevenementForm.invalid || loardstatut==true" (click)="addEvent()">
+                        <i *ngIf="loardstatut == true" class="fas fa-spinner fa-spin"></i>
+                        <i class="fal fa-plus-circle"></i><span class="pd-x-10">Ajouter </span>
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-brand btn-success" [disabled]="AddobjetevenementForm.invalid || loardstatut==true" (click)="addEvent('file')">
+                        <i *ngIf="loardstatut == true" class="fas fa-spinner fa-spin"></i>
+                        <i class="fal fa-file-plus"></i><span class="pd-x-10">Fichier </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-3" style="margin-top:1.5%;">
+    <!-- Modal -->
+    <app-delete-confirmation [url]=url [del]=del [id]=idevenement></app-delete-confirmation>
+</div>
+<!-- File event -->
+<div class="col-md-3" style="margin-top:1.5%;">
+    <app-fileevent [id]=currentid></app-fileevent>
+</div>
+<!--Partage -->
+<div class="col-md-3" style="margin-top:1.5%;">
+    <!-- Modal -->
+    <app-partage [id]=idevenement [url]=urlshared></app-partage>
+</div>

@@ -1,0 +1,24 @@
+<div class="card-body">
+    <div class="d-flex justify-content-center flex-wrap card-group  mg-l-0 mg-r-0">
+        <ng-container *ngIf="modules.length; else noItem">
+            <div class="col-sm-6 col-xl-4" *ngFor="let module of modules;">
+                <div class="card card-1 mg-b-20">
+                    <div class="card-body text-center">
+                        <i class="hidden-xs  tx-30  op-5 {{module.icon}}" style="padding:10px; border-radius: 50%; "></i>
+                        <h5 class="tx-facebook tx-13 tx-medium mg-y-15 d-block bold text-truncate">{{module.libelle | titlecase}}</h5>
+                        <div class="like-comm mg-t-10 mg-b-10">
+                            <a href="" class="link mr-2  tx-11"><i class="fal fa-ball-pile"></i> Services</a>
+                            <a href="" class="link mr-2  tx-11"><i class="fal fa-users"></i> Utilisateurs</a>
+                            <a href="" class="link mr-2  tx-11"><i class="fal fa-info-circle"></i> Infos</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

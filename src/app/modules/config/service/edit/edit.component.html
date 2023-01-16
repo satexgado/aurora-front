@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Service</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label col-12 p-0" for="type">
+                      Type
+                      <button (click)="onShowCreateTypeForm()"  class="btn float-right btn-sm btn-outline-primary mx-1"> ajouter </button>
+                    </label>
+                    <select class="form-control form-control-sm" [class.loading]="allServiceType$ | async" required name="type" [formControlName]="'type_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_id'), 'is-valid': isValid('type_id')}" required>
+                        <option [value]="null">--choississez le type --</option>
+                        <ng-container *ngFor="let item of allTypes">
+                            <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                        </ng-container>
+                        <ng-container *ngFor="let item of (allServiceType$ | async)">
+                            <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                        </ng-container>
+                    </select>
+                    <div *ngIf="shouldShowRequiredError('type_id')" class="invalid-feedback">veillez choisir le type.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="description">Description</label>
+                    <textarea name="description" required maxlength="500" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"></textarea>
+                    <small>{{editForm.get('description').value?.length}}/500</small>
+                    <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez saisir la description.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">Réinitialiser</button>
+</div>

@@ -1,0 +1,65 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{courrier?.libelle | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+  </button>
+</div>
+<div class="modal-body  tx-dark">
+    <div class="card mb-2 card-accent-primary">
+        <div class="card-header">
+            <h4 class="card-header-title">
+                <i class="fad fa-mail-bulk"></i> Details Courrier
+            </h4>
+            <div class="card-header-btn">
+                <a href="" class="btn btn-sm btn-oblong btn-primary"><i class="fal fa-plus"></i></a>
+            </div>
+        </div>
+        <div class="card-body p-0" *ngIf="courrier">
+            <div class="scrollable-y-75 scroll-11">
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                        <div class="tx-yeto2"> Type </div>
+                        <div class=""> {{courrier.courrier?.type?.libelle}}</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                        <div class="tx-yeto2">Objet </div>
+                        <div class=""> {{courrier.courrier?.objet}}</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                        <div class="tx-yeto2"><i class="fal fa-map-marked-alt text-info mx-2"></i> Code </div>
+                        <div class="">
+                            <p class="  mb-0 tx-warning">
+                                <span class=""> {{courrier.courrier?.libelle}} </span><span class=""> || </span><span class=""> {{courrier.courrier?.nature?.libelle}} </span> <span class=""> || </span><span class=""> {{courrier.date_arrive | date: 'dd/MM/yyyy'}} </span>
+                            </p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="modalData.condition_suivi">
+                        <div class="tx-yeto2"> Expediteur </div>
+                        <div class="">
+                            {{courrier.expediteur?.libelle}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-2 card-accent-primary">
+        <div class="card-header">
+            <h4 class="card-header-title">
+                <i class="fad fa-mail-bulk"></i> Message d'affectation
+            </h4>
+            <div class="card-header-btn">
+                <a href="" class="btn btn-sm btn-oblong btn-primary"><i class="fal fa-plus"></i></a>
+            </div>
+        </div>
+        <div class="card-body p-0" *ngIf="courrier">
+            <div class="scrollable-y-75 scroll-11">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+</div>

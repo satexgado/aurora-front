@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <header class="px-3 mx-auto">
+                <h5>
+                    Champ supplémentaire
+                </h5>
+            </header>
+            <div class="table-responsive" formArrayName="inputs">
+                <table class="table table-sm table-stripped table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <td>libelle</td>
+                            <td>type</td>
+                            <td>obligatoire</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let point_arret of editForm.get('inputs').controls; let y = index;">
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <select mySelectFirstOption class="custom-select no-radius">
+                                    <option disabled  value=""> Selectionner</option>
+                                    <option [value]="typeEnum.text">Texte</option>
+                                    <option [value]="typeEnum.email">Email</option>
+                                    <option [value]="typeEnum.number">Nombre</option>
+                                    <option [value]="typeEnum.textarea">Long Texte</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch{{y}}">
+                                    <label class="custom-control-label" for="customSwitch{{y}}">obligatoire</label>
+                                </div>
+                            </td>
+                            <td>
+                                <i (click)="removePointArret(y)" class="fal fa-minus-square fal fa-minus-square fa-2x m-2 text-danger cursor-pointer"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button (click)="addPointArret()" class="btn btn-light m-2" style="font-size: 13px"> <i class="fal fa-layer-plus" style="color:   #99600b    "></i> Ajouter</button>
+            </div>
+        </form>
+
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+</div>

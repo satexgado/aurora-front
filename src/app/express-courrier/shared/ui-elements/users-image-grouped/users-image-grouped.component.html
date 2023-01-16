@@ -1,0 +1,14 @@
+<div class="users-grouped"
+     *ngIf="users?.length"
+     [ngClass]="{'users-grouped': !maxSize, 'users-grouped--max': maxSize }">
+  <img [src]="user.photo"
+  container="body"
+       [ngbTooltip]="user.nom_complet"
+       [placement]="tooltipPlacement"
+       *ngFor="let user of users.slice(0, displayCount)">
+  <button class="users-grouped__more"
+          *ngIf="users.length > displayCount">
+    +{{ users.length - displayCount }}
+  </button>
+
+</div>

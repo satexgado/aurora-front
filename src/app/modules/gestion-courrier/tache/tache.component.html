@@ -1,0 +1,70 @@
+<div class="card card-2 card-accent-primary">
+    <div class="d-flex p-2  border-bottom">
+        <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2">
+<i class="fal fa-plus-circle tx-14 rounded-circle" ></i>
+</button>
+        <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+    </div>
+    <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
+        <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+            <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                <thead class="tx-10 tx-uppercase">
+                    <tr>
+                        <th scope="col">Etape</th>
+                        <th scope="col">responsable</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let etape of items;trackBy: dataHelper.trackByFn">
+                        <td>
+                            <button class="btn btn-sm btn-link" (click)="openModal(content, etape)">
+                            {{etape.libelle}}
+                          </button>
+                        </td>
+                        <td></td>
+                        <td>
+                            <a class="table-action cursor-pointer  mg-r-10" container="body" [ngbTooltip]="'Details'" (click)="openModal(content, etape)"><i class="fal fa-search tx-second "></i></a>
+                            <a class="table-action cursor-pointer mg-r-10 " container="body" [ngbTooltip]="'Modifier'" (click)="onShowUpdateForm(etape) "><i class="fal fa-edit tx-second "></i></a>
+                            <a class="table-action cursor-pointer mg-r-10 " container="body" [ngbTooltip]="'Dupliquer'" (click)="onShowCreateForm(etape) "><i class="fal fa-clone tx-second "></i></a>
+                            <a class="table-action cursor-pointer mg-r-10 " container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(etape) "><i class="fal fa-times-square tx-second "></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+            </section>
+        </div>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title ">
+            {{modalData.libelle}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss( 'Cross click') ">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+    </div>
+    <div class="modal-body p-0">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="modalData.description">
+                <div class="tx-yeto2"><i class="fal fa-info-square text-info mx-2"></i> Description </div>
+                <div class="">
+                    {{modalData.description}}
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button>
+        <button type="button " class="btn btn-sm btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>

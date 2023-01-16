@@ -1,0 +1,62 @@
+<div class="d-flex" [class.loading]="loadingData">
+    <ng-container *ngIf="etapes && etapesType">
+        <div class="col-6">
+            <div class="card my-2">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        <i class="fad fa-road"></i> Etape Disponible
+                    </h4>
+                    <div class="card-header-btn">
+                        <button (click)="ajouterEtape()" class="btn btn-sm btn-oblong btn-primary"><i class="fal fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group" cdkDropList #todoList="cdkDropList" [cdkDropListData]="etapes" [cdkDropListConnectedTo]="[doneList]" (cdkDropListDropped)="drop($event)">
+                        <ng-container *ngIf="etapes && etapes.length; else noItem">
+                            <li class="list-group-item" *ngFor="let item of etapes" cdkDrag>
+                                <h4>{{item.libelle}}</h4>
+                                <p>Responsable <a href="javascript:void(0);">{{item.responsable? item.responsable.libelle : item.structure?.libelle}}</a></p> <span class="text-info">{{item.duree}} jour{{item.duree > 1 ? 's': ''}}</span>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card my-2">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        <i class="fad fa-road"></i> Schema de traitement
+                    </h4>
+                    <div>
+                        <button class="btn btn-sm btn-oblong btn-primary" (click)="saveEtape()">Valider</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column bg-white" cdkDropList #doneList="cdkDropList" [cdkDropListData]="etapesType" [cdkDropListConnectedTo]="[todoList]" (cdkDropListDropped)="drop($event)">
+                        <ng-container *ngIf="etapesType && etapesType.length; else noItem">
+                            <div class="vertical-timeline-item vertical-timeline-element" *ngFor="let item of etapesType; let i = index" cdkDrag>
+                                <div> <span class="vertical-timeline-element-icon bounce-in"> <i class="badge badge-dot badge-dot-xl badge-success"></i> </span>
+                                    <div class="vertical-timeline-element-content bounce-in">
+                                        <h4 class="timeline-title">{{item.libelle}}</h4>
+                                        <p>Responsable <a href="javascript:void(0);" data-abc="true">{{item.responsable? item.responsable.libelle : item.structure?.libelle}}</a></p> <span class="vertical-timeline-element-date text-info">{{item.duree}} jour{{item.duree > 1 ? 's': ''}}</span>
+                                        <p>{{item.description}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+
+<br>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

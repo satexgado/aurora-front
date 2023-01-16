@@ -1,0 +1,164 @@
+<div class="row clearfix">
+    <div class="col-lg-3 hidden-sm hidden-xs p-0">
+
+        <div class="card-body p-2 pb-2 tx-gray-600 tx-14 bg-light active">
+            # Derniers courriers entrés
+        </div>
+        <div class="flex-fill">
+
+            <div class="accordion  custom-accordion" *ngIf="lastEntrant$ | async as courriers">
+                <ul class="list-group list-group-flush tx-13 ">
+                    <li class="list-group-item card-1 pd-sm-x-10 bd-b bg-white" style="background: #f0f4f7 " *ngFor="let courrier of courriers">
+                        <a (click)="onSelectCourrierEntrant(courrier)" class="cursor-pointer">
+                            <div class="d-flex">
+                                <i class="fad fa-dot-circle tx-20 list-group-icon " [ngbTooltip]="courrier.courrier?.urgence?.libelle" [container]="'body'" [style.color]="courrier.courrier?.urgence?.couleur" style="padding:6px; border-radius: 50%; "></i>
+                                <div class="pd-sm-l-10" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                                    <p class="tx-ether4 mg-b-0"> {{courrier.expediteur.libelle}}</p>
+                                    <span class="tx-12 mg-b-0 tx-yeto pt-2"> {{courrier?.libelle}}
+                                    </span>
+                                    <span class="text-info mb-0" *ngIf="!courrier.courrier?.cloture">{{courrier.courrier?.statut?.libelle | titlecase}}</span>
+                                    <span class="mb-0" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
+                                        {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                                    </span>
+                                </div>
+                                <div class="mg-l-auto text-right" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                                    <p class="mg-b-0  tx-dar"><small>{{courrier?.created_at |
+                                            date:'mediumDate'}}</small></p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body p-2 pb-2 tx-gray-600 tx-14 bg-light active">
+            # Derniers courriers sortants
+        </div>
+        <div class="flex-fill">
+            <div class="accordion  custom-accordion" *ngIf="lastSortant$ | async as courriers">
+                <ul class="list-group list-group-flush tx-13 ">
+                    <li class="list-group-item card-1 pd-sm-x-10 bd-b bg-white" style="background: #f0f4f7 " *ngFor="let courrier of courriers">
+                        <a (click)="onSelectCourrierSortant(courrier)" class="cursor-pointer">
+                            <div class="d-flex">
+                                <i class="fad fa-dot-circle tx-20 list-group-icon " [ngbTooltip]="courrier.courrier?.urgence?.libelle" [container]="'body'" [style.color]="courrier.courrier?.urgence?.couleur" style="padding:6px; border-radius: 50%; "></i>
+                                <div class="pd-sm-l-10" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                                    <p class="tx-ether4 mg-b-0"> {{courrier.courrier?.structure?.libelle}}</p>
+                                    <span class="tx-12 mg-b-0 tx-yeto pt-2"> {{courrier?.libelle}}
+                                    </span>
+                                    <span class="text-info mb-0" *ngIf="!courrier.courrier?.cloture">{{courrier.courrier?.statut?.libelle | titlecase}}</span>
+                                    <span class="mb-0" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
+                                        {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                                    </span> 
+                                </div>
+                                <div class="mg-l-auto text-right" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                                    <p class="mg-b-0  tx-dar"><small>{{courrier?.created_at |
+                                            date:'mediumDate'}}</small></p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body p-2 pb-2 tx-gray-600 tx-14 bg-light active">
+            # Derniers courriers internes
+        </div>
+        <div class="flex-fill">
+            <div class="accordion  custom-accordion" *ngIf="lastInterne$ | async as courriers">
+                <ul class="list-group list-group-flush tx-13 ">
+                    <li class="list-group-item card-1 pd-sm-x-10 bd-b bg-white" style="background: #f0f4f7 " *ngFor="let courrier of courriers">
+                        <a (click)="onSelectCourrierEntrant(courrier)" class="cursor-pointer">
+                            <div class="d-flex">
+                                <i class="fad fa-dot-circle tx-20 list-group-icon " [ngbTooltip]="courrier.courrier?.urgence?.libelle" [container]="'body'" [style.color]="courrier.courrier.urgence.couleur" style="padding:6px; border-radius: 50%; "></i>
+                                <div class="pd-sm-l-10" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                                    <p class="tx-ether4 mg-b-0"> {{courrier.expediteur.libelle}}</p>
+                                    <span class="tx-12 mg-b-0 tx-yeto pt-2"> {{courrier?.libelle}}
+                                    </span>
+                                    <span class="text-info mb-0" *ngIf="!courrier.courrier?.cloture">{{courrier.courrier?.statut?.libelle | titlecase}}</span>
+                                    <span class="mb-0" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
+                                        {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                                    </span>
+                                </div>
+                                <div class="mg-l-auto text-right" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                                    <p class="mg-b-0  tx-dar"><small>{{courrier?.created_at |
+                                            date:'mediumDate'}}</small></p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-9 p-3" style="background: #f5f5f4  ">
+        <!-- <div class="row">
+            <div class="col-lg-12">
+                <h5 class="text-dark"><i class="fal fa-mail-bulk" style="padding: 6px; border-radius: 50%;"></i> Gestion des courriers</h5>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="nav-tabs-top  ">
+                    <ul class="nav   bg-white p-2">
+                        <li class="nav-item mg-0 pd-0 ">
+                            <a class="nav-link3  card-1-hoverable" [routerLink]="['acceuil']" routerLinkActive="active" style="padding: 5px 12px;">
+                                <i class="fal fa-home tx-18  tx-ether4 "></i> <span class="tx-ether4"> Accueil
+                                </span></a>
+                        </li>
+                        <li class="nav-item mg-0 pd-0 ">
+                            <a class="nav-link3  card-1-hoverable" [routerLink]="['dossier']" routerLinkActive="active" style="padding: 5px 12px;">
+                                <i class="fal fa-folder tx-18  tx-ether4 "></i> <span class="tx-ether4">
+                                  Dossiers </span></a>
+                        </li>
+                        <li class="nav-item mg-0 pd-0 ">
+                            <a class="nav-link3  card-1-hoverable" [routerLink]="['entrant']" routerLinkActive="active" style="padding: 5px 12px;">
+                                <i class="fal fa-envelope tx-18  tx-ether4 "></i> <span class="tx-ether4"> Courriers
+                                    Entrants </span></a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link3 card-1-hoverable" [routerLink]="['sortant']" routerLinkActive="active">
+                                <i class="fal fa-envelope-open tx-18 tx-ether4 "></i> <span class="tx-ether4"> Courriers
+                                    Sortants</span></a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link3 card-1-hoverable" [routerLink]="['coordonnee']" routerLinkActive="active">
+                                <i class="fal fa-address-card tx-18 tx-ether4 "></i><span class="tx-ether4">
+                                    Coordonnées</span></a>
+                        </li>
+
+                        <li class="nav-item " ngbDropdown #propertiesDrop="ngbDropdown">
+                            <a class="nav-link3 card-1-hoverable" routerLinkActive="active" ngbDropdownToggle>
+                                <i class="fal fa-line-columns tx-18 tx-ether4 "></i>
+                                <span class="tx-ether4">
+                                    Propriétés
+                                </span>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button [routerLink]="['propriete']" [fragment]="'type'" ngbDropdownItem>
+                                        <i class="fal fa-envelope-square tx-20 pr-2 mg-r-10"></i>  Types courriers
+                                    </button>
+                                    <button [routerLink]="['propriete']" [fragment]="'etape'" ngbDropdownItem>
+                                        <i class="fal fa-ballot-check tx-20 pr-2 mg-r-10"></i> Etapes
+                                    </button>
+                                    <button [routerLink]="['propriete']" [fragment]="'nature'" ngbDropdownItem>
+                                        <i class="fal fa-envelope-open-text tx-20 pr-2 mg-r-10"></i> Natures
+                                    </button>
+                                    <button [routerLink]="['propriete']" [fragment]="'statut'" ngbDropdownItem>
+                                        <i class="fal fa-stamp  tx-20 pr-2 mg-r-10"></i> Statuts courrier
+                                    </button>
+                                    <button [routerLink]="['propriete']" [fragment]="'urgence'" ngbDropdownItem>
+                                        <i class="fal fa-calendar-exclamation tx-20 pr-2 mg-r-10"></i> Urgences
+                                    </button>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link3 card-1-hoverable" [routerLink]="['suivi']" routerLinkActive="active">
+                                <i class="fal fa-history  tx-18 tx-ether4 "></i><span class="tx-ether4">
+                                    Suivis</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+        <router-outlet></router-outlet>
+    </div>
+</div>

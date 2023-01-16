@@ -1,0 +1,11 @@
+<div class="file-drop-area">
+    <ng-container [ngSwitch]="!!image">
+        <p class="d-flex p-0 justify-content-center" *ngSwitchCase="true">
+            <img class="img-thumbnail m-3" style="max-height: 400px" [src]="image">
+        </p>
+        <p class="d-flex p-0 justify-content-center" *ngSwitchDefault>
+            <img class="img-thumbnail m-3" style="max-height: 400px" [src]="placeholder">
+        </p>
+    </ng-container>
+    <input class="file-input" type="file">
+</div>

@@ -1,0 +1,29 @@
+<a class="dropdown-item px-2 list-group-item"
+   *ngIf="inbox"
+   [routerLink]="['messagerie', 'discussion', inbox.id]">
+  <div class="d-flex w-100">
+    <div class="pd-r-15">
+      <span class="avatar avatar-online">
+        <img [src]="isUser(correspondant) ? correspondant.photo : correspondant.image"
+             style="height: 40px; width: 40px; object-fit: cover;"
+             class="img-fluid"
+             alt="">
+        <i *ngIf="isUserOnline()"></i>
+      </span>
+    </div>
+    <div class="w-100">
+      <div class="row">
+        <div class="col-8">{{ isUser(correspondant) ? correspondant.nom_complet : correspondant.libelle }}</div>
+        <div class="col-4 small tx-gray-600 ft-right">{{ inbox.touched_at | date }}</div>
+      </div>
+      <div class="tx-gray-600 tx-11"> <span class="font-weight-bold mr-1"
+              *ngIf="inbox.derniere_reaction.inscription.id != correspondant.id ">
+          Vous:
+        </span>
+        {{ helper.text.strcut(inbox.derniere_reaction.reaction, 25) }}
+        <span class="badge badge-primary float-right"
+              *ngIf="inbox.nombre_reaction_non_lus">{{ inbox.nombre_reaction_non_lus }}</span>
+      </div>
+    </div>
+  </div>
+</a>

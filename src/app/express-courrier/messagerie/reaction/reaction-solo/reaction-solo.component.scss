@@ -1,0 +1,21 @@
+.reaction {
+    &__cta {
+        opacity: 0;
+        max-height: 0;
+        transition: all 1s;
+    }
+    &:hover &__cta {
+        max-height: auto;
+        opacity: 1;
+    }
+    &__img {
+        width: 30%;
+        cursor: pointer;
+        border-radius: 15px;
+        margin-top: 5px;
+    }
+}
+
+.rebondissement-img {
+    width: 15%;
+}

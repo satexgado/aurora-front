@@ -1,0 +1,59 @@
+<div class="modal-header p-1">
+    <h5 class="modal-title title">{{name}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+    <span aria-hidden="true"><i class="icon-close"></i></span>
+</button>
+</div>
+<div class="modal-body p-0 " [class.loading]="isLoading">
+    <div class="card card-accent-info mg-b-10 col-12" *ngIf="creationService">
+        <div class="row row-xs mb-0 p-0">
+            <div class="col-lg-12 p-2">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control mr-2" [(ngModel)]="newItem" (keyup.enter)="onSaveItem()" placeholder="Nouveau" aria-label="Folder">
+                    <button class="btn btn-sm btn-outline-primary rounded-end" (click)="onSaveItem()" [disabled]="!newItem">ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-accent-info col-12" *ngIf="!creationService">
+        <div class="row row-xs mb-0 p-0">
+            <div class="col-lg-12 p-2">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control mr-2" [(ngModel)]="searchString" placeholder="Recherche" aria-label="Folder">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="items && items.length; else noItem">
+        <table class="table m-0">
+            <tbody>
+                <tr class="cursor-pointer" [class.info]="hasSelectedItem(item.id)" *ngFor="let item of (items | searchFilter:searchString | selectedSort:selectedItem );trackBy: trackByFn" (click)="toggleSelectedItem(item.id)">
+                    <td class="tx-18" *ngIf="imageCol">
+                        <img style="width: 60px;" src="{{item[imageCol]}}" alt="image for item">
+                    </td>
+                    <td class="tx-18 align-middle">
+                        {{item.libelle | shorten:30}}
+                    </td>
+
+                    <td class="tx-18" *ngFor="let col of otherCols">
+                        {{col.value[1] ? item[col.value[0]][col.value[1]] : item[col.value[0]] }}
+                    </td>
+
+                    <td class="align-middle">
+                        <i class="far  tx-18" [ngClass]="{'fa-check-square text-primary': hasSelectedItem(item.id)}" [class.fa-square]="!hasSelectedItem(item.id)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-outline-primary" *ngIf="createModal" (click)="onShowCreateForm()">Ajouter</button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onCloseModal('Close click')">Enregister</button>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

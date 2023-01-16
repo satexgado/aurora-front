@@ -1,0 +1,132 @@
+<div class="vh-100">
+    <div class="navbar navbar-expand-lg p-0">
+        <div class="navbar-inner" style="width:100%">
+            <a class="navbar-brand p-0 float-left" [routerLink]="''"><img src="./assets/img/3.png" style="height:30px" alt="Ideal"></a>
+            <div class="container-fluid">
+                <div id="fade-menu">
+                    <ul class="d-flex justify-content-end" id="mobile-nav">
+                        <li>
+                            <a class="top-link">
+                                <i class="fas fa-italic"></i>Presentation</a>
+                        </li>
+
+                        <li>
+                            <a class="top-link">
+                                <i class="fas fa-users"></i> Creer un nouveau compte</a>
+                        </li>
+                        <li>
+                            <a class="top-link">
+                                <i class="fas fa-database"></i>Confidentialité</a>
+
+                        </li>
+
+                        <li>
+                            <a class="top-link">
+                                <i class="fas fa-braille"></i> Condition d'utilisation</a>
+
+                        </li>
+
+                        <li>
+                            <a class="top-link">
+                                <i class="fas fa-at"></i> Contact</a>
+
+                        </li>
+
+                        <li>
+                            <a class="top-link">
+                                <i class="fas fa-question"></i> Aide
+                            </a>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid h-75">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="iAmAfrica col-lg-4">
+                <p style="font-size:24px; color: #ba4a00 ; text-align:center;font-family: 'Times New Roman', Times, serif; align:center"> Pour vous qui ne voyez pas, voyez</p> <br>
+                <p style="font-size:24px; color: #1b4f72 ; text-align:center;font-family: 'Times New Roman', Times, serif; align:left"> Pour vous qui n'entendez pas, entendez</p> <br>
+                <p style="font-size:24px; color: #f3bc18 ; text-align:center;font-family: 'Times New Roman', Times, serif; align:right"> Pour vous qui ne parlez pas, parlez</p> <br>
+                <p style="font-size:24px; color: #1b4f72 ; text-align:center;font-family: 'Times New Roman', Times, serif; align:justify"> Pour vous qui n'agissez pas, agissez</p> <br>
+            </div>
+            <div class="col">
+                <div class="login-wrapper d-flex">
+                    <div class="main-col" [ngClass]="{'loading': loading}">
+                        <img src="./assets/img/4.png" alt="" class="logo_img" />
+                        <div class="panel ml-5 mr-5" style="width:250px;">
+                            <p class="heading_main m-0">
+                                <i class="fas fa-users " style="color:   #f1c40f  "></i> Se connecter</p>
+                            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                                <br>
+                                <div class="form-group">
+                                    <label for="email" class=" col-form-label p-0 m-0">Identifiant</label><small class="text-muted">email, idcam, identifiant</small>
+                                    <input id="email" type="text" [formControlName]="'username'" class="form-control form-control-sm" required autofocus>
+                                    <span class="invalid-feedback">
+                                        <strong>Message erreur</strong>
+                                    </span>
+                                </div>
+
+                                <div class="form-group mb-2">
+                                    <label for="password" class="col-form-label p-0 m-0">Mot de pass</label>
+
+                                    <input id="password" type="password" [formControlName]="'password'" class="form-control form-control-sm" required>
+
+                                    <span class="invalid-feedback">
+                                                    <strong>message</strong>
+                                                </span>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <div class="checkbox">
+                                            <label>
+                                            <input type="checkbox" name="remember" > Garder la session active
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-8 offset-md-4">
+                                        <button type="submit" class="btn btn-beoro-3" [disabled]="loginForm.invalid || loading">
+                                          Connexion
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel ml-5 mr-5" style="display:none">
+                            <p class="heading_main">Problème de connexion?</p>
+                            <form class="was-validated">
+                                <label for="forgot_email">Entrez votre email</label>
+                                <input type="email" id="forgot_email" name="forgot_email" class="form-control form-control-sm" require />
+                                <div class="submit_sect">
+                                    <button type="submit" class="btn btn-beoro-3">Demandez un nouveau mot de pass</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="login_links">
+                        <a class="mr-3">Creer un nouveau compte</a>
+                        <a id="pass_login"><span>Mot de pass oublier</span><span
+                                    style="display:none">Se connecter à votre compte</span></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#pass_login').click(function() {
+            $('.panel:visible').slideUp('200', function() {
+                $('.panel').not($(this)).slideDown('200');
+            });
+            $(this).children('span').toggle();
+        });
+    });
+</script>

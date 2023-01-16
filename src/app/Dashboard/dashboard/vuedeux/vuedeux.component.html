@@ -1,0 +1,89 @@
+<div class="col-md-12 p-0" *ngIf="structure && loard==true">
+    <div class=" row pl-3  bg-light  pb-4">
+        <div class=" col-lg-3 pt-4">
+            <div class="    pl-4 pt-4 pr-4"  style="height: 500px;">
+                <ul class="list-group list-group-flush tx-13 contentstdetail scroll-11 ">
+                  <li [ngClass]="{'list-group-item d-flex pd-x-10':true,'bg-gray':item?.id==currentvalue}"  *ngFor="let item of structure">
+                    <div class="avatar"><span class="avatar-initial rounded-circle bg-primary troisval ">{{item?.cigle}}</span></div>
+                    <div class="pd-l-10">
+                        <p class="tx-medium mg-b-0" style="margin-left:10px"><a (click)="getId(item?.id)">{{item?.libelle}}</a></p>
+                        <span class="tx-12 mg-b-0 tx-warning pt-2"> {{item?.type_structure?.libelle}} </span>
+                    </div>
+                    <div class="mg-l-auto d-flex align-self-center">
+                        <nav class="nav nav-icon-only">
+                            <div class="tx-right">
+                                <div class="tx-15 mg-l-10">
+                                    <p class="mg-b-0  tx-dar"><span class="badge badge-info">{{item?.cr_courriers?.length}}</span></p>
+                                    <!-- <span class="tx-12 mg-b-0 tx-gray-500 pt-2 tx-center"> 
+                                      <a class="publisher-btn pt-2" href=""><i class="fad fa-eye tx-facebook"></i></a>
+                                    </span> -->
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                  </li>
+                </ul>  
+            </div>
+        </div>
+        <div class=" col-lg-9  bg-light pl-4 pr-4 pt-4">
+              <div class="col-md-12 p-0" *ngIf="courrier">
+                  <div class="col-md-12" *ngIf="!courrier?.statut[0] && !courrier?.nature[0] &&  !courrier?.type[0]">
+                    <br><br><br><br>
+                    <div class="col-md-12 text-center noData">
+                        <app-no-data></app-no-data>
+                    </div>
+                    <br><br><br><br> 
+                  </div>
+                  <div class="col-md-12 p-0" *ngIf="courrier?.statut[0] && courrier?.nature[0] &&  courrier?.type[0]">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="  p-0 pt-4" >
+                                <div class="mycard2 bg-white">
+                                    <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+                                        [dataLabels]="chartOptions3.dataLabels" [xaxis]="chartOptions3.xaxis"
+                                        [plotOptions]="chartOptions3.plotOptions" [stroke]="chartOptions3.stroke"
+                                        [colors]="chartOptions3.colors">
+                                    </apx-chart>
+                                    <div class="mg-b-0"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="  p-0 pt-4" >
+                                    <div class="mycard2 bg-white">
+                                        <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                                            [labels]="chartOptions.labels" [colors]="chartOptions.colors" [title]="chartOptions.title">
+                                        </apx-chart>
+                                        <div class="mg-b-0"></div>
+                                    </div>
+                            </div>
+                            <div class="  p-0 pt-4" *ngIf="courrier?.type[0]">
+                                <div class="mycard2 bg-white">
+                                    <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart"
+                                        [labels]="chartOptions2.labels" [colors]="chartOptions2.colors" [title]="chartOptions2.title">
+                                    </apx-chart>
+                                    <div class="mg-b-0"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-md-12 text-center" *ngIf="!courrier">
+                <app-loarding></app-loarding>
+              </div>
+           
+        </div>
+    </div>
+</div>
+   <!-- NO DATA -->
+<div *ngIf="loard==false && structure " class="col-md-12">
+    <br><br><br><br>
+    <div class="col-md-12 text-center noData">
+        <app-no-data></app-no-data>
+    </div>
+    <br><br><br><br> 
+</div>
+<div class="col-md-12 text-center" *ngIf="!structure">
+    <app-loarding></app-loarding>
+</div>

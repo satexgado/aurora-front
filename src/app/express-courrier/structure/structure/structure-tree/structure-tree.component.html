@@ -1,0 +1,12 @@
+<div class="tree">
+  <ul>
+    <li *ngFor="let structure of structures">
+      <app-structure-tree-solo [structure]="structure"></app-structure-tree-solo>
+
+      <app-structure-tree *ngIf="structure.sous_structures?.length"
+                          [structures]="structure.sous_structures">
+      </app-structure-tree>
+
+    </li>
+  </ul>
+</div>

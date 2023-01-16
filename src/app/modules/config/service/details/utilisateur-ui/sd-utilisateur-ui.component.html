@@ -1,0 +1,39 @@
+<div class="card-body" [class.loading]="is_form_saving">
+    <form [formGroup]="serviceForm">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="card-title">Libelle</h5>
+                <div class="card-text">
+                    <input type="text" class="form-control form-control-sm" [formControlName]="'libelle'" [ngClass]="{'is-invalid': serviceForm.get('libelle').hasError('required'), 'is-valid': serviceForm.get('libelle').valid}" required>
+                    <div *ngIf="serviceForm.get('libelle').hasError('required')" class="invalid-feedback">veillez saisir le libelle.</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h5 class="card-title">Type</h5>
+                <div class="card-text" [class.loading]="!(allServiceType$ | async)">
+                    <select class="form-control form-control-sm" mySelectFirstOption required name="pageSize" [formControlName]="'type_id'" [ngClass]="{'is-invalid': serviceForm.get('type_id').hasError('required'), 'is-valid': serviceForm.get('type_id').valid}" required>
+                    <ng-container *ngFor="let item of (allServiceType$ | async)">
+                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                    </ng-container>
+                </select>
+                    <div *ngIf="serviceForm.get('type_id').hasError('required')" class="invalid-feedback">veillez choissir le type.</div>
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+        <h5 class="card-title">Description</h5>
+        <div class="card-text">
+            <textarea name="description" required maxlength="500" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': serviceForm.get('description').hasError('required'), 'is-valid': serviceForm.get('description').valid}"></textarea>
+            <small>{{serviceForm.get('description').value?.length}}/500</small>
+            <div *ngIf="serviceForm.get('description').hasError('required')" class="invalid-feedback">veillez saisir le description.</div>
+        </div>
+        <hr>
+
+        <div class="text-right">
+            <button class="btn btn-sm btn-primary" (click)="onSaveFormData()" [disabled]="shouldDisableProgrammeSubmit()">Enregistrer</button>
+            <button class="btn btn-sm btn-link mr-3" (click)="onResetForm()">Réinitialiser</button>
+        </div>
+    </form>
+</div>

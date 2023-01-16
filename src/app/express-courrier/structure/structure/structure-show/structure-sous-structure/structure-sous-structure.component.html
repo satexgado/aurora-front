@@ -1,0 +1,47 @@
+<ng-container>
+  <div class="d-flex justify-content-between mb-3">
+    <app-search-field></app-search-field>
+
+    <div class="cta">
+      <a [routerLink]="['./']"
+         [fragment]="'add-structure'"
+         *ngIf="structure?.isUserAdmin"
+         class="btn btn-large btn-custom-primary mr-3"><i class="far fa-plus"></i> Ajouter</a>
+
+
+
+      <app-filter-button></app-filter-button>
+    </div>
+  </div>
+
+  <app-structure-sous-structure-list></app-structure-sous-structure-list>
+
+
+</ng-container>
+
+
+
+
+
+
+
+<app-modal [configuration]="{ name: 'structure-create-modal', titre: 'Ajouter une nouvelle structure', icone:'sitemap' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-structure-create *ngIf="create"
+                        (created)="onCreated()"
+                        [ancestor]="structure">
+  </app-structure-create>
+</app-modal>
+
+
+
+<app-modal [configuration]="{ name: 'structure-edit-modal', titre: 'Modifier les informations de la structure', icone:'sitemap' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-structure-edit *ngIf="edit"></app-structure-edit>
+</app-modal>
+
+
+<app-modal-sidebar [configuration]="{ name: 'structure-filter-modal', titre: 'Filtre', icone:'sitemap' }"
+                   (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-structure-filter></app-structure-filter>
+</app-modal-sidebar>

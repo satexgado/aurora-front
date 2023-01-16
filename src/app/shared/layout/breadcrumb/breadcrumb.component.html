@@ -1,0 +1,17 @@
+<div class="pageheader pd-t-25 pd-b-35" *ngIf="breadcrumbs$ | async as breadcrumbs">
+    <div class="pd-t-5 pd-b-5" *ngFor="let breadcrumb of breadcrumbs.slice(-1)">
+        <h1 class="pd-0 mg-0 tx-20">{{ breadcrumb.label | titlecase}}</h1>
+    </div>
+    <div class="breadcrumb pd-0 mg-0">
+        <ng-container *ngFor="let item of let breadcrumb of breadcrumbs; let first = first ; let last = last;">
+            <ng-container [ngSwitch]="last">
+                <span class="breadcrumb-item active" *ngSwitchCase="true">
+                    <i class="icon ion-ios-home-outline" *ngIf="first"></i> {{ breadcrumb.label | titlecase}}
+                </span>
+                <a class="breadcrumb-item" [routerLink]="[breadcrumb.url]" *ngSwitchDefault>
+                    <i class="icon ion-ios-home-outline" *ngIf="first"></i> {{ breadcrumb.label | titlecase}}
+                </a>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

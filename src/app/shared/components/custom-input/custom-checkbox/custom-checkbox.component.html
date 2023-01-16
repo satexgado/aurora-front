@@ -1,0 +1,10 @@
+<button class="btn m-1 card-1" [ngClass]="!onCountChecked(false) ? 'btn-primary' : 'btn-outline-primary'" (click)="onsetAllCheck(onCountChecked(false))">
+  TOUS
+  <i [ngClass]="!onCountChecked(false) ? 'fas fa-check-square' : 'fal fa-square'"></i>
+</button>
+<div class="d-flex flex-wrap">
+    <button *ngFor="let item of checkboxItems" class="btn m-1 card-1" [ngClass]="item.checked ? 'btn-primary' : 'btn-outline-primary'" (click)="item.checked = !item.checked;onSetSelected();">
+      {{item.libelle | titlecase }}
+      <i [ngClass]="item.checked ? 'fas fa-check-square' : 'fal fa-square'"></i>
+    </button>
+</div>

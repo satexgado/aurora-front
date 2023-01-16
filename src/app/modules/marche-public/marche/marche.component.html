@@ -1,0 +1,587 @@
+<div class="p-3 bd-b bg-light">
+    <h5 class="tx-echos m-0">
+        <strong>
+          <i class="fal fa-file-signature bg-white" style="padding:6px; border-radius: 50%; "></i> Marche Public
+      </strong>
+    </h5>
+</div>
+<div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+
+    <div class="col-lg-7">
+        <div class="input-group ">
+            <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
+        </div>
+    </div>
+
+    <div class="col-lg-5 ">
+        <ul class="nav float-right list-inline h-100  justify-content-end">
+            <li class="nav-item">
+                <button class="btn btn-link" (click)="onChangeView('card')">
+                    <span class="tx-echos">
+                        <i class="fad fa-th card-1  tx-16"
+                            [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link" (click)="onChangeView('list')">
+                    <span class="tx-echos">
+                        <i class="fad fa-list card-1 tx-16 "
+                            [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link " [disabled]="(dataHelper.loading$ | async)" (click)="open(filterModal);">
+                    <span class="tx-echos">
+                        <i class="fal fa-filter bg-warning tx-16 tx-white card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link " [disabled]="(dataHelper.loading$ | async)" (click)="cancelFilter();" *ngIf="is_advance_filter">
+                    <span class="tx-echos">
+                        <i class="fas fa-filter bg-danger tx-16 tx-white card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();">
+                    <span class="tx-echos">
+                        <i class="fal fa-plus-circle bg-yeto tx-16 tx-white card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="grid-container">
+    <div class="sidebar" [class.sidebar_small]="modalData">
+        <div class="card-body" *ngIf="view == 'card'; else listView " [class.loading]="dataHelper.loading$ | async">
+            <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="d-flex scrollable-y-65 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                <ng-container *ngIf="dataHelper.data$ | async as items">
+                    <ng-container *ngIf="items.length; else noItem">
+                        <div class="col-sm-6   mg-b-20" [@flyInOut]="'in'" *ngFor="let marche of items;trackBy: dataHelper.trackByFn">
+                            <div class="card card-1" [class.h-100]="items.length > 2" (click)="onSetSelect(marche)">
+                                <div class="card-header justify-content-between">
+                                    <span> <i class="fal fa-globe bg-primary tx-white"
+                                            style="padding:6px; border-radius:50%"></i>
+                                        {{marche.type_procedure?.titleParent + ' '+
+                                        marche.type_procedure?.libelle}}</span>
+                                    <span> <i class="fal fa-inbox-in bg-light tx-yeto"
+                                            style="padding:6px; border-radius:50%"></i>
+                                        {{marche.type_marche?.libelle}}</span>
+                                </div>
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="m-auto">
+                                        <div class=" text-center ">
+                                            <span class=" tx-bold mb-0 "> {{marche.libelle}} </span>
+                                            <p class="  mb-0 tx-warning">
+                                                <span class=""> {{marche.structure?.libelle}} </span>
+                                            </p>
+                                        </div>
+                                        <!-- <div class=" text-center">
+                                            <span class=" tx-bold  "> {{marche.structure?.libelle}} </span>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="card-footer justify-content-between py-0">
+                                    <div class=" justify-content-between p-0">
+                                        <p class="mg-0 d-flex my-auto">
+                                            <button class="btn btn-link" (click)="onShowUpdateForm(marche); $event.stopPropagation()">
+                                                <span class="tx-echos">
+                                                    <i class="fad fa-edit card-1  tx-16"
+                                                        style="padding:6px; border-radius:50%"></i>
+                                                </span>
+                                            </button>
+                                        </p>
+                                    </div>
+                                    <!-- <a class="nav-link  ml-4 " *ngIf="marche.marche?.suivi_par_user">
+                                      <div class="d-flex flex-row">
+                                          <div class="profiles">
+                                              <img class="rounded-circle avatar-xs" [src]="marche.marche?.suivi_par_user.avatar" alt="avatar">
+                                          </div>
+                                      </div>
+                                  </a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="main-content scroll-11 " [class.main-content_large]="modalData">
+        <div class="card" *ngIf="modalData">
+            <div class="card-header justify-content-between">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-link  mr-3" (click)="onSetSelect()">
+                        <i class="fad fa-arrow-alt-left bg-light tx-success card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </button>
+                    <div class=" d-flex justify-content-between mg-t-6 mg-b-5 wd-100p">
+                        <div class="d-inline-block" [ngbTooltip]="modalData.libelle" container="body">
+                            <h5 class="mb-0 tx-echos"> {{modalData.libelle | shorten}}</h5>
+                            <h6 class="mg-b-0 tx-yeto2">{{modalData.type_procedure?.titleParent + ' '+ modalData.type_procedure?.libelle}} || {{modalData.type_marche?.libelle}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="float">
+                    <div>
+                        <ul class="nav float-right list-inline justify-content-end">
+                            <li class="nav-item ">
+                                <button class="btn btn-link" (click)="modalData.showingDetails = !modalData.showingDetails">
+                                    <span>
+                                        <i class="fad card-1 fa-info-circle  tx-16"
+                                            [ngClass]="modalData.showingDetails ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </button>
+                            </li>
+                            <li class="nav-item ">
+                                <button class="btn btn-link " (click)="modalData.showingDetails = !modalData.showingDetails">
+                                    <span>
+                                        <i class="fad card-1 fa-file-alt tx-16"
+                                            [ngClass]="!modalData.showingDetails ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </button>
+                            </li>
+                            <li class="nav-item ">
+                                <button class="btn btn-link " (click)="onShowService(modalData)">
+                                    <span class="tx-echos">
+                                        <i class="fad card-1 fa-chart-network tx-yeto  tx-16 bg-light"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </button>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="btn btn-link " (click)="onShowUpdateForm(modalData)">
+                                    <span class="tx-echos">
+                                        <i class="fal card-1 fa-pencil bg-light tx-16 tx-yeto"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="d-flex align-items-center">
+                <button class="btn btn-link  mr-3" (click)="onSetSelect()">
+                  <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
+                </button>
+                <div class="media pd-4 ">
+                    <div class="mr-2 mg-l-10 my-auto">
+                        <div class="avatar ">
+                            <img class="img-fluid wd-40 rounded-circle" [src]="modalData.structure.image" alt="avatar">
+                        </div>
+                    </div>
+                    <div class=" d-flex justify-content-between mg-t-6 mg-b-5 wd-100p">
+                        <div class="d-inline-block">
+                            <h5 class="mb-0 tx-echos"> {{modalData.libelle}}</h5>
+                            <h6 class="mg-b-0 tx-yeto2"> {{modalData.structure.libelle}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-12" *ngIf="modalData.showingDetails">
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div class="col-12 col-md-6">
+                            <!-- Code -->
+                            <div class="my-3  " style="font-size: 16px;">
+                                <span class="mr-2">
+                                    Libelle:
+                                </span>
+                                <span class="tx-rubik tx-dark">{{modalData.libelle}}</span>
+                            </div>
+                            <!-- Code -->
+                            <div class="my-3  " style="font-size: 16px;">
+                                <span class="mr-2">
+                              Procedure:
+                          </span>
+                                <span class="tx-rubik tx-dark">{{modalData.type_procedure?.titleParent + ' '+ modalData.type_procedure?.libelle}}</span>
+                            </div>
+
+                            <div class="my-3  " style="font-size: 16px;">
+                                <span class="mr-2">
+                            Service Contractant:
+                        </span>
+                                <span class="tx-rubik tx-dark" (click)="onShowService(modalData)">{{modalData.service_contractant?.libelle}}</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="my-3  " style="font-size: 16px;">
+                                <span class="mr-2">
+                                Type de marche:
+                            </span>
+                                <span class="tx-rubik tx-dark">{{modalData.type_marche?.libelle}}</span>
+                            </div>
+
+                            <!-- Code -->
+                            <div class="my-3  " style="font-size: 16px;">
+                                <span class="mr-2">
+                                    Prix:
+                                </span>
+                                <span class="tx-rubik tx-dark">{{modalData.cout}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body p-2  text-dark">
+                            <h4 class="text-info cursor-pointer" (click)="onSetFournisseurs(modalData)"> Fournisseur <i class="fal fa-edit"></i></h4>
+                            <table class="table table-striped table-sm text-dark" *ngIf="modalData.fournisseurs && modalData.fournisseurs.length; else emptyTemplate">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Telephone</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of modalData.fournisseurs">
+                                        <td class="">{{item.libelle}}</td>
+                                        <td class="" style="white-space: break-spaces;
+                              word-wrap: initial;">{{item.telephone}}</td>
+                                        <td class="" style="white-space: break-spaces;
+                              word-wrap: initial;">{{item.email}}</td>
+                                        <td class="" style="white-space: break-spaces;
+                            word-wrap: initial;">{{item.adresse}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body p-2  text-dark">
+                            <h4 class="text-info cursor-pointer" (click)="onSetPartenaires(modalData)"> Partenaires <i class="fal fa-edit"></i></h4>
+                            <table class="table table-striped table-sm text-dark"
+                                *ngIf="modalData.partenaires && modalData.partenaires.length; else emptyTemplate">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Telephone</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of modalData.partenaires">
+                                        <td class="">{{item.libelle}}</td>
+                                        <td class="" style="white-space: break-spaces;
+                            word-wrap: initial;">{{item.telephone}}</td>
+                                        <td class="" style="white-space: break-spaces;
+                            word-wrap: initial;">{{item.email}}</td>
+                                        <td class="" style="white-space: break-spaces;
+                          word-wrap: initial;">{{item.adresse}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <ng-container *ngIf="!modalData.showingDetails">
+                    <div class="col-4 info" [class.loading]="newEtapeLoading">
+                        <div class="card card-accent-info  mg-b-10 col-12">
+                            <div class="row row-xs mb-0 p-0">
+                                <div class="col-lg-12">
+                                    <div class="input-group input-group-sm p-2">
+                                        <input type="text" class="form-control mr-2" placeholder="Nouveau" aria-label="Folder" [(ngModel)]="nomEtape" (keyup.enter)="quickCreation()">
+                                        <button class="btn btn-sm btn-primary" (click)="quickCreation()" [disabled]="!nomEtape">
+                                            <i class="fal fa-plus-square"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card px-0">
+                            <div class="baseline baseline-border card-body" cdkDropList #procedureTypeList="cdkDropList" [cdkDropListData]="modalData.etapes" (cdkDropListDropped)="drop($event)">
+                                <div class="baseline-list baseline-border" [ngClass]="item.fichiers && item.fichiers.length ? 'baseline-success' : 'baseline-primary'" [class.active]="selectedEtape && selectedEtape.id == item.id" *ngFor="let item of modalData.etapes" cdkDrag>
+                                    <div class="baseline-info">
+                                        <a class="cursor-pointer" (click)="onSetSelectEtape(item)">
+                                            <ng-container *ngIf="item.showForm; then formView else dataView">
+                                            </ng-container>
+                                            <ng-template #formView>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control" [(ngModel)]="item.formLibelle" autofocus (keyup.enter)="quickSave(item, item.formLibelle)" (focusout)="quickSave(item, item.formLibelle)" [placeholder]="item.libelle" aria-label="Folder">
+                                                </div>
+                                            </ng-template>
+                                            <ng-template #dataView>
+                                                {{item.libelle}}
+                                            </ng-template>
+                                        </a>
+                                        <div class="d-flex align-items-center justify-content-between mr-4 bg-light">
+                                            <div class="justify-content-between p-0">
+                                                <button class="border-0 btn-transition btn btn-outline-info" *ngIf="item.showForm">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                                <button class="border-0 btn-transition btn btn-outline-info" *ngIf="!item.showForm" (click)="onShowQuickForm(item)">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="border-0 moves btn-transition btn btn-outline-info">
+                                                    <i class="fa fa-arrows"></i>
+                                                </button>
+                                                <button class="border-0 moves btn-transition btn btn-outline-danger" (click)="onDeleteEtape(item)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                            <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="selectedEtape">
+                        <div class="col-8" style="background: #f5f5f4;">
+                            <div class="card card-accent-info h-100 " style="overflow: auto;">
+                                <div class="h-100">
+                                    <div class="d-flex border-bottom sticky-top bg-white">
+                                        <div ngbDropdown class="d-inline-block flex-1">
+                                            <button type="button" class="btn btn-link" ngbDropdownToggle>
+                                              {{filePreview && viewFile == 'preview' ? filePreview.libelle : 'liste des fichiers'}}
+                                              </button>
+                                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                <button (click)="onSelectFile(fichier)" *ngFor="let fichier of selectedEtape.fichiers; " ngbDropdownItem>{{fichier.libelle}}</button>
+                                                <button (click)="onToggleFileView()" ngbDropdownItem> liste des fichiers
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button (click)="onToggleFileView()" class="btn btn-sm  btn-primary card-1 bd-0 btn-icon mx-2 mg-t-5 mg-b-5">
+                                            {{ viewFile == 'preview' ? 'liste' : 'vue'}} <i class="fal"
+                                                [ngClass]="viewFile == 'preview' ? 'fa-list' : 'fa-file'"></i>
+                                        </button>
+                                    </div>
+                                    <ng-container [ngSwitch]="viewFile">
+                                        <ng-container *ngSwitchCase="'preview'">
+                                            <ng-container *ngIf="filePreview">
+                                                <ngx-doc-viewer *ngIf="[ 'pdf', 'image' ].includes(filePreview.type.libelle);" [url]="filePreview.fichier" viewer="url" style="width:100%;height:100%;"></ngx-doc-viewer>
+                                                <div class="row mx-0 h-50 text-center" *ngIf="![ 'pdf', 'image' ].includes(filePreview.type.libelle); ">
+                                                    <div class="col-sm-12 my-auto">
+                                                        <i class="fal {{filePreview.type.icon}} fa-4x" style="color: #003d79"></i>
+                                                        <br> Aucun Aperçu pour ce type de fichier
+                                                        <br>
+                                                        <a [href]="filePreview.fichier" target="_blank" class="btn btn-link bd-0 btn-icon mx-2">
+                                                            {{filePreview.libelle}}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                        <div *ngSwitchDefault>
+                                            <div class="card ">
+                                                <button (click)="openFileModal() " class="btn btn-sm btn-outline-primary card-1 mx-1 ">
+                                                      <i class="fad fa-file-alt "></i>
+                                                      Nouveau Fichier
+                                                    </button>
+                                                <div class="scroll-11 scrollable-y-75 p-3 ">
+                                                    <div class="w-100 ">
+                                                        <ul class="list-group ">
+                                                            <ng-container *ngIf="(selectedEtape.fichiers && selectedEtape.fichiers.length) else emptyTemplate ">
+                                                                <li class="card-1 list-group-item p-2 mb-2 " *ngFor="let fichier of selectedEtape.fichiers; ">
+                                                                    <app-fichier-item-ui [fichier]="fichier " (fichierDeleteEmitter)="onDeleteFichier($event)" [selectOnly]="true" (fichierSelectEmitter)="onSelectFile($event)"></app-fichier-item-ui>
+                                                                </li>
+                                                            </ng-container>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #listView>
+    <div class="card card-2 card-accent-primary px-0 col-12 mt-2" [class.loading]="dataHelper.loading$ | async">
+        <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-5" #scrollContainer>
+            <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+                <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                    <thead>
+                        <tr>
+                            <th scope="col">Libelle</th>
+                            <th scope="col">Procedure</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Structure</th>
+                            <th scope="col">Prix</th>
+                            <!-- <th scope="col">Fournisseur</th> -->
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bd-b bd-2" [@flyInOut]="'in'" *ngFor="let marche of items;trackBy: dataHelper.trackByFn; let i = index;">
+                            <td (click)="onSetSelect(marche)">
+                                {{marche.libelle | shorten}}
+                            </td>
+                            <td>
+                                {{marche.type_procedure?.titleParent}} {{marche.type_procedure?.libelle}}
+                            </td>
+                            <td>
+                                {{marche.type_marche?.libelle}}
+                            </td>
+                            <td>
+                                {{marche.structure?.libelle}}
+                            </td>
+                            <td>
+                                {{marche.cout ? (marche.cout | number :'':'fr-FR') : ''}}
+                            </td>
+                            <!-- <td>
+                                {{marche.fournisseur?.libelle}}
+                            </td> -->
+                            <td>
+                                <button class="btn btn-link p-0 mx-3" (click)="onShowUpdateForm(marche)"><i
+                                        class="fal fa-edit tx-second "></i></button>
+                                <button class="btn btn-link-danger p-0 mx-3" (click)="onDelete(marche)"><i
+                                        class="fal fa-times-square tx-second "></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title ">
+            {{modalData.libelle}}
+        </h4>
+        <button type="button " class="close " data-dismiss="modal " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+            <span aria-hidden="true "><i class="icon-close "></i></span>
+        </button>
+    </div>
+    <div class="modal-body p-0 ">
+        <ul class="list-group list-group-flush ">
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap " *ngIf="modalData.description ">
+                <div class="tx-yeto2 "><i class="fal fa-info-square text-info mx-2 "></i> Description </div>
+                <div class=" ">
+                    {{modalData.description}}
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); ">
+            <i class="fal fa-edit " style="color: #99600b "></i> Modifier</button>
+        <button type="button " class="btn btn-sm btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+
+<ng-template #dontExist>
+    <br>
+    <section class="bg-white ">
+        <h4 class="text-center title p-3 ">
+            {{ 'Aucun marche trouver' }}
+        </h4>
+    </section>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center ">
+        <div class="col-sm-12 my-auto ">
+            <i class="fal fa-folder-open fa-4x " style="color: #003d79 "></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #chooseItem>
+    <div class="row mx-0 h-75 text-center m-4">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-bullseye-pointer fa-4x" style="color: #003d79"></i>
+            <br> Selectionnez une etape
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #filterModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">
+            <i class="fa-sitemap fad ng-star-inserted"></i> Filtre
+        </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <i class="ion-ios-close-empty"></i>
+        </button>
+    </div>
+    <div class="modal-body scroll-11" style="max-width: 460px; overflow: auto;">
+        <!-- <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-12">
+                <label class="control-label" for="structures">
+                    Structure
+                    <i class="fad fa-circle-notch fa-spin" *ngIf="dependanciesLoading.structures"></i>
+                </label>
+
+                <angular2-multiselect [data]="dependancies.structures" [(ngModel)]="filters.service_contractants_id" [settings]="multiParameter2" (click)="getStructures()" class="p-0 ">
+                </angular2-multiselect>
+            </div>
+        </div> -->
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-12">
+                <!-- Label -->
+                <label class="control-label" for="types">
+                    Type
+                    <i class="fad fa-circle-notch fa-spin" *ngIf="dependanciesLoading.type_marches"></i>
+                </label>
+
+                <angular2-multiselect [data]="dependancies.type_marches" [(ngModel)]="filters.type_marches_id" [settings]="multiParameter2" (click)="getTypeMarches()" class="p-0 ">
+                </angular2-multiselect>
+            </div>
+        </div>
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-12">
+                <!-- Label -->
+                <label class="control-label" for="natures">
+                    Procedure
+                    <i class="fad fa-circle-notch fa-spin" *ngIf="dependanciesLoading.type_procedures"></i>
+                </label>
+
+                <angular2-multiselect [data]="dependancies.type_procedures" [(ngModel)]="filters.type_procedures_id" [settings]="multiParameter2" (click)="getTypeProcedures()" class="p-0 ">
+                    <c-badge>
+                        <ng-template let-item="item">
+                            {{item.titleParent}} {{item.libelle}}
+                        </ng-template>
+                    </c-badge>
+                    <c-item>
+                        <ng-template let-item="item">
+                            {{item.titleParent}} {{item.libelle}}
+                        </ng-template>
+                    </c-item>
+                </angular2-multiselect>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-facebook" (click)="modal.close('Save click'); doFilter()">Valider</button>
+    </div>
+</ng-template>
+
+<app-modal-sidebar-alt [configuration]="{ name: 'structure-preview-modal', position: 'right' }">
+    <app-structure-preview></app-structure-preview>
+</app-modal-sidebar-alt>

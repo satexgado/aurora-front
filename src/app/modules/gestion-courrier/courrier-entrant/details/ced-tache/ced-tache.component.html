@@ -1,0 +1,249 @@
+<div class="row my-2">
+    <div class="col-lg-12">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" [(ngModel)]="nomTache" (keyup.enter)="quickCreation()" placeholder="Nouvelle tache" aria-label="Folder">
+            <button class="btn btn-outline-primary btn-sm" type="button" [disabled]="!nomTache" (click)="quickCreation()">Ajouter</button>
+        </div>
+    </div>
+</div>
+<div class="card-deck" [class.loading]="is_loading_schema">
+    <div class="card mb-2 card-accent-primary">
+        <div class="card-header">
+            <h4 class="card-header-title">
+                <i class="fad fa-exclamation-circle text-primary"></i> En attente
+            </h4>
+        </div>
+        <div class="card-body p-0">
+            <div class="scrollable-y-75 scroll-11" id="cdk_drop_en_attente" cdkDropList #enattenteList="cdkDropList" [cdkDropListData]="taches_enattente" [cdkDropListConnectedTo]="[traitementList, validerList, nonvaliderList]" (cdkDropListDropped)="drop($event)">
+                <ng-container *ngIf="taches_enattente && taches_enattente.length; else noItemHeaderOnly">
+                    <ul class=" list-group list-group-flush">
+                        <li class="list-group-item card card-1 m-0" *ngFor="let item of taches_enattente;  let i = index; trackBy: trackByFn" cdkDrag>
+                            <div class="todo-indicator bg-info"></div>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading text-dark tx-16">{{item.libelle}}
+                                        </div>
+                                        <div class="widget-subheading" *ngIf="item.date_limit">
+                                            <strong [ngClass]="isEcheanceExpired(item.date_limit) ? 'text-danger' : 'text-dark'">{{item?.date_limit | date:'mediumDate' : undefined : 'fr'}}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between bg-light">
+                                <div class="justify-content-between p-0">
+                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
+                                      <i class="fa fa-share-square"></i>
+                                    </button>
+                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
+                                      <i class="fa fa-edit"></i>
+                                    </button>
+                                    <button (click)="onDeleteTache(item,taches_enattente, i)" class="border-0 btn-transition btn btn-outline-danger">
+                                      <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                                <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                                    <li *ngFor="let structure of item.affectations | slice:0:3" class="mg-l--10">
+                                        <div class="avatar avatar-xs">
+                                            <span class="bg-soft-info avatar-initial  rounded-circle bg-primary" *ngIf="structure.cigle">{{structure.cigle}}</span>
+                                            <img [src]="structure.image" *ngIf="structure.image" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                            <img [src]="structure.avatar" *ngIf="structure.avatar" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                        </div>
+                                    </li>
+                                    <li *ngIf="item.affectations.length > 3" class="mg-l--10" data-original-title="" title="">
+                                        <div class="avatar avatar-xs"><span class="bg-soft-primary avatar-initial  rounded-circle">{{item.affectations.length- 3}}+</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-2 card-accent-warning">
+        <div class="card-header">
+            <h4 class="card-header-title ">
+                <i class="fad fa-typewriter text-warning"></i> Traitement en cours
+            </h4>
+        </div>
+        <div class="card-body p-0">
+            <div class="scrollable-y-75 scroll-11" id="cdk_drop_traitement" cdkDropList #traitementList="cdkDropList" [cdkDropListData]="taches_traitement" [cdkDropListConnectedTo]="[validerList, enattenteList,nonvaliderList]" (cdkDropListDropped)="drop($event)">
+                <ng-container *ngIf="taches_traitement && taches_traitement.length; else noItemHeaderOnly">
+                    <ul class=" list-group list-group-flush">
+                        <li class="list-group-item card card-1 m-0" *ngFor="let item of taches_traitement;  let i = index; trackBy: trackByFn" cdkDrag>
+                            <div class="todo-indicator bg-warning"></div>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading text-dark tx-16">{{item.libelle}}
+                                        </div>
+                                        <div class="widget-subheading" *ngIf="item.date_limit">
+                                            <strong [ngClass]="isEcheanceExpired(item.date_limit) ? 'text-danger' : 'text-dark'">{{item?.date_limit | date:'mediumDate' : undefined : 'fr'}}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between bg-light">
+                                <div class="justify-content-between p-0">
+                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
+                                    <i class="fa fa-share-square"></i>
+                                  </button>
+                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
+                                    <i class="fa fa-edit"></i>
+                                  </button>
+                                    <button (click)="onDeleteTache(item,taches_traitement, i)" class="border-0 btn-transition btn btn-outline-danger">
+                                    <i class="fa fa-trash"></i>
+                                  </button>
+                                </div>
+                                <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                                    <li *ngFor="let structure of item.affectations | slice:0:3" class="mg-l--10">
+                                        <div class="avatar avatar-xs">
+                                            <span class="bg-soft-info avatar-initial  rounded-circle bg-primary" *ngIf="structure.cigle">{{structure.cigle}}</span>
+                                            <img [src]="structure.image" *ngIf="structure.image" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                            <img [src]="structure.avatar" *ngIf="structure.avatar" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                        </div>
+                                    </li>
+                                    <li *ngIf="item.affectations.length > 3" class="mg-l--10" data-original-title="" title="">
+                                        <div class="avatar avatar-xs"><span class="bg-soft-primary avatar-initial  rounded-circle">{{item.affectations.length- 3}}+</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-2 card-accent-success">
+        <div class="card-header">
+            <h4 class="card-header-title">
+                <i class="fad fa-badge-check text-success"></i> Validées
+            </h4>
+        </div>
+        <div class="card-body p-0">
+            <div class="scrollable-y-75 scroll-11" id="cdk_drop_valider" cdkDropList #validerList="cdkDropList" [cdkDropListData]="taches_valider" [cdkDropListConnectedTo]="[traitementList, enattenteList, nonvaliderList]" (cdkDropListDropped)="drop($event)">
+                <ng-container *ngIf="taches_valider && taches_valider.length; else noItemHeaderOnly">
+                    <ul class=" list-group list-group-flush">
+                        <li class="list-group-item card card-1 m-0" *ngFor="let item of taches_valider; let i = index; trackBy: trackByFn" cdkDrag>
+                            <div class="todo-indicator bg-success"></div>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading text-dark tx-16">{{item.libelle}}
+                                        </div>
+                                        <div class="widget-subheading" *ngIf="item.date_limit">
+                                            <strong [ngClass]="isEcheanceExpired(item.date_limit) ? 'text-danger' : 'text-dark'">{{item?.date_limit | date:'mediumDate' : undefined : 'fr'}}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between bg-light">
+                                <div class="justify-content-between p-0">
+                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
+                                    <i class="fa fa-share-square"></i>
+                                  </button>
+                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
+                                    <i class="fa fa-edit"></i>
+                                  </button>
+                                    <button (click)="onDeleteTache(item,taches_valider, i)" class="border-0 btn-transition btn btn-outline-danger">
+                                    <i class="fa fa-trash"></i>
+                                  </button>
+                                </div>
+                                <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                                    <li *ngFor="let structure of item.affectations | slice:0:3" class="mg-l--10">
+                                        <div class="avatar avatar-xs">
+                                            <span class="bg-soft-info avatar-initial  rounded-circle bg-primary" *ngIf="structure.cigle">{{structure.cigle}}</span>
+                                            <img [src]="structure.image" *ngIf="structure.image" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                            <img [src]="structure.avatar" *ngIf="structure.avatar" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                        </div>
+                                    </li>
+                                    <li *ngIf="item.affectations.length > 3" class="mg-l--10" data-original-title="" title="">
+                                        <div class="avatar avatar-xs"><span class="bg-soft-primary avatar-initial  rounded-circle">{{item.affectations.length- 3}}+</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-2 card-accent-danger">
+        <div class="card-header">
+            <h4 class="card-header-title ">
+                <i class="fad fa-badge-check text-danger"></i> Non Validées
+            </h4>
+        </div>
+        <div class="card-body p-0">
+            <div class="scrollable-y-75 scroll-11" cdkDropList #nonvaliderList="cdkDropList" [cdkDropListData]="taches_non_valider" [cdkDropListConnectedTo]="[traitementList, enattenteList, validerList]" id="cdk_drop_non_valider" (cdkDropListDropped)="drop($event)">
+                <ng-container *ngIf="taches_non_valider && taches_non_valider.length; else noItemHeaderOnly">
+                    <ul class=" list-group list-group-flush">
+                        <li class="list-group-item card card-1 m-0" *ngFor="let item of taches_non_valider; let i = index; trackBy: trackByFn" cdkDrag>
+                            <div class="todo-indicator bg-danger"></div>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading text-dark tx-16">{{item.libelle}}
+                                        </div>
+                                        <div class="widget-subheading" *ngIf="item.date_limit">
+                                            <strong [ngClass]="isEcheanceExpired(item.date_limit) ? 'text-danger' : 'text-dark'">{{item?.date_limit | date:'mediumDate' : undefined : 'fr'}}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between bg-light">
+                                <div class="justify-content-between p-0">
+                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
+                                    <i class="fa fa-share-square"></i>
+                                  </button>
+                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
+                                    <i class="fa fa-edit"></i>
+                                  </button>
+                                    <button (click)="onDeleteTache(item,taches_non_valider, i)" class="border-0 btn-transition btn btn-outline-danger">
+                                    <i class="fa fa-trash"></i>
+                                  </button>
+                                </div>
+                                <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                                    <li *ngFor="let structure of item.affectations | slice:0:3" class="mg-l--10">
+                                        <div class="avatar avatar-xs">
+                                            <span class="bg-soft-info avatar-initial  rounded-circle bg-primary" *ngIf="structure.cigle">{{structure.cigle}}</span>
+                                            <img [src]="structure.image" *ngIf="structure.image" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                            <img [src]="structure.avatar" *ngIf="structure.avatar" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                        </div>
+                                    </li>
+                                    <li *ngIf="item.affectations.length > 3" class="mg-l--10" data-original-title="" title="">
+                                        <div class="avatar avatar-xs"><span class="bg-soft-primary avatar-initial  rounded-circle">{{item.affectations.length- 3}}+</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #noItemHeaderOnly>
+    <h5 class="text-center my-5 ">{{ 'Aucun Element' }}</h5>
+</ng-template>
+
+<ng-template #dontExist>
+    <br>
+    <section class="bg-white">
+        <h4 class="text-center title p-3">
+            {{ 'Aucun courrier trouver' }}
+        </h4>
+    </section>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

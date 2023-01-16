@@ -1,0 +1,9 @@
+.mycoment{
+    overflow-y: auto !important;
+	max-height: 65% !important;
+}
+.contentcomment{
+	height: auto !important;
+	max-height: calc(60vh - 0px) !important;
+	min-height: calc(60vh - 0px) !important;
+}

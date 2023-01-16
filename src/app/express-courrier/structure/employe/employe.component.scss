@@ -1,0 +1,18 @@
+.search {
+  input {
+    width: 270px;
+    border-radius: 10px;
+  }
+}
+
+.cta {
+  .btn {
+    border-radius: 3px;
+  }
+
+  .btn.btn-custom-primary {
+    background-color: #58a2ff;
+    border-color: #58a2ff;
+    color: #fff;
+  }
+}

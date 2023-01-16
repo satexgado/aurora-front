@@ -1,0 +1,156 @@
+ <div class="col-md-12 p-0" >
+    <div class=" row pl-3  bg-light  pb-4">
+        <div class=" col-lg-3 pt-4">
+            <div class="    pl-4 pt-4 pr-4" >
+                <div class="row row-xs clearfix">
+                    <div class="   col-lg-12 pl-2 pr-2 pl-2 ">
+                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                            <div [ngClass]="{'card-body p-2':true,'bg-warning tx-white':currentvalue=='structure'}" (click)="getDependance(this.urlstructure,'structure')">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div [ngClass]="{'wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle':true,'card-icon-primary':currentvalue!='structure','bg-white':currentvalue=='structure'}">
+                                        <i class="fad fa-mail-bulk tx-primary tx-20"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold"> 
+                                            Structure
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="   col-lg-12 pl-2 pr-2 pl-2">
+                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                            <div [ngClass]="{'card-body p-2':true,'bg-warning tx-white':currentvalue=='nature'}" (click)="getDependance(this.urlnature,'nature')">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div [ngClass]="{'wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle':true,'card-icon-success':currentvalue!='nature','bg-white':currentvalue=='nature'}">
+                                        <i class="fad fa-chair-office tx-success tx-20"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold"> 
+                                            Nature
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="   col-lg-12 pl-2 pr-2 pl-2">
+                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                            <div [ngClass]="{'card-body p-2':true,'bg-warning tx-white':currentvalue=='type'}" (click)="getDependance(this.urltype,'type')">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div [ngClass]="{'wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle':true,'card-icon-warning':currentvalue!='type','bg-white':currentvalue=='type'}">
+                                        <i class="fad fa-link tx-warning tx-20"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold"> 
+                                            Type
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="   col-lg-12 pl-2 pr-2 pl-2 ">
+                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                            <div [ngClass]="{'card-body p-2':true,'bg-warning tx-white':currentvalue=='statut'}" (click)="getDependance(this.urlstatut,'statut')">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div [ngClass]="{'wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle':true,'card-icon-teal':currentvalue!='statut','bg-white':currentvalue=='statut'}">
+                                        <i class="fad fa-building tx-teal tx-20"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="tx-uppercase tx-12 mg-b-10 tx-bold"> Statut</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" col-lg-9  bg-light pl-4 pr-4 pt-4" *ngIf="courrier && loardstatut==true">
+            <div class="col-md-12 p-0" *ngIf="affichecarte">
+                <div class="  p-0 pt-4">
+                    <div class="mycard2 bg-white">
+                        <apx-chart [series]="chartOptions4.series" [chart]="chartOptions4.chart"
+                            [dataLabels]="chartOptions4.dataLabels" [plotOptions]="chartOptions4.plotOptions"
+                            [colors]="chartOptions4.colors">
+                        </apx-chart>
+                        <div class="mg-b-0"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0" *ngIf="affichecomp">
+                <div class="  p-0 pt-4">
+                    <div class="mycard2 bg-white">
+                        <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+                            [dataLabels]="chartOptions3.dataLabels" [xaxis]="chartOptions3.xaxis"
+                            [plotOptions]="chartOptions3.plotOptions" [stroke]="chartOptions3.stroke"
+                            [colors]="chartOptions3.colors">
+                        </apx-chart>
+                        <div class="mg-b-0"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0" *ngIf="affichetend">
+                <div class="  p-0 pt-4">
+                    <div class="mycard2 bg-white">
+                        <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart"
+                            [dataLabels]="chartOptions2.dataLabels" [xaxis]="chartOptions2.xaxis"
+                            [plotOptions]="chartOptions2.plotOptions" [stroke]="chartOptions2.stroke"
+                            [colors]="chartOptions2.colors">
+                        </apx-chart>
+                        <div class="mg-b-0"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0" *ngIf="affichepropo">
+                <div class="  p-0 pt-4">
+                    <div class="mycard2 bg-white">
+                        <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                            [labels]="chartOptions.labels" [colors]="chartOptions.colors" [title]="chartOptions.title">
+                        </apx-chart>
+                        <div class="mg-b-0"></div>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav ">
+                <li class="nav-item ">
+                    <a class="nav-link px-1 active" (click)="showvu('carte')" >
+                        <i class="fad fa-circle  tx-ether  bg-white" style=" padding:8px; border-radius: 50%; "></i>
+                        Carte
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-1 " (click)="showvu('compo')">
+                        <i class="fad fa-circle  tx-ether  bg-white" style="padding:8px; border-radius: 50%;"></i>
+                        Comparaison
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-1 " (click)="showvu('tend')">
+                        <i class="fad fa-circle  tx-ether bg-white" style="padding:8px; border-radius: 50%;"></i>
+                        Tendance
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-1 " (click)="showvu('propo')">
+                        <i class="fad fa-circle  tx-ether bg-white" style="padding:8px; border-radius: 50%;"></i>
+                        Proportionner
+                    </a>
+                </li>
+            </ul>
+        </div>
+           <!-- NO DATA -->
+        <div *ngIf="loardstatut==false && courrier " class="col-lg-9  bg-light pl-4 pr-4 pt-4">
+            <br><br><br><br>
+            <div class="col-md-12 text-center noData">
+                <app-no-data></app-no-data>
+            </div>
+            <br><br><br><br> 
+        </div>
+        <div class="col-lg-9  bg-light pl-4 pr-4 pt-4" *ngIf="!courrier">
+            <app-loarding></app-loarding>
+        </div>
+    </div>
+</div>

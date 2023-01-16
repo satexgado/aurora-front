@@ -1,0 +1,64 @@
+<ng-container *ngIf="messageHelper; else emptyTemplate">
+    <ul class="nav py-2 d-flex justify-content-around bg-light">
+        <li class="nav-item">
+            <button class="btn" (click)="onChangeFilter('hasFile',!this.filter.hasFile.value)" [class]="getFilterStyle('hasFile')">
+          <i class="fad fa-file-alt tx-14 " ></i> Fichier
+          <i [ngClass]="this.filter.hasFile?.value ? 'fas fa-check-square' : 'fal fa-square'"></i>
+        </button>
+        </li>
+        <li class="nav-item ">
+            <button class="btn" (click)="onChangeFilter('hasNotRead',!this.filter.hasNotRead.value)" [class]="getFilterStyle('hasNotRead')">
+          <i class="fal fa-eye-slash tx-14 " ></i> Non Lue
+          <i [ngClass]="this.filter.hasNotRead?.value ? 'fas fa-check-square' : 'fal fa-square'"></i>
+        </button>
+        </li>
+        <li class="nav-item" *ngIf="this.filter && (this.filter.niveaux.value || this.filter.hasFile.value || this.filter.hasNotRead.value)">
+            <button (click)="onFilter();" class="btn  btn-outline-primary" style="font-size: 13px"> <i class="fal fa-check"></i></button>
+        </li>
+    </ul>
+    <div class="col-12 text-center">
+        <button *ngIf="is_advance_filter" (click)="onRemoveFilter()" class="btn btn-link-danger tx-gray-600 btn-small  btn-link mx-2" style="font-size: 13px"> Annuler les filtre</button>
+    </div>
+
+    <div class="p-2" [class.loading]="messageHelper.loading$ | async">
+        <ng-container *ngIf="messageHelper.data$ | async as items">
+            <ng-container *ngIf="items.length; else noItem">
+                <a class="cursor-pointer card card-1 bd-b bg-white mb-2 " [class.bg-soft-teal]="message.user_has_read" [class.accent-facebook-left]="selectedMessage && message.id == selectedMessage.id" (click)="onSetSelected(message)" *ngFor="let message of items;trackBy: messageHelper.trackByFn">
+                    <div class="d-flex align-items-center ">
+                        <div class="tx-20 pd-y-20 pd-x-10 bg-white bd-1 " *ngIf="message.niveau">
+                            <div class=" "> <i class="fal tx-{{message.niveau.couleur}}" [ngClass]="message.user_has_read? 'fa-eye' : 'fa-star'"></i></div>
+                        </div>
+                        <div class="ml-3 mr-3 wd-100p ">
+
+                            <h6 class="tx-gray-600 mg-t-5 " style="text-align: justify "> {{message.libelle | titlecase}}</h6>
+                            <p class="tx-10 mg-t-0 mg-b-5 tx-gray ">
+                                <span class="mr-2 tx-warning "> {{message.date | date: 'dd/MM/yyyy, HH:mm'}}</span>
+                                <span class=" tx-info " *ngIf="message.has_new_response"> NOUVELLE REPONSE  </span>
+                                <span class="mr-2 tx-success-100 " *ngIf="message.fichiers && message.fichiers.length"> <i class="fal fa-paperclip " ></i></span>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </ng-container>
+        </ng-container>
+        <section *ngIf="messageHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+        </section>
+    </div>
+</ng-container>
+
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5" *ngIf="!(messageHelper.loading$ | async)">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row h-100 m-0 ">
+        <div class="col-md-12 my-auto text-center ">
+            <i class="fal fa-envelope fa-2x" style="color: #003d79 " size="4x ">
+              </i>
+            <br>
+        </div>
+    </div>
+</ng-template>

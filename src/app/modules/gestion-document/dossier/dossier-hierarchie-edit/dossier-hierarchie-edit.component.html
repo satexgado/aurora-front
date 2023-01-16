@@ -1,0 +1,50 @@
+<div class="sticky-top2" [class.loading]="is_loading_tree">
+    <div class="card card-accent-info mg-b-10 col-12" *ngIf="!hideUpdateDelete">
+        <div class="row row-xs mb-0 p-0">
+            <div class="col-lg-12">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" [(ngModel)]="nomDossier" (keyup.enter)="quickCreation()" placeholder="Nouveau dossier" aria-label="Folder">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card col-12">
+        <ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand" let-onCheckedChange="onCheckedChange">
+            <div class="d-flex justify-content-between">
+                <ng-container *ngIf="item.text; then dataView else formView"></ng-container>
+
+                <ng-template #formView>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" [(ngModel)]="item.libelle" autofocus (keyup.enter)="quickConsole(item, item.libelle)" (focusout)="quickConsole(item, item.libelle)" placeholder="Nouveau dossier" aria-label="Folder">
+                    </div>
+                </ng-template>
+
+                <ng-template #dataView>
+                    <div class="bg-light">
+                        <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa bold tx-facebook tx-16 op-7" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+                    </div>
+                    <a (click)="onItemChoosed(item)" [class.highlight-dot]="selectedItem?.value?.id == item?.value?.id && item.value.type == selectedItem.value.type" class="flex-1 tx-16 text-primary mx-2 text-truncate cursor-pointer cusor-pointer">
+                        <i class="tx-yeto2 fad fa-folder"></i> {{item.text | capitalizeFirst}}
+                    </a>
+                    <div *ngIf="!hideUpdateDelete">
+                        <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm text-primary" (click)="quickAdd(item)" placement="top" ngbTooltip="Ajouter un dossier" tooltipClass="my-tooltip-class">
+                    <i class="fal fa-layer-plus"></i>
+                  </button>
+                        <!-- <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm text-primary" (click)="ajouterDossier(item)" placement="top" ngbTooltip="Ajouter un dossier" tooltipClass="my-tooltip-class">
+                    <i class="fal fa-layer-plus"></i>
+                  </button> -->
+                        <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm" (click)="removeChild(item)" placement="top" ngbTooltip="Supprimer" tooltipClass="my-tooltip-class">
+                    <i class="fal fa-times-square text-danger"></i>
+                  </button>
+                    </div>
+                </ng-template>
+
+            </div>
+        </ng-template>
+
+        <div class="hierarchie-side scroll-11">
+            <ngx-treeview [config]="config" [items]="hierarchieItems" [itemTemplate]="itemTemplate">
+            </ngx-treeview>
+        </div>
+    </div>
+</div>

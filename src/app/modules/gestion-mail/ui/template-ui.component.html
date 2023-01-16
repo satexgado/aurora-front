@@ -1,0 +1,76 @@
+<div class="row  p-3  bd-b bg-light">
+    <h5 class="tx-echos m-0">
+        <strong>
+            <i class="fal fa-at bg-white" style="padding:6px; border-radius: 50%; "></i> Message Express
+        </strong>
+    </h5>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-2 p-0 bd-r bd-2" style="height:100vh">
+        <nav class="monmenu nav flex-column  ">
+            <div class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" [routerLink]="['interne']" routerLinkActive="bg-indigo">
+                <a class="nav-link3 tx-echos" routerLinkActive="tx-white">
+                    <span class="">
+                        <i class="fad fa-paper-plane  tx-indigo tx-16 bg-white p-2 rounded-circle"
+                            routerLinkActive="fal"></i>
+                    </span> Messages Internes
+                </a>
+            </div>
+            <div class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" [routerLink]="['rediriger']" routerLinkActive="bg-primary">
+                <a class="nav-link3 tx-echos" routerLinkActive="tx-white">
+                    <span class="">
+                        <i class="fad fa-reply-all  tx-primary tx-16 bg-white p-2 rounded-circle"
+                            routerLinkActive="fal"></i>
+                    </span> Messages Rédirigers
+                </a>
+            </div>
+            <div class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" [routerLink]="['envoye']" routerLinkActive="bg-success">
+                <a class="nav-link3 tx-echos" routerLinkActive="tx-white">
+                    <span class="">
+                        <i class="fad fa-send-back  tx-success tx-16 bg-white p-2 rounded-circle"
+                            routerLinkActive="fal"></i>
+                    </span> Messages Envoyés
+                </a>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" [routerLink]="['important']" routerLinkActive="bg-jaune">
+                <a class="nav-link3 tx-echos" routerLinkActive="tx-white">
+                    <span class="">
+                        <i class="fad fa-star  tx-jaune tx-16 bg-white p-2 rounded-circle" routerLinkActive="fal"></i>
+                    </span> Important
+                </a>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" [routerLink]="['rea']" routerLinkActive="bg-orange">
+                <a class="nav-link3 tx-echos" routerLinkActive="tx-white">
+                    <span class="">
+                        <i class="fad fa-clone  tx-orange tx-16 bg-white p-2 rounded-circle" routerLinkActive="fal"></i>
+                    </span> Réaffectés
+                </a>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" [routerLink]="['clot']" routerLinkActive="bg-danger">
+                <a class="nav-link3 tx-echos" routerLinkActive="tx-white">
+                    <span class="">
+                        <i class="fad fa-do-not-enter  tx-danger tx-16 bg-white p-2 rounded-circle"
+                            routerLinkActive="fal"></i>
+                    </span> Clôturés
+                </a>
+            </div>
+        </nav>
+        <h5 class="tx-10 tx-uppercase pd-y-15">Labels</h5>
+        <ul class="list-unstyled">
+            <li *ngFor="let item of allTags">
+                <a href="" class="pd-y-8 pd-x-12 d-flex align-items-center justify-content-between rounded">
+                    {{item.libelle}}
+                    <div class="wd-10 ht-10 rounded-circle bd bd-3 bd-primary mg-l-auto"></div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-lg-10">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+<app-edit-littlebox *ngIf="newMail" (close)="closeMailForm()" [title]="newMailFormTitle" [item]="newMail"></app-edit-littlebox>

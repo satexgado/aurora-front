@@ -1,0 +1,203 @@
+<div class="d-flex">
+    <div class="flex-1">
+        <div class="card bd-l-0-force bd-t-0-force bd-b-0-force">
+            <div class="card-body pd-0">
+                <div class="chat-box-right bd-l" *ngIf="single">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center pd-15 bd-b">
+                        <!-- Correspondant user -->
+                        <a href="" *ngIf="isUser(correspondant)" class="d-flex justify-content-between">
+                            <div class="media-left">
+                                <span class="avatar avatar-online mr-2">
+                  <img
+                    [src]="correspondant.photo"
+                    class="img-fluid image-contact"
+                    alt=""
+                  />
+                  <i *ngIf="isOnline(correspondant)"></i>
+                </span>
+                            </div>
+                            <div class="mg-t-5">
+                                <h6 class="mb-0 tx-13">{{ correspondant.nom_complet }}</h6>
+                                <span class="mb-0 tx-gray-500 tx-12">
+                  <em>{{
+                    correspondant.affectation_structure.poste?.libelle +
+                      " - " +
+                      correspondant.affectation_structure.fonction?.libelle
+                  }}</em>
+                  à
+                  <b>{{
+                    correspondant.affectation_structure.structure?.libelle
+                  }}</b>
+                </span>
+                            </div>
+                        </a>
+
+                        <!-- Correspondant structure -->
+                        <a href="" *ngIf="!isUser(correspondant)" class="d-flex justify-content-between align-items-center">
+                            <div class="media-left">
+                                <span class="avatar avatar-online mr-2">
+                  <img
+                    [src]="correspondant.image"
+                    class="img-fluid image-contact"
+                    alt=""
+                  />
+                  <i></i>
+                </span>
+                            </div>
+                            <div class="mg-t-5">
+                                <h6 class="mb-0 tx-13">{{ correspondant.libelle }}</h6>
+                                <!-- <span class="mb-0 tx-gray-500 tx-12"><em>Chef de cabinet</em></span> -->
+                            </div>
+                        </a>
+                        <!-- <div class="d-none d-sm-inline-block">
+              <a href=""
+                 data-toggle="tooltip"
+                 title=""
+                 data-placement="left"
+                 data-original-title="Voice Call"><i class=" icon-phone mr-2 tx-16"></i></a>
+              <a href=""
+                 data-toggle="tooltip"
+                 title=""
+                 data-placement="left"
+                 data-original-title="Video Call"><i class=" icon-camrecorder mr-2 tx-16"></i></a>
+              <a href=""
+                 data-toggle="tooltip"
+                 title=""
+                 data-placement="left"
+                 data-original-title="Add People"><i class=" icon-user-follow mr-2 tx-16"></i></a>
+              <a href=""
+                 data-toggle="tooltip"
+                 title=""
+                 data-placement="left"
+                 data-original-title="Group Chat"><i class="icon-people mr-2 tx-16"></i></a>
+              <a href=""
+                 data-toggle="tooltip"
+                 title=""
+                 data-placement="left"
+                 data-original-title="Delete Message"><i class="icon-trash mr-2 tx-16"></i></a>
+              <a href=""
+                 data-toggle="tooltip"
+                 title=""
+                 data-placement="left"
+                 data-original-title="More Option"><i class=" icon-options-vertical tx-16"></i></a>
+            </div> -->
+                    </div>
+
+                    <!-- REactions -->
+                    <app-reaction [structure]="structure"></app-reaction>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 p-0" *ngIf="correspondant">
+        <div class="structure-details ng-star-inserted">
+            <div class="d-flex justify-content-center info align-items-end structure-details__header">
+                <span class="structure-details__image"><img
+
+            [src]="isUser(correspondant) ? correspondant.photo : correspondant.image"
+            alt="undefined"
+        /></span>
+            </div>
+            <div class="d-flex justify-content-center structure-details__cta">
+                <!-- voir -->
+                <button class="btn card-1 btn-oblong  m-1  rounded-circle btn-primary">
+                    <i class="far fa-eye"></i>
+                </button>
+
+
+                <!-- Mail -->
+                <!-- <button class="btn card-1 btn-oblong m-1 rounded-circle btn-primary">
+                    <i class="far fa-envelope"></i>
+                </button> -->
+            </div>
+            <div class="table-responsive pt-2">
+                <table class="table table-user-information">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>
+                                  <span class="fal fa-users tx-facebook"></span>
+                                  Nom
+                              </strong>
+                            </td>
+                            <td class="tx-facebook" style="white-space: normal;">
+                                {{isUser(correspondant) ? correspondant.nom_complet : correspondant.libelle}}
+                            </td>
+                        </tr>
+                        <ng-container *ngIf="isUser(correspondant)">
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="fal fa-id-card-alt tx-facebook"></span>
+                                        Poste
+                                    </strong>
+                                </td>
+                                <td class="tx-facebook" style="white-space: normal;">
+                                    {{correspondant.affectation_structure.poste?.libelle}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="fal fa-user-tag tx-facebook"></span>
+                                        Fonction
+                                    </strong>
+                                </td>
+                                <td class="tx-facebook" style="white-space: normal;">
+                                    {{correspondant.affectation_structure.fonction?.libelle}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="fal fa-sitemap tx-facebook"></span>
+                                        Structure
+                                    </strong>
+                                </td>
+                                <td class="tx-facebook" style="white-space: normal;">
+                                    {{correspondant.affectation_structure.structure?.libelle}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <ng-container *ngIf="fichiers && fichiers.length; else NoFile">
+                <div class="row mx-0">
+                    <ng-container *ngFor="let fichier of fichiers">
+                        <div *ngIf="helper.file.checkExtensions(fichier.fichier_url, imageHandlerService.acceptedImageExtension) || helper.file.checkExtensions(fichier.fichier_url, [ 'pdf', 'PDF']) " class="my-auto col-6 py-1" [ngClass]="{  'tx-right': reversed }">
+                            <!-- REaction image -->
+                            <a [href]="fichier.fichier_url" target="_blank" *ngIf="helper.file.checkExtensions(fichier.fichier_url, imageHandlerService.acceptedImageExtension)">
+                                <img [src]="fichier.fichier_url" class="reaction__img" alt="image">
+                            </a>
+
+                            <!-- Audio -->
+                            <div class="p-0 ">
+                                <audio controls class="audio-chat" *ngIf="helper.file.checkExtension(fichier.fichier_url, 'mp3')">
+                            <source [src]="fichier.fichier_url">
+                          </audio>
+
+
+                                <!-- Document -->
+                                <a class="p-3 alert-info d-flex flex-column align-items-center  rounded-5 bd clickable" style="word-break: break-all;" [href]="fichier.fichier_url" target="_blank" *ngIf="helper.file.checkExtensions(fichier.fichier_url, ['pdf', 'PDF'])">
+                                    <i class="fas fa-file-pdf mr-1"></i> {{ fichier.fichier_url.split('/')[fichier.fichier_url.split('/').length - 1] }}
+                                </a>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+</div>
+
+<ng-template #NoFile>
+    <div class="col-lg-12 pt-6">
+        <div class="pt-6" style="text-align: center">
+            <img class="bg-white  " src="assets/images/xs/problematique.svg" width="200">
+            <p class="tx-16 pt-2 mb-0 tx-echos"> Pas des fichiers pour cette discussion</p>
+        </div>
+    </div>
+</ng-template>

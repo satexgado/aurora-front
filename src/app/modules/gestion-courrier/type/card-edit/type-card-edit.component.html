@@ -1,0 +1,135 @@
+<div class="row" [class.loading]="is_loading_etape">
+    <div class="col-12 col-lg-3 structure-menu-group pr-lg-0" [class.loading]="is_loading_etape">
+
+        <div class="text-center">
+            <button class="btn btn-light w-100 rounded-0" (click)="onShowAddEtapeForm()">
+              <i class="fal fa-layer-plus" style="color: #99600b"></i>
+          </button>
+        </div>
+        <ng-container *ngIf="etapes?.length; else noItemHeaderOnly">
+            <div class="input-group p-2 d-lg-none d-flex" style="background-color: #d6d8db;">
+                <select class="custom-select" [(ngModel)]="currentEtape">
+                  <option  *ngFor="let item of etapes" [ngValue]="item">{{item.libelle}}</option>
+              </select>
+                <ng-container *ngIf="currentEtape?.id">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button">
+                          <i class="fal fa-edit float-right" (click)="onShowUpdateEtapeForm(currentEtape);" container="body" [ngbTooltip]="'Modifier'"  tooltipClass="my-tooltip-class" style="color: #FFA012 "></i>
+                      </button>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-danger" type="button">
+                        <i class="fal fa-times float-right mx-2" (click)="$event.stopPropagation();onRemoveEtape(currentEtape)" container="body" [ngbTooltip]="'Supprimer'"  tooltipClass="my-tooltip-class" style="color: #FFA012 "></i>
+                      </button>
+                    </div>
+                </ng-container>
+            </div>
+            <ul class="list-group list-group-flush choose-title hoverable-list d-none d-lg-flex">
+                <li class="list-group-item d-flex p-0 cursor-pointer align-middle" [appDroppable]="{data: item.id, zone: item.id}" (onDroppableComplete)="onChangeMenuEtape($event);" [class.active]="currentEtape?.id == item.id" *ngFor="let item of etapes">
+                    <span class="flex-grow-1 py-2 pl-3" (click)="onChangeCurrentEtape(item)">
+                      {{item.libelle | titlecase}}
+                      <span class="badge badge-info float-right mt-2 mr-2 ">{{item.etapes?.length | shortNumber}}</span>
+                    </span>
+                    <ng-container *ngIf="item.id ">
+                        <div class="btn-group float-right no-caret " ngbDropdown role="group " aria-label="Button group with nested dropdown ">
+                            <button class="btn btn-link py-0 text-secondary " ngbDropdownToggle>
+                              <i class="fal fa-ellipsis-v-alt fa-lg"></i>
+                          </button>
+                            <div class="dropdown-menu " ngbDropdownMenu>
+                                <button (click)="onShowUpdateEtapeForm(item); " ngbDropdownItem>
+                                  <i class="fal fa-edit" [ngbTooltip]=" 'Modifier' " container="body" tooltipClass="my-tooltip-class " style="color: #FFA012 "></i>
+                                  Modifier
+                              </button>
+                                <button (click)="$event.stopPropagation();onRemoveEtape(item) " ngbDropdownItem>
+                                  <i class="fal fa-times" [ngbTooltip]=" 'Supprimer' " container="body" tooltipClass="my-tooltip-class " style="color: #FFA012 "></i>
+                                  Supprimer
+                              </button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </li>
+            </ul>
+        </ng-container>
+
+
+    </div>
+    <div class="col-12 col-lg-3 row mx-0 pl-lg-0 ">
+        <ng-container *ngIf="currentEtape; else emptyEtape">
+            <div class="text-center ">
+                <button class="btn btn-light w-50 rounded-0 " (click)="onShowAddPlatForm() ">
+                  <i class="fal fa-layer-plus" style="color: #99600b "></i> Ajout plat existant
+                </button>
+                <button class="btn btn-light w-50 rounded-0 " (click)="onShowCreatePlatForm() ">
+                  <i class="fal fa-edit" style="color: #99600b "></i> Nouveau plat
+                </button>
+                <div class="p-1 " style="background-color: #d6d8db; ">
+                    <input class="form-control rounded-0 w-100 " [(ngModel)]="searchValue " name="q " placeholder="recherche " type="search ">
+                </div>
+            </div>
+            <div class="row scroll-11 p-2 scrollable scrollable-lg-75 m-0 flex-row flex-nowrap card-group " style="background-color: #d6d8db; " *ngIf="currentEtape?.etapes && currentEtape?.etapes.length; else noItemHeaderOnly ">
+                <div class="col-8 col-lg-12 my-2 d-flex " [appDraggable]="{data: etape.id, zones: droppablesZone} " *ngFor="let etape of currentEtape?.etapes | callback: filterEtape; ">
+                    <div class="card flex-grow-1 " style="height: 56px " [class.active]="modalData && modalData.id==etape.id ">
+                        <div class="card-body cursor-pointer p-2 d-flex choose-title align-middle card-1 ">
+
+                            <div class="flex-grow-1 text-break " (click)="openModal(content, menu) ">
+                                {{etape.libelle | shorten:9}}
+                            </div>
+                            <div class="btn-group no-caret " container="body " ngbDropdown role="group " aria-label="Button group with nested dropdown ">
+                                <button class="btn py-0 btn-link text-secondary " ngbDropdownToggle>
+                                  <i class="fal fa-ellipsis-v-alt fa-lg"></i>
+                          </button>
+                                <div class="dropdown-menu " ngbDropdownMenu>
+                                    <button (click)="onImageModal(etape?.image) " ngbDropdownItem>
+                                 <i class="fal fa-search" style="color: #FFA012 "></i>
+                                  Details
+                              </button>
+                                    <button (click)="onShowUpdatePlatForm(menu) " ngbDropdownItem>
+                                      <i class="fal fa-edit" style="color: #FFA012 "></i>
+                                  Modifier
+                              </button>
+                                    <button (click)="$event.stopPropagation();onRemovePlat(menu) " ngbDropdownItem>
+                                  <i class="fal fa-times" style="color: #FFA012 "></i>
+                                  Supprimer
+                              </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <tbody>
+        <tr>
+            <td class="text-center " colspan="6 ">
+                <h5>{{ 'Aucun Element' }}</h5>
+            </td>
+        </tr>
+    </tbody>
+</ng-template>
+
+
+<ng-template #noItemHeaderOnly>
+    <h5 class="text-center my-5 ">{{ 'Aucun Element' }}</h5>
+</ng-template>
+<ng-template #emptyTemplate>
+    <div class="row h-100 m-0 ">
+        <div class="col-md-12 my-auto text-center ">
+            <i class="fal fa-utensils-alt fa-4x" style="color: #003d79 "></i>
+            <br> Veuillez choisir un plat pour modifier
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #emptyEtape>
+    <div class="row h-100 m-0 " style="background-color: #d6d8db;">
+        <div class="col-md-12 my-auto text-center ">
+            <i class="fal fa-folders fa-4x" style="color: #003d79 "></i>
+            <br> Veuillez choisir une etape
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,79 @@
+<div class="col-md-12 p-0" *ngIf="loard==true && courrier ">
+    <div class=" row pl-3  bg-light  pb-4">
+        <div class=" col-lg-8 pt-4">
+            <div class="pd-0 pl-4 pt-4 pr-4 contentstdetail scroll-11 ">
+                <table class="table table-hover mg-0">
+                    <thead>
+                        <tr class="bg-gray">
+                            <th>Expediteur</th>
+                            <th>Reçu le</th>
+                            <th>Durée traitement (jour)</th>
+                            <th>Repondu le</th>
+                            <th>Structure</th>
+                        </tr>
+                    </thead>
+                    <tbody class="">
+                        <tr class="list-group-item-action flex-column align-items-start border-top-1 pd-y-1 bg-white" *ngFor="let item of courrier">
+                            <td>{{item?.cr_courrier_entrant?.cr_coordonnee?.libelle}}</td>
+                            <td>
+                                <div class="ft-left mg-r-10 hidden-xs tx-center">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <h6 class="mb-0 mr-2  tx-warning">{{item?.cr_courrier_entrant?.date_arrive | date:'dd'}}</h6>
+                                            <div class="bg-lrouge p-2 wd-45 wd-md-80 ht-45 ht-md-50 card-icon-warning">
+                                                <p class="mb-0 tx-12 tx-lorange">{{item?.cr_courrier_entrant?.date_arrive | date:'MMMM'}}</p>
+                                                <p class="mb-0 tx-12 tx-lorange">{{item?.cr_courrier_entrant?.date_arrive | date:'yyyy'}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <h6 class="mb-1 tx-16  tx-medium">{{getPositive(item?.cr_courrier_entrant?.date_arrive|marge:item?.date_envoie)}} </h6>
+                            </td>
+                            <td>
+                                <div class="ft-left mg-r-10 hidden-xs tx-center">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <h6 class="mb-0 mr-2   tx-primary">{{item?.date_envoie | date:'dd'}}</h6>
+                                            <div class="bg-lrouge p-2 wd-45 wd-md-80 ht-45 ht-md-50 card-icon-primary">
+                                                <p class="mb-0 tx-12  tx-primary">{{item?.date_envoie | date:'MMMM'}}</p>
+                                                <p class="mb-0 tx-12  tx-primary">{{item?.date_envoie | date:'yyyy'}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center tx-gray-500 tx-16">{{item?.cr_courrier?.structure?.libelle}}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class=" col-lg-4 bg-light pl-4 pr-4 pt-4">
+            <div class="  p-0 pt-4">
+                <div class="mycard2 bg-white" *ngIf="expediteur">
+                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [labels]="chartOptions.labels" [colors]="chartOptions.colors" [title]="chartOptions.title">
+                    </apx-chart>
+                    <div class="mg-b-0"></div>
+                </div>
+                <div class="col-md-12 text-center" *ngIf="!expediteur">
+                    <app-loarding></app-loarding>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- NO DATA -->
+<div *ngIf="loard==false && courrier " class="col-md-12">
+    <br><br><br><br>
+    <div class="col-md-12 text-center noData">
+        <app-no-data></app-no-data>
+    </div>
+    <br><br><br><br>
+</div>
+<div class="col-md-12 text-center" *ngIf="!courrier">
+    <app-loarding></app-loarding>
+</div>

@@ -1,0 +1,141 @@
+<div class="col-md-3" style="margin-top:1.5%;">
+  <div class="modal" id="addModalresaffect" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog1 modal-lg" role="document">
+      <div class="modal-content contentshared">
+        <div class="modal-header bg-white">
+          <p class=" modal-title tx-20 tx-primary" id="exampleModalLabel"><i class="fad fa-retweet-alt tx-20"></i>
+            Partager</p>
+        </div>
+        <div class="modal-body bg-light myshared scroll-11">
+          <form class="form" role="form" autocomplete="off" [formGroup]="addaffectresForm">
+            <div class="col-md-10 offset-md-1  ">
+              <div class="col-md-12 bg-light">
+                <div class="col-md-12 p-0">
+                  <div class="col-md-12  mt-1">
+                    <div class="form-group">
+                      <label class="p-0 m-1"> Membre(s) </label>
+                      <div class="input-group p-0 m-0" style="border-bottom: 0px !important">
+                        <input type="text" class="form-control no-radius" min="1" id="membres" formControlName="membres"
+                          placeholder="Chercher par téléphone,email,nom,prenom,..." aria-label="Username"
+                          aria-describedby="basic-addon1">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1"><button
+                              (click)="getMembre(addaffectresForm.value.membres)"
+                              [disabled]="!addaffectresForm.value.membres"
+                              style="background:none !important; border:none !important; cursor:pointer"><i
+                                class="fal fa-spinner spin" *ngIf="statutsearch==true"></i><i
+                                class="fal fa-search"></i></button></span>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <div class="col-md-12 p-1 " *ngIf="membres">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <ng-container *ngIf="afficheresultsearch">
+                          <div class="bd-b" *ngFor="let c of membres">
+                            <div class="card-body p-0 bg-white">
+                              <div class="col-md-12 p-1">
+                                <div class="row align-items-center">
+                                  <div class="col-md-3">
+                                    <ng-container *ngIf="c?.photo">
+                                      <img class="rounded-circled user-circle-img" [src]="c?.photo" alt="card image" >
+                                    </ng-container>
+                                    <ng-container *ngIf="!c?.photo">
+                                        <i class="fal fa-user fa-4x"></i>
+                                    </ng-container>
+                                  </div>
+                                  <div class="col-md-7">
+                                    {{c?.prenom}}&nbsp;{{c?.nom}}
+                                  </div>
+                                  <div class="col-md-1">
+                                    <input type="checkbox" id="customcheck1" (click)="addValue(c)"
+                                      class="checkClass bg-danger">
+                                  </div>
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                          </div>
+
+
+                        </ng-container>
+                        <ng-container *ngIf="!afficheresultsearch">
+                          <h5 class="text-primary text-center">Vous pouvez rajouter d'autres invités en faisant la recherche</h5>
+
+                        </ng-container>
+                      </div>
+                      <div class="col-md-6 verticalhr">
+                        <h5 class="text-primary text-center">Membre(s)</h5>
+                        <ng-container *ngIf="!valueequipe[0]">
+                          <div class="col-md-12 text-center noData">
+
+                            <div class="col-md-12 mt-2">
+                              <h5>Aucune donnée disponible</h5>
+
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="valueequipe[0]">
+                          <!-- <div class=""> -->
+                          <div class="bd-b" *ngFor="let c of valueequipe">
+                            <div class="card-body p-1 bg-white">
+                              <div class="col-md-12 p-0 ">
+                                <div class="row align-items-center">
+                                  <div class="col-md-3">
+                                    <ng-container *ngIf="c?.photo">
+                                      <img class="rounded-circled user-circle-img" [src]="c?.photo" alt="card image" >
+                                    </ng-container>
+                                    <ng-container *ngIf="!c?.photo">
+                                        <i class="fal fa-user fa-4x"></i>
+                                    </ng-container>
+                                  </div>
+                                  <div class="col-md-8  ">
+                                    {{c?.prenom}}&nbsp;{{c?.nom}}
+                                  </div>
+
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                         <!-- </div> -->
+
+                        </ng-container>
+
+
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <div class="col-md-12 text-center">
+            <button type="reset" class="btn btn-brand btn-reddit" data-dismiss="modal" (click)="reset()"
+              [disabled]="statut==true">
+              <i class="fal fa-power-off"></i><span class="pd-x-20">Annuler </span>
+            </button>
+            &nbsp;
+            <button type="submit" class="btn btn-brand btn-dropbox" (click)="add()"
+              [disabled]="addaffectresForm.invalid || !valueequipe[0] || statut==true">
+              <i class="fal fa-paper-plane"></i><span class="pd-x-20">Envoyer </span>
+              <i class="fas fa-spinner fa-spin" *ngIf="statut==true"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="row no-gutters wd-100p clearfix">
+    <!--================================-->
+    <!-- Start Left sidebar -->
+    <!--================================-->
+    <div class="col-md-4 col-lg-3 email-left-sidebar">
+        <div class="card bd-l-0-force bd-t-0-force bd-b-0-force">
+            <div class="card-body">
+                <a (click)="onShowMailForm()" class="btn btn-custom-primary btn-block btn-lg"><i class="icon-pencil mr-2"></i>Compose</a>
+                <h5 class="tx-10 tx-uppercase pd-y-15">Labels</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="" class="pd-y-8 pd-x-12 d-flex align-items-center justify-content-between rounded">
+                            Family
+                            <div class="wd-10 ht-10 rounded-circle bd bd-3 bd-primary mg-l-auto"></div>
+                         </a>
+                    </li>
+                    <li>
+                        <a href="" class="pd-y-8 pd-x-12 d-flex align-items-center justify-content-between rounded">
+                            Friends
+                            <div class="wd-10 ht-10 rounded-circle bd bd-3 bd-danger mg-l-auto"></div>
+                         </a>
+                    </li>
+                    <li>
+                        <a href="" class="pd-y-8 pd-x-12 d-flex align-items-center justify-content-between rounded">
+                            Freelance
+                            <div class="wd-10 ht-10 rounded-circle bd bd-3 bd-teal mg-l-auto"></div>
+                         </a>
+                    </li>
+                    <li>
+                        <a href="" class="pd-y-8 pd-x-12 d-flex align-items-center justify-content-between rounded">
+                            Social
+                            <div class="wd-10 ht-10 rounded-circle bd bd-3 bd-warning mg-l-auto"></div>
+                         </a>
+                    </li>
+                    <li>
+                        <a href="" class="pd-y-8 pd-x-12 d-flex align-items-center justify-content-between rounded">
+                            Freelance
+                            <div class="wd-10 ht-10 rounded-circle bd bd-3 bd-success mg-l-auto"></div>
+                         </a>
+                    </li>
+                    <li>
+                        <a href="" class="pd-y-8 pd-x-12 d-flex align-items-center justify-content-between rounded">
+                            Support
+                            <div class="wd-10 ht-10 rounded-circle bd bd-3 bd-info mg-l-auto"></div>
+                         </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/ End Left sidebar -->
+    <!--================================-->
+    <!-- Start Right Sidebar -->
+    <!--================================-->
+    <div class="col-md-8 col-lg-9 email-right-sidebar">
+        <router-outlet></router-outlet>
+    </div>
+    <!--/ End email-rightbar -->
+</div>

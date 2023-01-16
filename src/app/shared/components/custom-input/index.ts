@@ -1,0 +1,1 @@
+export { CustomInputModule } from './custom-input.module'

@@ -1,0 +1,12 @@
+.discussion {
+  margin-left: -25px;
+  margin-right: -25px;
+
+  .image-contact {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+  }
+}

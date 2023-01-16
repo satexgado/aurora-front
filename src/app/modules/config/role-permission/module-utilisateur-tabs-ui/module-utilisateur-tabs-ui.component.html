@@ -1,0 +1,13 @@
+<div *ngIf="masques" [class.loading]="isLoadingModules">
+    <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <li [ngbNavItem]="masque.id" *ngFor="let masque of masques" [destroyOnHide]="false">
+            <a ngbNavLink class="tx-12">
+                <i [class]="masque.icon"></i> {{masque.libelle}}
+            </a>
+            <ng-template ngbNavContent>
+                <app-module-utilisateur *ngIf="modules" [modules]="onGetModulebyMasqueId(masque.id)"></app-module-utilisateur>
+            </ng-template>
+        </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="flex-1"></div>
+</div>

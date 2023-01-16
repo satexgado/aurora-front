@@ -1,0 +1,155 @@
+<form class="custom-placeholder"
+      [formGroup]="form"
+      (submit)="create()">
+  <!-- Libelle et cigle -->
+  <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
+    <!-- Libelle -->
+    <div class="col-8">
+      <!-- Label -->
+      <label class="control-label"
+             for="libelle">
+        Libelle
+      </label>
+
+      <!-- Input -->
+      <input type="text"
+             class="form-control form-control-sm"
+             required
+             [formControlName]="'libelle'"
+             [ngClass]="{'is-invalid': shouldShowRequiredError( 'libelle'), 'is-valid': isValid('libelle')}">
+
+      <!-- MEssage d'erreur -->
+      <div *ngIf="shouldShowRequiredError('libelle')"
+           class="invalid-feedback">
+        Veuillez saisir le libellé.</div>
+    </div>
+
+
+    <!-- Cigle -->
+    <div class="col-4">
+      <!-- Label -->
+      <label class="control-label"
+             for="cigle">
+        Cigle
+      </label>
+
+      <!-- Input -->
+      <input type="text"
+             class="form-control form-control-sm"
+             required
+             [formControlName]="'cigle'"
+             [ngClass]="{'is-invalid': shouldShowRequiredError( 'cigle'), 'is-valid': isValid('cigle')}">
+
+      <!-- MEssage d'erreur -->
+      <div *ngIf="shouldShowRequiredError('cigle')"
+           class="invalid-feedback">
+        Veuillez saisir le cigle.</div>
+    </div>
+  </div>
+
+  <!-- Type et parent -->
+  <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
+    <!-- type -->
+    <div class="col-6">
+      <!-- Label -->
+      <label class="control-label"
+             for="types">
+        Type de structure
+        <i class="fad fa-circle-notch fa-spin"
+           *ngIf="dependancies.loading.types"></i>
+      </label>
+
+      <angular2-multiselect [data]="dependancies.data.types"
+                            [settings]="helper.dropdownSettings.single"
+                            (click)="dependancies.getTypeStructures()"
+                            formControlName="type"
+                            [ngClass]="{'is-invalid': shouldShowRequiredError( 'type'), 'is-valid': isValid('type')}"
+                            class="form-control p-0 ">
+      </angular2-multiselect>
+
+      <!-- Message d'erreur -->
+      <div *ngIf="shouldShowRequiredError('type')"
+           class="invalid-feedback">
+        Veuillez renseigner le type de la structure.
+      </div>
+    </div>
+
+
+    <!-- parent -->
+    <div class="col-6">
+      <!-- Label -->
+      <label class="control-label"
+             for="parent">
+        Structure parent
+        <i class="fad fa-circle-notch fa-spin"
+           *ngIf="dependancies.loading.structures"></i>
+      </label>
+
+      <angular2-multiselect [data]="dependancies.data.structures"
+                            [settings]="helper.dropdownSettings.single"
+                            formControlName="parent"
+                            (click)="getStructures()"
+                            [ngClass]="{'is-invalid': shouldShowRequiredError( 'parent'), 'is-valid': isValid('parent')}"
+                            class="form-control p-0 ">
+      </angular2-multiselect>
+
+    </div>
+  </div>
+
+
+  <!-- Image -->
+  <!-- TODO: Definir une validation pour l'image -->
+  <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
+    <div class="col-12">
+      <label for="formFile"
+             class="form-label">Ajouter une image pour la structure</label>
+      <input class="form-control"
+             type="file"
+             (change)="onFileChanged($event, 'image')"
+             id="formFile">
+    </div>
+  </div>
+
+
+  <!-- Description -->
+  <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+    <div class="col-12">
+      <label class="control-label"
+             for="description">Description</label>
+
+      <ckeditor [editor]="editor"
+                class=""
+                [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"
+                formControlName="description">
+      </ckeditor>
+      <div *ngIf="shouldShowRequiredError('description')"
+           class="invalid-feedback">
+        Veuillez renseigner une descrition pour votre structure
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Boutton validation -->
+  <div class="d-flex justify-content-center">
+    <div class="col-12 text-right">
+      <!-- Boutton sumit -->
+      <button class="btn btn-lg btn-facebook mr-1"
+              type="submit"
+              [disabled]="form.invalid">
+        <i class="fad fa-circle-notch fa-spin"
+           *ngIf="loading"></i>
+        Valider
+      </button>
+
+      <!-- Bouton reset -->
+      <!-- <button class="btn btn-sm border btn-link"
+              type="button"
+              (click)="initialiseForm()">
+        {{ 'REINITIALISER' | translate }}
+      </button> -->
+    </div>
+  </div>
+</form>
+
+<app-loading *ngIf="!form"></app-loading>

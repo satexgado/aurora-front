@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h4 class="modal-title title">Partager: {{item?.libelle}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container>
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': is_loading_user || is_loading }">
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-10" *ngIf="allUsers">
+                <label class="control-label col-12 p-0" for="description">
+                  Partager avec
+                </label>
+                <angular2-multiselect [data]="allUsers" [formControl]="personneControl" [settings]="helper2.dropdownSettings.multi" class="form-control p-0 ">
+                    <c-badge>
+                        <ng-template let-item="item">
+                            {{item.prenom}} {{item.nom}}
+                        </ng-template>
+                    </c-badge>
+                    <c-item>
+                        <ng-template let-item="item">
+                            <label style="color: #333;min-width: 150px;">{{item.prenom}} {{item.nom}}</label>
+                            <img [src]="item.avatar" class="rounded-cirlce border" style="width: 30px; height: 30px; object-fit: cover;margin-right: 20px; float: right;" />
+                        </ng-template>
+                    </c-item>
+                </angular2-multiselect>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" (click)="onSubmit()" [disabled]="is_loading || is_loading_user" class="btn btn-sm btn-primary mr-3">Enregistrer et Quitter</button>
+    <button type="button" (click)="onSubmit(false)" [disabled]="is_loading || is_loading_user" class="btn btn-sm btn-outline-primary">Appliquer</button>
+</div>

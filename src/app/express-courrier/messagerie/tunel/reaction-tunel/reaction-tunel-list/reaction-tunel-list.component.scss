@@ -1,0 +1,33 @@
+.chat-container {
+  position: relative;
+  overflow: hidden;
+  width: auto;
+  height: 550px;
+  display: flex;
+  align-items: flex-end;
+
+  .chat-body {
+    width: auto;
+    max-height: 550px;
+  }
+}
+
+.chat-container:hover {
+  overflow: auto;
+}
+
+.scroll-11::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+}
+
+.scroll-11::-webkit-scrollbar-thumb {
+  background-color: #89c2ff;
+}
+
+.reaction {
+  &__icone-action {
+    font-size: 12px;
+    cursor: pointer;
+  }
+}

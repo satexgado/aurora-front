@@ -1,0 +1,115 @@
+<div class="tunel__message-typebox ">
+  <!-- #region Rebondissement -->
+  <div class="tunel__message-rebondissement"
+       *ngIf="rebondissement">
+    <!-- Close button -->
+    <span class="tunel__message-rebondissement-close-button"
+          (click)="rebondissement = null"><i class="far fa-times-circle"></i></span>
+
+    <!-- Rebondissement user -->
+    <div class="tunel__message-rebondissement-user font-weight-bolder">{{ rebondissement.user.nom_complet }}</div>
+
+    <!-- Rebondissement reaction -->
+    {{ rebondissement.reaction }}
+  </div>
+  <!-- #endregion rebondissement -->
+
+  <!-- Display when not recording -->
+  <form [formGroup]="form"
+        (submit)="create()"
+        class="tunel__form"
+        *ngIf="form && !(enregistreurService.isRecording$ | async)">
+    <a class="tunel__emoticone"
+       type="button"
+       (click)="showEmojiPicker = !showEmojiPicker">
+      <i class="far fa-smile"></i>
+    </a>
+
+    <input type="text"
+           class="tunel__message-input"
+           formControlName="reaction"
+           placeholder="Ecrivez votre commentaire...">
+    <button class="tunel__button tunel__button--send">
+      <i class="far fa-paper-plane"></i>
+    </button>
+
+
+    <!-- Boutton options -->
+    <input id="more-options"
+           #optionsButton
+           class="tunel__options-input"
+           type="checkbox"
+           hidden>
+    <label for="more-options"
+           class="tunel__button tunel__button--more">
+      <i class="fas fa-ellipsis-h"></i>
+    </label>
+
+
+    <emoji-mart class="emoji-mart"
+                set="apple"
+                (emojiSelect)="addEmoji($event)"
+                *ngIf="showEmojiPicker"
+                [title]="'Choisir un emoji'">
+    </emoji-mart>
+
+    <div class="tunel__option-buttons">
+      <!-- Image Select -->
+      <button class="tunel__button tunel__button--option tunel__button--option--image"
+              (click)="imageUpload.click()">
+        <i class="fas fa-image"></i>
+      </button>
+
+      <!-- Document select -->
+      <button class="tunel__button tunel__button--option tunel__button--option--fichier"
+              (click)="documentUpload.click()">
+        <i class="fas fa-file-pdf"></i>
+      </button>
+
+      <!-- Audio record -->
+      <button class="tunel__button tunel__button--option tunel__button--option--record"
+              (click)="enregistrer()">
+        <i class="fas fa-microphone-alt"></i>
+      </button>
+    </div>
+
+
+    <!-- Pdf input -->
+    <input type="file"
+           accept="application/pdf"
+           [hidden]="true"
+           #documentUpload
+           (change)="fileProcess($event, 'document')">
+
+    <!-- Image input -->
+    <input type="file"
+           [hidden]="true"
+           accept="image/x-png,image/gif,image/jpeg"
+           #imageUpload
+           (change)="fileProcess($event, 'image')">
+
+  </form>
+
+  <!-- Display when recording -->
+  <div class="tunel__message-recording"
+       *ngIf="enregistreurService.isRecording$ | async">
+    <span class="tunel__message-recording__icon"><i class="far fa-microphone-alt"></i></span>
+    <span class="tunel__message-recording__timer">{{ enregistreurService.dureeEnregistrement$ | async }}</span>
+
+    <span class="tunel__message-recording__buttons">
+      <!-- Stop -->
+      <span class="tunel__message-recording__button tunel__message-recording__button--stop"
+            (click)="annulerEnregistrement()">
+        <i class="far fa-stop"></i>
+      </span>
+
+      <!-- Send -->
+      <span class="tunel__message-recording__button  tunel__message-recording__button--send"
+            (click)="stopEnregistrer()">
+        <i class="far fa-paper-plane"></i>
+      </span>
+    </span>
+
+  </div>
+
+</div>

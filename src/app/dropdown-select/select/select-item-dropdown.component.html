@@ -1,0 +1,14 @@
+<div ngbDropdown class="d-inline-block w-100" autoClose="outside">
+    <button class="btn {{style}}" ngbDropdownToggle>
+      <i class="tx-14 {{_icon}} " *ngIf="_icon"></i>
+      {{ selected ? selected : _placeholder}}
+    </button>
+    <div ngbDropdownMenu [class.loading]="is_loading">
+        <article class="d-flex justify-content-between" ngbDropdownItem *ngFor="let item of _itemsRow" (click)="item.checked = !item.checked; onSaveSelected();">
+            <div class="text-muted">{{item.libelle | capitalizeFirst}}</div>
+            <div class="">
+                <i class="far mt-1 mr-1 choose-title" [class.fa-check-square]="item.checked" [class.fa-square]="!item.checked"></i>
+            </div>
+        </article>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<form class="custom-placeholder"
+      [formGroup]="filters"
+      (submit)="applyFilters()">
+
+
+  <!-- Type et parent -->
+  <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
+    <!-- type -->
+    <div class="col-12">
+      <!-- Label -->
+      <label class="control-label"
+             for="types">
+        Type de structure
+        <i class="fad fa-circle-notch fa-spin"
+           *ngIf="dependancies.loading.types"></i>
+      </label>
+
+      <angular2-multiselect [data]="dependancies.data.types"
+                            [settings]="helper.dropdownSettings.multi"
+                            (click)="dependancies.getTypeStructures()"
+                            formControlName="type"
+                            class="form-control p-0 ">
+      </angular2-multiselect>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Boutton validation -->
+  <div class="d-flex justify-content-center">
+    <div class="col-12 text-right">
+      <!-- Boutton sumit -->
+      <button class="btn btn-lg btn-facebook mr-1"
+              type="submit">
+        <i class="fad fa-circle-notch fa-spin"
+           *ngIf="loading"></i>
+        Valider
+      </button>
+
+      <!-- Bouton reset -->
+      <!-- <button class="btn btn-sm border btn-link"
+              type="button"
+              (click)="initialiseForm()">
+        {{ 'REINITIALISER' | translate }}
+      </button> -->
+    </div>
+  </div>
+</form>

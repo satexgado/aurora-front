@@ -1,0 +1,22 @@
+<div class="select-area d-md-flex justify-content-center" *ngIf="items && items.length < limit; else moreThanLimit">
+    <div class="mx-2 flex-fill cursor-pointer" *ngFor="let item of items" (click)="onSetSelected(item.id)">
+        <div class="card" [ngClass]="{'text-white bg-info ': item.id == selected}">
+            <div class="card-body d-flex flex-wrap align-items-center justify-content-center p-1">
+                <label class="card-subtitle my-auto cursor-pointer" [class.text-muted]="item.id != selected">
+                    <i class="fal" [class.fa-circle]="item.id != selected" [class.fa-check-circle]="item.id == selected"></i>  {{item.libelle}}
+                </label>
+                <p class="card-text" *ngIf="item.icon_class">
+                    <i [class]="item.icon_class"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #moreThanLimit>
+    <select class="custom-select custom-select-sm" name="pageSize" [(ngModel)]="selected" [class.loading]="loading" [class.is-valid]="selected" (ngModelChange)="setControl()">
+        <ng-container *ngFor="let item of items">
+            <option [ngValue]="item.id">{{item.libelle}}</option>
+        </ng-container>
+    </select>
+</ng-template>

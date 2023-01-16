@@ -1,0 +1,6 @@
+<div class="form-group d-flex align-items-center">
+    <div class="input-group mr-2">
+        <input class="form-control" placeholder="yyyy-mm-dd" (click)="d.toggle()" name="dp" [(ngModel)]="value" ngbDatepicker #d="ngbDatepicker">
+    </div>
+    <ngb-timepicker *ngIf="timeInput" name="dp" [(ngModel)]="value"></ngb-timepicker>
+</div>

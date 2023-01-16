@@ -1,0 +1,83 @@
+<ng-container *ngIf="correspondant">
+  <!-- Discussion correspondant user -->
+  <a [routerLink]="[discussion.id]"
+     *ngIf="isUser(correspondant)"
+     #rla="routerLinkActive"
+     [routerLinkActive]="'active'"
+     class="media scaleUpOnHover pd-y-10">
+
+    <!-- Avatar -->
+    <div class="mr-2">
+      <span [ngClass]="{'avatar avatar-online': !rla.isActive}">
+        <img [src]="correspondant.photo"
+             class="img-fluid"
+             [ngClass]="{ 'selected': rla.isActive , 'image-contact': !rla.isActive }"
+             alt="">
+        <i *ngIf="isCorrespondantOnline()"></i>
+      </span>
+    </div>
+
+    <!-- Information et reaction -->
+    <div class="d-flex justify-content-between mg-t-7 wd-100p">
+      <div class="d-inline-block">
+        <!-- Nom de l'utilisateur -->
+        <h6 class="mb-0 tx-13"
+            [ngClass]="{ 'tx-primary': rla.isActive}">{{ correspondant.nom_complet }}</h6>
+
+        <!-- Derniere reaction -->
+        <p class="mb-0 tx-gray-600 tx-12"
+           *ngIf="discussion.derniere_reaction">
+          <span class="font-weight-bold mr-1"
+                *ngIf="discussion.derniere_reaction.inscription.id != correspondant.id ">
+            Vous:
+          </span>
+
+          <span *ngIf="discussion.derniere_reaction.fichier"
+                class="font-italic"><i class="fal fa-paperclip"></i> Pièce jointe</span>
+
+          <span *ngIf="!discussion.derniere_reaction.fichier"> {{ helper.text.strcut(discussion.derniere_reaction.reaction, 25) }}</span>
+
+
+        </p>
+      </div>
+
+      <!-- Date de la derniere reaction -->
+      <div>
+        <div class="tx-gray-500 tx-12">{{ discussion.derniere_reaction?.created_at | date:'dd-mm' }} - {{ discussion.derniere_reaction?.created_at |
+          date:'HH:mm ' }} </div>
+
+        <div class="badge badge-primary float-right"
+             *ngIf="discussion.nombre_reaction_non_lus">{{ discussion.nombre_reaction_non_lus }}</div>
+      </div>
+    </div>
+  </a>
+
+
+  <!-- Discussion correspondant structure -->
+  <a [routerLink]="[discussion.id]"
+     *ngIf="!isUser(correspondant)"
+     #rla="routerLinkActive"
+     [routerLinkActive]="'active'"
+     class="media scaleUpOnHover pd-y-10">
+    <div class="mr-2">
+      <span [ngClass]="{'avatar avatar-online': !rla.isActive}">
+        <img [src]="correspondant.image"
+             class="img-fluid"
+             [ngClass]="{ 'selected': rla.isActive , 'image-contact': !rla.isActive }"
+             alt="">
+        <!-- <i></i> -->
+      </span>
+    </div>
+    <div class="d-flex justify-content-between mg-t-7 wd-100p">
+      <div class="d-inline-block">
+        <h6 class="mb-0 tx-13"
+            [ngClass]="{ 'tx-primary': rla.isActive}"> {{ correspondant.libelle }} <i class="far fa-school ml-1"></i></h6>
+        <p class="mb-0 tx-gray-600 tx-12"
+           *ngIf="discussion.derniere_reaction">
+          {{ helper.text.strcut(discussion.derniere_reaction.reaction, 25) }}</p>
+      </div>
+      <div class="tx-gray-500 tx-12">{{ discussion.derniere_reaction?.created_at | date:'dd-mm' }} - {{ discussion.derniere_reaction?.created_at |
+        date:'HH:mm ' }} </div>
+    </div>
+  </a>
+</ng-container>

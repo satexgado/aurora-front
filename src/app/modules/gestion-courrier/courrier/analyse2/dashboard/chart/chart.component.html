@@ -1,0 +1,33 @@
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-wrap align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fal fa-chart-bar fa-lg"></i>
+            <i class="fal fa-chart-scatter mx-1 fa-lg"></i>
+            <i class="fal fa-chart-line fa-lg"></i>
+        </h6>
+        <div [ngSwitch]="updateDate">
+            <div class=" input-group input-group-sm " *ngSwitchCase="true">
+                <input type="date" required name="debut" [formControl]="dateDebutControl" aria-label="Début" class="form-control">
+                <input type="date" required fin="fin" [formControl]="dateFinControl" aria-label="Fin" class="form-control">
+                <div class="input-group-append mr-2">
+                    <button class="btn btn-sm  btn-primary" (click)="onSaveDate()"><i class="fal fa-edit"></i></button>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-sm  btn-outline-secondary" (click)="updateDate = false"><i class="fal fa-times"></i></button>
+                </div>
+            </div>
+            <button *ngSwitchDefault class="btn btn-sm btn-outline-dark " (click)="onUpdateDate()">
+                {{dateDebut | date:'dd-MM-yyyy'}}  /  {{dateFin | date:'dd-MM-yyyy'}} 
+                <i class="fal fa-edit"></i>
+            </button>
+        </div>
+        <button class="btn btn-sm btn-outline-primary " *ngIf="chartConfig?.chartFormData.chartType" (click)="loadComponent(null)">
+            <i class="fal fa-cog"></i>
+        </button>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+        <div #dynamicView></div>
+    </div>
+</div>

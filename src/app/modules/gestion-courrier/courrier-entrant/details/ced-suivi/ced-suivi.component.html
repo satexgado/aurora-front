@@ -1,0 +1,39 @@
+<div class="bg-white" [class.loading]="is_loading_schema">
+    <div *ngIf="etapes && etapes.length; else emptyTemplate" class="col-8 offset-2 vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+        <div class="vertical-timeline-item vertical-timeline-element" *ngFor="let item of etapes; let i = index">
+            <div> <span class="vertical-timeline-element-icon bounce-in"> <i class="badge badge-dot badge-dot-xl badge-success"></i> </span>
+                <div class="vertical-timeline-element-content bounce-in">
+                    <button class="btn btn-link p-0" (click)="onShowUpdateSchemaForm(item)"><h4 class="timeline-title {{item.statut_color}}">{{item.libelle}}<i [class]="item.statut_icon"></i></h4></button>
+                    <p>Responsable <a href="javascript:void(0);" data-abc="true">{{item.responsable? item.responsable.libelle : item.structure?.libelle}}</a></p> <span class="vertical-timeline-element-date {{item.statut_color}}">{{item.duree}} jour{{item.duree > 1 ? 's': ''}}</span>
+                    <p>{{item.description}}</p>
+                    <article class="invoice_preview" *ngIf="item.commentaire">
+                        <div class="inv_notes">
+                            
+                            <p>
+                                {{item.commentaire}}
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #dontExist>
+    <br>
+    <section class="bg-white">
+        <h4 class="text-center title p-3">
+            {{ 'Aucun courrier trouver' }}
+        </h4>
+    </section>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

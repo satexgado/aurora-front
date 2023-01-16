@@ -1,0 +1,38 @@
+<!-- <div class="p-2">
+</div> -->
+<div class="d-flex p-2  border-bottom">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" ngbTooltip="Ajouter" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2">
+        <i class="fal fa-plus-circle tx-14 rounded-circle" ></i>
+    </button>
+    <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+</div>
+<div class="card-body">
+    <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0" [class.loading]="dataHelper.loading$ | async">
+        <ng-container *ngIf="dataHelper.data$ | async as items">
+            <ng-container *ngIf="items.length; else noItem">
+                <div class="col-sm-6 col-xl-4" *ngFor="let type of items;trackBy: dataHelper.trackByFn">
+                    <div class="card card-1 mg-b-20">
+                        <div class="card-body text-center">
+                            <i class="hidden-xs tx-40 tx-primary fal fa-money-check-edit-alt" style="padding:10px; border-radius: 50%; "></i>
+                            <h5 class="tx-facebook tx-13 tx-medium mb-0  d-block">{{type.libelle | titlecase}}</h5>
+
+                            <div class="like-comm mg-t-10 mg-b-10">
+                                <button class="link btn btn-link btn-sm px-1 tx-gray-600 tx-11" (click)="onShowUpdateForm(type)"><i class="fal fa-exchange"></i> Modifier</button>
+                                <button class="link btn btn-link btn-sm px-1 tx-gray-500 tx-11" (click)="onShowCreateForm(type)"><i class="fal fa-clone"></i> Dupliquer</button>
+                                <button class="link btn btn-link btn-link-danger btn-sm px-1  tx-gray-500 tx-11" (click)="onDelete(type)"><i class="fal fa-trash-alt"></i> Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+        </section>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

@@ -1,0 +1,49 @@
+<div class="user-card mb-4  col-12 col-sm-8 col-md-6 col-lg-4">
+    <div class="card ">
+        <img class="card-img-top" src="./assets/img/10.jpg" alt="Card image">
+        <div class="card-img-overlay">
+            <section class="user-infos">
+                <h2 class="card-title">Adama Sidibé <small><i class="fa fa-map-marker"></i> Sénégal (Dakar)</small></h2>
+                <p class="card-text"><i class="fa fa-briefcase"></i> Web Design and Development.</p>
+                <a class="btn-o mx-1"> <i class="fa fa-user-plus"></i> Ajouter</a>
+                <a class="btn-o mx-1"> <i class="fa fa-plus"></i> Suivre </a>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-ellipsis-v pull-right"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#">Video Call <i class="fa fa-video-camera"></i></a></li>
+                            <li><a href="#">Poke <i class="fa fa-hand-o-right"></i></a></li>
+                            <li><a href="#">Report <i class="fa fa-bug"></i></a></li>
+                            <li><a href="#">Block <i class="fa fa-lock"></i></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+    <ul class="list-group card-footer  p-0 list-group-flush">
+        <li class="list-group-item bg-white">
+            <a (click)="showDetails = !showDetails">
+                <h6 class="p-0"><i class="fa fa-globe"></i>A propos<i class="fa float-right" [class.fa-chevron-up]="showDetails" [class.fa-chevron-down]="!showDetails"></i></h6>
+            </a>
+        </li>
+        <li *ngIf="showDetails" class="list-group-item bg-secondary text-white d-flex justify-content-between">
+            <div><i class="fas fa-calendar-alt text-info mx-2"></i> Date de naissance </div>
+            <div class="">
+                03/06/1997
+            </div>
+        </li>
+        <li *ngIf="showDetails" class="list-group-item bg-secondary text-white  d-flex justify-content-between">
+            <div><i class="fas fa-map-marker text-info mx-2"></i> Adresse </div>
+            <div class=""> Dakar </div>
+        </li>
+        <li *ngIf="showDetails" class="list-group-item bg-secondary text-white  d-flex justify-content-between">
+            <div><i class="fal fa-at text-info mx-2"></i> Email </div>
+            <div class=""> email@email.com</div>
+        </li>
+        <li *ngIf="showDetails" class="list-group-item bg-secondary text-white  d-flex justify-content-between">
+            <div><i class="fal fa-phone-square-alt text-info mx-2"></i> Numéro de téléphone </div>
+            <div class="">(+221) 78 117 10 09 </div>
+        </li>
+    </ul>
+</div>

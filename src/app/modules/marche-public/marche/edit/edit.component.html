@@ -1,0 +1,80 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="salle">Libelle du marché</label>
+                    <input type="text" autofocus class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="salle">Prix</label>
+                    <input type="text" class="form-control form-control-sm" [formControlName]="'cout'" [ngClass]="{'is-invalid': shouldShowRequiredError('cout'), 'is-valid': isValid('cout')}" name="cout">
+                    <div *ngIf="shouldShowRequiredError('cout')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <!-- <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <app-select-formgroup label="Fournisseur" formControlName="fournisseur_id" [selected]="editForm.get('fournisseur_id').value" [dataSource]="allCoordonnees$" [createModal]="CoordonneeEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('fournisseur_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div> -->
+
+            <ng-container *ngIf="!isUpdating">
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12">
+                        <!-- Label -->
+                        <label class="control-label" for="type_procedures">
+                      Procédure
+                      <i class="fad fa-circle-notch fa-spin"
+                          *ngIf="dependanciesLoading.type_procedures"></i>
+                    </label>
+
+                        <angular2-multiselect [data]="dependancies.type_procedures" [formControlName]="'type_procedure'" [settings]="single" (click)="getTypeProcedures()" class="form-control p-0 ">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12">
+                        <!-- Label -->
+                        <label class="control-label" for="type_marches">
+                      Marche
+                      <i class="fad fa-circle-notch fa-spin"
+                          *ngIf="dependanciesLoading.type_marches"></i>
+                    </label>
+
+                        <angular2-multiselect [data]="dependancies.type_marches" [formControlName]="'type_marche'" [settings]="helper2.dropdownSettings.single" (click)="getTypeMarches()" class="form-control p-0 ">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12">
+                        <label class="control-label" for="structures">
+                      Structure
+                      <i class="fad fa-circle-notch fa-spin"
+                          *ngIf="dependanciesLoading.structures"></i>
+                    </label>
+
+                        <angular2-multiselect [data]="dependancies.structures" [formControlName]="'service_contractant'" [settings]="helper2.dropdownSettings.single" (click)="getStructures()" class="form-control p-0 ">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+            </ng-container>
+
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+</div>

@@ -1,0 +1,102 @@
+<ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill" [(activeId)]="active">
+    <li [ngbNavItem]="3" *ngIf="modalData">
+        <a ngbNavLink>
+            <span class="tx-16"><i class="fal fa-info"></i></span>
+        </a>
+        <ng-template ngbNavContent>
+            <app-sidebar-details-ui [init]="modalData"></app-sidebar-details-ui>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="1">
+        <a ngbNavLink>
+            <span class="tx-16">
+            <i class="fal fa-file-download"></i>
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+            <div class=" row row-xs mg-0  clearfix pb-3 pt-3 ">
+                <h6 class="card-header-title pb-2">
+                    Fichiers recents
+                </h6>
+                <div class="w-100">
+                    <ul class="list-group" [class.loading]="fichierRecenthelper.loading$ | async">
+                        <ng-container *ngIf="fichierRecenthelper.data$ | async as items">
+                            <ng-container *ngIf="items.length; else emptyTemplate">
+                                <li class="card-1 list-group-item p-2 mb-2" *ngFor="let fichier of items;trackBy: fichierRecenthelper.trackByFn">
+                                    <a class="d-flex" [href]="fichier.fichier" target="_blank">
+                                        <div class="">
+                                            <i class="{{fichier.type?.icon}} tx-30"></i>
+                                        </div>
+                                        <div class="flex-1 pd-sm-l-10">
+                                            <p class="tx-dark mg-b-0" style="word-break: break-all;">{{ fichier.libelle }}</p>
+                                            <span class=" mg-b-0 tx-gray-500">
+                                              <ng-container *ngIf="fichier.size">
+                                                {{fichier.size | formatFileSize}}|
+                                              </ng-container>
+                                              {{fichier.date | date: 'dd/MM/yyyy  H:mm'}}
+                                            </span>
+                                            <div *ngIf="fichier.upload && fichier.upload.state != 'Done'" class="progress">
+                                                <div class="progress-bar" [class.bg-danger]="!fichier.upload.state" [class.bg-success]="fichier.upload.state == 'DONE'" role="progressbar" style="width: {{fichier.upload.progress}}%;" [aria-valuenow]="fichier.upload.progress" aria-valuemin="0" aria-valuemax="100">{{fichier.upload.progress}}%</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+        <a ngbNavLink>
+            <span class="tx-16"><i class="fal fa-folder-download"></i></span>
+        </a>
+        <ng-template ngbNavContent>
+            <div class=" row row-xs mg-0  clearfix pb-3 pt-3 ">
+                <h6 class="card-header-title pb-2">
+                    Dossiers recents
+                </h6>
+                <div class="w-100">
+                    <ul class="list-group" [class.loading]="dossierRecenthelper.loading$ | async">
+                        <ng-container *ngIf="dossierRecenthelper.data$ | async as items">
+                            <ng-container *ngIf="items.length; else emptyTemplate">
+                                <li class="card-1 list-group-item p-2 mb-2" *ngFor="let dossier of items;trackBy: dossierRecenthelper.trackByFn">
+                                    <a class="d-flex cursor-pointer" [routerLink]="['/document/mon-espace', dossier.id]">
+                                        <div class="">
+                                            <i class="fad fa-folder-open tx-facebook tx-30"></i>
+                                        </div>
+                                        <div class="flex-1 pd-sm-l-10">
+                                            <p class="tx-dark mg-b-0" style="word-break: break-all;">{{ dossier.libelle }}</p>
+                                            <span class=" mg-b-0 tx-gray-500">
+                                              <ng-container *ngIf="dossier.nb_element">
+                                                {{dossier.nb_element}} éléments |
+                                              </ng-container>
+                                              <ng-container *ngIf="dossier.size > 0">
+                                                {{dossier.size | formatFileSize}} |
+                                              </ng-container>
+                                              {{dossier.created_at | date: 'dd/MM/yyyy  H:mm'}}
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </ng-template>
+    </li>
+</ul>
+<div class="scrollable scrollable-y-75 scroll-11 bg-white" [ngbNavOutlet]="nav"></div>
+
+
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

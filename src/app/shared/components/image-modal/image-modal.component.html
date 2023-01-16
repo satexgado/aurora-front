@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h4 class="modal-title title" *ngIf="current_image && images_url">{{images_url.indexOf(current_image)+1}}/{{images_url.length}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="onCloseModal('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body img-modal">
+    <div class="img-container-xlg d-flex justify-content-center">
+        <img [src]="current_image" alt="MDN Logo" class="img-fluid" />
+    </div>
+    <div class="scroll-11 scrollable-image-modal-slide col-lg-2 col-md-3 col-sm-4 col-6">
+        <div class="scroll-11 m-0 px-2 pt-4">
+            <div class="img-contain">
+                <img *ngFor="let img of images_url" (click)="onSetImage(img)" [src]="img" [class.active]="img == current_image" alt="MDN Logo" class="img-thumbnail img-fluid mb-4 cursor-pointer" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="onCloseModal('Close click')">Fermer</button>
+</div>

@@ -1,0 +1,30 @@
+
+<div class="p-3 bg-white">
+    <h5 class="tx-yeto2"><i class="fal fa-comments text-info mx-2"></i> Commentaire </h5>
+    <p [innerHTML]="coordonnee.commentaire">
+    </p>
+</div>
+
+<div class="p-3 bg-white">
+    <h5 class="tx-yeto2"><i class="fal fa-clipboard-check text-info mx-2"></i> Condition de suivi </h5>
+    <p [innerHTML]="coordonnee.condition_suivi">
+    </p>
+</div>
+
+<ng-template #dontExist>
+    <br>
+    <section class="bg-white">
+        <h5 class="text-center title p-3">
+            {{ 'Aucun courrier trouver' }}
+        </h5>
+    </section>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

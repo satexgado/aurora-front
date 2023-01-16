@@ -1,0 +1,22 @@
+<div class="col-md-12 p-0 pt-1 pb-1">
+    <ul class="nav ">
+        <li class="nav-item">
+            <a [ngClass]="{'bg-white':currentUrl!=urlsorti,'bg-lbleu tx-ether4':currentUrl==urlsorti,'nav-link px-1':true}"   data-toggle="tab" routerLink="courriersorti">
+                <i class="fad fa-envelope-open-text tx-ether bg-white" style="padding:8px; border-radius: 50%;"></i> Courriers sortis
+            </a>
+        </li>
+        <li class="nav-item">
+            <a [ngClass]="{'bg-white':currentUrl!=urlentrant,'bg-lbleu tx-ether4':currentUrl==urlentrant,'nav-link px-1':true}" data-toggle="tab" routerLink="courrierentrant">
+                <i class="fad fa-envelope-open  tx-ether bg-white" style="padding:8px; border-radius: 50%;"></i> Courriers entrants
+            </a>
+        </li>
+        <li class="nav-item"> 
+            <a [ngClass]="{'bg-white':currentUrl!=urlinterne,'bg-lbleu tx-ether4':currentUrl==urlinterne,'nav-link px-1':true}" data-toggle="tab" routerLink="courrierinterne">
+                <i class="fad fa-envelope  tx-ether bg-white" style="padding:8px; border-radius: 50%;"></i> Courriers internes
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="col-md-12 p-0">
+    <router-outlet></router-outlet>
+</div>

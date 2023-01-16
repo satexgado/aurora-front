@@ -1,0 +1,10 @@
+<app-loading *ngIf="loading"></app-loading>
+
+<div class="px-5 py-4"
+     *ngIf="!loading && single">
+  <h5 class="text-center mb-3">
+    {{ single.libelle }}
+  </h5>
+  <p [innerHTML]="single.description"
+     style="text-align:justify; line-height: 1.7;"></p>
+</div>

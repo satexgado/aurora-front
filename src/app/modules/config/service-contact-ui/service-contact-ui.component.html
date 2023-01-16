@@ -1,0 +1,34 @@
+<div class="col-lg-12 p-0 border-bottom">
+    <div class="row">
+        <h3 class="tx-16 pt-2 tx-facebook mg-l-20 font-weight-bold"><i class="fal fa-ball-pile bg-primary tx-white" style="padding: 6px; border-radius: 50%;"></i> Services et Contacts</h3>
+    </div>
+</div>
+<ul ngbNav #nav="ngbNav" class="nav-tabs">
+    <li [ngbNavItem]="1">
+        <a ngbNavLink class="tx-12">
+            <i class="fad fa-ball-pile"></i> Services
+        </a>
+        <ng-template ngbNavContent>
+            <app-service></app-service>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+        <a ngbNavLink class="tx-12">
+            <i class="fal fa-ball-pile"></i> Types services
+        </a>
+        <ng-template ngbNavContent>
+            <app-type-service></app-type-service>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+        <a ngbNavLink class="tx-12">
+            <i class="fal fa-phone-office"></i> Contacts
+        </a>
+        <ng-template ngbNavContent>
+            <app-contact></app-contact>
+        </ng-template>
+    </li>
+
+</ul>
+
+<div [ngbNavOutlet]="nav"></div>

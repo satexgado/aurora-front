@@ -1,0 +1,51 @@
+<div class="row row-xs clearfix mg-0 pd-0 bg-white">
+  <div class="col-lg-12 p-2">
+    <!-- Header -->
+    <div class="d-flex justify-content-between mt-2 pb-1 align-items-center">
+
+      <h4 class=" ml-2">
+        <span class="mr-2"><i class="fad fa-user-tie"></i></span>
+        Fonctions
+      </h4>
+
+      <!-- Boutton ajouter -->
+      <div>
+        <a [routerLink]="['./']"
+           [queryParamsHandling]="'preserve'"
+           fragment="add-fonctions"
+           class="btn btn-facebook">
+          <span class="mr-2"><i class="fas fa-plus"></i></span>
+          Ajouter
+        </a>
+      </div>
+    </div>
+
+
+    <app-fonction-list></app-fonction-list>
+
+  </div>
+</div>
+
+
+
+<app-modal [configuration]="{ name: 'fonctions-create-modal', titre: 'Ajouter une fonction', icone:'user-tie' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-fonction-create *ngIf="create"
+                       (created)="onCreated()">
+  </app-fonction-create>
+</app-modal>
+
+
+<app-modal [configuration]="{ name: 'fonctions-edit-modal', titre: 'Modifier les détails de la fonction', icone:'user-tie' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-fonction-edit *ngIf="edit"
+                     (edited)="onEdited()">
+  </app-fonction-edit>
+</app-modal>
+
+
+
+<app-modal [configuration]="{ name: 'fonctions-show-modal', titre: 'Details du fonction', icone:'user-tie' }"
+           (closed)="router.navigate(['./'], { relativeTo: route, queryParamsHandling: 'preserve' })">
+  <router-outlet></router-outlet>
+</app-modal>

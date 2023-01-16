@@ -1,0 +1,40 @@
+<div class="h-100 d-flex flex-column align-items-center justify-content-center position-relative">
+  <app-users-edit class="w-100"
+                  [showPasswordFields]="true"
+                  [submitDisabled]="form.invalid || loading"
+                  [loading]="loading"
+                  (edited)="onEdited($event)">
+    <form class="custom-placeholder"
+          [formGroup]="form">
+
+      <div class="formSep form-group col-12 d-flex justify-content-center pb-0 pt-2">
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input"
+                   formControlName="conditions_utilisations"
+                   type="checkbox"
+                   value=""
+                   id="flexCheckDefault">
+            <label class="form-check-label ml-3"
+                   for="flexCheckDefault">
+              J'ai lu et j'accepte les
+              <a [routerLink]="['./']"
+                 [queryParamsHandling]="'preserve'"
+                 (click)="helper.modal.show('condition-utilisation-plateforme')"
+                 class="text-primary">conditions d'utilisation de la plateforme</a>
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </app-users-edit>
+
+</div>
+
+
+
+<app-modal
+           [configuration]="{ name: 'condition-utilisation-plateforme', icone: 'file-certificate', titre: 'Conditions d\'utilisation de la plateforme' }">
+  <app-signup-condition-utilisation></app-signup-condition-utilisation>
+</app-modal>

@@ -1,0 +1,242 @@
+<div class="row">
+    <div class="col-md-6 col-12">
+        <ul ngbNav #nav="ngbNav" [activeId]="route.fragment | async" class="nav-tabs nav-pills nav-fill">
+            <li [ngbNavItem]="'details'">
+                <a class="tx-12" routerLink="." [fragment]="'details'" ngbNavLink>Details</a>
+                <ng-template ngbNavContent>
+                    <div class="mt-3">
+                        <h3 class="tx-rubik text-info">Details
+                            <button class="border-0 btn-transition btn btn-sm btn-oblong btn-dark btn-outline-dark" (click)="onShowUpdateCourrierForm()">
+                              <i class="fal fa-edit fa-2x"></i>
+                            </button>
+                        </h3>
+
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <div class="col-12 col-md-6">
+                                <!-- Code -->
+                                <div class="my-3  " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                  Code:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.libelle}}</span>
+                                </div>
+
+
+                                <!-- CNI -->
+                                <div class="my-3  " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                   Objet:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.objet}}</span>
+                                </div>
+
+
+                                <!-- Email  -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                  Type:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.type?.libelle}}</span>
+                                </div>
+
+
+                                <!-- Addresse -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                  Nature:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.nature?.libelle}}</span>
+                                </div>
+
+                                <!-- Addresse -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                      Structure:
+                                    </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.structure?.libelle}}</span>
+                                </div>
+
+                                <!-- Addresse -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                      Suivi par:
+                                    </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.suivi_par_user?.libelle}}</span>
+                                </div>
+
+                                <!-- Addresse -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                    Ajouter par:
+                                  </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.created_by?.libelle}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+
+                                <!-- Urgence -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                  Urgence:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.urgence?.libelle}}</span>
+                                </div>
+
+                                <!-- Urgence -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                Date limite:
+                              </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.date_limit |  date:'mediumDate' : undefined : 'fr'}}</span>
+                                </div>
+
+                                <!-- Statut -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                Statut:
+                              </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.statut?.libelle}}</span>
+                                </div>
+
+
+                                <!-- Telephone -->
+                                <div class="my-3" style="font-size: 16px;">
+                                    <span class="mr-2">
+                                  Date arrivé:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.date_arrive | date:'mediumDate' : undefined : 'fr'}}</span>
+                                </div>
+
+
+                                <!-- Role -->
+                                <div class="my-3" style="font-size: 16px;">
+                                    <span class="mr-2">
+                                  Date de redaction:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{ courrier.courrier?.date_redaction | date:'mediumDate' : undefined : 'fr'}}</span>
+                                </div>
+
+                                <!-- NOm -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                  Provenance:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.provenance?.libelle}}</span>
+                                </div>
+
+                                <!-- NOm -->
+                                <div class="my-3 " style="font-size: 16px;">
+                                    <span class="mr-2">
+                                    Expediteur:
+                                  </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.expediteur?.libelle}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <!-- NOm -->
+                                <div class="my-3 " style="font-size: 16px;text-align: justify;">
+                                    <span class="mr-2">
+                                  Description:
+                                </span>
+                                    <span class="tx-rubik tx-dark">{{courrier.courrier?.commentaire}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="'copie'">
+                <a class="tx-12" routerLink="." [fragment]="'copie'" ngbNavLink>Copie</a>
+                <ng-template ngbNavContent>
+                    <button class="btn btn-sm btn-primary" (click)="onShowAffectationTacheForm()">Modifier</button>
+                    <div class="card">
+                        <div class="card-body p-2  text-dark">
+                            <h4 class="text-info"> Structure Copie Information</h4>
+                            <table class="table table-striped table-sm text-dark" *ngIf="courrier.courrier?.structure_copie_informations?.length; else emptyTemplate">
+                                <tbody>
+                                    <tr *ngFor="let structure of courrier.courrier.structure_copie_informations">
+                                        <td>
+                                            <div class="avatar">
+                                                <span class="bg-soft-info avatar-initial  rounded-circle bg-primary" *ngIf="structure.cigle">{{structure.cigle}}</span>
+                                                <img [src]="structure.image" *ngIf="structure.image" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="col">{{structure.libelle}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-2  text-dark">
+                            <h4 class="text-info"> Structure Copie Traitement</h4>
+                            <table class="table table-striped table-sm text-dark" *ngIf="courrier.courrier?.structure_copie_traitements?.length; else emptyTemplate">
+                                <tbody>
+                                    <tr *ngFor="let structure of courrier.courrier?.structure_copie_traitements">
+                                        <td>
+                                            <div class="avatar">
+                                                <img [src]="structure.image" *ngIf="structure.image" title="{{structure.libelle}}" class="avatar-initial  border border-secondary rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="col">{{structure.libelle}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="'affectation'">
+                <a class="tx-12" routerLink="." [fragment]="'affectation'" ngbNavLink>Affectation</a>
+                <ng-template ngbNavContent>
+                    <app-courrier-details-reaffectation [initCourrier]="courrier.courrier"></app-courrier-details-reaffectation>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="'schema'">
+                <a class="tx-12" routerLink="." [fragment]="'schema'" ngbNavLink>Schema</a>
+                <ng-template ngbNavContent>
+                    <app-courrier-details-suivi [initCourrier]="courrier.courrier"></app-courrier-details-suivi>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="'tache'">
+                <a class="tx-12" routerLink="." [fragment]="'tache'" ngbNavLink>Taches</a>
+                <ng-template ngbNavContent>
+                    <app-courrier-details-my-task [initCourrier]="courrier.courrier"></app-courrier-details-my-task>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="'commentaire'">
+                <a class="tx-12" routerLink="." [fragment]="'commentaire'" ngbNavLink>Commentaires</a>
+                <ng-template ngbNavContent>
+                    <app-courrier-details-comment [initCourrier]="courrier.courrier"></app-courrier-details-comment>
+                </ng-template>
+            </li>
+
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+    </div>
+    <section class="col-md-6 col-12">
+        <app-courrier-details_fichier [initCourrier]="courrier.courrier"></app-courrier-details_fichier>
+    </section>
+</div>
+
+
+
+<ng-template #dontExist>
+    <br>
+    <section class="bg-white">
+        <h4 class="text-center title p-3">
+            {{ 'Aucun courrier trouver' }}
+        </h4>
+    </section>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

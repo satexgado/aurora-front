@@ -1,0 +1,54 @@
+<div class="col-lg-12">
+    <h5 class="text-dark"><i class="fal fa-line-columns" style="padding: 6px; border-radius: 50%;"></i> Proprietés Courriers </h5>
+</div>
+
+<div class="d-flex flex-wrap justify-content-between bd-t">
+    <div class=" col-12 col-sm-2 p-0 bd-r bd-2" style="background:#FFFF;">
+        <nav class="monmenu nav flex-row flex-sm-column flex-nowrap">
+            <a [class.active]="fragment == 'type'" routerLink="." [fragment]="'type'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-envelope-square tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Types</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'etape'" routerLink="." [fragment]="'etape'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-ballot-check tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Etapes</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'nature'" routerLink="." [fragment]="'nature'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-envelope-open-text tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Natures</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'statut'" routerLink="." [fragment]="'statut'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-stamp  tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Statuts</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'urgence'" routerLink="." [fragment]="'urgence'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-calendar-exclamation tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Urgences</span>
+                </div>
+            </a>
+        </nav>
+    </div>
+    <div class="col-12 col-sm-10 bg-light">
+        <div [ngSwitch]="fragment">
+            <div *ngSwitchCase="'etape'">
+                <app-etape></app-etape>
+            </div>
+            <div *ngSwitchCase="'nature'">
+                <app-nature></app-nature>
+            </div>
+            <div *ngSwitchCase="'statut'">
+                <app-statut></app-statut>
+            </div>
+            <div *ngSwitchCase="'urgence'">
+                <app-urgence></app-urgence>
+            </div>
+            <div *ngSwitchDefault>
+                <app-type></app-type>
+            </div>
+        </div>
+    </div>
+</div>

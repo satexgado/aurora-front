@@ -1,0 +1,59 @@
+<div class="modal-header p-1">
+    <h5 class="modal-title title">{{title | titlecase}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close('Close click')">
+    <span aria-hidden="true"><i class="icon-close"></i></span>
+  </button>
+</div>
+<div class="modal-body p-0 " [class.loading]="isLoadingModules || isLoadingMasques || isFormSaving">
+    <ng-container *ngIf="masques">
+        <ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill">
+            <li [ngbNavItem]="masque.id" *ngFor="let masque of masques" [destroyOnHide]="false">
+                <a ngbNavLink class="tx-12">
+                    <i [class]="masque.icon"></i> {{masque.libelle}} <span class="badge badge-outlined float-right badge-warning font-weight-bold" *ngIf="modules">{{onCountChecked(masque.id)}}</span>
+                </a>
+                <ng-template ngbNavContent>
+                    <div class="table-responsive" *ngIf="modules">
+                        <table class="table table-hover text-nowrap" *ngIf="onGetModulebyMasqueId(masque.id) as items">
+                            <tbody *ngIf="items.length; else noItem">
+                                <tr>
+                                    <td class="bold">
+                                        <i [class]="masque.icon" class="p-2 rounded-circle bg-soft-warning"></i> Toutes les permissions
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" (change)="onsetAllCheck(masque.id,onCountChecked(masque.id, false))" [checked]="!onCountChecked(masque.id, false)" id="customSwitchMasque{{masque.id}}">
+                                            <label class="custom-control-label" for="customSwitchMasque{{masque.id}}"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let module of items;">
+                                    <td>
+                                        <i [class]="module.icon" class="p-2 rounded-circle"></i> {{module.libelle | titlecase}}
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" (change)="module.checked = !module.checked; formTouched = true;" [checked]="module.checked" id="customSwitch{{module.value}}">
+                                            <label class="custom-control-label" for="customSwitch{{module.value}}"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="flex-1"></div>
+    </ng-container>
+</div>
+<div class="modal-footer p-0">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit(true);" [disabled]="isFormSaving || !formTouched">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit();" [disabled]="isFormSaving || !formTouched">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="onResetForm()" [disabled]="isFormSaving || isLoadingModules || !formTouched">Réinitialiser</button>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

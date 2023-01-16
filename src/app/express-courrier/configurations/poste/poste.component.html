@@ -1,0 +1,51 @@
+<div class="row row-xs clearfix mg-0 pd-0 bg-white">
+  <div class="col-lg-12 p-2">
+    <!-- Header -->
+    <div class="d-flex justify-content-between mt-2 pb-1 align-items-center">
+
+      <h4 class=" ml-2">
+        <span class="mr-2"><i class="fad fa-user-hard-hat"></i></span>
+        Postes
+      </h4>
+
+      <!-- Boutton ajouter -->
+      <div>
+        <a [routerLink]="['./']"
+           [queryParamsHandling]="'preserve'"
+           fragment="add-postes"
+           class="btn btn-facebook">
+          <span class="mr-2"><i class="fas fa-plus"></i></span>
+          Ajouter
+        </a>
+      </div>
+    </div>
+
+
+    <app-poste-list></app-poste-list>
+
+  </div>
+</div>
+
+
+
+<app-modal [configuration]="{ name: 'postes-create-modal', titre: 'Ajouter un poste', icone:'user-hard-hat' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-poste-create *ngIf="create"
+                    (created)="onCreated()">
+  </app-poste-create>
+</app-modal>
+
+
+<app-modal [configuration]="{ name: 'postes-edit-modal', titre: 'Modifier les détails du poste', icone:'user-hard-hat' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-poste-edit *ngIf="edit"
+                  (edited)="onEdited()">
+  </app-poste-edit>
+</app-modal>
+
+
+
+<app-modal [configuration]="{ name: 'postes-show-modal', titre: 'Details du poste', icone:'user-hard-hat' }"
+           (closed)="router.navigate(['./'], { relativeTo: route, queryParamsHandling: 'preserve' })">
+  <router-outlet></router-outlet>
+</app-modal>

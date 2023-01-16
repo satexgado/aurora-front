@@ -1,0 +1,25 @@
+  <!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog conf2" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-white">
+        <p class=" modal-title tx-20 tx-primary" id="exampleModalLabel"><i class="fad fa-trash tx-20"></i> Supprimer</p>
+      </div>
+      <div class="modal-body col-md-12 text-center">
+          <h5>
+              Voulez vous vraiment supprimer cet élément?
+          </h5>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="reset" class="btn btn-brand btn-reddit" data-dismiss="modal" [disabled]="del==true">
+          <i class="fal fa-power-off"></i><span class="pd-x-20">Annuler </span> 
+        </button>
+        <button class="btn btn-brand btn-dropbox" type="submit" (click)="delete()" [disabled]="del==true">
+          <i class="fal fa-trash"></i><span class="pd-x-20"> Supprimer </span> 
+          <i *ngIf="del==true" class="fas fa-spinner fa-spin"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

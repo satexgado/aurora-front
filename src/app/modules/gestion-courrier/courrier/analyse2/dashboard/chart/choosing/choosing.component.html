@@ -1,0 +1,143 @@
+<section class="row" [formGroup]="configForm">
+    <!-- dashboard element -->
+    <div class="col-md-6">
+        <div class="card border-left-primary shadow mb-3">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <div>
+                        <div class="font-weight-bold text-primary text-uppercase mb-1">Valeur</div>
+                    </div>
+                    <app-custom-select-icon formControlName="valeur" [items]="valeurSelect" [limit]="3"></app-custom-select-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-left-primary shadow mb-3">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <div>
+                        <div class="font-weight-bold text-primary text-uppercase mb-1">Qualité</div>
+                    </div>
+                    <app-custom-select-icon formControlName="qualite" [items]="qualiteSelect" [limit]="3"></app-custom-select-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-md-12">
+        <div class="card border-left-primary shadow mb-3">
+            <div class="card-body">
+                <div>
+                    <div>
+                        <div class="font-weight-bold text-primary text-uppercase mb-1">Type de graphique</div>
+                    </div>
+                    <app-custom-select-icon formControlName="chart" [items]="chartSelectItems" [limit]="10"></app-custom-select-icon>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="col-md-12">
+        <div class="card border-left-primary shadow mb-3">
+            <div class="card-body">
+                <div>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="font-weight-bold text-primary text-uppercase mb-1">Données</div>
+                        <button type="button" class="btn btn-primary my-1" (click)="addDataset()">Ajouter</button>
+                    </div>
+                    <div formArrayName="datasets" class="row">
+                        <div class="col-md-6 col-12" *ngFor="let dataset of getDatasets(configForm); let datasetIndex=index;">
+                            <div class="card shadow mb-3">
+                                <div class="card-body" [formGroupName]="datasetIndex">
+                                    <button class="btn btn-outline-danger float-right" *ngIf="getDatasets(configForm).length > 1" (click)="removeDataset(datasetIndex)"><i class="fa fa-times"> </i></button>
+                                    <div class="formSep">
+                                        <div class="d-flex formSep flex-wrap align-items-center justify-content-center">
+                                            <div class="col-12 mb-2">
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control" formControlName="libelle" placeholder="libelle">
+                                                    <input type="color" class="form-control" formControlName="couleur" value="#f6b73c">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <app-custom-select-icon formControlName="chartType" [items]="chartSelectItems" [limit]="10"></app-custom-select-icon>
+                                            </div>
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <button type="button" class="btn btn-sm btn-link" (click)="addFilter(datasetIndex)">Ajouter filtre</button>
+                                            </div>
+                                        </div>
+                                        <table class="table" formArrayName="filters">
+                                            <tbody>
+                                                <tr *ngFor="let filter of getFilters(dataset); let filterIndex=index" [formGroupName]="filterIndex">
+
+                                                    <td>
+                                                        <div class="col-12 mb-2">
+                                                            <select class="custom-select" formControlName="type" (change)="reset(dataset, filterIndex)">
+                                                            <option value="dossier_id">Dossier</option>
+                                                            <option value="type_id">Type</option>
+                                                            <option value="nature_id">Nature</option>
+                                                            <option value="urgence_id">Urgence</option>
+                                                            <option value="suivi_par_id">Suivi par</option>
+                                                            <option value="statut">Statut</option>
+                                                            <option value="structure_id">Structure</option>
+                                                        </select>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <ng-container [ngSwitch]="filter.get('type').value">
+                                                                <div [class.loading]="!(service.allServices$ | async)" *ngSwitchCase="'structure_id'">
+                                                                    <angular2-multiselect [data]="(service.allServices$ | async)" formControlName="value" [settings]="single" class="p-0 ">
+                                                                    </angular2-multiselect>
+                                                                </div>
+                                                                <div [class.loading]="!(service.allDossiers$ | async)" *ngSwitchCase="'dossier_id'">
+                                                                    <angular2-multiselect [data]="(service.allDossiers$ | async)" formControlName="value" [settings]="single" class="p-0 ">
+                                                                    </angular2-multiselect>
+                                                                </div>
+                                                                <div [class.loading]="!(service.allTypes$ | async)" *ngSwitchCase="'type_id'">
+                                                                    <angular2-multiselect [data]="(service.allTypes$ | async)" formControlName="value" [settings]="single" class="p-0 ">
+                                                                    </angular2-multiselect>
+                                                                </div>
+                                                                <div [class.loading]="!(service.allNatures$ | async)" *ngSwitchCase="'nature_id'">
+                                                                    <angular2-multiselect [data]="(service.allNatures$ | async)" formControlName="value" [settings]="single" class="p-0 ">
+                                                                    </angular2-multiselect>
+                                                                </div>
+                                                                <div [class.loading]="!(service.allUrgences$ | async)" *ngSwitchCase="'urgence_id'">
+                                                                    <angular2-multiselect [data]="(service.allUrgences$ | async)" formControlName="value" [settings]="single" class="p-0 ">
+                                                                    </angular2-multiselect>
+                                                                </div>
+                                                                <div [class.loading]="!(service.allServices$ | async)" *ngSwitchCase="'structure_id'">
+                                                                    <angular2-multiselect [data]="(service.allServices$ | async)" formControlName="value" [settings]="single" class="p-0 ">
+                                                                    </angular2-multiselect>
+                                                                </div>
+                                                                <div [class.loading]="!(service.allUsers$ | async)" *ngSwitchDefault>
+                                                                    <angular2-multiselect [data]="(service.allUsers$ | async)" formControlName="value" [settings]="single" class="p-0 ">
+                                                                        <c-badge>
+                                                                            <ng-template let-item="item">
+                                                                                {{item.prenom}} {{item.nom}}
+                                                                            </ng-template>
+                                                                        </c-badge>
+                                                                        <c-item>
+                                                                            <ng-template let-item="item">
+                                                                                <label style="color: #333;min-width: 150px;">{{item.prenom}} {{item.nom}}</label>
+                                                                                <img [src]="item.avatar" class="rounded-cirlce border" style="width: 30px; height: 30px; object-fit: cover;margin-right: 20px; float: right;" />
+                                                                            </ng-template>
+                                                                        </c-item>
+                                                                    </angular2-multiselect>
+                                                                </div>
+                                                            </ng-container>
+                                                        </div>
+                                                        <button class="btn btn-danger float-right" (click)="removeFilter(dataset, filterIndex)"><i class="fa fa-times"> </i> Supprimer ce filtre</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button [disabled]="shouldDisableSubmit()" type="button" class="btn btn-primary" (click)="onChartSelected()">Valider</button>
+    <!-- dashboard element -->
+</section>

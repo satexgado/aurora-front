@@ -1,0 +1,19 @@
+<div class="chat-body scroll-11 pd-20 pb-0" #chat infinite-scroll [scrollTop]="chat.scrollHeight" [infiniteScrollUpDistance]="1.5" [infiniteScrollThrottle]="50" (scrolledUp)="onScroll()" [scrollWindow]="false" id="chatMessages" style="overflow: auto; width: auto; height: 65vh;">
+
+
+    <div class="my-5" *ngIf="loading">
+        <app-loading></app-loading>
+    </div>
+
+    <ng-container *ngIf="!loading">
+        <ng-container *ngFor="let reaction of reactionService.data$ | async; let i = index">
+            <app-reaction-solo [element]="reaction" [skipProfile]="reaction.inscription?.id == reactionService.data[i - 1]?.inscription?.id" [reversed]="isUser(reaction.inscription) && reaction.inscription.id != authService.user.id">
+            </app-reaction-solo>
+        </ng-container>
+    </ng-container>
+
+
+
+
+
+</div>

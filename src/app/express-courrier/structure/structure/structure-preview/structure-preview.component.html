@@ -1,0 +1,91 @@
+<div class="structure-details" *ngIf="single">
+    <div class="d-flex justify-content-center align-items-end structure-details__header ">
+        <span class="structure-details__image">
+      <img [src]="single.image"
+           [alt]="single.nom_complet">
+    </span>
+    </div>
+
+    <div class="d-flex justify-content-center structure-details__cta">
+        <!-- voir -->
+        <a [routerLink]="['/organisation/structures/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" class="btn d-flex align-items-center  mr-2 rounded-circle btn-primary">
+            <i class="far fa-eye"></i>
+        </a>
+
+
+        <!-- Mail -->
+        <!-- <a [routerLink]="['./']" (click)="helper.modal.hide('structure-preview-modal')" class="btn d-flex align-items-center mr-2 rounded-circle btn-primary">
+            <i class="far fa-envelope"></i>
+        </a> -->
+
+
+        <ng-container *ngIf="single.isUserAdmin">
+            <!-- Edit -->
+            <a [routerLink]="['./']" (click)="helper.modal.hide('structure-preview-modal')" class="btn d-flex align-items-center  mr-2 rounded-circle btn-primary" (click)="edit()">
+                <i class="far fa-edit"></i>
+            </a>
+
+
+
+            <!-- Delete -->
+            <a [routerLink]="['./']" (click)="helper.modal.hide('structure-preview-modal')" class="btn d-flex align-items-center mr-2 rounded-circle btn-primary" *ngIf="single.isUserAdmin">
+                <i class="far fa-trash-alt"></i>
+            </a>
+        </ng-container>
+    </div>
+
+    <div class="structure-details__details">
+        <div class="structure-details__details-element">
+            <p>Type entité:</p>
+            <h6>{{ single.type.libelle }}</h6>
+        </div>
+
+        <div class="structure-details__details-element">
+            <p>Libelle:</p>
+            <h6>{{ single.libelle }}</h6>
+        </div>
+
+
+
+        <div class="structure-details__details-element">
+            <p>Description:</p>
+            <p class="structure-details__details-element--description">
+                {{ helper.text.strcut(single.description, 150) }}
+                <a [routerLink]="['/organisation/structures/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" *ngIf="single.description.length > 150" class="structure-details__details-element--voir-plus">Voir plus</a>
+            </p>
+        </div>
+
+        <div class="structure-details__details-element">
+            <div class="d-flex justify-content-between">
+                <div *ngIf="single.responsable">
+                    <p>Responsable:</p>
+                    <app-users-image-grouped [maxSize]="true" [users]="[single.responsable]" [tooltipPlacement]="'right'">
+                    </app-users-image-grouped>
+                </div>
+
+                <div *ngIf="single.charge_courriers.length" class="d-flex flex-column align-items-end">
+                    <p class="mr-2">Chargés du courrier:</p>
+                    <app-users-image-grouped [maxSize]="true" [users]="single.charge_courriers" [displayCount]="5" [tooltipPlacement]="'left'">
+                    </app-users-image-grouped>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="structure-details__details-element d-flex flex-column" *ngIf="single.employes">
+            <p>Autres membres de l'equipe:</p>
+
+            <app-users-image-grouped [maxSize]="true" [users]="single.employes" [displayCount]="10" [tooltipPlacement]="'top'">
+            </app-users-image-grouped>
+
+        </div>
+    </div>
+
+    <a [routerLink]="['/organisation/structures/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" class="btn btn-block btn-primary mt-5 rounded-pill col-6 offset-3">
+    Voir tous les details
+  </a>
+</div>
+<div class="my-5" *ngIf="!single">
+    <app-loading></app-loading>
+</div>

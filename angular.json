@@ -1,0 +1,123 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "express-courrier": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:application": {
+                    "strict": true
+                },
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "",
+            "sourceRoot": "src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/express-courrier",
+                        "index": "src/index.html",
+                        "main": "src/main.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.app.json",
+                        "assets": ["src/favicon.ico", "src/assets"],
+                        "styles": [
+                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "node_modules/angular2-multiselect-dropdown/themes/default.theme.css",
+                            "src/assets/plugins/bootstrap/css/bootstrap.min.css",
+                            "src/assets/plugins/flag-icon/flag-icon.min.css",
+                            "src/assets/plugins/simple-line-icons/css/simple-line-icons.css",
+                            "src/assets/plugins/ionicons/css/ionicons.css",
+                            "src/assets/plugins/spinkit/spinkit.min.css",
+                            "src/assets/vendor/fontawesome/css/all.min.css",
+                            "node_modules/ng-snotify/styles/material.scss",
+                            "src/assets/css/app.min.css",
+                            "src/assets/css/style.css",
+                            "src/assets/css/vision.css",
+                            "src/styles.scss",
+                            "node_modules/@ctrl/ngx-emoji-mart/picker.css"
+                        ],
+                        "scripts": [
+                            "src/assets/plugins/jquery/jquery.min.js",
+                            "src/assets/plugins/jquery-ui/jquery-ui.js",
+                            "src/assets/plugins/popper/popper.js",
+                            "src/assets/plugins/feather-icon/feather.min.js",
+                            "src/assets/plugins/bootstrap/js/bootstrap.min.js",
+                            "src/assets/plugins/simpler-sidebar/jquery.simpler-sidebar.min.js",
+                            "src/assets/js/jquery.slimscroll.min.js",
+                            "src/assets/js/highlight.min.js",
+                            "src/assets/js/app.js",
+                            "src/assets/js/custom.js"
+                        ]
+                    },
+                    "configurations": {
+                        "production": {
+                            "budgets": [{
+                                    "type": "initial",
+                                    "maximumWarning": "8mb",
+                                    "maximumError": "8mb"
+                                },
+
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "8mb",
+                                    "maximumError": "8mb"
+                                }
+                            ],
+                            "fileReplacements": [{
+                                "replace": "src/environments/environment.ts",
+                                "with": "src/environments/environment.prod.ts"
+                            }],
+                            "outputHashing": "all"
+                        },
+                        "development": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "express-courrier:build:production"
+                        },
+                        "development": {
+                            "browserTarget": "express-courrier:build:development"
+                        }
+                    },
+                    "defaultConfiguration": "development"
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "express-courrier:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "src/test.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.spec.json",
+                        "karmaConfig": "karma.conf.js",
+                        "assets": ["src/favicon.ico", "src/assets"],
+                        "styles": ["src/styles.css"],
+                        "scripts": []
+                    }
+                }
+            }
+        }
+    },
+    "defaultProject": "express-courrier"
+}

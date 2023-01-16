@@ -1,0 +1,158 @@
+<form class="custom-placeholder"
+      *ngIf="isFormOk"
+      [formGroup]="form"
+      (submit)="create()">
+
+  <ul class="nav-pills"
+      ngbNav
+      [destroyOnHide]="false"
+      #nav="ngbNav"
+      [activeId]="activeNavId">
+
+    <!-- Roles -->
+    <li [ngbNavItem]="1">
+      <a ngbNavLink>Role</a>
+      <ng-template ngbNavContent>
+        <!-- Libelle -->
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
+          <div class="col-12">
+            <!-- Label -->
+            <label class="control-label"
+                   for="libelle">
+              Libelle
+            </label>
+
+            <!-- Input -->
+            <input type="text"
+                   class="form-control "
+                   required
+                   [formControlName]="'libelle'"
+                   [ngClass]="{'is-invalid': shouldShowRequiredError( 'libelle'), 'is-valid': isValid('libelle')}">
+
+            <!-- MEssage d'erreur -->
+            <div *ngIf="shouldShowRequiredError('libelle')"
+                 class="invalid-feedback">
+              Veuillez saisir le libellé.</div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+          <div class="col-12">
+            <label class="control-label"
+                   for="description">Description</label>
+
+            <!-- <ckeditor [editor]="editor"
+                      (ready)="onReady($event)"
+                      class="w-100"
+                      [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"
+                      formControlName="description">
+            </ckeditor> -->
+
+            <textarea class="form-control form-control-lg"
+                      formControlName="description"></textarea>
+            <div *ngIf="shouldShowRequiredError('description')"
+                 class="invalid-feedback">
+              Veuillez renseigner une descritio
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex my-2 justify-content-end">
+
+
+          <div class="col-6 p-0 text-right">
+            <!-- Boutton submit -->
+            <button class="btn btn-lg btn-primary mr-1"
+                    type="button"
+                    (click)="activeNavId = 2"
+                    [disabled]="form.get('libelle').invalid">
+              Suivant
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+
+    <!-- authorisation -->
+    <li [ngbNavItem]="2"
+        [disabled]="form.get('libelle').invalid">
+      <a ngbNavLink>Autorisations</a>
+      <ng-template ngbNavContent>
+
+        <div class="my-formcontent">
+          <ngb-accordion [closeOthers]="true"
+                         #panel
+                         [destroyOnHide]="false"
+                         class="my-2"
+                         [activeIds]="activePanelId">
+
+            <!-- Livraisons et abonnements -->
+            <ngb-panel [id]="scopeName | slugify"
+                       *ngFor="let scopeName of helper.object.getKeys(scopes)">
+              <!-- Title -->
+              <ng-template ngbPanelTitle>
+                <span>
+                  {{ scopeName | capitalizeFirst}}
+                  <i class="fas ml-1 "
+                     [ngClass]="{ 'fa-angle-up': isExpanded(scopeName), 'fa-angle-down': !isExpanded(scopeName)}"></i>
+                </span>
+              </ng-template>
+
+              <!-- Content -->
+              <ng-template ngbPanelContent
+                           class="p-0">
+                <!-- Abonnement -->
+                <app-autorisations-create *ngFor="let scope of scopes[scopeName]"
+                                          [name]="scope.libelle | capitalizeFirst"
+                                          (valueChanged)="updateAutorisation(scope.libelle, $event)">
+                </app-autorisations-create>
+
+
+              </ng-template>
+            </ngb-panel>
+
+
+          </ngb-accordion>
+        </div>
+
+
+        <div class="d-flex my-2 justify-content-center">
+          <div class="col-6 p-0 text-left">
+            <!-- Boutton submit -->
+            <button class="btn btn-lg btn-primary mr-1"
+                    (click)="activeId=1"
+                    type="button">
+              Precedent
+            </button>
+          </div>
+
+
+          <div class="col-6 p-0 text-right">
+            <!-- Boutton submit -->
+            <button class="btn btn-lg btn-primary mr-1"
+                    type="submit"
+                    [disabled]="form.invalid">
+              <i class="fal fa-circle-notch fa-spin"
+                 *ngIf="loading"></i>
+              Valider
+            </button>
+          </div>
+        </div>
+
+      </ng-template>
+    </li>
+
+  </ul>
+
+
+  <div [ngbNavOutlet]="nav"
+       class="mt-2"></div>
+
+
+
+
+</form>
+
+
+<app-loading *ngIf="!isFormOk"></app-loading>

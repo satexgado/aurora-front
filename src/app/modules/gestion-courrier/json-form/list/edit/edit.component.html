@@ -1,0 +1,82 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="salle">Niveau d'urgence</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="salle">Type </label>
+                    <select formControlName="type" mySelectFirstOption class="custom-select no-radius">
+                        <option disabled selected value=""> Selectionner</option>
+                        <option [value]="typeEnum.text">Texte</option>
+                        <option [value]="typeEnum.email">Email</option>
+                        <option [value]="typeEnum.number">Nombre</option>
+                        <option [value]="typeEnum.textarea">Long Texte</option>
+                    </select>
+                    <div *ngIf="shouldShowRequiredError('required')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="salle">Obligatoire </label>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" [formControlName]="'required'" class="custom-control-input" id="customSwitch">
+                        <label class="custom-control-label" for="customSwitch">Obligatoire</label>
+                    </div>
+                    <div *ngIf="shouldShowRequiredError('required')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-hover text-nowrap">
+                <thead>
+                    <tr>
+                        <td>libelle</td>
+                        <td>type</td>
+                        <td>obligatoire</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <input type="text">
+                        </td>
+                        <td>
+                            <select mySelectFirstOption class="custom-select no-radius">
+                                <option disabled  value=""> Selectionner</option>
+                                <option [value]="typeEnum.text">Texte</option>
+                                <option [value]="typeEnum.email">Email</option>
+                                <option [value]="typeEnum.number">Nombre</option>
+                                <option [value]="typeEnum.textarea">Long Texte</option>
+                            </select>
+                        </td>
+                        <td class="text-right">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                <label class="custom-control-label" for="customSwitch1">obligatoire</label>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+</div>

@@ -1,0 +1,26 @@
+<div class="row"
+     *ngIf="!loading && data.length">
+  <div class="col-xl-4 col-sm-6 mb-3"
+       *ngFor="let structure of data | paginate: {itemsPerPage: itemsPerPage, id: element, currentPage: paginationInfo.currentPage, totalItems: paginationInfo.total} ">
+    <app-sous-structure-solo [structure]="structure"></app-sous-structure-solo>
+  </div>
+
+  <!-- Pagination -->
+  <div class="col-12 mt-1 d-flex justify-content-center"
+       *ngIf="data.length">
+
+    <pagination-controls [id]="element"
+                         (pageChange)="changePage($event)"
+                         [autoHide]="true"
+                         previousLabel="Précédent"
+                         nextLabel="Suivant">
+    </pagination-controls>
+  </div>
+</div>
+
+<app-missing-data *ngIf="!loading && !data.length"></app-missing-data>
+
+<div class="my-5"
+     *ngIf="loading">
+  <app-loading></app-loading>
+</div>

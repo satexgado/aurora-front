@@ -1,0 +1,99 @@
+<div class="card bd-l-0-force bd-t-0-force bd-b-0-force">
+    <div class="card-body">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group"><button type="button" class="btn btn-light"><i class="icon-compass"></i></button> <button type="button" class="btn btn-light"><i class="icon-drawer"></i></button> <button type="button" class="btn btn-light"><i class="icon-logout"></i></button></div>
+            <div class="btn-group ml-1">
+                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon-folder-alt"></i><i class="mdi mdi-chevron-down ml-1"></i></button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item tx-13" href="#">Updates</a>
+                    <a class="dropdown-item tx-13" href="#">Social</a>
+                    <a class="dropdown-item tx-13" href="#">Team Manage</a>
+                </div>
+            </div>
+            <div class="btn-group ml-1">
+                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon-tag"></i><i class="mdi mdi-chevron-down ml-1"></i></button>
+                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 33px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a class="dropdown-item tx-13" href="">Updates</a>
+                    <a class="dropdown-item tx-13" href="">Social</a>
+                    <a class="dropdown-item tx-13" href="">Team Manage</a>
+                </div>
+            </div>
+            <div class="btn-group ml-1">
+                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false">More<i class="mdi mdi-chevron-down ml-1"></i></button>
+                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 33px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a class="dropdown-item tx-13" href="">Mark as Unread</a>
+                    <a class="dropdown-item tx-13" href="">Mark as Important</a>
+                    <a class="dropdown-item tx-13" href="">Add to Tasks</a>
+                    <a class="dropdown-item tx-13" href="">Add Star</a>
+                    <a class="dropdown-item tx-13" href="">Mute</a>
+                </div>
+            </div>
+        </div>
+        <div class="pd-y-15 mg-t-15 bd-b">
+            <div class="row">
+                <div class="col-md-6 toolbar-left">
+                    <!--Sender Information-->
+                    <div class="d-flex">
+                        <span class="mg-r-10 avatar">
+               <img [src]="mail.auteur.avatar" class="img-fluid wd-40 rounded-circle" alt="">
+               </span>
+                        <div class="text-left">
+                            <div class="tx-bold">{{mail.auteur.libelle}}</div>
+                            <span>{{mail.auteur.email}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-right hidden-xs">
+                    <!--Details Information-->
+                    <p class="mg-0"><small>{{mail.date | date:'medium' : undefined : 'fr'}}</small></p>
+                    <!-- <a href="">
+                        <i class="fa fa-link"></i>
+                        <strong>Your-files.zip</strong>
+                    </a> -->
+                </div>
+                <div class="col-md-12">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-start tx-16 flex-wrap">
+                            <div class="text-info"> À </div>
+                            <div class="tx-yeto2"> <span class="ml-2" *ngFor="let destinataire of mail.affectations; let first = first; let last = last;"> {{destinataire.libelle}}{{!last ? ',' : ''}} </span></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mg-t-20 mg-b-15">
+            <div class="col-md-12" [innerHTML]="mail.contenu">
+            </div>
+            <div class="col-md-12">
+                <div class="clearfix">
+                    <ul class="list-unstyled list-inline mg-y-20 ">
+                        <li class="list-inline-item card-1 p-2" *ngFor="let fichier of mail.fichiers ">
+                            <a [href]="fichier.fichier " target="_blank " class="d-block mg-t-10 ">
+                                <ng-container [ngSwitch]="onCheckIfImage(fichier) ">
+                                    <div class="mail-file-img " *ngSwitchCase="true ">
+                                        <img [src]="fichier.fichier " class="img-fluid wd-100 mx-auto d-block " alt=" ">
+                                    </div>
+
+                                    <div *ngSwitchDefault class="wd-100 ht-65 d-flex align-items-center justify-content-center rounded card-icon-primary ">
+                                        <i class="{{onGetIcon(fichier)}} tx-40 "></i>
+                                    </div>
+                                </ng-container>
+                                <div class="caption ">
+                                    <p class="text-main mg-0 " style="white-space: unset; ">{{fichier.libelle}}</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-12 mg-t-15">
+                <!--Quick reply : Summernote Placeholder -->
+                <!-- <div id="demo-mail-textarea" class="mail-message-reply bg-trans-dark">
+                    <strong>Réponse</strong>
+                    <ckeditor [editor]="Editor" (ready)="onReady($event)"></ckeditor>
+                </div> -->
+                <!-- End View Message -->
+            </div>
+        </div>
+    </div>
+</div>

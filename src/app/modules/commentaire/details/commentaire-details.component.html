@@ -1,0 +1,32 @@
+<ng-container *ngIf="commentaire;else noItem">
+    <app-commentaire-details-ui [isTopLevelComment]="true" [commentaire]="commentaire" (loadResponse)="commentaireDataHelper.loadData()" (reply)="onToggleReply()">
+    </app-commentaire-details-ui>
+    <div class="cmt-editor mb-2" [class.loading]="is_adding_commentaire" *ngIf="isReplying">
+        <ckeditor [editor]="Editor" [(ngModel)]="editorData" (ready)="onReady($event)"></ckeditor>
+        <div class="d-flex justify-content-center p-1">
+            <button type="button" class="btn btn-beoro-3 btn-sm mr-2" [disabled]="!editorData" (click)="onSubmit()">
+            Répondre
+          </button>
+            <button type="button" class="btn btn-beoro-1 btn-sm mx-1" (click)="onToggleReply(false)">
+            Annuler
+          </button>
+        </div>
+    </div>
+    <ng-container *ngIf="commentaireDataHelper.data$ | async as items">
+        <div class="profiletimeline mt-0" style="margin-left: 1%;" *ngIf="items.length">
+            <app-commentaire-details-ui *ngFor="let item of items" [commentaire]="item"></app-commentaire-details-ui>
+        </div>
+    </ng-container>
+    <div class="d-flex justify-content-center" [class.loading]="commentaireDataHelper.loading$ | async" *ngIf=" commentaireDataHelper.hasMoreData">
+        <button class="btn btn-link btn-sm link" (click)="commentaireDataHelper.loadData() ">
+          <h4>
+              Charger plus de réponses...
+          </h4>
+      </button>
+    </div>
+</ng-container>
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Commentaire' }}
+    </h4>
+</ng-template>

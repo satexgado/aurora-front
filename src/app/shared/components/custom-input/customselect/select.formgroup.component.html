@@ -1,0 +1,16 @@
+<div [class.loading]="loading">
+    <label *ngIf="!small" class="control-label col-12 p-0" for="description">
+      {{label}}
+      <button (click)="onShowCreateForm()" *ngIf="createModal"  class="btn float-right btn-sm btn-outline-primary mx-1"> ajouter <i class="fal fa-plus"></i></button>
+    </label>
+    <div class="input-group">
+        <button *ngIf="small  && createModal" (click)="onShowCreateForm()" class="btn btn-outline-primary btn-oblong mr-1" type="button">
+          <i class="fal fa-plus-circle"></i>
+        </button>
+        <select [(ngModel)]="selected" [class.is-valid]="selected" (ngModelChange)="onChange(selected); onTouched(true);" class="custom-select" mySelectFirstOption [required]="required" name="pageSize">
+          <ng-container *ngFor="let item of items">
+              <option *ngIf="!alreadySelected.includes(item.id)" [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+          </ng-container>
+      </select>
+    </div>
+</div>

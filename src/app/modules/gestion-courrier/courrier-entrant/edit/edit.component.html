@@ -1,0 +1,214 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments || loadingData}">
+        <div class="grid-container">
+            <div class="sidebar" [class.sidebar_small]="schemaStep">
+                <form class="custom-placeholder" [formGroup]="editForm">
+                    <article class="invoice_preview px-4 mb-4">
+                        <div class="inv_notes">
+                            <span class="badge badge-secondary">Courrier</span>
+                            <div class="formSep form-group  row justify-content-center pb-0 pt-3">
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <label class="control-label" for="salle">Numero Courrier </label>
+                                    <input type="text" autofocus class="form-control" required [formControlName]="'numero'" [ngClass]="{'is-invalid': shouldShowRequiredError('numero') || hasError('numero','alreadyUsedNumero'), 'is-valid': isValid('numero')}" name="numero" required>
+                                    <div *ngIf="shouldShowRequiredError('numero')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                    <div *ngIf="hasError('numero','alreadyUsedNumero')" class="invalid-feedback">Ce numéro est deja attribuer.</div>
+                                    <span style="zoom: 50%;" [class.loading]="editForm.get('numero').status === 'PENDING'"></span>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <label class="control-label" for="salle">Objet</label>
+                                    <input type="text" autofocus class="form-control" required [formControlName]="'objet'" [ngClass]="{'is-invalid': shouldShowRequiredError('objet'), 'is-valid': isValid('objet')}" name="objet" required>
+                                    <div *ngIf="shouldShowRequiredError('objet')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Statut" formControlName="statut_id" [selected]="editForm.get('statut_id').value" [dataSource]="allCrStatuts$" [createModal]="CrStatutEditComponent"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('statut_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Dossier" [required]="false" formControlName="dossier_id" [selected]="editForm.get('dossier_id').value" [dataSource]="allCrDossiers$" [createModal]="CrDossierEditComponent"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('dossier_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="invoice_preview px-4 mb-4">
+                        <div class="inv_notes">
+                            <span class="badge badge-secondary">Horodatage</span>
+                            <div class="formSep form-group row justify-content-center pb-0 pt-3">
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <label class="control-label" for="libelle">Date de redaction</label>
+                                    <input class="form-control form-control-sm" name="date_redaction" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_redaction'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_redaction'), 'is-valid': isValid('date_redaction')}"
+                                        required>
+                                    <div *ngIf="shouldShowRequiredError('date_redaction')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <label class="control-label" for="libelle">Date d'arrivée</label>
+                                    <input class="form-control form-control-sm" name="date_arrive" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [formControlName]="'date_arrive'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_arrive'), 'is-valid': isValid('date_arrive')}"
+                                        required>
+                                    <div *ngIf="shouldShowRequiredError('date_arrive')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="invoice_preview px-4 mb-4">
+                        <div class="inv_notes">
+                            <span class="badge badge-secondary">Correspondant</span>
+                            <div class="formSep form-group  row justify-content-center pb-0 pt-3">
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Provenance" formControlName="provenance_id" [selected]="editForm.get('provenance_id').value" [dataSource]="allCrProvenances$"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('provenance_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Expéditeur" formControlName="expediteur_id" [selected]="editForm.get('expediteur_id').value" [dataSource]="allExpediteurs$"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('expediteur_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="invoice_preview px-4 mb-4">
+                        <div class="inv_notes">
+                            <span class="badge badge-secondary">Details</span>
+                            <div class="formSep form-group  row justify-content-center pb-0 pt-3">
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Type" formControlName="type_id" [selected]="editForm.get('type_id').value" [dataSource]="allCrTypes$" [createModal]="CrTypeEditComponent"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('type_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Nature" formControlName="nature_id" [selected]="editForm.get('nature_id').value" [dataSource]="allCrNatures$" [createModal]="CrNatureEditComponent"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('nature_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                            </div>
+
+                            <div class="formSep form-group  row justify-content-center pb-0 pt-3">
+                                <div class="col-12 mb-2">
+                                    <textarea name="commentaire" [formControlName]="'commentaire'" class="form-control form-control-sm" cols="30" rows="3" [ngClass]="{'is-invalid': shouldShowRequiredError('commentaire'), 'is-valid': isValid('commentaire')}"></textarea>
+                                    <div *ngIf="shouldShowRequiredError('commentaire')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="invoice_preview px-4 mb-4">
+                        <div class="inv_notes">
+                            <span class="badge badge-secondary">Traitement</span>
+                            <div class="formSep form-group  row justify-content-center pb-0 pt-3" *ngIf="!isUpdating">
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Structure" formControlName="structure_id" [selected]="editForm.get('structure_id').value" [dataSource]="allCrStructures$"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('structure_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Suivi Par" formControlName="suivi_par" [selected]="editForm.get('suivi_par').value" [dataSource]="allUsers$"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('suivi_par')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                            </div>
+                            <div class="formSep form-group  row justify-content-center pb-0 pt-3">
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <app-select-formgroup label="Niveau d'Urgence" formControlName="urgence_id" [selected]="editForm.get('urgence_id').value" [dataSource]="allCrUrgences$" [createModal]="CrUrgenceEditComponent"></app-select-formgroup>
+                                    <div *ngIf="shouldShowRequiredError('urgence_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <label class="control-label mb-3" for="libelle">Date limite</label>
+                                    <input class="form-control" name="date_limit" (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" [formControlName]="'date_limit'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_limit'), 'is-valid': isValid('date_limit')}" required>
+                                    <div *ngIf="shouldShowRequiredError('date_limit')" class="invalid-feedback">veillez remplir ce champ.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- <article class="invoice_preview px-4 mb-4">
+                        <div class="inv_notes">
+                            <span class="badge badge-secondary">Diffusion</span>
+                        </div>
+                    </article> -->
+                    <!-- <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                        <div class="col-10">
+                            <label for="" class="control-label">Image</label>
+                            <app-file-upload formControlName="image" [image]="editForm.get('image').value"></app-file-upload>
+                            <small id="tempsHelp" class="form-text text-muted">Format autorisé PDF</small>
+                            <div class="invalid-feedback" style="display: block">
+                                <ng-container *ngIf="hasError('image', 'required')">veillez choisir un document</ng-container>
+                                <ng-container *ngIf="hasError('image', 'requiredFileType')">Seulement PDF </ng-container>
+                            </div>
+                        </div>
+                    </div> -->
+                </form>
+                <article class="invoice_preview px-4 mb-4" *ngIf="supplementaryField && getNature(editForm.get('nature_id').value)">
+                    <div class="inv_notes">
+                        <span class="badge badge-secondary">{{getNature(editForm.get('nature_id').value).libelle}}</span>
+                        <app-json-form2 [jsonFormData]="supplementaryField"></app-json-form2>
+                    </div>
+                </article>
+            </div>
+            <div class="main-content" [class.loading]="loadingData" [class.main-content_large]="schemaStep">
+                <div class="d-flex">
+                    <ng-container *ngIf="etapes && etapesType">
+                        <div class="col-6">
+                            <div class="card my-2">
+                                <div class="card-header">
+                                    <h4 class="card-header-title">
+                                        <i class="fad fa-road"></i> Etape Disponible
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group" cdkDropList #todoList="cdkDropList" [cdkDropListData]="etapes" [cdkDropListConnectedTo]="[doneList]" (cdkDropListDropped)="drop($event)">
+                                        <ng-container *ngIf="etapes && etapes.length; else noItem">
+                                            <li class="list-group-item" *ngFor="let item of etapes" cdkDrag>
+                                                <h4>{{item.libelle}}</h4>
+                                                <p>Responsable <a href="javascript:void(0);">{{item.responsable? item.responsable.libelle : item.structure?.libelle}}</a></p> <span class="text-info">{{item.duree}} jour{{item.duree > 1 ? 's': ''}}</span>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card my-2">
+                                <div class="card-header">
+                                    <h4 class="card-header-title">
+                                        <i class="fad fa-road"></i> Schema de traitement
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column" cdkDropList #doneList="cdkDropList" [cdkDropListData]="etapesType" [cdkDropListConnectedTo]="[todoList]" (cdkDropListDropped)="drop($event)">
+                                        <ng-container *ngIf="etapesType && etapesType.length; else noItem">
+                                            <div class="vertical-timeline-item vertical-timeline-element" *ngFor="let item of etapesType; let i = index" cdkDrag>
+                                                <div> <span class="vertical-timeline-element-icon bounce-in"> <i class="badge badge-dot badge-dot-xl badge-success"></i> </span>
+                                                    <div class="vertical-timeline-element-content bounce-in">
+                                                        <h4 class="timeline-title">{{item.libelle}}</h4>
+                                                        <p>Responsable <a href="javascript:void(0);" data-abc="true">{{item.responsable? item.responsable.libelle : item.structure?.libelle}}</a></p> <span class="vertical-timeline-element-date text-info">{{item.duree}} jour{{item.duree > 1 ? 's': ''}}</span>
+                                                        <p>{{item.description}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<!--
+<div class="modal-footer">
+    <ng-container *ngIf="!isUpdating">
+        <button type="button" class="btn btn-sm btn-primary mr-3" *ngIf="!schemaStep" (click)="loadEtape()" [disabled]="shouldDisableSubmit()">Suivant</button>
+        <button type="button" class="btn btn-sm btn-outline-primary mr-3" *ngIf="schemaStep" (click)="schemaStep = false;">Precedant</button>
+    </ng-container>
+    <button type="button" class="btn btn-sm btn-primary mr-3" *ngIf="schemaStep || isUpdating" (click)="onSubmit()" [disabled]="shouldDisableSubmit() || loadingData">Enregistrer et Quitter</button>
+</div> -->
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit() || loadingData">Enregistrer et Quitter</button>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

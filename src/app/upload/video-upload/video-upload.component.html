@@ -1,0 +1,8 @@
+<div class="d-flex justify-content-center" *ngIf="video">
+    <video width="320" height="240" [src]="video" (loadedmetadata)="onMetadata($event)" controls></video>
+</div>
+<div class="file-drop-area">
+    <span class="fake-btn">cliquez</span>
+    <span class="file-msg">{{file ? file.name : 'ou glissez le fichier ici' }}</span>
+    <input class="file-input" type="file">
+</div>

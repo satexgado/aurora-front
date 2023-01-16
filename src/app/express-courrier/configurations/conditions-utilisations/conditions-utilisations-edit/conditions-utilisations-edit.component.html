@@ -1,0 +1,46 @@
+<form class="custom-placeholder"
+      *ngIf="form"
+      [formGroup]="form"
+      (submit)="update()">
+
+
+  <!-- Description -->
+  <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+    <div class="col-12">
+
+
+      <!-- <ckeditor [editor]="editor"
+                      (ready)="onReady($event)"
+                      class="w-100"
+                      [ngClass]="{'is-invalid': shouldShowRequiredError('conditions_utilisations'), 'is-valid': isValid('conditions_utilisations')}"
+                      formControlName="conditions_utilisations">
+            </ckeditor> -->
+
+      <textarea class="form-control form-control-lg"
+                rows="10"
+                formControlName="conditions_utilisations"></textarea>
+      <div *ngIf="shouldShowRequiredError('conditions_utilisations')"
+           class="invalid-feedback">
+        Veuillez renseigner une conditions_utilisations
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="d-flex my-2 justify-content-end">
+
+
+
+    <div class="col-6 p-0 text-right">
+      <!-- Boutton submit -->
+      <button class="btn btn-lg btn-primary mr-1"
+              type="submit"
+              [disabled]="form.invalid">
+        <i class="fal fa-circle-notch fa-spin"
+           *ngIf="loading"></i>
+        Valider
+      </button>
+    </div>
+  </div>
+</form>

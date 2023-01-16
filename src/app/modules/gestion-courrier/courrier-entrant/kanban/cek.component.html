@@ -1,0 +1,236 @@
+<div class="row row-xs mg-0 pd-0 pt-2 pb-1 bg-light ">
+    <div class="col ">
+        <h6 class=""><i class="fad fa-mail-bulk mg-r-3  " style="padding:6px; border-radius: 50%; "></i> Gestion des courriers en entrée</h6>
+    </div>
+</div>
+<div class="card-deck ">
+    <div class="card mb-2 card-accent-info">
+        <div class="card-header">
+            <h4 class="card-header-title">
+                <i class="fad fa-mail-bulk"></i> Courrier en Entrée
+            </h4>
+            <div class="card-header-btn">
+                <a href="" class="btn btn-sm btn-oblong btn-primary"><i class="fal fa-plus"></i></a>
+            </div>
+        </div>
+        <div class="card-body p-0" *ngIf="entrantHelper">
+            <div class="d-flex p-2 sticky-top border-bottom">
+                <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="entrantHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+            </div>
+            <div class="scrollable-y-75 scroll-11" [class.loading]="entrantHelper.loading$ | async">
+                <ng-container *ngIf="entrantHelper.data$ | async as items">
+                    <ng-container *ngIf="items.length; else noItemHeaderOnly">
+                        <div class="card pt-2 m-2 card-1" *ngFor="let courrier of items;trackBy: entrantHelper.trackByFn">
+                            <div class="d-flex align-items-center justify-content-between pd-x-10 mg-b-10">
+                                <p> <i class="fal fa-bell-on bg-light tx-yeto" style="padding:6px; border-radius:50%"></i> {{courrier.courrier?.type?.libelle}}</p>
+                                <p> <i class="fal fa-globe bg-warning tx-white" style="padding:6px; border-radius:50%"></i> Provenance</p>
+                            </div>
+                            <div class=" text-center ">
+                                <span class=" tx-bold mb-0 "> {{courrier.courrier?.objet | shorten:80}} </span>
+                                <p class="  mb-0 tx-warning">
+                                    <span class=""> {{courrier.courrier?.libelle}} </span><span class=""> || </span><span class=""> {{courrier.courrier?.nature?.libelle}} </span> <span class=""> || </span><span class=""> {{courrier.date_arrive | date: 'dd/MM/yyyy'}} </span>
+                                </p>
+                            </div>
+                            <div class=" text-center pb-4">
+                                <span class=" tx-bold  "> {{courrier.expediteur?.libelle}} </span>
+                            </div>
+                            <div class="d-flex align-items-center bg-light">
+                                <div class=" justify-content-between p-0">
+                                    <p class="mg-0 ">
+                                        <span class=" pl-2"> <i class="fad fa-eye bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <a class="btn btn-sm btn-link pl-2" (click)="onShowAffectationForm(courrier)"> <i class="fad fa-share-all bg-white tx-danger" style="padding:6px ; border-radius:50%"></i></a>
+                                        <a class="btn btn-sm btn-link pl-2" (click)="onShowAffectationForm(courrier)"> <i class="fad fa-comment-alt-lines tx-warning bg-white" style="padding:6px ; border-radius:50%"></i></a>
+                                        <span class=" pl-2"> <i class="fad fa-link tx-success bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                    </p>
+                                </div>
+                                <a class="nav-link  ml-4 " id="v-pills-home-tab" data-toggle="pill" href="#utilisateurs" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                    <div class="d-flex flex-row">
+                                        <div class="profiles">
+                                            <img class="rounded-circle wd-30 ht-30" [src]="courrier.inscription?.avatar" alt="avatar">
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <section *ngIf="entrantHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="entrantHelper.loadData() ">
+                </section>
+            </div>
+
+        </div>
+    </div>
+    <div class="card mb-2 card-accent-primary">
+        <div class="card-header">
+            <h4 class="card-header-title">
+                <i class="fad fa-share-square"></i> Affecté à
+            </h4>
+        </div>
+        <div class="card-body p-0" *ngIf="affectertHelper">
+            <div class="d-flex p-2 sticky-top border-bottom">
+                <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="affectertHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+            </div>
+
+            <div class="scrollable-y-75 scroll-11" [class.loading]="affectertHelper.loading$ | async">
+                <ng-container *ngIf="affectertHelper.data$ | async as items">
+                    <ng-container *ngIf="items.length; else noItemHeaderOnly">
+                        <div class="card pt-2 m-2 card-1" *ngFor="let courrier of items;trackBy: affectertHelper.trackByFn">
+                            <div class="d-flex align-items-center justify-content-between pd-x-10 mg-b-10">
+                                <p> <i class="fal fa-ball-pile bg-light tx-yeto" style="padding:6px; border-radius:50%"></i> {{courrier.courrier?.affected_structure?.libelle}}</p>
+                                <p> <i class="fal fa-eye bg-success tx-white" style="padding:6px; border-radius:50%"></i></p>
+                            </div>
+                            <div class=" text-center ">
+                                <span class=" tx-bold mb-0 "> {{courrier.courrier?.objet | shorten:80}}</span>
+                                <p class="  mb-0 tx-warning">
+                                    <span class=""> {{courrier.courrier?.libelle}} </span><span class=""> || </span><span class=""> {{courrier.courrier?.nature?.libelle}} </span> <span class=""> || </span><span class=""> {{courrier.date_arrive | date: 'dd/MM/yyyy'}} </span>
+                                </p>
+                            </div>
+                            <div class=" text-center pb-4">
+                                <span class=" tx-bold  "> Action après affectation </span>
+                            </div>
+
+                            <div class="d-flex align-items-center bg-light">
+                                <div class=" justify-content-between p-0">
+                                    <p class="mg-0 ">
+                                        <span class=" pl-2"> <i class="fad fa-eye bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-share-all bg-white tx-danger"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-comment-alt-lines tx-warning bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-link tx-success bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                    </p>
+                                </div>
+                                <a class="nav-link  ml-4 " id="v-pills-home-tab" data-toggle="pill" href="#utilisateurs" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                    <div class="d-flex flex-row">
+                                        <div class="profiles">
+                                            <img class="rounded-circle wd-30 ht-30" [src]="courrier.inscription?.avatar" alt="avatar">
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+
+        </div>
+    </div>
+    <div class="card mb-2 card-accent-warning">
+        <div class="card-header">
+            <h4 class="card-header-title">
+                <i class="fad fa-box-ballot "></i> Traitement
+            </h4>
+        </div>
+        <div class="card-body p-0" *ngIf="traitementHelper">
+            <div class="d-flex p-2 sticky-top border-bottom">
+                <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="entrantHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+            </div>
+            <div class="scrollable-y-75 scroll-11" [class.loading]="traitementHelper.loading$ | async">
+                <ng-container *ngIf="traitementHelper.data$ | async as items">
+                    <ng-container *ngIf="items.length; else noItemHeaderOnly">
+                        <div class="card pt-2 m-2 card-1" *ngFor="let courrier of items;trackBy: traitementHelper.trackByFn">
+                            <div class="d-flex align-items-center justify-content-between pd-x-10 mg-b-10">
+                                <p> <i class="fal fa-ball-pile bg-light tx-yeto" style="padding:6px; border-radius:50%"></i> Services Traitement</p>
+                                <p> <i class="fal fa-eye bg-success tx-white" style="padding:6px; border-radius:50%"></i></p>
+                            </div>
+                            <div class=" text-center ">
+                                <span class=" tx-bold mb-0 "> {{courrier.courrier?.objet | shorten:80}}</span>
+                                <p class="  mb-0 tx-warning">
+                                    <span class=""> {{courrier.courrier?.libelle}} </span><span class=""> || </span><span class=""> {{courrier.courrier?.nature?.libelle}} </span> <span class=""> || </span><span class=""> {{courrier.date_arrive | date: 'dd/MM/yyyy'}} </span>
+                                </p>
+                            </div>
+                            <div class=" text-center pb-4">
+                                <span class=" tx-bold  "> Action pendant le traitement  </span>
+                            </div>
+
+                            <div class="d-flex align-items-center bg-light">
+                                <div class=" justify-content-between p-0">
+                                    <p class="mg-0 ">
+                                        <span class=" pl-2"> <i class="fad fa-eye bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-share-all bg-white tx-danger"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-comment-alt-lines tx-warning bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-link tx-success bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                    </p>
+                                </div>
+                                <a class="nav-link  ml-4 " id="v-pills-home-tab" data-toggle="pill" href="#utilisateurs" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                    <div class="d-flex flex-row">
+                                        <div class="profiles">
+                                            <img class="rounded-circle" src="assets/images/xs/avatar6.jpg" alt="avatar" width="26">
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+
+        </div>
+    </div>
+    <div class="card mb-2 card-accent-success">
+        <div class="card-header">
+            <h4 class="card-header-title">
+                <i class="fad fa-badge-check"></i> Validations
+            </h4>
+        </div>
+        <div class="card-body p-0" *ngIf="validationtHelper">
+            <div class="d-flex p-2 sticky-top border-bottom">
+                <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="validationtHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+            </div>
+            <div class="scrollable-y-75 scroll-11" [class.loading]="validationtHelper.loading$ | async">
+                <ng-container *ngIf="validationtHelper.data$ | async as items">
+                    <ng-container *ngIf="items.length; else noItemHeaderOnly">
+                        <div class="card m-2   pt-2" *ngFor="let courrier of items;trackBy: validationtHelper.trackByFn">
+                            <div class="d-flex align-items-center justify-content-between pd-x-10 mg-b-10">
+                                <p> <i class="fal fa-ball-pile bg-light tx-yeto" style="padding:6px; border-radius:50%"></i> Services Traitement</p>
+                                <p> <i class="fal fa-thumbs-up bg-success tx-white" style="padding:6px; border-radius:50%"></i></p>
+                            </div>
+                            <div class=" text-center ">
+                                <span class=" tx-bold mb-0 "> Personne qui à validé : Adama</span>
+                                <p class="  mb-0 tx-warning">
+                                    <span class=""> Date de validation</span>
+                                </p>
+                            </div>
+                            <div class=" text-center pb-4">
+                                <span class=" tx-bold  "> Action a effectué  </span>
+                            </div>
+
+                            <div class="d-flex align-items-center bg-light">
+                                <div class=" justify-content-between p-0">
+                                    <p class="mg-0 ">
+                                        <span class=" pl-2"> <i class="fad fa-eye bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-share-all bg-white tx-danger"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-comment-alt-lines tx-warning bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                        <span class=" pl-2"> <i class="fad fa-link tx-success bg-white"  style="padding:6px ; border-radius:50%"></i></span>
+                                    </p>
+                                </div>
+                                <a class="nav-link  ml-4 " id="v-pills-home-tab" data-toggle="pill" href="#utilisateurs" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                    <div class="d-flex flex-row">
+                                        <div class="profiles">
+                                            <img class="rounded-circle" src="assets/images/xs/avatar6.jpg" alt="avatar" width="26">
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<ng-template #noItemHeaderOnly>
+    <h5 class="text-center my-5 ">{{ 'Aucun Element' }}</h5>
+</ng-template>
+
+<ng-template #chooseCompte>
+    <h5 class="text-center my-5 ">{{ 'Selectionnez un compte' }}</h5>
+</ng-template>
+
+<ng-template #chooseSousCompte>
+    <h5 class="text-center my-5 ">{{ 'Selectionnez un sous-compte' }}</h5>
+</ng-template>
+
+<ng-template #chooseSubdivision>
+    <h5 class="text-center my-5 ">{{ 'Selectionnez une subdivision' }}</h5>
+</ng-template>

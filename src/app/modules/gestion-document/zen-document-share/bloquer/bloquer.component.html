@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h4 class="modal-title title">Mot de passe</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="item">
+    <div class="modal-body  tx-dark" [class.loading]="is_loading">
+        <form class="custom-placeholder" [formGroup]="passwordForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="password">Mot de passe</label>
+                    <input type="password" autofocus minlength="4" class="form-control  form-control-sm" required [formControlName]="'password'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'password'), 'is-valid': isValid('password')}" name="password" required>
+                    <div *ngIf="shouldShowRequiredError('password')" class="invalid-feedback">veillez saisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="confirmPass">Confirmer le Mot de passe</label>
+                    <input type="password" minlength="4" class="form-control  form-control-sm" required [formControlName]="'confirmPass'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'confirmPass'), 'is-valid': isValid('confirmPass')}" name="confirmPass" required>
+                    <div *ngIf="shouldShowRequiredError('confirmPass')" class="invalid-feedback">veillez saisir.</div>
+                    <div *ngIf="passwordForm.hasError('ConfirmedValidator')" class="invalid-feedback">les mots de passe ne correspondent pas.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" (click)="onSubmit()" [disabled]="shouldDisableSubmit() || is_loading ||!service" class="btn btn-sm btn-primary mr-3">Enregistrer et Quitter</button>
+</div>

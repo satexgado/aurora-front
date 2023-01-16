@@ -1,0 +1,23 @@
+.custom-placeholder .form-group .custom-span {
+    left: 40px;
+    top: 25px;
+}
+
+.custom-placeholder .form-group input:focus~.custom-span,
+.custom-placeholder .form-group input:valid~.custom-span,
+.custom-placeholder .form-group textarea:focus~.custom-span,
+.custom-placeholder .form-group textarea:valid~.custom-span,
+.custom-placeholder .form-group select:focus~.custom-span,
+.custom-placeholder .form-group select:valid~.custom-span {
+    top: 8px;
+    left: 20px;
+}
+
+a {
+    cursor: pointer;
+    border-bottom: 1px dotted #1b4f72;
+}
+
+b:hover {
+    border-bottom: 1px dotted #1b4f72;
+}

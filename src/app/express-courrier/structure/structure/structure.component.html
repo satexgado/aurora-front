@@ -1,0 +1,30 @@
+<router-outlet></router-outlet>
+
+
+<app-modal-sidebar-alt [configuration]="{ name: 'structure-preview-modal', position: 'right' }">
+  <app-structure-preview></app-structure-preview>
+</app-modal-sidebar-alt>
+
+
+<app-modal [configuration]="{ name: 'structure-create-modal', titre: 'Ajouter une nouvelle structure', icone:'sitemap' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-structure-create *ngIf="create"
+                        (created)="onCreated()">
+  </app-structure-create>
+</app-modal>
+
+
+
+
+
+
+<app-modal [configuration]="{ name: 'structure-edit-modal', titre: 'Modifier les informations de la structure', icone:'sitemap' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-structure-edit *ngIf="edit"></app-structure-edit>
+</app-modal>
+
+
+<app-modal-sidebar [configuration]="{ name: 'structure-filter-modal', titre: 'Filtre', icone:'sitemap' }"
+                   (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-structure-filter></app-structure-filter>
+</app-modal-sidebar>

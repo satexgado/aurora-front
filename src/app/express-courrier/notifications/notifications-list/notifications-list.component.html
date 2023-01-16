@@ -1,0 +1,54 @@
+<div class="top-notifications-area scroll-11" (scroll)="onScroll($event)">
+    <!-- Heading -->
+    <div class="notifications-heading">
+        <div class="heading-title">
+            <h6>Notifications</h6>
+        </div>
+    </div>
+    <div class="notifications-box" id="notificationsBox">
+
+        <ng-container *ngIf="notificationService.data.length">
+            <ng-container *ngFor="let notification of notificationService.data">
+                <!-- Reaffectation -->
+                <a class="dropdown-item list-group-item" *ngIf="notification.element == 'courrier transferer'" href="javascript:void(0)">
+                    <div class="d-flex justify-content-between" (click)="navigate(notification.link)">
+                        <div class="wd-45 ht-38 mg-r-15 d-flex align-items-center justify-content-center rounded-circle card-icon-warning">
+                            <i class="fa fa-bell tx-warning tx-16"></i>
+                        </div>
+                        <div>
+                            <span>Transfert de courrier</span>
+                            <span class="small tx-gray-600 ft-right">{{ notification.created_at | date }}</span>
+                            <div class="tx-gray-600 tx-11" [innerHTML]="notification.message"></div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Traitement terminé -->
+                <a class="dropdown-item list-group-item" *ngIf="notification.element == 'courrier traiter'" href="javascript:void(0)">
+                    <div class="d-flex justify-content-between" (click)="navigate(notification.link)">
+                        <div class="wd-45 ht-38 mg-r-15 d-flex align-items-center justify-content-center rounded-circle card-icon-success">
+                            <i class="fa fa-check tx-success tx-16"></i>
+                        </div>
+                        <div>
+                            <span>Traitement courrier terminé</span>
+                            <span class="small tx-gray-600 ft-right">{{ notification.created_at | date }}</span>
+                            <div class="tx-gray-600 tx-11" [innerHTML]="notification.message"></div>
+                        </div>
+                    </div>
+                </a>
+            </ng-container>
+        </ng-container>
+
+
+        <app-notification-missing *ngIf="!loading && !notificationService.data.length"></app-notification-missing>
+
+
+        <app-loading *ngIf="loading"></app-loading>
+
+
+
+    </div>
+    <!-- <div class="notifications-footer">
+    <a href="">View all Notifications</a>
+  </div> -->
+</div>

@@ -1,0 +1,58 @@
+<div class="row row-xs clearfix mg-0 pd-0 bg-white">
+  <div class="col-lg-12 p-2">
+    <!-- Header -->
+    <div class="d-flex justify-content-between mt-2 pb-1 align-items-center">
+
+      <h4 class=" ml-2">
+        <span class="mr-2"><i class="fad fa-tasks-alt"></i></span>
+        Rôles
+      </h4>
+
+      <!-- Boutton ajouter -->
+      <div>
+        <a [routerLink]="['./']"
+           [queryParamsHandling]="'preserve'"
+           fragment="add-roles"
+           class="btn btn-facebook">
+          <span class="mr-2"><i class="fas fa-plus"></i></span>
+          Ajouter
+        </a>
+      </div>
+    </div>
+
+
+    <app-roles-list></app-roles-list>
+
+  </div>
+</div>
+
+
+
+<app-modal [configuration]="{ name: 'roles-create-modal', titre: 'Ajouter un role', icone:'tasks-alt' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-roles-create *ngIf="create"
+                    (created)="onCreated()">
+  </app-roles-create>
+</app-modal>
+
+
+<app-modal [configuration]="{ name: 'roles-edit-modal', titre: 'Modifier les détails role', icone:'tasks-alt' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-roles-edit *ngIf="edit"
+                  (edited)="onEdited()">
+  </app-roles-edit>
+</app-modal>
+
+<!--
+
+<app-modal-sidebar (closed)="helper.navigation.deleteFragmentFromUrl()"
+                   [configuration]="{name: 'livraisons-filter-modal', titre: 'Filtre', icone: 'filter'}">
+  <app-livraisons-filter></app-livraisons-filter>
+</app-modal-sidebar> --->
+
+
+
+<app-modal [configuration]="{ name: 'roles-show-modal', titre: 'Details du rôle', icone:'tasks-alt' }"
+           (closed)="router.navigate(['./'], { relativeTo: route, queryParamsHandling: 'preserve' })">
+  <router-outlet></router-outlet>
+</app-modal>

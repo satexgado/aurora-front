@@ -1,0 +1,50 @@
+<ng-container *ngIf="courrier">
+    <div class="structure__header bd-b mt-3">
+        <div class="structure__header-banniere">
+            <div class="structure__header-banniere-designation">
+                <h5>({{ courrier.libelle}}) {{ courrier.courrier?.objet | titlecase}}</h5>
+                <p class="text-info mb-0">{{courrier.courrier.type.libelle}}/{{courrier.courrier.nature.libelle}}</p>
+                <p class="text-warning mb-0" *ngIf="!courrier.courrier?.cloture">{{courrier.courrier?.statut?.libelle | titlecase}}</p>
+                <p class="mb-0" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
+                    {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                    <button (click)="onShowClotureCourrierForm()" class="border-0 btn-transition btn btn-sm btn-oblong btn-dark btn-outline-dark">
+                      <i class="fal fa-edit fa-lg"></i>
+                    </button>
+                </p>
+            </div>
+        </div>
+        <div class="structure__header-tab">
+            <ul class="nav justify-content-center">
+                <!-- Details -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./home']" [routerLinkActive]="'active'">
+                        <i class="fal fa-info"></i> Details
+                    </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./tache']" [routerLinkActive]="'active'">
+                        <i class="fal fa-tasks"></i> Mes taches
+                    </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item" *ngIf="courrier.courrier?.cloture; else clotureButton">
+                    <button class="nav-link btn btn-link btn-link-success tx-gray-600" (click)="onReonpenCourrier()">
+                        <i class="fal fa-unlock"></i> Reouvrir le courrier
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</ng-container>
+
+<ng-template #clotureButton>
+    <li class="nav-item">
+        <button class="nav-link btn btn-link btn-link-warning tx-gray-600" (click)="onShowClotureCourrierForm()">
+            <i class="fal fa-lock"></i> Clore le courrier
+        </button>
+    </li>
+</ng-template>

@@ -1,0 +1,69 @@
+<div class="page-sidebar-inner ">
+    <div class="page-sidebar-menu ">
+        <div class="p-0 pb-6">
+            <ul class="navbar nav  " role="tablist">
+                <!-- Sidebar menu -->
+                <li class="nav-item w-100" *ngIf="
+                helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+                || helper.authorisation.check('proprietes courrier', 'LECTURE', undefined)
+                || helper.authorisation.check('courrier sortant', 'LECTURE', undefined)
+                || helper.authorisation.check('suivis', 'LECTURE', undefined)
+                || helper.authorisation.check('dashboard', 'LECTURE', undefined) 
+                "
+                container="body" ngbTooltip="Courrier"
+                >
+                    <a class="nav-link tx-center px-0 " [routerLink]="['courrier']" routerLinkActive="active">
+                        <i class="fal tx-20 fa-mail-bulk   text-white " style="padding:6px; border-radius:50%"></i>
+                    </a>
+                </li>
+                <li class="nav-item w-100" *ngIf="
+                helper.authorisation.check('fichier', 'LECTURE', undefined)
+                "
+                container="body" ngbTooltip="Document"
+                >
+                    <a class="nav-link tx-center px-0 " [routerLink]="['document']" routerLinkActive="active">
+                        <i class="fal tx-20 fa-file-alt text-white " style="padding:6px; border-radius:50%"></i>
+                    </a>
+                </li>
+                <li class="nav-item w-100" *ngIf="
+                helper.authorisation.check('marche public', 'LECTURE', undefined)
+                "
+                container="body" ngbTooltip="Marche Public"
+                >
+                    <a class="nav-link tx-center px-0 " [routerLink]="['marche-public/marche']" routerLinkActive="active">
+                        <i class="fal tx-20 fa-balance-scale text-white " style="padding:6px; border-radius:50%"></i>
+                    </a>
+                </li>
+                <li class="nav-item w-100" *ngIf="
+                helper.authorisation.check('coordonnees', 'LECTURE', undefined)
+                "
+                container="body" ngbTooltip="Coordonnee"
+                >
+                    <a class="nav-link tx-center px-0 " [routerLink]="['coordonnee']" routerLinkActive="active">
+                        <i class="fal tx-20 fa-address-card text-white " style="padding:6px; border-radius:50%"></i>
+                    </a>
+                </li>
+                <!-- <li class="nav-item w-100">
+                    <a class="nav-link tx-center px-0 " [routerLink]="['messagerie']" routerLinkActive="active">
+                        <i class="fal tx-20 fa-comment-alt-lines text-white " style="padding:6px; border-radius:50%"></i>
+                    </a>
+                </li>
+                <li class="nav-item w-100">
+                    <a class="nav-link tx-center px-0 " [routerLink]="['mail']" routerLinkActive="active">
+                        <i class="fal tx-20  fa-at  text-white " style="padding:6px; border-radius:50%"></i>
+                    </a>
+                </li>
+                <li class="nav-item w-100">
+                    <a class="nav-link tx-center px-0 " [routerLink]="['communication']" routerLinkActive="active">
+                        <i class="fal tx-20 fa-microphone-alt text-white " style="padding:6px; border-radius:50%"></i>
+                    </a>
+                </li> -->
+                <!-- <li class="nav-item w-100">
+                    <a class="nav-link tx-center px-0 " [routerLink]="['dashboard']" routerLinkActive="active">
+                        <i class="fal fa-chart-line tx-20 text-white " style="padding:6px; border-radius:50%"></i>
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</div>

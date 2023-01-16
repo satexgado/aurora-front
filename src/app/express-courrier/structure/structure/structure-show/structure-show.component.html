@@ -1,0 +1,87 @@
+<ng-container *ngIf="!loading && single">
+  <div class="structure__header bd-b">
+    <div class="structure__header-banniere">
+
+      <div class="structure__header-banniere-image">
+        <img [src]="single.image"
+             [alt]="single.libelle"
+             class="border">
+      </div>
+
+      <div class="structure__header-banniere-designation">
+        <h5>{{ single.libelle }}
+
+          <!-- Boutton modifer -->
+          <a class="ml-2"
+             *ngIf="helper.authorisation.check('structure', 'ECRITURE', single.id)"
+             [routerLink]="['./']"
+             container="body"
+             [fragment]="'edit-structure'"
+             [ngbTooltip]="'Modifier les details'">
+            <i class="far fa-pen"></i>
+          </a>
+        </h5>
+
+        <p>{{ single.type?.libelle }}</p>
+      </div>
+    </div>
+
+    <div class="structure__header-tab">
+      <ul class="nav justify-content-center">
+        <!-- Details -->
+        <li class="nav-item">
+          <a class="nav-link"
+             [routerLink]="['details']"
+             [routerLinkActive]="'active'"
+             href="#"><i class="fal fa-info"></i> Details
+          </a>
+        </li>
+
+        <!-- Structures -->
+        <li class="nav-item">
+          <a class="nav-link"
+             [routerLink]="['sous-structures']"
+             [routerLinkActive]="'active'">
+            <i class="fal fa-sitemap"></i> Structures
+          </a>
+        </li>
+
+        <!-- Equipe -->
+        <li class="nav-item">
+          <a class="nav-link"
+             [routerLink]="['equipe']"
+             [routerLinkActive]="'active'">
+            <i class="fal fa-users"></i> Equipe
+          </a>
+        </li>
+
+
+        <!-- Configuration -->
+        <li class="nav-item"
+            *ngIf="helper.authorisation.check('structure', 'ECRITURE')">
+          <a class="nav-link"
+             [routerLink]="['configurations']"
+             [routerLinkActive]="'active'">
+            <i class="fal fa-cog"></i> Configurations
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="structure__content col-12 p-4">
+    <router-outlet></router-outlet>
+  </div>
+</ng-container>
+
+
+<app-page-loading *ngIf="loading"></app-page-loading>
+
+
+
+<app-modal [configuration]="{ name: 'structure-edit-modal', titre: 'Modifier les informations de la structure', icone:'sitemap' }"
+           (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-structure-edit *ngIf="edit"
+                      (edited)="onEdited()"></app-structure-edit>
+</app-modal>

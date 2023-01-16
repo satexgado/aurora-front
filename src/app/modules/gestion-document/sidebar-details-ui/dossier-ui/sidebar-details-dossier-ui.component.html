@@ -1,0 +1,133 @@
+<div class="row row-xs clearfix pt-4 bd-b pb-2 mg-0 pd-0  ">
+    <div class="col">
+        <div class="image text-center"> <i class="fad fa-folder-open tx-primary tx-50"></i> </div>
+        <h6 class="text-center tx-ether" style="word-break: break-all;"> {{dossier.libelle}}</h6>
+        <p class="text-center">
+            <span class=""> {{dossier.nb_element}} éléments </span>
+            <ng-container *ngIf="dossier.size>0">
+                <span class=""> || </span>
+                <span class="tx-bold"> {{dossier.size | formatFileSize}} </span>
+            </ng-container>
+        </p>
+    </div>
+</div>
+
+<div class="">
+    <ng-container *ngIf="share$ | async as dossier_shares">
+        <div class="row row-xs clearfix pt-2 bd-b pb-4 mg-0 pd-0 " *ngIf="dossier_shares && dossier_shares.length">
+            <div class="pl-2 ">
+                <h6 class="pt-2 pb-2"> Partager avec </h6>
+            </div>
+            <div class="col-lg-12  pb-1 pt-1">
+                <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                    <li *ngFor="let item of dossier_shares" class="mg-l--10">
+                        <div class="avatar">
+                            <img [src]="item.personne.avatar" title="{{item.personne.libelle}}" class="avatar-initial border border-secondary rounded-circle" alt="">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </ng-container>
+
+    <table class="table  table-hover table-lg mb-0 ">
+        <tbody class=" border-0 ">
+            <tr>
+                <td class="  bg-light">
+                    <div class=" from"><a class=" tx-gray-600 tx-14"> Ajouter par </a></div>
+                </td>
+                <td class=" width40 ">
+                    <div class=" from"><a class=" tx-gray-600 tx-14" style="white-space: break-spaces;">
+                    {{dossier.user?.libelle}}
+                    </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="  bg-light">
+                    <div class=" from"><a class=" tx-gray-600 tx-14"> Créer le </a></div>
+                </td>
+                <td class=" width40 ">
+                    <div class=" from"><a class=" tx-gray-600 tx-14"> {{dossier.created_at | date: 'dd/MM/yyyy  H:mm'}} </a></div>
+                </td>
+            </tr>
+            <tr class="  ">
+                <td class="  bg-light">
+                    <div class=" from"><a class=" tx-gray-600 tx-14"> Modifier </a></div>
+                </td>
+                <td class=" width40 ">
+                    <div class=" from"><a class=" tx-gray-600 tx-14"> {{dossier.updated_at | date: 'dd/MM/yyyy  H:mm'}} </a></div>
+                </td>
+            </tr>
+
+            <tr class="  ">
+                <td class="  bg-light">
+                    <div class=" from"><a class=" tx-gray-600 tx-14"> Description </a></div>
+                </td>
+                <td class=" width40 ">
+                    <div class=" from" style="white-space: break-spaces;"><a class=" tx-gray-600 tx-14"> {{dossier.description}} </a></div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <!-- <div class=" row row-xs mg-0  clearfix pb-3 pt-3 ">
+        <h6 class="card-header-title pb-2">
+            Contenu du Dossier
+        </h6>
+
+        <div class="w-100">
+            <ul class="list-group" [class.loading]="is_loading_content">
+                <ng-container *ngIf="(fichiers && fichiers.length) || (dossier_enfant && dossier_enfant.length)  else emptyTemplate">
+                    <li class="card-1 list-group-item p-2 mb-2" *ngFor="let fichier of fichiers;">
+                        <a class="d-flex" [href]="fichier.fichier" target="_blank">
+                            <div class="">
+                                <i class="{{fichier.type?.icon}} mr-2 tx-30 pt-1"></i>
+                            </div>
+                            <div class="pd-sm-l-10">
+                                <p class="tx-dark mg-b-0" style="word-break: break-all;">{{ fichier.libelle }}</p>
+                                <span class=" mg-b-0 tx-gray-500">{{fichier.size | formatFileSize}}|{{fichier.date | date: 'dd/MM/yyyy  H:mm'}}</span>
+                                <div *ngIf="fichier.upload && fichier.upload.state != 'Done'" class="progress">
+                                    <div class="progress-bar" [class.bg-danger]="!fichier.upload.state" [class.bg-success]="fichier.upload.state == 'DONE'" role="progressbar" style="width: {{fichier.upload.progress}}%;" [aria-valuenow]="fichier.upload.progress" aria-valuemin="0" aria-valuemax="100">{{fichier.upload.progress}}%</div>
+                                </div>
+                            </div>
+                            <div class="mg-l-auto text-right">
+                                <p class="tx-dark mg-b-0"><i class="fad fa-ellipsis-h  pt-1"></i></p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="card-1 list-group-item p-2 mb-2" *ngFor="let dossier of dossier_enfant;">
+                        <a class="d-flex">
+                            <div class="">
+                                <i class="fad fa-folder-open tx-facebook mr-2 tx-30 pt-1"></i>
+                            </div>
+                            <div class="pd-sm-l-10">
+                                <p class="tx-dark mg-b-0" style="word-break: break-all;">{{ dossier.libelle }}</p>
+                                <span class=" mg-b-0 tx-gray-500">
+                          <ng-container *ngIf="dossier.nb_element">
+                            {{dossier.nb_element}} éléments |
+                          </ng-container>
+                          <ng-container *ngIf="dossier.size > 0">
+                            {{dossier.size | formatFileSize}} |
+                          </ng-container>
+                          {{dossier.created_at | date: 'dd/MM/yyyy  H:mm'}}
+                        </span>
+                            </div>
+                            <div class="mg-l-auto text-right">
+                                <p class="tx-dark mg-b-0"><i class="fad fa-ellipsis-h  pt-1"></i></p>
+                            </div>
+                        </a>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+    </div> -->
+</div>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

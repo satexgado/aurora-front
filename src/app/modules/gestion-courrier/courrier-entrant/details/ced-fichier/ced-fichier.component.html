@@ -1,0 +1,37 @@
+<section [class.loading]="!courrier">
+    <div class="card" *ngIf="courrier">
+        <button (click)="openFileModal()" *ngIf="helper.authorisation.check('courrier entrant', 'ECRITURE', undefined)" class="btn btn-sm btn-outline-primary card-1 mx-1">
+          <i class="fad fa-file-alt"></i>
+          Nouveau Fichier
+        </button>
+        <div class="scroll-11 scrollable-y-75 p-3">
+            <div class="w-100">
+                <ul class="list-group" [class.loading]="is_loading_content">
+                    <ng-container *ngIf="(fichiers && fichiers.length)  else emptyTemplate">
+                        <li class="card-1 list-group-item p-2 mb-2" *ngFor="let fichier of fichiers;">
+                            <app-fichier-item-ui [fichier]="fichier" (fichierDeleteEmitter)="onDeleteFichier($event)" [canSelect]="false"></app-fichier-item-ui>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #dontExist>
+    <br>
+    <section class="bg-white">
+        <h4 class="text-center title p-3">
+            {{ 'Aucun courrier trouver' }}
+        </h4>
+    </section>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

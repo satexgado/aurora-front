@@ -1,0 +1,263 @@
+<!-- <div class="w-100">
+    <img src="assets/image/logo-drapeau.png" class="img-fluid d-block mx-auto my-2" alt="">
+</div> -->
+<nav class="navbar navbar-expand-lg navbar-light info bd-b bd-2">
+    <a class="navbar-brand">
+        <img src="assets/image/logo-drapeau.png" alt="..." height="36">
+    </a>
+    <a class="navbar-brand">
+        <img src="assets/image/logo-mea-transparent.png" alt="..." height="36">
+    </a>
+    <a class="tx-ether mg-l-4 tx-20 " href="#" style="vertical-align: middle; text-shadow: 0px 1px 0px">
+      SIGECAM
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    </div>
+    <div class="header-right pull-right">
+        <ul class="list-inline justify-content-end my-auto">
+            <!--================================-->
+            <!-- Notifications Dropdown Start -->
+            <!--================================-->
+            <li class="list-inline-item dropdown hidden-xs">
+                <a class="notification-icon" [ngStyle]="{'vertical-align': authService.user.photo ? 'sub' : 'initial'}" href="" role="button" (click)="newNotification = false" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-bell tx-16"></i>
+                    <span class="notification-count wave in" *ngIf="newNotification"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow-2">
+                    <!-- Top Notifications Area -->
+                    <app-notifications-list></app-notifications-list>
+                </div>
+            </li>
+            <!--/ Notifications Dropdown End -->
+            <!--================================-->
+            <!-- Messages Dropdown Start -->
+            <!--================================-->
+            <!-- <li class="list-inline-item dropdown hidden-xs">
+                <a class="message-icon" href="" role="button" data-toggle="dropdown" aria-haspopup="true" (click)="newInbox = false" aria-expanded="false">
+                    <i class="icon-envelope tx-16"></i>
+                    <span class="messages-count wave in" *ngIf="newInbox"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow-2">
+                    <app-inbox-list></app-inbox-list>
+                </div>
+            </li> -->
+            <!--/ Messages Dropdown End -->
+            <!--================================-->
+            <!-- Profile Dropdown Start -->
+            <!--================================-->
+            <li class="list-inline-item dropdown">
+                <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="select-profile" [ngStyle]="{'vertical-align': authService.user.photo ? 'sub' : 'super'}">Bonjour, {{ authService.user.prenom }}!</span>
+                    <img *ngIf="authService.user.photo" [src]="authService.user.photo" style="object-fit: cover; object-position: center;" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                    <i *ngIf="!authService.user.photo" class="fad fa-user-circle"
+                           style="font-size: 35px; vertical-align: bottom;"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-profile shadow-2">
+                    <div class="user-profile-area">
+                        <div class="user-profile-heading">
+                            <div class="profile-thumbnail">
+                                <img *ngIf="authService.user.photo" [src]="authService.user.photo" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                                <span *ngIf="!authService.user.photo">
+                                    <i class="fad fa-user-circle"
+                                       style="font-size: 35px;"></i>
+                                  </span>
+                            </div>
+                            <div class="profile-text">
+                                <h6>{{ authService.user.prenom }} {{ authService.user.nom }}</h6>
+                                <span>{{ authService.user.email }}</span>
+                            </div>
+                        </div>
+                        <a [routerLink]="['courrier']" *ngIf="
+                        helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+                        || helper.authorisation.check('proprietes courrier', 'LECTURE', undefined)
+                        || helper.authorisation.check('courrier sortant', 'LECTURE', undefined)
+                        || helper.authorisation.check('suivis', 'LECTURE', undefined)
+                        || helper.authorisation.check('dashboard', 'LECTURE', undefined) 
+                        " class="dropdown-item"><i class="fas fa-mail-bulk"
+                          aria-hidden="true"></i> Courrier </a>
+                        <a [routerLink]="['document']" *ngIf="
+                        helper.authorisation.check('fichier', 'LECTURE', undefined)
+                        " class="dropdown-item"><i class="fas fa-file-alt"
+                            aria-hidden="true"></i> Document </a>
+                        <a [routerLink]="['marche-public/marche']" *ngIf="
+                        helper.authorisation.check('marche public', 'LECTURE', undefined)
+                        " class="dropdown-item"><i class="fas fa-balance-scale"
+                              aria-hidden="true"></i> Marche Public </a>
+                        <a [routerLink]="['users', authService.user.id]" class="dropdown-item"><i class="icon-user"
+                 aria-hidden="true"></i> Mon profil</a>
+                        <a [routerLink]="['organisation']" class="dropdown-item"><i class="fal fa-chart-network"
+                 aria-hidden="true"></i> Mes structures </a>
+                        <a [routerLink]="['organisation/organigramme']" class="dropdown-item"><i class="far fa-network-wired"
+                 aria-hidden="true"></i> Organigramme</a>
+                        <a [routerLink]="['organisation/structures/all']" class="dropdown-item"><i class="fad fa-chart-network"
+                 aria-hidden="true"></i> Liste des structures</a>
+                        <a (click)="logout()" class="dropdown-item"><i class="icon-power"
+                 aria-hidden="true"></i> Deconnexion</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Profile Dropdown End -->
+            <!--================================-->
+            <!-- Setting Sidebar Start -->
+            <!--================================-->
+
+            <!--/ Setting Sidebar End -->
+        </ul>
+    </div>
+    <!--/ Header Right End -->
+</nav>
+<div class="d-flex justify-content-center" *ngIf="authService.user?.affectation_structure?.structure">
+    <div class="m-2">
+        <div>
+            <img class="mx-auto d-block avatar-home" [src]="authService.user.affectation_structure?.structure?.image" alt="">
+        </div>
+    </div>
+    <h1 class="text-center m-2" style="
+    color: #1a5276;
+    display: flex;
+    align-items: center;
+    justify-content: center;">
+        {{authService.user?.affectation_structure?.structure?.libelle}}
+    </h1>
+</div>
+
+<div class="d-flex flex-wrap my-2">
+    <div class="col-lg-4  col-md-6 text-center" *ngIf="
+    helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+    || helper.authorisation.check('proprietes courrier', 'LECTURE', undefined)
+    || helper.authorisation.check('courrier sortant', 'LECTURE', undefined)
+    || helper.authorisation.check('suivis', 'LECTURE', undefined)
+    || helper.authorisation.check('dashboard', 'LECTURE', undefined) 
+    ">
+        <a [routerLink]="['courrier']" class="card card-1 text-white bg-primary border-light m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fa fa-mail-bulk fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Courrier</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4  col-md-6 text-center" 
+    *ngIf="
+    helper.authorisation.check('fichier', 'LECTURE', undefined)
+    ">
+        <a [routerLink]="['document']" class="card card-1 text-white bg-yeto border-light m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fas fa-file-alt fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Document </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4  col-md-6 text-center"
+    *ngIf="
+    helper.authorisation.check('marche public', 'LECTURE', undefined)
+    ">
+        <a [routerLink]="['marche-public/marche']" class="card card-1 text-white bg-primary border-light m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fas fa-balance-scale fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Marche Public</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4  col-md-6 text-center">
+        <a [routerLink]="['organisation']" class="card card-1 text-primary bg-light border-primary m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fal fa-chart-network fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Mes Structures</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4  col-md-6 text-center">
+        <a [routerLink]="['organisation/organigramme']" class="card card-1 tx-yeto bg-light border-primary m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fas fa-network-wired fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Organigramme </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4  col-md-6 text-center">
+        <a [routerLink]="['organisation/structures/all']" class="card card-1 text-primary bg-light border-primary m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fad fa-chart-network fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Liste des structures</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4  col-md-6 text-center"
+    *ngIf="
+    helper.authorisation.check('coordonnees', 'LECTURE', undefined)
+    ">
+        <a [routerLink]="['coordonnee']" class="card card-1 text-white bg-primary border-light m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fal fa-address-card fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Coordonnees</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4  col-md-6 text-center">
+        <a [routerLink]="['users', authService.user.id]" class="card card-1 text-white bg-yeto border-light m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fas fa-user-circle fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Mon profil</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4  col-md-6 text-center">
+        <a [routerLink]="['tache']" class="card card-1 text-white bg-primary border-light m-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><i class="fas fa-tasks-alt fa-5x"></i></div>
+                    <div class="col-sm-12 card-text">
+                        <div class="huge">Taches</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+
+<div class="d-flex align-items-center bg-echolight2 py-2 border-light cart-panel-foo-fix justify-content-center">
+    <!-- Logo -->
+    <a class="navbar-brand overflow-hidden p-0" href="https://www.open2sw.com/" target="_blank">
+        <img src="assets/images/connexion/logo-o2sw.svg" alt="logo" width="140px">
+    </a>
+    <div class="tx-ether">
+        © 2022 SIGECAM  by Open Software Solution for the World
+    </div>
+</div>

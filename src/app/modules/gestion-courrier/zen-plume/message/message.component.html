@@ -1,0 +1,11 @@
+<div class="row row-xs pd-0 mg-0 clearfix bg-white ">
+    <div class="col-lg-3  scrollable-y-75 scroll-11 " style="background-image: linear-gradient(to right top,#F8FAFA,#F8FAFA); ">
+        <div #dynamicSideBarView></div>
+    </div>
+    <div class="col-lg-4  scrollable-y-75 scroll-11 ">
+        <app-zen-message-list (onSelectMessage)="onSetMessage($event) " [filter]="messageFilterGrp "></app-zen-message-list>
+    </div>
+    <div class=" col-lg-5 bg-light  scrollable-y-75 scroll-11 ">
+        <app-zen-message-details [message]="message "></app-zen-message-details>
+    </div>
+</div>

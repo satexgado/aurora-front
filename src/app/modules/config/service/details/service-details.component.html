@@ -1,0 +1,26 @@
+<div *ngIf="service">
+    <div class="col-lg-12 p-0">
+        <div class="row">
+            <h3 class="tx-16 pt-2 tx-facebook mg-l-20 font-weight-bold"><i class="fal fa-ball-pile"></i> {{service.libelle | titlecase}}</h3>
+        </div>
+    </div>
+    <div class="d-flex flex-wrap bg-light border-bottom border-top col-12 p-0">
+        <a role="button" class="btn btn-default tx-12 flex-1" routerLinkActive="btn-label-primary" [routerLink]="[ '/config/service/'+service.id+'/details']">
+            <i class="fal fa-info" style="padding: 6px; border-radius: 50%;"></i> <span>  Details</span>
+        </a>
+        <a role="button" class="btn btn-default tx-12 flex-1" routerLinkActive="btn-label-primary" [routerLink]="[ '/config/service/'+service.id+'/utilisateurs']">
+            <i class="fal fa-users" style="padding: 6px; border-radius: 50%;"></i> <span> Utilisateurs</span>
+        </a>
+        <a role="button" class="btn btn-default tx-12 flex-1" routerLinkActive="btn-label-primary" [routerLink]="[ '/config/service/'+service.id+'/hierarchie']">
+            <i class="fal fa-sitemap" style="padding: 6px; border-radius: 50%;"></i> <span> Hierarchie</span>
+        </a>
+        <a role="button" class="btn btn-default tx-12 flex-1" routerLinkActive="btn-label-primary" [routerLink]="[ '/config/service/'+service.id+'/contact']">
+            <i class="fal fa-phone-office" style="padding: 6px; border-radius: 50%;"></i> <span>  Contact</span>
+        </a>
+        <a role="button" class="btn btn-default tx-12 flex-1" routerLinkActive="btn-label-primary" [routerLink]="[ '/config/service/'+service.id+'/permission']">
+            <i class="fal fa-edit " style="padding: 6px; border-radius: 50%;"></i> <span>  Permission</span>
+        </a>
+    </div>
+
+    <router-outlet></router-outlet>
+</div>

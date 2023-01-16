@@ -1,0 +1,65 @@
+<div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+
+    <div class="col-lg-7">
+        <div class="input-group ">
+            <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="searchTerm">
+        </div>
+    </div>
+
+    <div class="col-lg-5 ">
+
+    </div>
+</div>
+
+
+<!-- <div [ngbNavOutlet]="nav" class="mt-2"></div> -->
+
+<div class="row">
+
+    <div class="col-12">
+        <div style="text-align:center">
+            <apx-chart *ngIf="chartOptions3" [series]="chartOptions3.series" [chart]="chartOptions3.chart" [xaxis]="chartOptions3.xaxis" [title]="chartOptions3.title"></apx-chart>
+        </div>
+    </div>
+    <div class="col-12">
+        <div style="text-align:center">
+            <apx-chart *ngIf="chartOptions4" [series]="chartOptions4.series" [chart]="chartOptions4.chart" [xaxis]="chartOptions4.xaxis" [title]="chartOptions4.title"></apx-chart>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card card-2 mt-2">
+            <div class="card-header">
+                <h6 class="card-header-title">
+                    Type de marché
+                </h6>
+            </div>
+            <div class="card-body">
+                <apx-chart *ngIf="chartOptions2" [series]="chartOptions2.series" [chart]="chartOptions2.chart" [labels]="chartOptions2.labels" [colors]="chartOptions2.colors" [title]="chartOptions2.title">
+
+                </apx-chart>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card card-2 mt-2">
+            <div class="card-header">
+                <h6 class="card-header-title">
+                    Procedure
+                </h6>
+            </div>
+
+            <div class="card-body">
+                <apx-chart *ngIf="chartOptions" [series]="chartOptions.series" [chart]="chartOptions.chart" [labels]="chartOptions.labels" [colors]="chartOptions.colors" [title]="chartOptions.title">
+
+                </apx-chart>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

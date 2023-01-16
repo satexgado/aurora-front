@@ -1,0 +1,36 @@
+<section class="py-0 font-1"
+         *ngIf="!loading">
+  <div class="container-fluid h-100 ">
+    <div class="row h-full h-100 ">
+      <!-- Left side image -->
+      <div class="col-lg-6  pl-4 pt-8  pl-4 text-left background-11 d-flex">
+        <img src="assets/images/connexion/fond.svg"
+             width="700">
+      </div>
+
+      <div class="col-lg-6  "
+           style="position: relative;">
+        <!-- Logo -->
+        <a class="logo overflow-hidden "
+           href="o2sw.html">
+          <img src="assets/images/connexion/logo-o2sw.svg"
+               alt="logo"
+               width="140px">
+        </a>
+
+        <app-signup-welcome *ngIf="panel.welcome"
+                            (suivant)="showPanel('userEdit')"></app-signup-welcome>
+
+
+        <app-signup-user-edit *ngIf="panel.userEdit"
+                              (suivant)="showPanel('password')"></app-signup-user-edit>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<app-page-loading *ngIf="loading"></app-page-loading>

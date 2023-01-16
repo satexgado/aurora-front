@@ -1,0 +1,85 @@
+<ng-container *ngIf="element">
+  <!-- Sent -->
+  <div class="tunel__message-container tunel__message-container--reverse"
+       [ngClass]="{ 'tunel__message-container--reverse': reversed, 'tunel__message-container--initial': !reversed }">
+
+    <!-- Reaction owner Name -->
+    <div class="tunel__message-owner"
+         *ngIf="!skipProfile">
+      <ng-container *ngIf="!element.structure">{{ element.inscription?.nom_complet }}</ng-container>
+
+      <ng-container *ngIf="element.structure && isStructure(element.structure)">{{ element.structure?.cigle}}</ng-container>
+    </div>
+
+    <div class="tunel__message"
+         [ngClass]="{ 'tunel__message--reverse': reversed, 'tunel__message--initial': !reversed }">
+      <!-- Reaction owner image -->
+      <!-- <div class="tunel__message-owner-image"><img [src]="element.inscription?.photo"
+             class="img-fluid image-contact"
+             [alt]="element.inscription?.nom_complet"></div> -->
+
+      <!-- Arrow -->
+      <div class="tunel__message-arrow"></div>
+
+      <div class="tunel__message-text">
+        <!-- Rebondissement message -->
+        <div class="tunel__message-rebondissement-text"
+             *ngIf="rebondissement">
+          <!-- Rebondissement message user -->
+          <div class="font-weight-bolder">{{ rebondissement.inscription?.nom_complet }}</div>
+
+          <!-- Rebondissement message reaction -->
+          {{ rebondissement.reaction }}
+        </div>
+
+        <!-- Reaction text -->
+        <span *ngIf="element.reaction">{{element?.reaction}}</span>
+
+        <!-- Reaction type fichier -->
+        <ng-container *ngIf="element.fichier">
+          <!-- Reaction image -->
+          <a [href]="element.fichier"
+             target="_blank">
+            <img class="tunel__reaction-image"
+                 class="img-fluid image-contact"
+                 *ngIf="helper.file.checkExtensions(element.fichier, imageHandlerService.acceptedImageExtension)"
+                 [src]="element.fichier">
+          </a>
+
+          <!-- Reaction fichier -->
+          <a [href]="element.fichier"
+             *ngIf="helper.file.checkExtensions(element.fichier, ['pdf', 'PDF'])"
+             target="_blank">
+            <span class="tunel__reaction-document">
+              <i class="fad fa-file-pdf"></i> {{ element.fichier.split('/')[element.fichier.split('/').length - 1] }} <i
+                 class="fad fa-arrow-alt-to-bottom"></i>
+            </span>
+          </a>
+
+          <!-- Reaction audio -->
+          <audio class="tunel__reaction-audio"
+                 *ngIf="helper.file.checkExtension(element.fichier, 'mp3')"
+                 controls>
+            <source [src]="element.fichier">
+          </audio>
+
+        </ng-container>
+
+        <!-- Action buttons -->
+        <div class="tunel__message__action-buttons">
+          <span class="tunel__message__action-button"
+                (click)="rebondir()"
+                container="body"
+                [ngbTooltip]="'Rebondir'"><i class="far fa-comments"></i></span>
+          <span class="tunel__message__action-button"
+          container="body"
+                [ngbTooltip]="'Partager'"><i class="far fa-share"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</ng-container>

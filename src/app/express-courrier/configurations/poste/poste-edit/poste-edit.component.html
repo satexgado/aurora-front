@@ -1,0 +1,5 @@
+<app-common-element-edit *ngIf="single"
+                         (emitted)="onEdited($event)"
+                         [element$]="poste$.asObservable()"
+                         [loading]="loading">
+</app-common-element-edit>

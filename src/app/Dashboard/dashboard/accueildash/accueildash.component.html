@@ -1,0 +1,335 @@
+<div class="col-md-12 p-0" *ngIf="datadash">
+    <div class="row row-xs mg-0 pd-0 clearfix">
+        <div class=" col-lg-9 pl-4" style="background-image: linear-gradient(to right bottom,#ECF7FC,#F8F7F4);">
+            <div class=" row row-xs mg-0  clearfix  ">
+                <div class="   col-lg-12 pl-2 pr-2 pl-2 pt-2">
+                    <div class="   p-3">
+                        <div class="row row-xs clearfix">
+                            <div class="   col-lg-3 pl-2 pr-2 pl-2 ">
+                                <div class="row row-xs clearfix">
+                                    <div class="   col-lg-12 pl-2 pr-2 pl-2 ">
+                                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                                            <div class="card-body p-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-primary">
+                                                        <i class="fad fa-mailbox tx-primary tx-20"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">Total Courrier</h4>
+                                                        <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                                            <i class="fad fa-arrow-to-right tx-primary "></i>
+                                                            <span class="tx-primary  d-flex align-items-center">
+                                                                {{datadash?.total}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="   col-lg-12 pl-2 pr-2 pl-2">
+                                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                                            <div class="card-body p-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-success">
+                                                        <i class="fad fa-envelope-open-text tx-success tx-20"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">
+                                                            Déja traités
+                                                        </h4>
+                                                        <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                                            <span class="tx-success  d-flex align-items-center">
+                                                                <i class="fad fa-arrow-to-top tx-success "></i>
+                                                                {{datadash?.traite}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="   col-lg-12 pl-2 pr-2 pl-2">
+                                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                                            <div class="card-body p-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-warning">
+                                                        <i class="fad fa-envelope-open tx-warning tx-20"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">
+                                                            En traitement
+                                                        </h4>
+                                                        <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                                            <span class="tx-warning  d-flex align-items-center">
+                                                                <i class="fad fa-arrow-h tx-success "></i>
+                                                                {{datadash?.entraitement}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="   col-lg-12 pl-2 pr-2 pl-2 ">
+                                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                                            <div class="card-body p-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-danger">
+                                                        <i class="fad fa-envelope tx-danger tx-20"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="tx-uppercase tx-12 mg-b-10 tx-bold">
+                                                            Non traités
+                                                        </h4>
+                                                        <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                                            <span class="tx-danger  d-flex align-items-center">
+                                                                <i class="fad fa-arrow-to-bottom tx-danger "></i>
+                                                                {{datadash?.nontraite}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" col-lg-9  pl-4 ">
+                                <div class="mycard2 bg-white">
+                                    <apx-chart [series]="chartOptions4.series" [chart]="chartOptions4.chart" [dataLabels]="chartOptions4.dataLabels" [plotOptions]="chartOptions4.plotOptions" [colors]="chartOptions4.colors">
+                                    </apx-chart>
+                                    <div class="mg-b-0"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 bg-light">
+            <div class="    pl-4 pt-4 pr-4">
+                <div class="row row-xs clearfix">
+                    <div class="   col-lg-12 pl-2 pr-2 pl-2 ">
+                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                            <div class="card-body p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-primary">
+                                        <i class="fad fa-mail-bulk tx-primary tx-20"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold"> Courriers sortis
+                                        </h4>
+                                        <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                            <i class="fad fa-arrow-to-right tx-primary "></i>
+                                            <span class="tx-primary  d-flex align-items-center">
+                                                {{datadash?.sortant}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="   col-lg-12 pl-2 pr-2 pl-2">
+                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                            <div class="card-body p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-success">
+                                        <i class="fad fa-chair-office tx-success tx-20"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">
+                                            Courriers entrants
+                                        </h4>
+                                        <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                            <span class="tx-success  d-flex align-items-center">
+                                                <i class="fad fa-arrow-to-top tx-success "></i> {{datadash?.entrant}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="   col-lg-12 pl-2 pr-2 pl-2">
+                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                            <div class="card-body p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-warning">
+                                        <i class="fad fa-link tx-warning tx-20"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">
+                                            Courriers internes
+                                        </h4>
+                                        <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                            <span class="tx-warning  d-flex align-items-center">
+                                                <i class="fad fa-arrow-h tx-success "></i>
+                                                {{datadash?.interne}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="   col-lg-12 pl-2 pr-2 pl-2 ">
+                        <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                            <div class="card-body p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-teal">
+                                        <i class="fad fa-building tx-teal tx-20"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="tx-uppercase tx-12 mg-b-10 tx-bold"> Fichiers</h4>
+                                        <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                            <span class="tx-teal  d-flex align-items-center">
+                                                <i class="fad fa-arrow-to-bottom tx-teal "></i>
+                                                {{datadash?.fichier}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4 pr-3 pl-3 bg-light">
+            <div class="row row-xs clearfix  mg-0 pd-0 pb-2">
+                <div class=" col-lg-12  pl-3 p-0 ">
+                    <div class="  mycard3 p-0 ">
+                        <div class=" ">
+                            <div class=" row row-xs mg-0 bd-b clearfix  pt-2 pb-2">
+                                <div class="col-lg-10 ">
+                                    <div class=" pl-2">
+                                        <p class="mb-0 tx-facebook  tx-bold"> Derniers courriers entrés</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row row-xs clearfix  mg-0 pd-0 ">
+                            <div class="col-lg-12 p-0 " *ngIf="datadash?.lastentrant[0]">
+                                <ul class="list-group list-group-flush tx-13 ">
+                                    <li class="list-group-item card-1 pd-sm-x-10 bd-b bg-white" style="background: #f0f4f7 " *ngFor="let item of datadash?.lastentrant">
+                                        <a [routerLink]="['/courrier/entrant', item.id]" class="d-flex">
+                                            <div class="pd-sm-l-10">
+                                                <p class="tx-ether4 mg-b-0"> {{item.structure}}</p>
+                                                <span class="tx-12 mg-b-0 tx-success pt-2"> {{item?.libelle}}
+                                            </span>
+                                            </div>
+                                            <div class="mg-l-auto text-right">
+                                                <p class="mg-b-0  tx-dar"><small>{{item?.created_at | date:'mediumDate'}}</small></p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-12" *ngIf="!datadash?.lastentrant[0]">
+                                <br><br><br><br>
+                                <div class="col-md-12 text-center noData">
+                                    <app-no-data></app-no-data>
+                                </div>
+                                <br><br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 pr-3 pl-3 bg-light">
+            <div class="row row-xs clearfix  mg-0 pd-0 pb-2">
+                <div class=" col-lg-12  pl-3 p-0  ">
+                    <div class="  mycard3 p-0 ">
+                        <div class=" ">
+                            <div class=" row row-xs mg-0 bd-b clearfix  pt-2 pb-2">
+                                <div class="col-lg-10 ">
+                                    <div class=" pl-2">
+                                        <p class="mb-0 tx-facebook  tx-bold"> Derniers courriers sortis</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-xs clearfix  mg-0 pd-0 ">
+                            <div class="col-lg-12  p-0" *ngIf="datadash?.lastsortant[0]">
+                                <ul class="list-group list-group-flush tx-13 ">
+                                    <li class="list-group-item  pd-sm-x-10 bd-b bg-white" style="background: #f0f4f7 " *ngFor="let item of datadash?.lastsortant">
+                                        <a [routerLink]="['/courrier/sortant', item.id]" class="d-flex">
+
+                                            <div class="pd-sm-l-10">
+                                                <p class="tx-ether4 mg-b-0"> {{item.structure}}</p>
+                                                <span class="tx-12 mg-b-0 tx-warning pt-2"> {{item.libelle}}
+                                            </span>
+                                            </div>
+                                            <div class="mg-l-auto text-right">
+                                                <p class="mg-b-0  tx-dar"><small>{{item?.created_at | date:'mediumDate'}}</small></p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-12" *ngIf="!datadash?.lastsortant[0]">
+                                <br><br><br><br>
+                                <div class="col-md-12 text-center noData">
+                                    <app-no-data></app-no-data>
+                                </div>
+                                <br><br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 pr-3 pl-3 bg-light">
+            <div class="row row-xs clearfix  mg-0 pd-0 pb-2">
+                <div class=" col-lg-12  pl-3 ">
+                    <div class="  mycard3 p-0 ">
+                        <div class=" ">
+                            <div class=" row row-xs mg-0 bd-b clearfix  pt-2 pb-2">
+                                <div class="col-lg-10 ">
+                                    <div class=" pl-2">
+                                        <p class="mb-0 tx-facebook  tx-bold"> Derniers courriers interne</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-xs clearfix  mg-0 pd-0 ">
+                            <div class="col-lg-12  p-0" *ngIf="datadash?.lastinterne[0]">
+                                <ul class="list-group list-group-flush tx-13 ">
+                                    <li class="list-group-item pd-sm-x-10 bd-b bg-white" style="background: #f0f4f7 " *ngFor="let item of datadash?.lastinterne">
+                                        <a class="d-flex" [routerLink]="['/courrier/entrant', item.id]">
+
+                                            <div class="pd-sm-l-10">
+                                                <p class="tx-ether4 mg-b-0"> {{item.structure}}</p>
+                                                <span class="tx-12 mg-b-0 tx-facebook pt-2"> {{item.libelle}}
+                                            </span>
+                                            </div>
+                                            <div class="mg-l-auto text-right">
+                                                <p class="mg-b-0  tx-dar"><small>{{item?.created_at | date:'mediumDate'}}</small></p>
+                                            </div>
+                                        </a>
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-12" *ngIf="!datadash?.lastinterne[0]">
+                                <br><br><br><br>
+                                <div class="col-md-12 text-center noData">
+                                    <app-no-data></app-no-data>
+                                </div>
+                                <br><br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 text-center" *ngIf="!datadash">
+    <app-loarding></app-loarding>
+</div>

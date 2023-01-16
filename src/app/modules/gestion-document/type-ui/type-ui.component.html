@@ -1,0 +1,88 @@
+<div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+    <div class=" bg-white col-12 p-2">
+        <div class="pb-4">
+            <div class="pd-t-5 pd-b-5">
+                <h1 class="pd-0 mg-0 tx-20">
+                    <i [class]="typeFichier.icon"></i>
+                    {{typeFichier.libelle | titlecase}}
+                </h1>
+            </div>
+        </div>
+        <div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+
+            <div class="col-lg-5">
+                <div class="input-group ">
+                    <input type="text" class="form-control  border-0 " [(ngModel)]="searchTerm"
+                        style="background: #f5f5f4;" placeholder="Recherches...">
+                </div>
+            </div>
+
+            <div class="col-lg-7 ">
+                <ul class="nav float-right list-inline justify-content-end">
+                    <li class="nav-item ">
+                        <button class="btn btn-link" (click)="onChangeView('card')">
+                            <span class="tx-echos">
+                                <i class="fad fa-th card-1  tx-16"
+                                    [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                                    style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item ">
+                        <button class="btn btn-link" (click)="onChangeView('list')">
+                            <span class="tx-echos">
+                                <i class="fad fa-list card-1 tx-16 "
+                                    [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
+                                    style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="scroll-11 scrollable-y-75 p-3" [class.loading]="fichierResourceHelper.loading$ | async">
+    <ng-container *ngIf="fichierResourceHelper.data$ | async as fichiers">
+        <ng-container *ngIf="fichiers && fichiers.length; else emptyTemplate">
+            <ng-container [ngSwitch]="view">
+                <div class="row" *ngSwitchCase="'card'">
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-2"
+                        *ngFor="let fichier of fichiers | searchFilter: searchTerm">
+                        <app-fichier-item-card-ui [noAction]="noAction"
+                            [selected]="fichierSelectHelper.hasSelectedItem(fichier)"
+                            (fichierSelectEmitter)="fichierSelectHelper.toggleSelectedItem($event)" [fichier]="fichier"
+                            (fichierUpdateEmitter)="onUpdateFichier($event)"
+                            (fichierTransfertEmitter)="onTransfertSingleFichier($event)"
+                            (fichierDeleteEmitter)="onDeleteFichier($event)" #fichierViewer></app-fichier-item-card-ui>
+                    </div>
+                </div>
+                <div class="w-100" *ngSwitchDefault>
+                    <ul class="list-group">
+
+                        <li class="card-1 list-group-item p-2 mb-2"
+                            [class.accent-facebook-left]="fichierSelectHelper.hasSelectedItem(fichier)"
+                            *ngFor="let fichier of fichiers | searchFilter: searchTerm;">
+                            <app-fichier-item-ui [noAction]="noAction"
+                                [selected]="fichierSelectHelper.hasSelectedItem(fichier)"
+                                (fichierSelectEmitter)="fichierSelectHelper.toggleSelectedItem($event)"
+                                [fichier]="fichier" (fichierUpdateEmitter)="onUpdateFichier($event)"
+                                (fichierTransfertEmitter)="onTransfertSingleFichier($event)"
+                                (fichierDeleteEmitter)="onDeleteFichier($event)"></app-fichier-item-ui>
+                        </li>
+
+                    </ul>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</div>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,12 @@
+<div class="dropdown no-arrow float-right">
+    <button class="btn btn-sm btn-outline-primary dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fal fa-download"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Telechargement:</div>
+        <a class="dropdown-item" id="downloadGraph" download="graphique" (click)="download()">PNG</a>
+    </div>
+</div>
+<div id="myGraphique" class="w-100" [class.loading]="loading">
+    <canvas #myCanvas></canvas>
+</div>

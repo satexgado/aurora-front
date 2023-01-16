@@ -1,0 +1,16 @@
+.d-flex {
+  flex-direction: column;
+  position: relative;
+
+  svg {
+    width: 80%;
+  }
+
+  h5 {
+    position: absolute;
+    bottom: 150px;
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+  }
+}

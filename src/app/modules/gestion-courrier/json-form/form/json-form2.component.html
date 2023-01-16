@@ -1,0 +1,25 @@
+<form class="custom-placeholder" [formGroup]="myForm">
+    <div *ngFor="let control of jsonFormData?.controls" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+        <div class="col-12">
+            <label class="control-label" *ngIf="control.label !== ''">
+              {{ control.label | titlecase }}
+            </label>
+            <input *ngIf="
+            [
+              'text',
+              'password',
+              'email',
+              'number',
+              'search',
+              'tel',
+              'url'
+            ].includes(control.type)
+            " [type]="control.type" [formControlName]="control.libelle" [value]="control.value" class="form-control form-control-sm" [ngClass]="{'is-invalid': !isValid(control.libelle), 'is-valid': isValid(control.libelle)}">
+            <textarea *ngIf="control.type === 'textarea'" [formControlName]="control.libelle" [value]="control.value" class="form-control" cols="30" rows="3" [ngClass]="{'is-invalid': !isValid(control.libelle), 'is-valid': isValid(control.libelle)}"></textarea>
+            <div *ngIf="shouldShowError(control.libelle, 'required')" class="invalid-feedback">veillez remplir ce champ.</div>
+            <div *ngIf="shouldShowError(control.libelle, 'max')" class="invalid-feedback">Ce champ ne peut pas etre supérieur à {{control.validators.max}}.</div>
+            <div *ngIf="shouldShowError(control.libelle, 'min')" class="invalid-feedback">Ce champ ne peut pas etre inférieur à {{control.validators.min}}.</div>
+            <div *ngIf="shouldShowError(control.libelle, 'email')" class="invalid-feedback">Cet email est invalide.</div>
+        </div>
+    </div>
+</form>

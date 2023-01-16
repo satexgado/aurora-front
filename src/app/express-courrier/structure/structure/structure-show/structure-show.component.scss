@@ -1,0 +1,61 @@
+@import "/src/app/styles/variables.scss";
+
+.structure {
+  &__header {
+    background-color: #f3fbff;
+    // margin: 0 -25px 0;
+    // padding: 25px;
+
+    &-banniere {
+      display: flex;
+      align-items: center;
+
+      &-image {
+        margin: 20px;
+        img {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          object-fit: cover;
+          // border: 1px solid #ccc;
+        }
+      }
+
+      &-designation {
+        h5 {
+          color: $title-color;
+          margin-bottom: 3px;
+        }
+
+        p {
+          color: $subtitle-color;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    &-tab {
+      a {
+        font-size: 16px;
+        color: #8b8b8b;
+        font-weight: 400;
+
+        &.active {
+          color: #51abf5;
+          font-weight: bolder;
+          border-bottom: 2px solid #51abf5 !important;
+
+          i {
+            font-weight: bolder;
+          }
+        }
+      }
+    }
+  }
+
+  &__content {
+    // padding: 40px 120px;
+    background-color: #fff;
+    // margin: 0 -25px;
+  }
+}

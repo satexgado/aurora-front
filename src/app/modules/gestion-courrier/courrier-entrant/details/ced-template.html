@@ -1,0 +1,47 @@
+<ng-container *ngIf="courrier">
+    <div class="structure__header bd-b">
+        <div class="structure__header-banniere">
+            <div class="structure__header-banniere-designation">
+                <h5>({{ courrier.libelle }}) {{ courrier.courrier?.objet }}</h5>
+                <p class="text-info">{{courrier.courrier.type.libelle}}/{{courrier.courrier.nature.libelle}}</p>
+                <p><button class="btn btn-outline-info py-0"> {{courrier.courrier?.statut?.libelle}}</button></p>
+            </div>
+        </div>
+
+        <div class="structure__header-tab">
+            <ul class="nav justify-content-center">
+                <!-- Details -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['details']" [routerLinkActive]="'active'" href="#"><i class="fal fa-info"></i> Details
+        </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['fichier']" [routerLinkActive]="'active'">
+                        <i class="fal fa-file"></i> Fichiers
+                    </a>
+                </li>
+
+                <!-- Equipe -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['suivi']" [routerLinkActive]="'active'">
+                        <i class="fal fa-bullseye-arrow"></i> Suivis
+                    </a>
+                </li>
+
+                <!-- Configuration -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['commentaire']" [routerLinkActive]="'active'">
+                        <i class="fal fa-comment"></i> Commentaires
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="structure__content">
+        <router-outlet></router-outlet>
+    </div>
+</ng-container>

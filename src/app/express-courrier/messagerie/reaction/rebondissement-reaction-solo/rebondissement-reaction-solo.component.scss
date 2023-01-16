@@ -1,0 +1,38 @@
+.reaction {
+    &__cta {
+        opacity: 0;
+        max-height: 0;
+        transition: all 1s;
+    }
+    &:hover &__cta {
+        max-height: auto;
+        opacity: 1;
+    }
+    &__img {
+        width: 30%;
+        cursor: pointer;
+    }
+}
+
+.ml--10 {
+    margin-left: -10px;
+}
+
+.mr--10 {
+    margin-right: -10px;
+}
+
+.rebondissement-img {
+    width: 15%;
+    border-radius: 15px;
+}
+
+blockquote {
+    border-left: 5px solid #3b5998;
+    font-style: italic;
+    margin-left: 0;
+    margin-right: 0;
+    overflow: hidden;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}

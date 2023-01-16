@@ -1,0 +1,215 @@
+.mycard {
+    display: grid;
+    /* grid-template-columns: 295px; */
+    /* grid-template-rows: 50px 112px 71px; */
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    margin: 0px;
+    border-radius: 16px;
+    background: #f9f9f9a1;
+    box-shadow: 5px 5px 15px rgba(244, 242, 240, 0.9);
+    /* font-family: roboto; */
+    text-align: center;
+}
+
+.mycard1 {
+    display: grid;
+    grid-template-columns: 500px;
+    grid-template-rows: auto;
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    margin: 0px;
+    border-radius: 6px;
+    background: #f9f9f9a1;
+    box-shadow: 2px 2px 8px rgba(244, 242, 240, 0.9);
+    /* font-family: roboto; */
+    text-align: left;
+}
+
+.mycard1:hover {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.mycard2 {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto;
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    margin: 6px;
+    padding: 10px;
+    border-radius: 2px;
+    background: #f9f9f9a1;
+    box-shadow: 2px 2px 8px rgba(244, 242, 240, 0.9);
+    /* font-family: roboto; */
+    text-align: left;
+}
+
+.mycard2:hover {
+    transform: scale(1);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.mycard3 {
+    display: grid;
+    /* grid-template-columns: 100%; */
+    /* grid-template-rows: auto; */
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    margin: 6px;
+    padding: 0px;
+    border-radius: 10px;
+    background: #ffff;
+    box-shadow: 2px 2px 8px rgba(244, 242, 240, 0.9);
+    /* font-family: roboto; */
+    text-align: left;
+}
+
+.mycard3:hover {
+    transform: scale(1);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.mycard-image {
+    grid-area: image;
+}
+
+.mycard4 {
+    display: grid;
+    /* grid-template-columns: 238px; */
+    /* grid-template-rows: 65px 0px 50px; */
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    margin: 0px;
+    border-radius: 6px;
+    background: #FFFFFF;
+    box-shadow: 5px 5px 15px rgba(244, 242, 240, 0.9);
+    text-align: center;
+}
+
+.mycard4:hover {
+    transform: scale(1);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.mycard5 {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto;
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    /* background: #f9f9f9a1; */
+    /* box-shadow: 2px 2px 8px rgba(244, 242, 240, 0.9); */
+    /* font-family: roboto; */
+    text-align: left;
+}
+
+.mycard5:hover {
+    transform: scale(1);
+    /* box-shadow: 2px 2px 8px rgba(0,0,0,0.6);  */
+}
+
+.cardbarre {
+    display: grid;
+    /* grid-template-columns: 100%; */
+    /* grid-template-rows: auto; */
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    /* margin: 6px; */
+    /* padding: 10px; */
+    border-radius: 10px;
+    background: #f9f9f9a1;
+    box-shadow: 2px 2px 8px rgba(244, 242, 240, 0.9);
+    text-align: left;
+}
+
+.cardbarre:hover {
+    transform: scale(1);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.mycard1-text {
+    grid-area: text;
+    margin: 20px;
+}
+
+.mycard-text .date {
+    color: rgb(255, 7, 110);
+    font-size: 13px;
+}
+
+.mycard-text p {
+    color: grey;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.mycard-text h2 {
+    margin-top: 0px;
+    font-size: 28px;
+}
+
+.mycard-stats {
+    grid-area: stats;
+    /* display: grid; */
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background: rgb(204, 159, 120);
+}
+
+.mycard-stats .stat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    padding: 10px;
+}
+
+.mycard:hover {
+    transform: scale(1.15);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
+}
+
+.cardcheck {
+    display: grid;
+    /* grid-template-columns: 238px; */
+    /* grid-template-rows: 65px 0px 50px; */
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 0px;
+    background: #FFFFFF;
+    /* box-shadow: 2px 2px 5px rgba(244, 242, 240, 0.9); */
+    text-align: left;
+}
+
+.cardcheck:hover {
+    transform: scale(1);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.mycard5 {
+    display: grid;
+    grid-template-columns: 238px;
+    grid-template-rows: 65px 0px 50px;
+    grid-template-areas: "image" "text" "stats";
+    transition: 0.5s ease;
+    cursor: pointer;
+    margin: 0px;
+    border-radius: 6px;
+    background: #FFFFFF;
+    box-shadow: 5px 5px 15px rgba(244, 242, 240, 0.9);
+    text-align: center;
+}

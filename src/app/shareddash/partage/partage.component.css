@@ -1,0 +1,9 @@
+.myshared{
+    overflow-y: auto !important;
+	max-height: 65% !important;
+}
+.contentshared{
+	height: auto !important;
+	max-height: calc(60vh - 0px) !important;
+	min-height: calc(60vh - 0px) !important;
+}

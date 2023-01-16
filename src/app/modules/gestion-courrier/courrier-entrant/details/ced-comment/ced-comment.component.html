@@ -1,0 +1,79 @@
+<div class="publisher publisher-multi mg-b-20" [class.loading]="is_adding_commentaire || is_loading_commentaire">
+    <div class=" flexbox bd p-2 ">
+        <textarea class="publisher-input auto-expand mg-t-10 pd-l-15 " [(ngModel)]="editorData " rows="3 " placeholder="Entrer votre commentaire ici... "></textarea>
+    </div>
+    <div class="flexbox p-2 bg-light">
+        <div class="gap-items mg-t-5">
+            <span class="publisher-btn file-group tx-warning">
+              <i class="fas fa-paperclip file-browser tx-16 tx-warning"></i>
+              <input type="file" multiple (change)="onAddFile($event)"> Fichiers
+            </span>
+        </div>
+        <button class="btn btn-sm btn-custom-primary" [disabled]="!editorData" (click)="onSendCommentaire()">Envoyer</button>
+    </div>
+    <div class="flex-wrap " *ngIf="fichiers ">
+        <p class="col-12 card-2 p-2 d-flex justify-content-between border border-primary " *ngFor="let item of fichiers; let i=i ndex ">
+            <span style="white-space: unset; ">{{item.name}}</span>
+            <button class="badge bg-soft-danger card-1 " (click)="onRemoveFile(i) ">
+            <i class="fal fa-times fa-lg "></i>
+          </button>
+        </p>
+    </div>
+</div>
+<div class=" bd-t-0-force bd-b-0-force " *ngIf="commentaires && commentaires.length; else emptyTemplate">
+    <div class=" pd-0 pd-x-0 ">
+        <div class="profiletimeline bd-0 card  my-2" *ngFor="let enfant of commentaires ">
+            <div class="sl-item ">
+                <div class="sl-left "> <img class="avatar avatar-md align-self-start rounded-circle" style="max-width: 50px;" [src]="enfant.auteur.photo ? enfant.auteur.photo : 'assets/images/avatar-placeholder.png'" alt="avatar "> </div>
+                <div>
+                    <a href=" " class="link tx-ether2 "> {{enfant.auteur.nom}} {{enfant.auteur.prenom}}</a> <span class="sl-date "> {{enfant.date | dateagofr}}</span>
+                    <!-- <p class=" tx-danger "> Conseillé pédagogique </p> -->
+                    <div class="mg-b-20 ">
+                        <div class=" p-0 mg-t-5 ">
+                            <p class="remove-all-styles " [innerHtml]="enfant.contenu ">
+                            </p>
+                        </div>
+                    </div>
+                    <div class=" ">
+                        <ul class="list-unstyled list-inline mg-y-20 ">
+                            <li class="list-inline-item card-1 p-2" *ngFor="let fichier of enfant.fichiers ">
+                                <a [href]="fichier.fichier " target="_blank " class="d-block mg-t-10 ">
+                                    <ng-container [ngSwitch]="onCheckIfImage(fichier) ">
+                                        <div class="mail-file-img " *ngSwitchCase="true ">
+                                            <img [src]="fichier.fichier " class="img-fluid wd-100 mx-auto d-block " alt=" ">
+                                        </div>
+
+                                        <div *ngSwitchDefault class="wd-100 ht-65 d-flex align-items-center justify-content-center rounded card-icon-primary ">
+                                            <i class="{{onGetIcon(fichier)}} tx-40 "></i>
+                                        </div>
+                                    </ng-container>
+                                    <div class="caption ">
+                                        <p class="text-main mg-0 " style="white-space: unset; ">{{fichier.libelle}}</p>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #dontExist>
+    <br>
+    <section class="bg-white">
+        <h4 class="text-center title p-3">
+            {{ 'Aucun courrier trouver' }}
+        </h4>
+    </section>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

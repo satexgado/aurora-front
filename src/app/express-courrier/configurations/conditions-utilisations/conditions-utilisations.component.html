@@ -1,0 +1,37 @@
+<app-loading *ngIf="loading"></app-loading>
+
+<div class="px-5 py-4"
+     *ngIf="!loading && single">
+  <h5 class="text-center mb-3">
+    Conditions d'utilisations
+    <a [routerLink]="['./']"
+       fragment="edit-conditions-utilisations"
+       class="ml-2 clickable">
+      <i class="fad fa-pen"></i>
+    </a>
+  </h5>
+  <p [innerHTML]="single.conditions_utilisations"
+     style="text-align:justify; line-height: 1.7;"></p>
+</div>
+
+<div *ngIf="!loading && !single"
+     class="p-4">
+  <app-missing-data></app-missing-data>
+  <div class="d-flex justify-content-center">
+    <a [routerLink]="['./']"
+       fragment="edit-conditions-utilisations"
+       class="btn btn-primary">
+      Ajouter les conditions d'utilisations
+    </a>
+  </div>
+</div>
+
+
+
+
+<app-modal [configuration]="{ name: 'conditions-utilisations-edit-modal', titre: 'Conditions d\'utilisation', icone:'file-certificate' }"
+           (closed)="router.navigate(['./'], { queryParamsHandling: 'preserve', relativeTo:route })">
+  <app-conditions-utilisations-edit *ngIf="edit"
+                                    (edited)="onEdited()">
+  </app-conditions-utilisations-edit>
+</app-modal>

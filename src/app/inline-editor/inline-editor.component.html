@@ -1,0 +1,36 @@
+<a tooltipClass="my-editor" [ngbTooltip]="tipContent" container="body" triggers="click" (shown)="isShow()" [autoClose]="_autoclose" #tooltip="ngbTooltip">
+    {{ _placeholder ? _placeholder : _value | shorten:25 }}
+</a>
+<ng-template #tipContent>
+    <form class="custom-placeholder m-2" [formGroup]="editorForm" (ngSubmit)="onSubmit()" [ngClass]="{'loading': _isLoading}">
+        <div class="form-group">
+            <label for="" class="control-label col-12 p-0 text-left" *ngIf="_name">{{ _name }}</label>
+            <ng-container [ngSwitch]="_type">
+                <ng-container class="form-group" *ngSwitchCase="'text-area'">
+                    <textarea [formControlName]="'valeur'" appAutoFocus required class="form-control" cols="30" rows="3" [ngClass]="{'is-invalid': shouldShowRequiredError(), 'is-valid': editorForm.controls.valeur.valid}"></textarea>
+                </ng-container>
+                <ng-container *ngSwitchCase="'text'">
+                    <input type="text" class="form-control" appAutoFocus required [ngClass]="{'is-invalid': shouldShowRequiredError(), 'is-valid': editorForm.controls.valeur.valid}" [formControlName]="'valeur'" name="valeur" required>
+                </ng-container>
+                <ng-container *ngSwitchCase="'number'">
+                    <input type="number" class="form-control" appAutoFocus required [ngClass]="{'is-invalid': shouldShowRequiredError(), 'is-valid': editorForm.controls.valeur.valid}" [formControlName]="'valeur'" name="valeur" required>
+                </ng-container>
+                <ng-container *ngSwitchCase="'select'">
+                    <select class="custom-select" mySelectFirstOption appAutoFocus required name="pageSize" [formControlName]="'valeur'" [ngClass]="{'is-invalid': shouldShowRequiredError(), 'is-valid': editorForm.controls.valeur.valid}">
+                        <ng-container *ngFor="let item of _selectItems">
+                                <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                        </ng-container>
+                    </select>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+
+                </ng-container>
+            </ng-container>
+        </div>
+        <button class="btn btn-success card-3 " style="right: 60%;
+        position: fixed;
+        bottom: -15px;" type="submit" [disabled]="shouldDisableSubmit()"> <i class="fas fa-check"></i></button>
+        <button class="btn btn-danger card-3" [disabled]="_isLoading" style="right: 30%;
+        position: fixed; bottom: -15px;" type="button" (click)="tooltip.close()"> <i class="fas fa-times"></i></button>
+    </form>
+</ng-template>

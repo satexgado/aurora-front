@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Dossier</label>
+                    <input type="text" autofocus class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="couleur">Couleur</label>
+                    <input [colorPicker]="editForm.controls.couleur.value" [value]="editForm.controls.couleur.value" (colorPickerChange)="changeColor($event)" [style.background]="editForm.controls.couleur.value" [ngClass]="{'is-invalid': shouldShowRequiredError('couleur'), 'is-valid': isValid('couleur')}"
+                        class="form-control form-control-sm" />
+                    <div class="invalid-feedback" *ngIf="shouldShowRequiredError('couleur')">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="description">Description</label>
+                    <textarea name="description" required maxlength="500" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"></textarea>
+                    <small>{{editForm.get('description').value?.length}}/500</small>
+                    <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez saisir la description.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">Réinitialiser</button>
+</div>

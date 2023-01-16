@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <!-- Label -->
+                    <label class="control-label" for="user">
+                      Destinataires
+                      <i class="fad fa-circle-notch fa-spin"
+                          *ngIf="dependanciesLoading.destinataires"></i>
+                    </label>
+
+                    <angular2-multiselect [data]="dependancies.destinataires" formControlName="destinataires" [settings]="multiSetting" [ngClass]="{'is-invalid': shouldShowRequiredError( 'destinataires'), 'is-valid': isValid('destinataires')}" (click)="getDestinataires()"
+                        class="form-control p-0 ">
+                        <c-badge>
+                            <ng-template let-item="item">
+                                <ng-container *ngIf="item.form_destinataire_type =='personne'">
+                                    {{item.prenom}} {{item.nom}}
+                                </ng-container>
+                                <ng-container *ngIf="item.form_destinataire_type == 'structure'">
+                                    {{item.libelle}}
+                                </ng-container>
+                            </ng-template>
+                        </c-badge>
+                        <c-item>
+                            <ng-template let-item="item">
+                                <label style="color: #333;min-width: 150px;">
+                                  {{item.form_destinataire_type == 'structure' ?  item.libelle : item.prenom+' '+item.nom}}
+                                </label>
+                                <img [src]="item.form_destinataire_type == 'structure' ? item.image : item.avatar" class="rounded-cirlce border" style="width: 30px; height: 30px; object-fit: cover;margin-right: 20px; float: right;" />
+                            </ng-template>
+                        </c-item>
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="salle">Objet</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="description">contenu</label>
+                    <ckeditor [editor]="Editor" (ready)="onReady($event)" [ngClass]="{'is-invalid': shouldShowRequiredError('contenu'), 'is-valid': isValid('contenu')}" [formControlName]="'contenu'"></ckeditor>
+                    <div *ngIf="shouldShowRequiredError('contenu')" class="invalid-feedback">veillez saisir la contenu.</div>
+                </div>
+            </div>
+            <div class="flexbox p-2">
+                <div class="gap-items mg-t-5">
+                    <button class="publisher-btn btn btn-primary file-group">
+                    <i class="fas fa-paperclip file-browser tx-16 tx-warning"></i>
+                    <input type="file" multiple (change)="onAddFile($event)" #filebtn>Ajouter des Fichiers
+                  </button>
+                </div>
+            </div>
+            <div class="flex-wrap " *ngIf="fichiers && fichiers.length ">
+                <p class="col-12 card-2 p-2 d-flex justify-content-between border border-primary " *ngFor="let item of fichiers; let i=i ndex ">
+                    <span style="white-space: unset; ">{{item.name}}</span>
+                    <button class="badge bg-soft-danger card-1 " (click)="onRemoveFile(i) ">
+                  <i class="fal fa-times fa-lg "></i>
+                </button>
+                </p>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Envoyer</button>
+</div>

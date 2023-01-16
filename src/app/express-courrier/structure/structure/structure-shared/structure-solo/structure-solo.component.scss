@@ -1,0 +1,97 @@
+@import "/src/app/styles/variables.scss";
+
+.card-structure {
+  min-width: 330px;
+  width: auto;
+  min-height: 155px;
+  border-radius: 16px !important;
+  position: relative;
+
+  box-shadow: 1px 1px 1px 1px #ccc;
+
+  &__type {
+    font-weight: 400;
+    font-size: 14px;
+    font-family: sans-serif;
+    color: $subtitle-color;
+  }
+
+  &__title {
+    color: $title-color;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  img {
+    object-fit: cover;
+  }
+
+  // .more-structure {
+  //   position: absolute;
+  //   left: 50%;
+  //   bottom: 10px;
+  //   transform: translateX(-50%);
+  // }
+}
+
+.structure-details {
+  &__header {
+    height: 20vh;
+    background: #007bff;
+  }
+
+  &__image {
+    margin-bottom: -55px;
+
+    img {
+      height: 150px;
+      width: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 8px solid #fff;
+    }
+  }
+
+  &__cta {
+    margin-top: 55px;
+
+    button {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  &__details {
+    margin-top: 10px;
+    padding: 0px 15px;
+
+    &-element {
+      margin-bottom: 20px;
+
+      & &--description {
+        font-size: 14px;
+        color: #40556e;
+      }
+
+      p {
+        margin-bottom: 3px;
+        font-weight: 400;
+        font-size: 12px;
+      }
+
+      h6 {
+        color: #40556e;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.star {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}

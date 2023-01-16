@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12 col-sm-6">
+                    <app-select-formgroup label="Raison cloture" formControlName="cloture_id" [selected]="editForm.get('cloture_id').value" [dataSource]="allCrClotures$"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('cloture_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <label class="control-label" for="libelle">Date de cloture</label>
+                    <input class="form-control" name="date_cloture" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_cloture'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_cloture'), 'is-valid': isValid('date_cloture')}"
+                        required>
+                    <div *ngIf="shouldShowRequiredError('date_cloture')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="libelle">Message de cloture</label>
+                    <textarea name="message_cloture" autofocus [formControlName]="'message_cloture'" class="form-control form-control-sm" cols="30" rows="3" [ngClass]="{'is-invalid': shouldShowRequiredError('message_cloture'), 'is-valid': isValid('message_cloture')}"></textarea>
+                    <div *ngIf="shouldShowRequiredError('message_cloture')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer</button>
+</div>

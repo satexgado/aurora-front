@@ -1,0 +1,40 @@
+<div class="card app-file-list" *ngIf="dossier">
+    <div class="app-file-icon bg-light">
+        <i class="fad fa-folder-open" [style.color]="dossier.couleur"></i>
+        <div class=" position-absolute mr-3 " style="top: 0;right:0;">
+            <button *ngIf="dossier.ged_element.bloquer && !dossier.is_user; else button"  ngbTooltip="Débloquez" (click)="onCheckPasswordDossier()" class="btn btn-oblong btn-outline-dark bd-0 btn-icon m-2">
+                <i class="fas tx-14 rounded-circle fa-lock-alt"></i>
+            </button>
+        </div>
+    </div>
+    <div class="p-3 small">
+        <button (click)="onGotoDossier()"  ngbTooltip="Allez vers" class="d-block mb-1 btn btn-link p-0 tx-gray-700" style="word-break: break-all;white-space: break-spaces;text-align: inherit;">{{ dossier.libelle }}</button>
+        <div class="text-muted mb-1">{{dossier.nb_element}} éléments</div>
+        <div class="text-muted">
+            {{dossier.size > 0 ? (dossier.size | formatFileSize) : ''}}
+            <span class="text-dark mr-2" *ngIf="dossier.ged_element.bloquer"><i class="fas fa-lock-alt"></i></span>
+            <span class=" text-primary mr-2" *ngIf="dossier.ged_element.user_favoris"><i class="fas fa-star"></i></span>
+            <span class=" tx-teal mr-2 " *ngIf="dossier.ged_element.cacher"><i class="fal fa-eye-slash"></i></span>
+        </div>
+    </div>
+</div>
+<ng-template #button>
+    <div ngbDropdown [container]="'body'" class="d-inline-block no-caret" *ngIf="!noAction">
+        <button class="btn btn-oblong bd-0 btn-outline-dark"  ngbTooltip="Voir les commentaires" ngbDropdownToggle>
+          <i class="fal fa-comment-alt-dots tx-14 rounded-circle" ></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button (click)="fichierService.showFolderDetails.next(dossier)" ngbDropdownItem><i class="fal fa-info"></i> Détails</button>
+            <ng-container *ngIf="dossier.is_user">
+                <button (click)="onShareDossier()" ngbDropdownItem><i class="fal fa-share-alt"></i> Partager</button>
+                <button (click)="onShowUpdateForm()" ngbDropdownItem><i class="fal fa-edit"></i> Modifier</button>
+                <button (click)="onUpdateFavorisDossier()" ngbDropdownItem><i class="fa-star" [ngClass]="dossier.ged_element.user_favoris ? 'fas text-primary': 'fal'"></i> {{dossier.ged_element.user_favoris ? 'Retirer des favoris' :'Ajouter au Favoris'}}</button>
+                <button (click)="onToggleCacherDossier()" ngbDropdownItem><i class="fa-eye-slash" [ngClass]="dossier.ged_element.cacher ? 'fas tx-teal': 'fal'"></i> {{dossier.ged_element.cacher ?  'Exposer' : 'Cacher' }}</button>
+                <button (click)="onBloquerDossier()" ngbDropdownItem><i [ngClass]="dossier.ged_element.bloquer ?  'fal fa-key': 'fal fa-lock-alt'"></i> {{dossier.ged_element.bloquer ? 'Modifier le mot de passe' : 'Bloquer'  }}</button>
+                <button (click)="onDebloquerDossier()" *ngIf="dossier.ged_element.bloquer" ngbDropdownItem><i class="fal fa-unlock"></i> Débloquer</button>
+                <button (click)="onTransfertDossier()" ngbDropdownItem><i class="fal fa-sort-alt"></i> Transférer </button>
+                <button (click)="onDeleteDossier()" ngbDropdownItem><i class="fal fa-trash-alt"></i> Supprimer</button>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>

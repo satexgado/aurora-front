@@ -1,0 +1,560 @@
+<div class="col-lg-12 my-2">
+    <h5 class="text-dark"><i class="fal fa-envelope-open" style="padding: 6px; border-radius: 50%;"></i> Courriers Sortants </h5>
+</div>
+<div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+
+    <div class="col-lg-7">
+        <div class="input-group ">
+            <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
+        </div>
+    </div>
+
+    <div class="col-lg-5 ">
+        <ul class="nav float-right list-inline justify-content-end">
+            <li class="nav-item ">
+                <button class="btn btn-link" container="body" [ngbTooltip]="'courriers en traitement'" (click)="onSwitchOpenFilter()">
+                  <span class="tx-echos">
+                   <i class="fad fa-typewriter card-1  tx-16" [ngClass]="showOpen ? 'bg-echos tx-white' : 'tx-echos bg-white'" style="padding:6px; border-radius:50%"></i>
+                  </span>
+              </button>
+            </li>
+            <li class="nav-item ">
+                <button class="btn btn-link" container="body" [ngbTooltip]="'courriers traités'" (click)="onSwitchCloseFilter()">
+                  <span class="tx-echos">
+                   <i class="fad fa-box-check card-1  tx-16" [ngClass]="showClose ? 'bg-echos tx-white' : 'tx-echos bg-white'" style="padding:6px; border-radius:50%"></i>
+                  </span>
+              </button>
+            </li>
+            <li class="nav-item ">
+                <button class="btn btn-link" (click)="onChangeView('card')">
+                    <span class="tx-echos">
+                     <i class="fad fa-th card-1  tx-16" [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'" style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item ">
+                <button class="btn btn-link" (click)="onChangeView('list')">
+                    <span class="tx-echos">
+                        <i class="fad fa-list card-1 tx-16 " [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' " style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item ">
+                <button class="btn btn-link " [disabled]="(dataHelper.loading$ | async)" (click)="open(content);">
+                    <span class="tx-echos">
+                      <i class="fal fa-filter bg-warning tx-16 tx-white card-1" style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item ">
+                <button class="btn btn-link " [disabled]="(dataHelper.loading$ | async)" (click)="cancelFilter();" *ngIf="is_advance_filter">
+                  <span class="tx-echos">
+                    <i class="fas fa-filter bg-danger tx-16 tx-white card-1" style="padding:6px; border-radius:50%"></i>
+                  </span>
+              </button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="grid-container">
+    <div class="sidebar" [class.sidebar_small]="selectedCourrier">
+        <div class="card-body" *ngIf="view == 'card'; else listView " [class.loading]="dataHelper.loading$ | async">
+            <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="d-flex scrollable-y-65 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                <ng-container *ngIf="dataHelper.data$ | async as items">
+                    <ng-container *ngIf="items.length; else noItem">
+                        <div class="col-sm-6   mg-b-20" [@flyInOut]="'in'" *ngFor="let courrier of items;trackBy: dataHelper.trackByFn">
+                            <div class="card h-100 card-1"  (click)="onSelectCourrier(courrier)" [ngClass]="{'success card-accent-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'danger card-accent-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}">
+                                <div class="card-header justify-content-between">
+                                    <span> <i class="fal fa-inbox-out bg-light tx-yeto" style="padding:6px; border-radius:50%"></i> {{courrier.courrier?.type?.libelle}}</span>
+                                </div>
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="m-auto">
+                                        <div class=" text-center ">
+                                            <span class=" tx-bold mb-0 "> {{courrier.courrier?.objet}} </span>
+                                            <p class="  mb-0 tx-warning">
+                                                <span class=""> {{courrier.courrier?.libelle}} </span><span class=""> || </span><span class=""> {{courrier.courrier?.nature?.libelle}} </span> <span class=""> || </span><span class=""> {{courrier.date_envoie | date: 'dd/MM/yyyy'}} </span>
+                                            </p>
+                                        </div>
+                                        <div class=" text-center">
+                                            <span class=" tx-bold  "> {{courrier.expediteur?.libelle}} </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer justify-content-between py-0">
+                                    <div class=" justify-content-between p-0">
+                                        <p class="mg-0 d-flex">
+                                            <span class=" bd bd-5 pl-2 avatar rounded-circle avatar-xs" container="body" [ngbTooltip]="courrier.courrier?.urgence?.libelle" [style.background-color]="courrier.courrier.urgence.couleur"></span>
+                                            <span class=" pl-2 my-auto" *ngIf="courrier.courrier?.date_limit && !courrier.courrier?.cloture" [ngClass]="getDateStyle(courrier.courrier.date_limit)"> {{courrier.courrier.date_limit | date:'mediumDate' : undefined : 'fr'}}</span>
+                                            <span class="pl-2 my-auto" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
+                                              {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                                            </span>
+                                        </p>
+                                    </div>
+
+
+                                    <a class="nav-link  ml-4 " *ngIf="courrier.courrier?.suivi_par_user">
+                                        <div class="d-flex flex-row">
+                                            <div class="profiles">
+                                                <img class="rounded-circle avatar-xs" [src]="courrier.courrier?.suivi_par_user.avatar" alt="avatar">
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="main-content scroll-11 " [class.main-content_large]="selectedCourrier">
+        <div class="card" *ngIf="selectedCourrier">
+            <div class="card-header justify-content-between">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-link  mr-3" [routerLink]="['./']">
+                        <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
+                    </button>
+                    <h5 class="mb-0">{{selectedCourrier.libelle}} </h5>
+                </div>
+                <div class="float">
+                    <div>
+                        <ul class="nav float-right list-inline justify-content-end">
+                            <li class="nav-item ">
+                                <button class="btn btn-link " (click)="selectedCourrier.showingTask = !selectedCourrier.showingTask">
+                            <span>
+                                <i class="fad card-1 fa-tasks  tx-16" [ngClass]="selectedCourrier.showingTask ? 'bg-echos tx-white' : 'tx-echos bg-white'" style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="btn btn-link " (click)="onShowUpdateCourrierForm()">
+                                    <span class="tx-echos">
+                                      <i class="fal card-1 fa-pencil bg-light tx-16 tx-yeto" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item my-auto">
+                                <button class="btn btn-sm tx-13 my-auto" [ngClass]="{'btn-outline-primary': (!selectedCourrier.courrier?.cloture), 'btn-success': selectedCourrier.courrier?.cloture && selectedCourrier.courrier?.cloture.valider, 'btn-danger': selectedCourrier.courrier?.cloture && !selectedCourrier.courrier?.cloture.valider}"
+                                    (click)="selectedCourrier.courrier.cloture ? onReonpenCourrier(selectedCourrier) : onShowClotureCourrierForm(selectedCourrier)">
+                                  {{selectedCourrier.courrier.cloture ? 'Reouvrier ce courrier' : 'Clore ce courrier'}}
+                                  <i [ngClass]="selectedCourrier.courrier?.cloture ? 'fas fa-check-square' : 'fal fa-square'"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="p-2" *ngIf="selectedCourrier.showingTask">
+                    <app-courrier-details-tache [initCourrier]="selectedCourrier.courrier"></app-courrier-details-tache>
+                </div>
+                <div *ngIf="!selectedCourrier.showingTask" class="row row-xs clearfix  mg-0 pd-0">
+                    <div class="col-lg-2 p-0 " style="background:#f4f8f9; height:100vh ">
+                        <nav class="monmenu nav flex-column  ">
+                            <a  [routerLink]="['./', selectedCourrier.id]" [fragment]="'details'" [class.bg-white]="fragment == 'details'" class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 tx-echos"><i class="fal fa-info-circle tx-16  mg-r-10"></i> Détails</a>
+                            </a>
+                            <a  [routerLink]="['./', selectedCourrier.id]" [fragment]="'destinataire'" [class.bg-white]="fragment == 'destinataire'" class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i> Destinataires</a>
+                            </a>
+                            <a  [routerLink]="['./', selectedCourrier.id]" [fragment]="'ampiliation'" [class.bg-white]="fragment == 'ampiliation'" class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 tx-echos"><i class="fal fa-file-import	 tx-16  mg-r-10"></i> Ampiliation</a>
+                            </a>
+                            <a  [routerLink]="['./', selectedCourrier.id]" [fragment]="'tache'" [class.bg-white]="fragment == 'tache'" class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 tx-echos"><i class="fal fa-tasks-alt tx-16  mg-r-10"></i> Tâches</a>
+                            </a>
+                            <a  [routerLink]="['./', selectedCourrier.id]" [fragment]="'commentaire'" [class.bg-white]="fragment == 'commentaire'" class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 tx-echos"><i class="fal fa-comment-alt-lines tx-16  mg-r-10"></i> Commentaires</a>
+                            </a>
+                            <a  [routerLink]="['./', selectedCourrier.id]" [fragment]="'fichier'" [class.bg-white]="fragment == 'fichier'" class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 tx-echos"><i class="fal fa-file tx-16  mg-r-10"></i> Fichiers</a>
+                            </a>
+                        </nav>
+
+                    </div>
+
+
+
+                    <div class="col-lg-10">
+
+                        <div [ngSwitch]="fragment">
+                            <div *ngSwitchCase="'destinataire'">
+                                <div class="card" *ngIf="selectedCourrier.destinataires && selectedCourrier.destinataires.length; else emptyTemplate">
+                                    <div class="card-body p-2  text-dark">
+                                        <h4 class="text-info"> Destinataires</h4>
+                                        <table class="table table-striped table-sm text-dark">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Telephone</th>
+                                                    <th>Email</th>
+                                                    <th>Address</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of selectedCourrier.destinataires">
+                                                    <td class="">{{item.libelle}}</td>
+                                                    <td class="" style="white-space: break-spaces;
+                                              word-wrap: initial;">{{item.coordonnee.telephone}}</td>
+                                                    <td class="" style="white-space: break-spaces;
+                                              word-wrap: initial;">{{item.coordonnee.email}}</td>
+                                                    <td class="" style="white-space: break-spaces;
+                                            word-wrap: initial;">{{item.coordonnee.adresse}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'ampiliation'">
+                                <div class="card" *ngIf="selectedCourrier.ampiliations && selectedCourrier.ampiliations.length; else emptyTemplate">
+                                    <div class="card-body p-2  text-dark">
+                                        <h4 class="text-info"> Ampiliations</h4>
+                                        <table class="table table-striped table-sm text-dark">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Telephone</th>
+                                                    <th>Email</th>
+                                                    <th>Address</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of selectedCourrier.ampiliations">
+                                                    <td class="">{{item.libelle}}</td>
+                                                    <td class="" style="white-space: break-spaces;
+                                            word-wrap: initial;">{{item.coordonnee.telephone}}</td>
+                                                    <td class="" style="white-space: break-spaces;
+                                            word-wrap: initial;">{{item.coordonnee.email}}</td>
+                                                    <td class="" style="white-space: break-spaces;
+                                          word-wrap: initial;">{{item.coordonnee.adresse}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'tache'">
+                                <app-courrier-details-my-task [initCourrier]="selectedCourrier.courrier"></app-courrier-details-my-task>
+                            </div>
+                            <div *ngSwitchCase="'commentaire'">
+                                <app-courrier-details-comment [initCourrier]="selectedCourrier.courrier"></app-courrier-details-comment>
+
+                            </div>
+                            <div *ngSwitchCase="'fichier'">
+                                <app-courrier-details_fichier [initCourrier]="selectedCourrier.courrier"></app-courrier-details_fichier>
+                            </div>
+                            <div *ngSwitchDefault>
+                                <div class=" pt-2 bd-b">
+                                    <h5 class="tx-echos"><i class="fal fa-circle  bg-white" style="padding:6px; border-radius: 50%; "></i> Détails du Courrier </h5>
+                                </div>
+
+                                <div class="d-flex flex-wrap justify-content-between">
+                                    <div class="col-12 col-md-6">
+                                        <!-- Code -->
+                                        <div class="my-3  " style="font-size: 16px;">
+                                            <span class="mr-2">
+                                                  Code:
+                                                </span>
+                                            <span class="tx-rubik tx-dark">{{selectedCourrier.courrier?.libelle}}</span>
+                                        </div>
+
+
+                                        <!-- CNI -->
+                                        <div class="my-3  " style="font-size: 16px;">
+                                            <span class="mr-2">
+                                                   Objet:
+                                                </span>
+                                            <span class="tx-rubik tx-dark">{{selectedCourrier.courrier?.objet}}</span>
+                                        </div>
+
+
+                                        <!-- Email  -->
+                                        <div class="my-3 " style="font-size: 16px;">
+                                            <span class="mr-2">
+                                                  Type:
+                                                </span>
+                                            <span class="tx-rubik tx-dark">{{selectedCourrier.courrier?.type?.libelle}}</span>
+                                        </div>
+
+
+                                        <!-- Addresse -->
+                                        <div class="my-3 " style="font-size: 16px;">
+                                            <span class="mr-2">
+                                                  Nature:
+                                                </span>
+                                            <span class="tx-rubik tx-dark">{{selectedCourrier.courrier?.nature?.libelle}}</span>
+                                        </div>
+
+                                        <!-- NOm -->
+                                        <div class="my-3 " style="font-size: 16px;text-align: justify;">
+                                            <span class="mr-2">
+                                                      Description:
+                                                    </span>
+                                            <span class="tx-rubik tx-dark">{{selectedCourrier.courrier?.commentaire}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+
+                                        <!-- Urgence -->
+                                        <div class="my-3 " style="font-size: 16px;">
+                                            <span class="mr-2">
+                                                  Urgence:
+                                                </span>
+                                            <span class="tx-rubik tx-dark">{{selectedCourrier.courrier?.urgence?.libelle}}</span>
+                                        </div>
+
+                                        <!-- Statut -->
+                                        <div class="my-3 " style="font-size: 16px;">
+                                            <span class="mr-2">
+                                                Statut:
+                                              </span>
+                                            <span class="text-warning mb-0" *ngIf="!selectedCourrier.courrier?.cloture">{{selectedCourrier.courrier?.statut?.libelle | titlecase}}</span>
+                                            <span class="mb-0" [ngClass]="selectedCourrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="selectedCourrier.courrier?.cloture">
+                                                {{selectedCourrier.courrier?.cloture.libelle | titlecase}}, le {{selectedCourrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                                                <button (click)="onShowClotureCourrierForm(selectedCourrier)" class="border-0 btn-transition btn btn-sm btn-oblong btn-dark btn-outline-dark">
+                                                  <i class="fal fa-edit fa-lg"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+
+
+                                        <!-- Role -->
+                                        <div class="my-3" style="font-size: 16px;">
+                                            <span class="mr-2">
+                                                  Date de redaction:
+                                                </span>
+                                            <span class="tx-rubik tx-dark">{{ selectedCourrier.courrier?.date_redaction | date:'mediumDate' : undefined : 'fr'}}</span>
+                                        </div>
+
+                                        <!-- Telephone -->
+                                        <div class="my-3" style="font-size: 16px;">
+                                            <span class="mr-2">
+                                                Date envoie:
+                                              </span>
+                                            <span class="tx-rubik tx-dark">{{selectedCourrier.date_envoie | date:'mediumDate' : undefined : 'fr'}}</span>
+                                        </div>
+
+                                        <!-- Addresse -->
+                                        <div class="my-3 " style="font-size: 16px;">
+                                            <span class="mr-2">
+                                            Ajouter par:
+                                          </span>
+                                            <span class="tx-rubik tx-dark">{{selectedCourrier.courrier?.created_by?.libelle}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #listView>
+    <div class="card info card-2 card-accent-primary px-0 col-12 mt-2" [class.loading]="dataHelper.loading$ | async">
+        <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-5" #scrollContainer>
+            <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+                <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                    <tbody>
+                        <tr class="bd-b bd-2" [@flyInOut]="'in'" [ngClass]="{'tx-deco-line': courrier.courrier?.cloture,'text-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'text-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}"
+                            *ngFor="let courrier of items;trackBy: dataHelper.trackByFn; let i = index;">
+                            <td>
+                                <button class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="courrier.courrier.cloture ? onReonpenCourrier(courrier) : onShowClotureCourrierForm(courrier, i)">
+                                    <i class="fal tx-14 rounded-circle" [ngClass]="{'fa-check-square': courrier.courrier?.cloture, 'text-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'text-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}" [class.fa-square]="!courrier.courrier?.cloture"></i>
+                                </button>
+                            </td>
+                            <td (click)="onSelectCourrier(courrier)" >
+                                <i class="fal fa-dot-circle" container="body" [ngbTooltip]="courrier.courrier?.urgence?.libelle" [style.color]="courrier.courrier.urgence.couleur"></i>
+                            </td>
+                            <td (click)="onSelectCourrier(courrier)" >
+                                {{courrier.libelle}}
+                            </td>
+                            <td class="col" (click)="onSelectCourrier(courrier)" container="body"  [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                                {{courrier.courrier?.objet | shorten:50}}
+                            </td>
+                            <td (click)="onSelectCourrier(courrier)"  class="p-0">
+                                <div class="profiles avatar avatar-xs">
+                                    <img class="rounded-circle avatar-xs" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" [src]="courrier.courrier?.suivi_par_user.avatar" alt="avatar">
+                                </div>
+                            </td>
+                            <td (click)="onSelectCourrier(courrier)" >
+                                <span *ngIf="courrier.courrier?.date_limit && !courrier.courrier.cloture" [ngClass]="getDateStyle(courrier.courrier.date_limit)"> {{courrier.courrier.date_limit | date:'mediumDate' : undefined : 'fr'}}</span>
+                                <span *ngIf="courrier.courrier.cloture">{{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}</span>
+                            </td>
+                            <td (click)="onSelectCourrier(courrier)" >
+                                {{courrier.courrier?.type?.libelle}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+                </section>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">
+            <i class="fa-sitemap fad ng-star-inserted"></i> Filtre
+        </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <i  class="ion-ios-close-empty"></i>
+      </button>
+    </div>
+    <div class="modal-body scroll-11" style="max-width: 460px; overflow: auto;">
+        <!-- <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-12">
+                <label class="control-label" for="structures">
+                Structure
+                <i class="fad fa-circle-notch fa-spin"
+                    *ngIf="dependanciesLoading.structures"></i>
+              </label>
+
+                <angular2-multiselect [data]="dependancies.structures" [(ngModel)]="filters.structure_id" [settings]="multiParameter2" (click)="getStructures()" class="p-0 ">
+                </angular2-multiselect>
+            </div>
+        </div> -->
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-12">
+                <!-- Label -->
+                <label class="control-label" for="users">
+                Suivi par
+                <i class="fad fa-circle-notch fa-spin"
+                    *ngIf="dependanciesLoading.users"></i>
+              </label>
+
+                <angular2-multiselect [data]="dependancies.users" [(ngModel)]="filters.suivi_par_id" [settings]="multiParameter2" (click)="getUsers()" class="p-0 ">
+                    <c-badge>
+                        <ng-template let-item="item">
+                            {{item.prenom}} {{item.nom}}
+                        </ng-template>
+                    </c-badge>
+                    <c-item>
+                        <ng-template let-item="item">
+                            <label style="color: #333;min-width: 150px;">{{item.prenom}} {{item.nom}}</label>
+                            <img [src]="item.avatar" class="rounded-cirlce border" style="width: 30px; height: 30px; object-fit: cover;margin-right: 20px; float: right;" />
+                        </ng-template>
+                    </c-item>
+                </angular2-multiselect>
+            </div>
+        </div>
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-12">
+                <!-- Label -->
+                <label class="control-label" for="types">
+    Type
+    <i class="fad fa-circle-notch fa-spin"
+        *ngIf="dependanciesLoading.types"></i>
+  </label>
+
+                <angular2-multiselect [data]="dependancies.types" [(ngModel)]="filters.type_id" [settings]="multiParameter2" (click)="getTypes()" class="p-0 ">
+                </angular2-multiselect>
+            </div>
+        </div>
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-12">
+                <!-- Label -->
+                <label class="control-label" for="natures">
+                Nature
+                <i class="fad fa-circle-notch fa-spin"
+                    *ngIf="dependanciesLoading.natures"></i>
+              </label>
+
+                <angular2-multiselect [data]="dependancies.natures" [(ngModel)]="filters.nature_id" [settings]="multiParameter2" (click)="getNatures()" class="p-0 ">
+                </angular2-multiselect>
+            </div>
+        </div>
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-12">
+                <!-- Label -->
+                <label class="control-label" for="urgences">
+                Urgence
+                <i class="fad fa-circle-notch fa-spin"
+                    *ngIf="dependanciesLoading.urgences"></i>
+              </label>
+                <angular2-multiselect [data]="dependancies.urgences" [(ngModel)]="filters.urgence_id" [settings]="multiParameter2" (click)="getUrgences()" class="p-0 ">
+                </angular2-multiselect>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-facebook" (click)="modal.close('Save click'); doFilter()">Valider</button>
+    </div>
+</ng-template>
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #expediteurExterne let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">
+            <i class="fa-user fad ng-star-inserted"></i> {{expediteur.libelle}}
+        </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <i  class="ion-ios-close-empty"></i>
+      </button>
+    </div>
+    <div class="modal-body scroll-11" style="max-width: 460px; overflow: auto;">
+        <ul class="list-group list-group-flush">
+
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-at text-info mx-2"></i> Email </div>
+                <div class=""> {{expediteur.email}}</div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-phone-square-alt text-info mx-2"></i> Telephone </div>
+                <div class=""> {{expediteur.telephone}}</div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-map-marked-alt text-info mx-2"></i> Adresse </div>
+                <div class="">
+                    {{expediteur.adresse}}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="expediteur.condition_suivi">
+                <div class="tx-yeto2"><i class="fal fa-clipboard-check text-info mx-2"></i> Condition de suivi </div>
+                <div class="">
+                    {{expediteur.condition_suivi}}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="expediteur.commentaire">
+                <div class="tx-yeto2"><i class="fal fa-comments text-info mx-2"></i> Commentaire </div>
+                <div class="">
+                    {{expediteur.commentaire}}
+                </div>
+            </li>
+        </ul>
+    </div>
+</ng-template>
+<app-modal-sidebar-alt [configuration]="{ name: 'structure-preview-modal', position: 'right' }">
+    <app-structure-preview></app-structure-preview>
+</app-modal-sidebar-alt>

@@ -1,0 +1,10 @@
+.list-group-item.active-light {
+  z-index: 2;
+  color: black;
+  background-color: #f2f2f2;
+  border-color: #f2f2f2;
+}
+
+.border-light{
+  border:  1px solid #bfbfbf;
+}

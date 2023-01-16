@@ -1,0 +1,71 @@
+<div class="card bd-l-0-force bd-t-0-force bd-b-0-force" [class.loading]="mailHelper.loading$ | async">
+    <div class="card-body">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group"><button type="button" class="btn btn-light"><i class="icon-compass"></i></button> <button type="button" class="btn btn-light"><i class="icon-drawer"></i></button> <button type="button" class="btn btn-light"><i class="icon-logout"></i></button></div>
+            <div class="btn-group ml-1">
+                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon-folder-alt"></i><i class="mdi mdi-chevron-down ml-1"></i></button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item tx-13" href="#">Updates</a>
+                    <a class="dropdown-item tx-13" href="#">Social</a>
+                    <a class="dropdown-item tx-13" href="#">Team Manage</a>
+                </div>
+            </div>
+            <div class="btn-group ml-1">
+                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon-tag"></i><i class="mdi mdi-chevron-down ml-1"></i></button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item tx-13" href="">Updates</a>
+                    <a class="dropdown-item tx-13" href="">Social</a>
+                    <a class="dropdown-item tx-13" href="">Team Manage</a>
+                </div>
+            </div>
+            <div class="btn-group ml-1">
+                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false">More<i class="mdi mdi-chevron-down ml-1"></i></button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item tx-13" href="">Mark as Unread</a>
+                    <a class="dropdown-item tx-13" href="">Mark as Important</a>
+                    <a class="dropdown-item tx-13" href="">Add to Tasks</a>
+                    <a class="dropdown-item tx-13" href="">Add Star</a>
+                    <a class="dropdown-item tx-13" href="">Mute</a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive mg-t-20 mg-b-15 scrollable-y-75 scroll-11" *ngIf="mailHelper.data$ | async as items">
+            <table class="table table-hover mb-0" *ngIf="items.length; else emptyTemplate">
+                <tbody>
+                    <tr [class.active]="mail.user_has_read" *ngFor="let mail of items;trackBy: mailHelper.trackByFn">
+                        <td class="wd-5p">
+                            <div class="d-flex custom-control custom-checkbox">
+                                <input type="checkbox" [checked]="mailSelectHelper.hasSelectedItem(mail)" class="custom-control-input" id="customCheck{{mail.id}}" (click)="mailSelectHelper.toggleSelectedItem(mail)">
+                                <label class="custom-control-label" for="customCheck{{mail.id}}"></label>
+                            </div>
+                        </td>
+                        <td class="wd-5p"><button class="btn btn-link" (click)="onUpdateFavoris(mail)"><span class="fa-star tx-16" [ngClass]="mail.user_favoris ? 'fa text-warning' : 'fal'" ></span></button></td>
+                        <td class="wd-15p tx-gray-600">
+                            {{mail.auteur.libelle}}
+                        </td>
+                        <td><a [routerLink]="['./', mail.id]" routerLinkActive="router-link-active"><span class="badge badge-outlined badge-warning mr-2">Important</span>{{mail.libelle | shorten:50}}</a></td>
+                        <td class="wd-15p">
+                            <p class="mb-0 tx-10 tx-gray-500">{{mail.date | date:'short' : undefined : 'fr'}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-between  dt-bottom-row dataTables_paginate paging_bootstrap">
+            <ngb-pagination [collectionSize]="total" [(page)]="page" [pageSize]="mailHelper.pageSize" [maxSize]="5" [rotate]="true">
+            </ngb-pagination>
+            <div class="input-group input-group-sm col-1">
+                <input type="number" class="form-control" name="page" [max]="mailHelper.pageSize" [(ngModel)]="pageInput" (focusout)="changed(pageInput)" (keyup.enter)="changed(pageInput)">
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,60 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Nom</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Email</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'email'" [ngClass]="{'is-invalid': shouldShowRequiredError('email'), 'is-valid': isValid('email')}" name="email" required>
+                    <div *ngIf="shouldShowRequiredError('email')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Telephone</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'telephone'" [ngClass]="{'is-invalid': shouldShowRequiredError('telephone'), 'is-valid': isValid('telephone')}" name="telephone" required>
+                    <div *ngIf="shouldShowRequiredError('telephone')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Adresse</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'adresse'" [ngClass]="{'is-invalid': shouldShowRequiredError('adresse'), 'is-valid': isValid('adresse')}" name="adresse" required>
+                    <div *ngIf="shouldShowRequiredError('adresse')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="condition_suivi">Condition de suivi <small>optionnel</small></label>
+                    <textarea name="condition_suivi" class="form-control  form-control-sm" cols="30" rows="3" [formControlName]="'condition_suivi'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'condition_suivi'), 'is-valid': isValid('condition_suivi')}"></textarea>
+                    <div *ngIf="shouldShowRequiredError('condition_suivi')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="commentaire">Commentaire<small>optionnel</small></label>
+                    <textarea name="commentaire" class="form-control  form-control-sm" cols="30" rows="3" [formControlName]="'commentaire'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'commentaire'), 'is-valid': isValid('commentaire')}"></textarea>
+                    <div *ngIf="shouldShowRequiredError('commentaire')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+</div>

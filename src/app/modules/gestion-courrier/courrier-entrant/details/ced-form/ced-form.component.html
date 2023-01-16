@@ -1,0 +1,85 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{courrier.libelle}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+    <span aria-hidden="true"><i class="icon-close"></i></span>
+</button>
+</div>
+<ng-container *ngIf="courrier">
+    <div class="modal-body  tx-dark" [class.loading]="is_form_saving">
+        <form class="row" [formGroup]="courrierForm">
+            <div class="col-12 mb-2">
+                <label class="card-title">Objet</label>
+                <div class="card-text">
+                    <input type="text" class="form-control form-control-sm" [formControlName]="'objet'" [ngClass]="{'is-invalid': courrierForm.get('objet').hasError('required'), 'is-valid': courrierForm.get('objet').valid}" required>
+                    <div *ngIf="courrierForm.get('objet').hasError('required')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <div class="col-6 mb-2">
+                <div class="card-text">
+                    <app-select-formgroup label="Type" formControlName="type_id" [selected]="courrierForm.get('type_id').value" [dataSource]="allCrTypes$" [createModal]="CrTypeEditComponent"></app-select-formgroup>
+                    <div *ngIf="courrierForm.get('type_id').hasError('required')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <div class="col-6 mb-2">
+                <div class="card-text">
+                    <app-select-formgroup label="Nature" formControlName="nature_id" [selected]="courrierForm.get('nature_id').value" [dataSource]="allCrNatures$" [createModal]="CrNatureEditComponent"></app-select-formgroup>
+                    <div *ngIf="courrierForm.get('nature_id').hasError('required')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <div class="col-6 mb-2">
+                <div class="card-text">
+                    <app-select-formgroup label="Niveau d'Urgence" formControlName="urgence_id" [selected]="courrierForm.get('urgence_id').value" [dataSource]="allCrUrgences$" [createModal]="CrUrgenceEditComponent"></app-select-formgroup>
+                    <div *ngIf="courrierForm.get('urgence_id').hasError('required')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <div class="col-6 mb-2">
+                <div class="card-text">
+                    <app-select-formgroup label="Expéditeur" formControlName="expediteur_id" [selected]="courrierForm.get('expediteur_id').value" [dataSource]="allCoordonnees$" [createModal]="CoordonneeEditComponent"></app-select-formgroup>
+                    <div *ngIf="courrierForm.get('expediteur_id').hasError('required')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <div class="col-6 mb-2">
+                <label class="card-title">Date de redaction</label>
+                <div class="card-text">
+                    <input class="form-control form-control-sm" name="date_arrive" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [formControlName]="'date_arrive'" [ngClass]="{'is-invalid': courrierForm.get('date_arrive').hasError('required'), 'is-valid': courrierForm.get('date_arrive').valid}"
+                        required>
+                    <div *ngIf="courrierForm.get('date_arrive').hasError('required')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <div class="col-6 mb-2">
+                <label class="card-title">Date d'arrivée</label>
+                <div class="card-text">
+                    <input class="form-control form-control-sm" name="date_arrive" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [formControlName]="'date_arrive'" [ngClass]="{'is-invalid': courrierForm.get('date_arrive').hasError('required'), 'is-valid': courrierForm.get('date_arrive').valid}"
+                        required>
+                    <div *ngIf="courrierForm.get('date_arrive').hasError('required')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+            <div class="col-12 mb-2">
+                <label class="card-title">Description</label>
+                <div class="card-text">
+                    <textarea name="commentaire" [formControlName]="'commentaire'" class="form-control form-control-sm" cols="30" rows="3" [ngClass]="{'is-invalid': courrierForm.get('commentaire').hasError('required'), 'is-valid': courrierForm.get('commentaire').valid}"></textarea>
+                    <div *ngIf="courrierForm.get('commentaire').hasError('required')" class="invalid-feedback">veillez saisir ce champ.</div>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <button class="btn btn-outline-primary mr-3" (click)="onResetForm()">Annuler</button>
+                <button class="btn btn-primary" (click)="onSaveFormData()" [disabled]="shouldDisableBatimentSubmit()">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<ng-template #dontExist>
+    <br>
+    <section class="bg-white">
+        <h4 class="text-center title p-3">
+            {{ 'Aucun courrier trouver' }}
+        </h4>
+        <div class="d-flex justify-content-center">
+            <button (click)="onAddForm()" class="btn p-0 mr-1" style="font-size: 16px">
+              <i class="fal fa-layer-plus" style="color: #99600b"></i> Creer un courrier
+          </button>
+        </div>
+    </section>
+</ng-template>

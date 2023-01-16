@@ -1,0 +1,8 @@
+span.troisval {
+    // display:inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    width: 4ch !important;
+}

@@ -1,0 +1,100 @@
+<div class="row"
+     *ngIf="single">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center">
+        <span class="p-3 rounded-circle"><i class="fal fa-2x fa-tasks-alt tx-yeto"></i></span>
+      </div>
+
+      <div class="col-12 d-flex flex-column justify-content-center  align-items-center">
+        <h5 class="text-center tx-yeto mb-0">{{ single.libelle }}</h5>
+
+      </div>
+    </div>
+
+    <ul class="nav-pills"
+        ngbNav
+        [destroyOnHide]="false"
+        #nav="ngbNav"
+        [activeId]="single.description ? 'details' : 'authorisations'">
+
+      <!-- Details -->
+      <li [ngbNavItem]="'details'"
+          *ngIf="single.description">
+        <a ngbNavLink>Details</a>
+        <ng-template ngbNavContent>
+          <div class="row">
+            <div class="col-12">
+              <p [innerHTML]="single.description"
+                 *ngIf="single.description"></p>
+              <p class="text-center font-italic p-2"
+                 *ngIf="!single.description">Aucune description</p>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+
+      <!-- Authorisations -->
+      <li [ngbNavItem]="'authorisations'">
+        <a ngbNavLink>Autorisations</a>
+        <ng-template ngbNavContent>
+          <ngb-accordion [closeOthers]="true"
+                         *ngIf="single.authorisations.length"
+                         #panel
+                         [destroyOnHide]="false"
+                         class="my-2"
+                         [activeIds]="activePanelId">
+
+            <ngb-panel [id]="scopeName | slugify"
+                       *ngFor="let scopeName of helper.object.getKeys(scopes)">
+              <!-- Title -->
+              <ng-template ngbPanelTitle>
+                <span>
+                  {{ scopeName ? (scopeName | capitalizeFirst) : 'Liste'}}
+                  <i class="fas ml-1 "
+                     [ngClass]="{ 'fa-angle-up': isExpanded(scopeName), 'fa-angle-down': !isExpanded(scopeName)}"></i>
+                </span>
+              </ng-template>
+
+              <!-- Content -->
+              <ng-template ngbPanelContent
+                           class="p-0">
+                <!-- Abonnement -->
+                <app-autorisations-show *ngFor="let scope of scopes[scopeName]"
+                                        [name]="scope.scope_name | capitalizeFirst"
+                                        [autorisation]="scope.authorisation">
+                </app-autorisations-show>
+
+
+              </ng-template>
+            </ngb-panel>
+
+
+          </ngb-accordion>
+
+        </ng-template>
+
+
+        <app-missing-data *ngIf="!single.authorisations.length"></app-missing-data>
+      </li>
+
+
+      <!-- Users -->
+      <li [ngbNavItem]="'users'">
+        <a ngbNavLink>Personnel</a>
+        <ng-template ngbNavContent>
+          <app-roles-users></app-roles-users>
+        </ng-template>
+      </li>
+
+    </ul>
+
+    <div [ngbNavOutlet]="nav"
+         class="mt-2"></div>
+
+  </div>
+</div>
+
+
+
+<app-loading *ngIf="loading"></app-loading>

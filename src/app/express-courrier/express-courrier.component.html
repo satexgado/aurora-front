@@ -1,0 +1,350 @@
+<nav class="navbar navbar-expand-lg navbar-light info bd-b bd-2">
+    <a class="navbar-brand">
+        <img src="assets/image/logo-drapeau.png" alt="..." height="36">
+    </a>
+    <a class="navbar-brand">
+        <img src="assets/image/logo-mea-transparent.png" alt="..." height="36">
+    </a>
+    <a class="tx-ether mg-l-4 tx-20 " href="#" style="vertical-align: middle; text-shadow: 0px 1px 0px">
+      SIGECAM
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+    <div class="collapse navbar-collapse justify-content-center order-12 order-sm-1" id="navbarSupportedContent">
+        <ng-container [ngSwitch]="currentTopBar">
+            <ul class="nav p-2 justify-content-between" *ngSwitchCase="'courrier'">
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['courrier/acceuil']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-home tx-18  tx-ether4 "></i> <span class="tx-ether4"> Accueil
+              </span></a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['courrier/dossier']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-folder tx-18  tx-ether4 "></i> <span class="tx-ether4">
+                Dossiers </span></a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['courrier/entrant']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-envelope tx-18  tx-ether4 "></i> <span class="tx-ether4">
+                  Entrants </span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 card-1-hoverable" [routerLink]="['courrier/sortant']" routerLinkActive="active">
+                        <i class="fal fa-envelope-open tx-18 tx-ether4 "></i> <span class="tx-ether4">
+                  Sortants</span></a>
+                </li>
+                <li class="nav-item " ngbDropdown #propertiesDrop="ngbDropdown">
+                    <a class="nav-link3 card-1-hoverable" routerLinkActive="active" ngbDropdownToggle>
+                        <i class="fal fa-line-columns tx-18 tx-ether4 "></i>
+                        <span class="tx-ether4">
+                  Propriétés
+              </span>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button [routerLink]="['courrier/propriete']" [fragment]="'type'" ngbDropdownItem>
+                      <i class="fal fa-envelope-square tx-20 pr-2 mg-r-10"></i>  Types courriers
+                  </button>
+                            <button [routerLink]="['courrier/propriete']" [fragment]="'etape'" ngbDropdownItem>
+                      <i class="fal fa-ballot-check tx-20 pr-2 mg-r-10"></i> Etapes
+                  </button>
+                            <button [routerLink]="['courrier/propriete']" [fragment]="'nature'" ngbDropdownItem>
+                      <i class="fal fa-envelope-open-text tx-20 pr-2 mg-r-10"></i> Natures
+                  </button>
+                            <button [routerLink]="['courrier/propriete']" [fragment]="'statut'" ngbDropdownItem>
+                      <i class="fal fa-stamp  tx-20 pr-2 mg-r-10"></i> Statuts courrier
+                  </button>
+                            <button [routerLink]="['courrier/propriete']" [fragment]="'urgence'" ngbDropdownItem>
+                      <i class="fal fa-calendar-exclamation tx-20 pr-2 mg-r-10"></i> Urgences
+                  </button>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 card-1-hoverable" [routerLink]="['courrier/analyse']" routerLinkActive="active">
+                        <i class="fal fa-chart-bar  tx-18 tx-ether4"></i> <span class="tx-ether4"> Analyse</span>    
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav p-2 justify-content-between" *ngSwitchCase="'marche'">
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./marche-public/marche']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-file-signature tx-18 tx-ether4"></i> <span class="tx-ether4"> Marche</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./marche-public/type-marche']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-file-contract tx-18 tx-ether4"></i> <span class="tx-ether4"> Type de marche</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./marche-public/procedure']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-tasks tx-18 tx-ether4"></i> <span class="tx-ether4"> Procedure</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./marche-public/tableau-fournisseur']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-hand-holding-box tx-18 tx-ether4"></i> <span class="tx-ether4">Fournisseurs</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./marche-public/tableau-partenaire']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-handshake  tx-18 tx-ether4"></i> <span class="tx-ether4">Partenaires</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./marche-public/analyse']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-chart-bar  tx-18 tx-ether4"></i> <span class="tx-ether4"> Analyse</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav p-2 justify-content-between" *ngSwitchCase="'document'">
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./document/mon-espace']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-folder tx-18 tx-ether4"></i> <span class="tx-ether4"> Mon espace</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./document/favoris']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-star tx-18 tx-ether4"></i> <span class="tx-ether4"> Favoris</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./document/mes-partages']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-cloud-download-alt tx-18 tx-ether4"></i> <span class="tx-ether4"> Mes partages</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./document/partage']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-share-all tx-18 tx-ether4"></i> <span class="tx-ether4"> Partager avec moi </span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav p-2 justify-content-between" *ngSwitchDefault>
+                <!-- <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./courrier/acceuil']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-mail-bulk tx-18  tx-ether4 "></i> <span class="tx-ether4"> Courriers</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./document']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-file-alt tx-18  tx-ether4 "></i> <span class="tx-ether4"> Documents</span>
+                    </a>
+                </li>
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['./marche-public/marche']" routerLinkActive="active" style="padding: 5px 12px;">
+                        <i class="fal fa-balance-scale tx-18  tx-ether4 "></i> <span class="tx-ether4"> Marche Public</span>
+                    </a>
+                </li> -->
+            </ul>
+        </ng-container>
+    </div>
+    <div class="header-right flex-grow-1 d-flex justify-content-end order-2">
+        <ul class="list-inline m-0">
+            <!--================================->
+            <!-- Notifications Dropdown Start -->
+            <!--================================-->
+            <li class="list-inline-item dropdown hidden-xs">
+                <a class="notification-icon" [ngStyle]="{'vertical-align': authService.user.photo ? 'sub' : 'initial'}" href="" role="button" (click)="newNotification = false" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-bell tx-16"></i>
+                    <span class="notification-count wave in" *ngIf="newNotification"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow-2">
+                    <!-- Top Notifications Area -->
+                    <app-notifications-list></app-notifications-list>
+                </div>
+            </li>
+            <!--/ Notifications Dropdown End -->
+            <!--================================-->
+            <!-- Messages Dropdown Start -->
+            <!--================================-->
+            <!-- <li class="list-inline-item dropdown hidden-xs">
+                <a class="message-icon" href="" role="button" data-toggle="dropdown" aria-haspopup="true" (click)="newInbox = false" aria-expanded="false">
+                    <i class="icon-envelope tx-16"></i>
+                    <span class="messages-count wave in" *ngIf="newInbox"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow-2">
+                    <app-inbox-list></app-inbox-list>
+                </div>
+            </li> -->
+            <!--/ Messages Dropdown End -->
+            <!--================================-->
+            <!-- Profile Dropdown Start -->
+            <!--================================-->
+            <li class="list-inline-item dropdown">
+                <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="select-profile" [ngStyle]="{'vertical-align': authService.user.photo ? 'sub' : 'super'}">Bonjour, {{ authService.user.prenom }}!</span>
+                    <img *ngIf="authService.user.photo" [src]="authService.user.photo" style="object-fit: cover; object-position: center;" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                    <i *ngIf="!authService.user.photo" class="fad fa-user-circle"
+                           style="font-size: 35px; vertical-align: bottom;"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-profile shadow-2">
+                    <div class="user-profile-area">
+                        <div class="user-profile-heading">
+                            <div class="profile-thumbnail">
+                                <img *ngIf="authService.user.photo" [src]="authService.user.photo" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                                <span *ngIf="!authService.user.photo">
+                                    <i class="fad fa-user-circle"
+                                       style="font-size: 35px;"></i>
+                                  </span>
+                            </div>
+                            <div class="profile-text">
+                                <h6>{{ authService.user.prenom }} {{ authService.user.nom }}</h6>
+                                <span>{{ authService.user.email }}</span>
+                            </div>
+                        </div>
+                        <a [routerLink]="['courrier']" *ngIf="
+                        helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+                        || helper.authorisation.check('proprietes courrier', 'LECTURE', undefined)
+                        || helper.authorisation.check('courrier sortant', 'LECTURE', undefined)
+                        || helper.authorisation.check('suivis', 'LECTURE', undefined)
+                        || helper.authorisation.check('dashboard', 'LECTURE', undefined) 
+                        " class="dropdown-item"><i class="fas fa-mail-bulk"
+                          aria-hidden="true"></i> Courrier </a>
+                        <a [routerLink]="['document']" *ngIf="
+                        helper.authorisation.check('fichier', 'LECTURE', undefined)
+                        " class="dropdown-item"><i class="fas fa-file-alt"
+                            aria-hidden="true"></i> Document </a>
+                        <a [routerLink]="['marche-public/marche']" class="dropdown-item"><i class="fas fa-balance-scale"
+                              aria-hidden="true"></i> Marche Public </a>
+                        <a [routerLink]="['organisation']" class="dropdown-item"><i class="fal fa-chart-network"
+                 aria-hidden="true"></i> Mes structures </a>
+                        <a [routerLink]="['organisation/organigramme']" class="dropdown-item"><i class="far fa-network-wired"
+                 aria-hidden="true"></i> Organigramme</a>
+                        <a [routerLink]="['organisation/structures/all']" class="dropdown-item"><i class="fad fa-chart-network"
+                 aria-hidden="true"></i> Liste des structures</a>
+                        <a [routerLink]="['users', authService.user.id]" class="dropdown-item"><i class="icon-user"
+                  aria-hidden="true"></i> Mon profile</a>
+                        <a  (click)="logout()" class="dropdown-item"><i class="icon-power"
+                 aria-hidden="true"></i> Deconnexion</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Profile Dropdown End -->
+            <!--================================-->
+            <!-- Setting Sidebar Start -->
+            <!--================================-->
+
+            <!--/ Setting Sidebar End -->
+        </ul>
+    </div>
+    <!--/ Header Right End -->
+</nav>
+
+<div class="page-container" style="min-height: 100vh;">
+    <div class="page-sidebar" style="background: #1a5276;">
+        <router-outlet name="sidebar"></router-outlet>
+    </div>
+    <!-- Page conent -->
+    <div class="page-content bg-light flex-1">
+        <!-- page inner -->
+        <div class="page-inner bg-light" [@routeAnimations]="prepareRoute(outlet)">
+            <router-outlet #outlet="outlet"></router-outlet>
+        </div>
+
+        <!-- footer -->
+        <!-- <footer class="page-footer">
+      <div class="pd-t-4 pd-b-0 pd-x-20">
+          <div class="tx-10 tx-uppercase">
+              <p class="pd-y-10 mb-0">Copyright&copy; 2021 | Tous droits reservés. | Created By <a href="http://www.open2sw.com" target="_blank">open2sw</a></p>
+          </div>
+      </div>
+  </footer> -->
+    </div>
+    <div class="page-sidebar">
+        <div class="page-sidebar-inner ">
+            <div class="page-sidebar-menu ">
+                <div class="p-0 pb-6">
+                    <ul class="navbar nav  " role="tablist">
+                        <li class="nav-item tx-center ">
+                            <a class="nav-link3 " container="body" ngbTooltip="Mon profile" [routerLink]="['users', authService.user.id]">
+                                <i class="fal fa-users tx-lvert  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item tx-center  ">
+                            <a class="nav-link3   " container="body" ngbTooltip="Mes structures" [routerLink]="['organisation']">
+                                <i class="fal fa-chart-network tx-primary  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item tx-center  ">
+                            <a class="nav-link3   " container="body" ngbTooltip="Organigramme" [routerLink]="['organisation/organigramme']">
+                                <i class="far fa-network-wired  tx-lbleu  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item tx-center">
+                            <a class="nav-link3  " container="body" container="body" ngbTooltip="Liste des structures" [routerLink]="['organisation/structures/all']">
+                                <i class="fad fa-chart-network tx-lorange  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+
+                        <!-- <li class="nav-item tx-center">
+                            <a class="nav-link3  " ngbTooltip="Coordonnees" [routerLink]="['coordonnee']">
+                                <i class="fal fa-address-card tx-lrouge  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li> -->
+
+                        <li class="nav-item tx-center">
+                            <a class="nav-link3  " container="body" ngbTooltip="Taches" [routerLink]="['tache']">
+                                <i class="fal fa-tasks-alt tx-lrouge  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- <div class="   p-0 pt-6 pr-1">
+
+                <a class="nav-link3" data-toggle="tab" href="#dashboard_memoire">
+                    <div class="green_icon"></div>
+                    <img class="rounded-circle" src="assets/images/xs/avatar7.jpg" alt="avatar" width="40">
+                </a>
+                <a class="nav-link3" data-toggle="tab" href="#dashboard_memoire">
+                    <div class="green_icon"></div>
+                    <img class="rounded-circle" src="assets/images/xs/avatar9.jpg" alt="avatar" width="40">
+                </a>
+                <a class="nav-link3" data-toggle="tab" href="#dashboard_memoire">
+                    <div class="green_icon"></div>
+                    <img class="rounded-circle" src="assets/images/xs/avatar2.jpg" alt="avatar" width="40">
+                </a>
+
+                <a class="nav-link3" data-toggle="tab" href="#dashboard_memoire">
+                    <div class="green_icon"></div>
+                    <img class="rounded-circle" src="assets/images/xs/avatar4.jpg" alt="avatar" width="40">
+                </a>
+
+                <a class="nav-link3 " data-toggle="tab" href="#dashboard_memoire">
+                    <div class="avatar "><span class="avatar-initial rounded-circle bg-primary ">20</span></div>
+                </a>
+
+
+            </div> -->
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Srolltop button -->
+<!-- <a href=""
+   data-click="scroll-top"
+   class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a> -->
+
+
+
+
+<!-- <app-tunel></app-tunel> -->
+<app-notifications></app-notifications>
+<!-- <app-inbox></app-inbox> -->
+
+<div class="d-flex align-items-center bg-echolight2 py-2 border-light cart-panel-foo-fix justify-content-center">
+    <!-- Logo -->
+    <a class="navbar-brand overflow-hidden p-0" href="https://www.open2sw.com/" target="_blank">
+        <img src="assets/images/connexion/logo-o2sw.svg" alt="logo" width="140px">
+    </a>
+    <div class="tx-ether">
+        © 2022 SIGECAM  by Open Software Solution for the World
+    </div>
+</div>

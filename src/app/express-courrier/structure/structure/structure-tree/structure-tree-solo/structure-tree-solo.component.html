@@ -1,0 +1,25 @@
+<app-structure-solo [structure]="structure"
+                    (click)="show()"
+                    [isUserEmploye]="authService.structuresID.includes(structure.id)"
+                    *ngIf="structure">
+  <div class="d-flex justify-content-center "
+       *ngIf="structureCopy.has_sous_structures">
+    <!-- Show sous structures -->
+    <a (click)="$event.stopPropagation(); showSousStructures()"
+       *ngIf="!displaySousStructure"
+       container="body"
+       [ngbTooltip]="'Afficher sous structures'"
+       class="more-structure d-flex align-items-center rounded-circle btn btn-sm btn-outline-primary border">
+      <i class="far fa-list"></i>
+    </a>
+
+    <!-- Hide sous structures -->
+    <a (click)="$event.stopPropagation(); hideSousStructures()"
+       *ngIf="displaySousStructure"
+       container="body"
+       [ngbTooltip]="'Cacher sous structures'"
+       class="more-structure d-flex align-items-center rounded-circle btn btn-sm btn-outline-primary border">
+      <i class="far fa-times"></i>
+    </a>
+  </div>
+</app-structure-solo>

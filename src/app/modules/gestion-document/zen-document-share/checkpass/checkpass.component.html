@@ -1,0 +1,24 @@
+<div class="modal-header p-2">
+    <h4 class="modal-title title">Débloquer: {{item?.libelle}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="item">
+    <div class="modal-body p-2 tx-dark" [class.loading]="is_loading">
+        <form class="custom-placeholder" [formGroup]="passwordForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="password">Mot de passe</label>
+                    <input type="password" (keyup.enter)="onSubmit()" autofocus class="form-control  form-control-sm" minlength="4" required [formControlName]="'password'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'password'), 'is-valid': isValid('password')}" name="password"
+                        required>
+                    <div *ngIf="shouldShowRequiredError('password')" class="invalid-feedback">veillez saisir.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer p-2">
+    <button type="button" (click)="onSubmit()" [disabled]="shouldDisableSubmit() || is_loading || !service" class="btn btn-sm btn-primary mr-3">Confirmer</button>
+</div>

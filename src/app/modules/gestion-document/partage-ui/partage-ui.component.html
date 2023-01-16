@@ -1,0 +1,63 @@
+<div class="card mb-2">
+    <div class="grid-container w-100">
+        <div class="sidebar" [class.sidebar_small]="selectedDossierId">
+            <div class="pl-2">
+                <h5 class="pt-2 pb-2"><i class="fad fa-share-all  tx-20"></i> Tous les dossiers partagés </h5>
+            </div>
+            <app-zen-dossier-list-ui (dossierGotoEmitter)="onSelectDossier($event); onCreateBreadcrumb($event);" [navigation]="false" [query]="dossierQueryOption"></app-zen-dossier-list-ui>
+        </div>
+        <div class="main-content" [class.main-content_large]="selectedDossierId">
+            <div class="pl-2 pb-4">
+                <div class="pd-t-5 pd-b-5">
+                    <h1 class="pd-0 mg-0 tx-20">{{modalData ? (modalData.libelle | titlecase) : 'Acceuil'}}
+                        <button class="btn btn-oblong bd-0 btn-outline-dark" (click)="fichierService.showFolderDetails.next(modalData)" *ngIf="this.modalData"><i class="fal fa-info-circle rounded-circle"></i></button>
+                    </h1>
+                </div>
+                <div class="breadcrumb pd-0 mg-0">
+                    <button class="breadcrumb-item btn btn-link tx-gray-600 btn-sm p-0" (click)="onSelectDossier(null)">
+                        <i class="icon ion-ios-home-outline"></i> Tous les dossiers
+                    </button>
+                    <ng-container *ngFor="let item of let breadcrumb of dossier_breadcrumb; let first = first ; let last = last; let i = index">
+                        <ng-container [ngSwitch]="last">
+                            <span class="breadcrumb-item active" *ngSwitchCase="true">
+                             {{ breadcrumb.libelle | titlecase}}
+                        </span>
+                            <button class="breadcrumb-item btn btn-link tx-gray-600 btn-sm p-0" (click)="onSelectDossier(breadcrumb); onSliceFromBreadcrumb(i)" *ngSwitchDefault>
+                             {{ breadcrumb.libelle | titlecase}}
+                        </button>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="scroll-11 scrollable-y-75 p-3">
+                <div class="w-100">
+                    <ul class="list-group" [class.loading]="is_loading_content">
+                        <ng-container *ngIf="(modalDataFichiers && modalDataFichiers.length) || (modalDataDossiers && modalDataDossiers.length)  else emptyTemplate">
+                            <li class="card-1 list-group-item p-2 mb-2" *ngFor="let dossier of modalDataDossiers;">
+                                <app-dossier-item-ui (dossierGotoEmitter)="onSelectDossier($event);onAddToBreadCrumb($event);" [navigation]="false" [dossier]="dossier" (dossierUpdateEmitter)="onUpdateDossier($event)" (dossierTransfertEmitter)="onTransfertDossier($event)" (dossierDeleteEmitter)="onDeleteDossier($event)"></app-dossier-item-ui>
+                            </li>
+                            <li class="card-1 list-group-item p-2 mb-2" *ngFor="let fichier of modalDataFichiers;">
+                                <app-fichier-item-ui [canSelect]="false" [fichier]="fichier" (fichierUpdateEmitter)="onUpdateFichier($event)" (fichierTransfertEmitter)="onTransfertSingleFichier($event)" (fichierDeleteEmitter)="onDeleteFichier($event)"></app-fichier-item-ui>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="pl-2">
+        <h5 class="pt-2 pb-2"><i class="fad fa-share-all  tx-20"></i> Tous les fichiers partagés </h5>
+    </div>
+    <app-zen-fichier-list-ui [query]="fichierQueryOption"></app-zen-fichier-list-ui>
+</div>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

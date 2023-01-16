@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <h4 class="modal-title title">Partager: {{item?.libelle}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container>
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': is_loading_user || is_loading }">
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div class="col-10">
+                <label class="control-label col-12 p-0" for="description">
+                  Partager avec
+                </label>
+                <ng-container *ngIf="userSelect2Data$">
+                    <select [formControl]="personneControl" appSelect2Default style="width: 100%" [data]="userSelect2Data$" multiple="multiple" class="form-control" placeholder="Select">
+                    </select>
+                    <div class="card card-1 card-accent-primary" *ngIf="personneControl.value">
+                        <div class="card-body p-0">
+                            <table class="table table-striped table-sm">
+                                <tbody>
+                                    <tr *ngFor="let user_id of personneControl.value;">
+                                        <ng-container *ngIf="getUser(user_id) as user">
+                                            <td class="d-flex align-items-center">
+                                                <div class="avatar mr-2">
+                                                    <img src="https://via.placeholder.com/100x100" class="img-fluid wd-40 ht-40 rounded-circle" alt="">
+                                                </div>
+                                                <div class="d-block">
+                                                    <a href="" class="my-0 mt-1 tx-13">{{user.libelle}}</a>
+                                                    <!-- <p class="tx-12 mg-0 tx-gray-500">New Jersey, UK</p> -->
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" (click)="onSubmit()" [disabled]="is_loading || is_loading_user" class="btn btn-sm btn-primary mr-3">Enregistrer et Quitter</button>
+    <button type="button" (click)="onSubmit(false)" [disabled]="is_loading || is_loading_user" class="btn btn-sm btn-outline-primary">Appliquer</button>
+</div>

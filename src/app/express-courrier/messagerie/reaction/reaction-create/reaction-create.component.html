@@ -1,0 +1,219 @@
+<div class="pd-0 pt-3 ">
+  <div class="  mb-0 mg-l-10 pl-3 py-3 bd-t bd-2 pos-relative tx-echos"
+       *ngIf="rebondissement">
+    <h6 class="m-0">{{ rebondissement.inscription?.nom_complet }}</h6>
+
+
+    <!-- REbondissement text -->
+    <p class="m-0"
+       *ngIf="rebondissement.reaction"
+       [innerHTML]="rebondissement.reaction"></p>
+
+    <!-- rebondissement fichier -->
+    <div *ngIf="rebondissement.fichier"
+         class="tx-center">
+      <!-- REbondissement image -->
+      <img [src]="rebondissement.fichier"
+           *ngIf="rebondissement.fichier && helper.file.checkExtensions(rebondissement.fichier, imageHandlerService.acceptedImageExtension)"
+           class="rebondissement-img mt-2"
+           [alt]="rebondissement.inscription?.nom_complet + '_image'">
+
+      <!-- Rebondissemnt audio -->
+      <audio controls
+             *ngIf="helper.file.checkExtension(rebondissement.fichier, 'mp3')">
+        <source [src]="rebondissement.fichier">
+      </audio>
+
+
+      <a class="p-3 mt-2 clickable alert-info d-inline-block rounded-pill bd clickable"
+         *ngIf="helper.file.checkExtensions(rebondissement.fichier, ['pdf', 'PDF'])"
+         style="margin-left: -10px;">
+        <i class="fas fa-file-pdf mr-2"></i> {{ rebondissement.fichier.split('/')[rebondissement.fichier.split('/').length - 1] }}
+        <i class="fas fa-download float-right ml-4 mr-2 "></i>
+      </a>
+    </div>
+
+
+
+    <span class="clickable"
+          (click)="annulerRebondissement()"
+          style="position:absolute; top: 10px; right: 10px;">
+      <i class="fal fa-times"></i>
+    </span>
+  </div>
+
+
+
+  <form class="publisher publisher-multi p-3 border rounded-pill mx-3 mb-3"
+        [formGroup]="form"
+        (submit)="create">
+
+
+
+
+
+
+    <!-- Champs de saisi texte -->
+    <ng-container *ngIf="!(enregistreurService.isRecording$ | async)">
+      <!-- Champs de saisi -->
+      <div class="flexbox align-items-center ">
+        <!-- <img class="wd-36 rounded-circle flex-top image-contact avatar2 align-self-start"
+             [src]="authService.user.photo"
+             [alt]="authService.user.nom_complet"
+             width="50"
+             height="50"> -->
+
+
+        <input class="publisher-input mb-0 auto-expand "
+               formControlName="reaction"
+               (keyup.enter)="create()"
+               [attr.placeholder]="'Ecrivez votre message'">
+
+
+        <!-- Hidden input -->
+        <!-- Pdf input -->
+        <input type="file"
+               accept="application/pdf"
+               [hidden]="true"
+               #documentUpload
+               (change)="fileProcess($event, 'document')">
+
+        <!-- Image input -->
+        <input type="file"
+               [hidden]="true"
+               accept="image/x-png,image/gif,image/jpeg"
+               #imageUpload
+               (change)="fileProcess($event, 'image')">
+
+
+        <div class="flexbox bg-light pt-2 pl-2 ">
+          <div class="gap-items">
+
+            <!-- Ajouter un fichier -->
+            <a class="publisher-btn pt-2"
+               (click)="documentUpload.click()"
+               container="body"
+               [ngbTooltip]="'Ajouter un document'">
+              <i class="fas fa-file-alt tx-16"></i>
+            </a>
+
+
+            <!-- Image -->
+            <a class="publisher-btn pt-2"
+               (click)="imageUpload.click()"
+               container="body"
+               [ngbTooltip]="'Ajouter une image'">
+              <i class="fas fa-image tx-16"></i>
+            </a>
+
+            <!-- Message audio -->
+            <a class="publisher-btn pt-2"
+               (click)="enregistrer()"
+               container="body"
+               [ngbTooltip]="'Message audio'">
+              <i class="fas fa-microphone tx-16"></i>
+            </a>
+
+
+
+
+            <!-- Emoji -->
+            <a class="publisher-btn pt-2"
+            container="body"
+               [ngbTooltip]="'ajouter des emojis'"
+               (click)="showEmojiPicker = !showEmojiPicker">
+              <i class="fas fa-smile tx-16"
+                 [ngClass]="{'tx-primary': showEmojiPicker}"></i>
+            </a>
+
+            <emoji-mart class="emoji-mart"
+                        set="apple"
+                        (emojiSelect)="addEmoji($event)"
+                        *ngIf="showEmojiPicker"
+                        [skin]="3"
+                        title="Selectionner...">
+            </emoji-mart>
+          </div>
+
+          <!-- Submit button -->
+          <!-- <button class="btn btn-sm btn-custom-primary bg-echos"
+                  type="submit"
+                  (click)="create()">
+            {{ 'ENVOYER' }}
+          </button> -->
+        </div>
+
+
+      </div>
+
+
+      <!-- Call to actions -->
+
+
+    </ng-container>
+
+
+
+    <div class="row w-100"
+         *ngIf="enregistreurService.isRecording$ | async">
+      <div class="col-12 p-0">
+
+        <div class="w-100">
+          <div class="alert-info p-4 mb-0 rounded">
+            <div>
+              <!-- Signal d'enregistrement -->
+              <span><i class="fad fa-microphone-alt tx-danger"></i>
+                En train d'enregistrer
+              </span>
+
+              <!-- Durée enregistrement -->
+              <span class="ml-2">{{ enregistreurService.dureeEnregistrement$ | async }}</span>
+
+              <!-- Bouton d'actions -->
+              <span class="float-right">
+                <!-- Boutton envoyer -->
+                <button class="btn btn-primary mr-2 btn-sm"
+                        (click)="stopEnregistrer()"
+                        type="button">Envoyer</button>
+
+                <!-- Boutton annuler -->
+                <button class="btn btn-danger btn-sm"
+                        (click)="annulerEnregistrement()"
+                        type="button">Annuler</button>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+
+
+
+<!-- <div class="publisher publisher-multi">
+  <div class="flexbox">
+    <img class="rounded-circle flex-top avatar align-self-start image-contact"
+         src="assets/image/0.jpg"
+         alt="">
+    <textarea class="publisher-input auto-expand ml-2 mg-t-7"
+              rows="3"
+              placeholder="Write something"></textarea>
+  </div>
+  <div class="flexbox">
+    <div class="gap-items">
+      <span class="publisher-btn file-group">
+        <i class="fa fa-paperclip file-browser tx-16"></i>
+        <input type="file">
+      </span>
+      <a class="publisher-btn"
+         href=""><i class="fa fa-map-marker tx-16"></i></a>
+      <a class="publisher-btn"
+         href=""><i class="fa fa-smile-o tx-16"></i></a>
+    </div>
+    <button class="btn btn-sm btn-custom-primary">Reply</button>
+  </div>
+</div> -->

@@ -1,0 +1,300 @@
+<div class=" row row-xs clearfix pt-3  pl-2 pr-4" style="z-index: auto !important;">
+    <div class="col-lg-12 ">
+        <h5 class=""><i class="fad fa-spa  " style="padding:6px; border-radius: 50%; "></i> Le mur d'idée</h5>
+    </div>
+</div>
+
+<div class="col-md-12 p-0">
+    <div class="row row-xs clearfix  mg-0 pd-0 p-0  ">
+        <div class="col-lg-8 pr-4 bg-light">
+            <div class="d-flex justify-content-between mg-0 pd-0  ">
+                <div class="">
+                    <div class="form-group  pl-2">
+                        <div class="input-group pt-2" style="width:340px">
+                            <input type="text" class="form-control pd-y-10  tx-white" [(ngModel)]="searchmurideeText" placeholder="Recherche..." style="border-radius: 50px 50px 50px 50px; background-image: linear-gradient(to right,#f3f4f5,#f3f4f5); ">
+                        </div>
+                    </div>
+                </div>
+                <div class=" pt-2">
+                    <ul class="nav ">
+                        <!-- <li class="nav-item tx-ether">
+                            <a class="nav-link3  tx-yeto " (click)="getmuridee(url)">
+                                <i class="fal fa-redo-alt  tx-14 " style="padding:6px; border-radius:50%"></i> Reactualiser
+                            </a>
+                        </li> -->
+                        <li class="nav-item tx-ether">
+                            <a class="nav-link3  tx-yeto " href="#anonymatmurideeModal" data-toggle="modal">
+                                <i class="fal fa-plus  tx-14 " style="padding:6px; border-radius:50%"></i> Nouveau
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- |paginate: { id: 'muridee', itemsPerPage: 12, currentPage: p1 } -->
+            <div class="col-md-12 p-0 contentstdetail scroll-11" *ngIf="muridee && data==true">
+                <div class="card">
+                    <div class="row row-xs clearfix  mg-0 pd-0 p-0">
+                        <div class="col-lg-6 pr-4 bg-white" *ngFor="let item of muridee | appFilter: searchmurideeText:'pays'; let i = index;">
+                            <div [ngClass]="{'mycard2':true,'bg-white':item?.id!=idmuridee,'bg-blue':item?.id==idmuridee}">
+                                <h4 class="tx-16 tx-echos italic mg-l-5 taillebody2"><i class="fal fa-spa tx-echos"></i> {{item?.libelle}} </h4>
+                                <div class="  card-body p-0 bd-b">
+                                    <div class=" tx-ether3 ml-2  pt-1 text-justify p-2 tailledesc">
+                                        <div [innerHTML]="item?.description| afficheHtml"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mg-0 pd-0 bg-light pt-2 ">
+                                        <div class="">
+                                            <div class=" mr-2 ml-2 ">
+                                                <span class=" " (click)="getId(item,'comment',i)">
+                                                    <i class="fad fa-comment-alt-lines bg-white tx-12  tx-echos" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <span class="" (click)="getId(item,'shared',i)">
+                                                    <i class="fad fa-share-all bg-white tx-12 tx-warning" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <span class="" (click)="getId(item,'like',i)">
+                                                    <i *ngIf="loardlike == true" class="fas fa-spinner fa-spin"></i> <i class="fad fa-thumbs-up bg-white tx-12 tx-success-100" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <span class="" (click)="getId(item,'detail',i)">
+                                                    <i class="fad fa-eye bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <span class=" " (click)="getId(item,'update',i)">
+                                                    <i class="fad fa-pen bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                                <span class="" (click)="getId(item,'delete',i)">
+                                                    <i class="fad fa-trash bg-white tx-12" style="padding:6px ; border-radius:50%"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="" *ngIf="item?.anonymat=='Non'">
+                                            <ng-container *ngIf="item?.inscription?.photo">
+                                                <img class="rounded-circled  ml-4" [src]="item?.inscription?.photo" alt="card image" width="30" height="30">
+                                            </ng-container>
+                                            <ng-container *ngIf="!item?.inscription?.photo">
+                                                <i class="fal fa-user fa-2x"></i>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-12 mt-3">
+                            <div class="text-center">
+                                <pagination-controls (pageChange)="p1 = $muridee" autoHide="true" responsive="true" id="muridee"
+                                class="pagination-lg justify-content-center" previousLabel="Precedent}}"
+                                nextLabel="Suivant">
+                                </pagination-controls>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="!muridee">
+                <div class="col-md-12 text-center noData">
+                    <app-loarding></app-loarding>
+                </div>
+            </div>
+            <!-- NO DATA -->
+            <div *ngIf="data==false && muridee " class="col-md-12">
+                <br><br><br><br>
+                <div class="col-md-12 text-center noData">
+                    <app-no-data></app-no-data>
+                </div>
+                <br><br><br><br>
+            </div>
+        </div>
+        <div class=" col-lg-4 bg-light pl-4 pr-4">
+            <div class=" card  bg-white" *ngIf="!affichecommuridee && !affichedetail">
+                <div class="row row-xs clearfix pt-4 bd-b pb-2 mg-0 pd-0  ">
+                    <div class="card-body pd-y-0 mg-b-20">
+                        <div class="custom-fieldset mb-4">
+                            <div class="clearfix">
+                                <label>Total idée</label>
+                            </div>
+                            <div class="d-flex align-items-center text-dark">
+                                <div class="wd-40 wd-md-50 ht-40 ht-md-50 mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded card-icon-danger">
+                                    <i class="icon-speedometer tx-danger tx-20"></i>
+                                </div>
+                                <div>
+                                    <h2 class="tx-20 tx-sm-18 tx-md-24 mb-0 mt-2 mt-sm-0 tx-normal tx-rubik tx-dark"><span class="counter">  {{muridee?.length}}</span></h2>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0" *ngIf="affichecommuridee || affichedetail ">
+                <div class="card no-radius">
+                    <div class="col-md-12 p-0">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <a class="nav-link tx-14 tx-facebook" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false">&nbsp;{{detailmuridee?.libelle}}</a>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="nav-link tx-14 tx-facebook pointers" (click)="resetmuridee()"><i
+                                        class="fal fa-times-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 p-0">
+                    <div class="card bg-white">
+                        <div class="col-md-12 p-0" *ngIf="affichecommuridee">
+                            <div class=" bd-t-0-force bd-b-0-force ">
+                                <app-commentaction [urlpost]=urlpost [url]=urlget [id]=idmuridee> </app-commentaction>
+                            </div>
+                        </div>
+                        <div class="col-md-12 p-0 " *ngIf="affichedetail">
+                            <div class="row row-xs clearfix pt-4 bd-b pb-2 mg-0 pd-0  ">
+                                <div class="col">
+                                    <div class=" text-center" *ngIf="detailmuridee?.anonymat=='Oui'">
+                                        <i class="fad fa-spa bg-light tx-40" style="padding:20px ; border-radius:50%"></i>
+                                    </div>
+                                    <div class="text-center" *ngIf="detailmuridee?.anonymat=='Non'">
+                                        <div class="image text-center">
+                                            <ng-container *ngIf="detailmuridee?.inscription?.photo">
+                                                <img class="rounded-circled  ml--10" [src]="detailmuridee?.inscription?.photo" alt="card image" width="100">
+                                            </ng-container>
+                                            <ng-container *ngIf="!detailmuridee?.inscription?.photo">
+                                                <i class="fal fa-user fa-4x  ml--10"></i>
+                                            </ng-container>
+                                        </div>
+                                        <h6 class="text-center tx-ether pt-2"> {{detailmuridee?.inscription?.prenom}} &nbsp; {{detailmuridee?.inscription?.nom}}</h6>
+                                    </div>
+                                    <h6 class="text-center tx-ether pt-2"> {{detailmuridee?.libelle}} </h6>
+                                    <p class="mb-1 text-center ">
+                                        <small class="tx-12 tx-yeto"> {{detailmuridee?.created_at | date:'mediumDate'}}</small>
+                                        <small class="tx-12 tx-yeto"> || </small>
+                                        <small class="tx-12 "> {{detailmuridee?.likes?.length}}  <i class="fad fa-thumbs-up bg-white tx-12 tx-success-100" style="padding:6px ; border-radius:50%"></i></small>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row row-xs clearfix pt-4 bd-b pb-2 mg-0 pd-0  bg-white">
+                                <div class="col">
+                                    <div class="text-justify">
+                                        <div [innerHTML]="detailmuridee?.description| afficheHtml"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Update  -->
+<div class="col-md-3" style="margin-top:1.5%;">
+    <div class="modal fade" id="updatemurideeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog  modal-right2 w-xl" role="document">
+            <div class="modal-content modal-content2 h-100 no-radius">
+                <div class="modal-header bg-white">
+                    <h5 class="modal-title tx-primary" id="exampleModalLongTitle">
+                        <i class="fad fa-pen tx-20"></i> Modifier
+                    </h5>
+                </div>
+                <div class="modal-body  scroll-11 mymodal">
+                    <div class="col-md-12" *ngIf="afficheupdate">
+                        <form [formGroup]="modifmurideeForm">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Libellé</label>
+                                            <input type="text" formControlName="libelle" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Publier en anonymat</label>
+                                            <select formControlName="anonymat" class="custom-select no-radius">
+                                                <option disabled selected value=""> Selectionner</option>
+                                                <option *ngFor="let item of anonymat" [value]="item">{{item}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <ckeditor [editor]="Editor" formControlName="description"></ckeditor>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12 text-center">
+                        <button type="reset" class="btn btn-brand btn-reddit" data-dismiss="modal" [disabled]="updatestatut == true" (click)="resetmuridee()"> <i
+                                class="fal fa-power-off"></i><span class="pd-x-10">Annuler</span></button>&nbsp;
+                        <button type="button" class="btn btn-brand btn-dropbox" [disabled]="modifmurideeForm.invalid || updatestatut == true" (click)="updateValuemuridee()" *ngIf="afficheupdate">
+                            <i *ngIf="updatestatut == true" class="fas fa-spinner fa-spin"></i>
+                            <i class="fal fa-pen"></i><span class="pd-x-10">Modifier </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="anonymatmurideeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-right2 w-xl" role="document">
+        <div class="modal-content modal-content2 h-100 no-radius">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title tx-primary" id="exampleModalLongTitle">
+                    <i class="fad fa-plus-circle tx-20"></i> Ajouter
+                </h5>
+            </div>
+            <div class="modal-body mymodal scroll-11">
+                <div class="col-md-12">
+                    <form [formGroup]="AddanonymatmurideeForm">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Libellé</label>
+                                        <input type="text" formControlName="libelle" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Publier en anonymat</label>
+                                        <select formControlName="anonymat" class="custom-select no-radius">
+                                            <option disabled selected value=""> Selectionner</option>
+                                            <option *ngFor="let item of anonymat" [value]="item">{{item}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <ckeditor [editor]="Editor" formControlName="description"></ckeditor>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button type="reset" (click)="resetmuridee()" class="btn btn-brand btn-reddit" data-dismiss="modal" [disabled]="loardstatut == true"> <i class="fal fa-power-off"></i><span
+                            class="pd-x-10">Annuler</span></button>&nbsp;
+                    <button type="button" class="btn btn-brand btn-dropbox" [disabled]="AddanonymatmurideeForm.invalid || loardstatut==true " (click)="addmuridee()">
+                        <i *ngIf="loardstatut == true" class="fas fa-spinner fa-spin"></i>
+                        <i class="fal fa-plus-circle"></i><span class="pd-x-10">Ajouter </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-3" style="margin-top:1.5%;">
+    <!-- Modal -->
+    <app-delete-confirmation [url]=url [del]=del [id]=idmuridee></app-delete-confirmation>
+</div>
+<!--Partage -->
+<div class="col-md-3" style="margin-top:1.5%;">
+    <!-- Modal -->
+    <app-partage [id]=idmuridee [url]=urlshared></app-partage>
+</div>

@@ -1,0 +1,21 @@
+.image-contact {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 50%;
+}
+
+.selected {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.scroll-11 {
+  overflow: hidden;
+  &:hover {
+    overflow: auto;
+  }
+}

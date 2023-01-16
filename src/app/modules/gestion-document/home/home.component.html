@@ -1,0 +1,117 @@
+<div class=" bg-white">
+    <div class="pl-2 pt-4">
+        <h6 class="pt-2 pb-2"><i class="fad fa-border-all  tx-20"></i> Acceuil </h6>
+    </div>
+    <div class="d-flex justify-content-start">
+        <button (click)="openModal(newStructureModal)" class="btn btn-sm btn-outline-primary card-1 mx-1">
+          <i class="fad fa-folder-tree"></i>
+          Nouveau Dossier
+        </button>
+        <button (click)="openFileModal()" class="btn btn-sm btn-outline-primary card-1 mx-1">
+          <i class="fad fa-file-alt"></i>
+          Nouveau Fichier
+        </button>
+    </div>
+</div>
+<div class="scroll-11 scrollable-y-75">
+
+
+    <a class="pl-2 pt-4" [routerLink]="['/document/mon-espace']">
+        <h6 class="pt-2 pb-2"> Vos Dossiers </h6>
+    </a>
+
+    <div class="row row-xs mg-0 pd-0 clearfix pt-2" [class.loading]="dossierRecenthelper.loading$ | async">
+        <ng-container *ngIf="dossierRecenthelper.data$ | async as items">
+            <ng-container *ngIf="items.length; else emptyTemplate">
+                <div class="col-lg-3" *ngFor="let dossier of items;trackBy: dossierRecenthelper.trackByFn">
+                    <div class="card pl-2">
+                        <div class="image text-left"> <i class="fad fa-folder-open tx-primary tx-50"></i></div>
+                        <div class=" text-left">
+                            <span class="tx-primary tx-bold"> {{dossier.libelle}} </span>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <div class="pl-2 pt-4">
+        <h6 class="pt-2 pb-2"> Fichiers récents </h6>
+    </div>
+    <div class="row row-xs mg-0 pd-0 clearfix">
+        <div class="col">
+            <div class=" card bg-white ">
+                <div class="list-group  pl-2">
+                    <div href="" class="  flex-column align-items-start pd-y-1">
+                        <div class="nav flex-column nav" id="v-pills-tab">
+                            <div class="table-responsive">
+                                <table class="table   table-lg mb-0 border-0">
+                                    <tbody>
+                                        <tr class="border-0 ">
+                                            <td class="text-center border-0">
+                                                <div class=""> <i class="fad fa-file-music tx-warning tx-30"></i></div>
+                                            </td>
+                                            <td class="border-0"> Rapport de la mission à Tabamcounda Rapport de la mission... </td>
+                                            <td class="border-0"> 14 Mai 2021</td>
+                                            <td class="text-center border-0">
+                                                <div class=""> <i class="fad fa-star tx-success"></i></div>
+                                            </td>
+                                            <td class="text-center border-0 ">
+                                                <div class="avatar d-block"> <img class="avatar" src="assets/images/xs/avatar5.jpg" alt="avatar"></div>
+                                            </td>
+                                            <td class="border-0">
+                                                <ul class="nav ">
+                                                    <li class="nav-item">
+                                                        <div>
+                                                            <a class="" role="button" id="menu1" data-toggle="dropdown"><i class="fad fa-ellipsis-h "></i></a>
+                                                            <div class="dropdown-menu p-0">
+                                                                <a class="dropdown-item " href="#"><i class="fal fa-share-alt fa-sm"></i> <span> Partager</span></a>
+                                                                <a class="dropdown-item" href="#"><i class="fal fa-file-import fa-sm"></i> <span> Exporter</span></a>
+                                                                <a class="dropdown-item " href="#"><i class="fal fa-sort-alt fa-sm"></i> <span> Transférer</span></a>
+                                                                <a class="dropdown-item " href="#"><i class="fal fa-trash-alt fa-sm"></i> <span> Supprimer</span></a>
+                                                                <a class="dropdown-item " href="#"><i class="fal fa-trash-alt fa-sm"></i> <span> Cacher</span></a>
+                                                                <a class="dropdown-item " href="#"><i class="fal fa-trash-alt fa-sm"></i> <span> Partager avec</span></a>
+                                                                <a class="dropdown-item " href="#"><i class="fal fa-trash-alt fa-sm"></i> <span> Collaborer</span></a>
+                                                                <a class="dropdown-item " href="#"><i class="fal fa-trash-alt fa-sm"></i> <span> Mot de passe</span></a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <ng-template #emptyTemplate>
+            <div class="row mx-0 h-75 text-center">
+                <div class="col-sm-12 my-auto">
+                    <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+                    <br> Vide
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #newStructureModal let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Nouveau Dossier
+                </h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+      </button>
+            </div>
+            <div class="modal-body">
+                <app-dossier-hierarchie-edit [filter]="dossierFilter"></app-dossier-hierarchie-edit>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Fermer</button>
+            </div>
+        </ng-template>
+
+    </div>

@@ -1,0 +1,61 @@
+<div class="d-flex p-2 sticky-top border-bottom">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2">
+        <i class="fal fa-plus-circle tx-14 rounded-circle" ></i>
+    </button>
+    <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+</div>
+<div class="card-body p-0">
+    <div class="table-responsive" [class.loading]="dataHelper.loading$ | async">
+        <table class="table table-hover text-nowrap" *ngIf="dataHelper.data$ | async as items">
+            <thead class="tx-10 tx-uppercase">
+                <tr>
+                    <th>Service</th>
+                    <th class="tx-center">Utilisateur</th>
+                    <th class="tx-right">Action</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="items.length; else noItem">
+                <tr *ngFor="let service of items;trackBy: dataHelper.trackByFn">
+                    <td>
+                        <a href="">{{service.libelle | titlecase}}</a>
+                        <div class="clearfix">
+                            <span class="float-left tx-10 tx-gray-500">{{service.type?.libelle | titlecase}}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                            <li data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base" data-html="true" title="" data-original-title="Tommy C">
+                                <div class="avatar"><span class="bg-soft-success avatar-initial rounded-circle bg-primary">C</span></div>
+                            </li>
+                            <li class="mg-l--10" data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base" data-html="true" title="" data-original-title="Alison G">
+                                <div class="avatar"><span class="bg-soft-primary avatar-initial rounded-circle bg-primary">A</span></div>
+                            </li>
+                            <li class="mg-l--10" data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base" data-html="true" title="" data-original-title="Brad P">
+                                <div class="avatar"><span class="bg-soft-warning avatar-initial rounded-circle bg-primary">B</span></div>
+                            </li>
+                            <li class="mg-l--10" data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base" data-html="true" title="" data-original-title="Saun K">
+                                <div class="avatar"><span class="bg-soft-danger avatar-initial rounded-circle bg-primary">S</span></div>
+                            </li>
+                            <li class="mg-l--10" data-original-title="" title="">
+                                <div class="avatar"><span class="bg-soft-primary avatar-initial rounded-circle bg-primary">5+</span></div>
+                            </li>
+                        </ul>
+                    </td>
+                    <td class="text-right">
+                        <a [routerLink]="['/config/service/', service.id]" class="btn btn-label-primary btn-sm mg-y-5 mg-x-5"><i class="fa fa-pencil"></i> Modifier</a>
+                        <button class="btn btn-label-success btn-sm mg-y-5 mg-x-5" (click)="onShowCreateForm(service)"><i class="fa fa-clone"></i> Dupliquer</button>
+                        <button class="btn btn-label-danger btn-sm mg-y-5 mg-x-5" (click)="onDelete(service)"><i class="fa fa-trash"></i> Supprimer</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+    </section>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

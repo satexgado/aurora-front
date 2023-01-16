@@ -1,0 +1,21 @@
+<div class="top-message-area scroll-11"
+     (scroll)="onScroll($event)">
+  <div class="top-message-heading">
+    <div class="heading-title">
+      <h6>Messages</h6>
+    </div>
+  </div>
+  <div class="message-box"
+       id="messageBox">
+    <ng-container *ngIf="inboxService.data.length">
+      <app-inbox-solo [inbox]="discussion"
+                      *ngFor="let discussion of inboxService.data">
+      </app-inbox-solo>
+    </ng-container>
+
+    <app-inbox-missing-data *ngIf="!loading && !inboxService.data.length"></app-inbox-missing-data>
+
+    <app-loading *ngIf="loading"></app-loading>
+  </div>
+
+</div>

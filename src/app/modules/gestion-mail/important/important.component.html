@@ -1,0 +1,286 @@
+<div class="grid-container">
+    <div class="sidebar" [class.sidebar_small]="selectedInterne">
+        <div class="card bd-l-0-force bd-t-0-force bd-b-0-force" [class.loading]="mailHelper.loading$ | async">
+            <div class="card-body">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group">
+                        <button type="button" (click)="onNewMail()" class="btn btn-primary ">Nouveau</button>
+                    </div>
+                    <div class="btn-group ml-2"><button type="button" class="btn btn-light"><i
+                                class="icon-compass"></i></button> <button type="button" class="btn btn-light"><i
+                                class="icon-drawer"></i></button> <button type="button" class="btn btn-light"><i
+                                class="icon-logout"></i></button></div>
+                    <div class="btn-group ml-1">
+                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon-folder-alt"></i><i
+                                class="mdi mdi-chevron-down ml-1"></i></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item tx-13" href="#">Updates</a>
+                            <a class="dropdown-item tx-13" href="#">Social</a>
+                            <a class="dropdown-item tx-13" href="#">Team Manage</a>
+                        </div>
+                    </div>
+                    <div class="btn-group ml-1">
+                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon-tag"></i><i
+                                class="mdi mdi-chevron-down ml-1"></i></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item tx-13" href="">Updates</a>
+                            <a class="dropdown-item tx-13" href="">Social</a>
+                            <a class="dropdown-item tx-13" href="">Team Manage</a>
+                        </div>
+                    </div>
+                    <div class="btn-group ml-1">
+                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false">More<i class="mdi mdi-chevron-down ml-1"></i></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item tx-13" href="">Mark as Unread</a>
+                            <a class="dropdown-item tx-13" href="">Mark as Important</a>
+                            <a class="dropdown-item tx-13" href="">Add to Tasks</a>
+                            <a class="dropdown-item tx-13" href="">Add Star</a>
+                            <a class="dropdown-item tx-13" href="">Mute</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive mg-t-20 mg-b-15 scrollable-y-75 scroll-11" *ngIf="mailHelper.data$ | async as items">
+                    <table class="table table-hover mb-0" *ngIf="items.length; else emptyTemplate">
+                        <tbody>
+                            <tr [class.active]="mail.user_has_read" *ngFor="let mail of items;trackBy: mailHelper.trackByFn">
+                                <td class="wd-5p">
+                                    <div class="d-flex custom-control custom-checkbox">
+                                        <input type="checkbox" [checked]="mailSelectHelper.hasSelectedItem(mail)" class="custom-control-input" id="customCheck{{mail.id}}" (click)="mailSelectHelper.toggleSelectedItem(mail)">
+                                        <label class="custom-control-label" for="customCheck{{mail.id}}"></label>
+                                    </div>
+                                </td>
+                                <td class="wd-5p">
+                                    <button class="btn btn-link" (click)="onUpdateFavoris(mail)">
+                                        <span class="fa-star tx-16"
+                                            [ngClass]="mail.user_favoris ? 'fa text-warning' : 'fal'"></span>
+                                    </button>
+                                </td>
+                                <td class="wd-15p tx-gray-600">
+                                    {{authService.user.id == mail.auteur.id ? 'moi' : mail.auteur.libelle}}
+                                    <ng-container [ngSwitch]="mail.affectations.length">
+                                        <ng-container *ngSwitchCase="1">
+                                            , {{authService.user.id == mail.affectations[0].id ? 'moi' : mail.affectations[0].libelle}}
+                                        </ng-container>
+                                        <ng-container *ngSwitchDefault>
+                                            ({{mail.affectations.length}})
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="expression"></ng-container>
+                                </td>
+                                <td [ngbTooltip]="mail.libelle" [container]="'body'">
+                                    <a [routerLink]="['./', mail.id]" (click)="onSetSelected(mail)" routerLinkActive="router-link-active">
+                                        <span class="badge badge-outlined badge-warning mr-2">Important</span>{{mail.libelle | shorten:50}}
+                                    </a>
+                                </td>
+                                <td class="wd-15p">
+                                    <p class="mb-0 tx-10 tx-gray-500">
+                                        {{mail.date | date:'short' : undefined : 'fr'}}
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between  dt-bottom-row dataTables_paginate paging_bootstrap">
+                    <ngb-pagination [collectionSize]="total" [(page)]="page" [pageSize]="mailHelper.pageSize" [maxSize]="5" [rotate]="true">
+                    </ngb-pagination>
+                    <div class="input-group input-group-sm col-1">
+                        <input type="number" class="form-control" name="page" [max]="mailHelper.pageSize" [(ngModel)]="pageInput" (focusout)="changed(pageInput)" (keyup.enter)="changed(pageInput)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-content scroll-11 " [class.main-content_large]="selectedInterne">
+        <div class="card app-detail show" *ngIf="selectedInterne">
+            <div class="card-header justify-content-between">
+                <div class="d-flex align-items-center">
+                    <button class="card-2 btn btn-outline-blue" [routerLink]="['./']">
+                        <i class="fal fa-arrow-left"></i>
+                    </button>
+                    <div class="media pd-4 ">
+                        <div class="mr-2 mg-l-10 my-auto">
+                            <div class="avatar ">
+                                <img class="img-fluid wd-40 rounded-circle" [src]="selectedInterne.auteur.avatar" alt="avatar">
+                            </div>
+                        </div>
+                        <div class=" d-flex justify-content-between mg-t-6 mg-b-5 wd-100p">
+                            <div class="d-inline-block">
+                                <h5 class="mb-0 tx-echos"> {{selectedInterne.auteur.libelle}}</h5>
+                                <h6 class="mg-b-0 tx-yeto2"> {{selectedInterne.auteur.email}} || {{selectedInterne.date | date:'medium' : undefined : 'fr'}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div>
+                        <button class="btn btn-outline-blue card-2" [ngbTooltip]="'Repondre'" [container]="'body'" (click)="onRespond(selectedInterne)">
+                            <i class="fal fa-share"></i>
+                        </button>
+                        <button class="btn btn-outline-blue ml-2 card-2" [ngbTooltip]="'Repondre à tous'" [container]="'body'" (click)="onRespondAll(selectedInterne)">
+                          <i class="fal fa-share-all"></i>
+                        </button>
+                        <button class="btn btn-outline-blue ml-2 card-2" [ngbTooltip]="'Transferer'" [container]="'body'" (click)="onTransfert(selectedInterne)">
+                            <i class="fal fa-retweet"></i>
+                        </button>
+                        <button class="btn  ml-2 card-2" [ngbTooltip]="'Important'" [container]="'body'" [ngClass]="selectedInterne.user_favoris ? 'btn-warning' : 'btn-outline-blue'" (click)="onUpdateFavoris(selectedInterne)">
+                            <i class="fa-star" [ngClass]="selectedInterne.user_favoris ? 'fas' : 'fal'"></i>
+                        </button>
+                        <button class="btn btn-outline-blue card-2 ml-2" [ngbTooltip]="'Epingler'" [container]="'body'" (click)="onEpingleMail(selectedInterne)">
+                            <i class="fal fa-tags"></i>
+                        </button>
+                        <!-- <button class="btn btn-outline-blue card-2 ml-2">
+                            <i class="fal fa-users"></i>
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+            <div class="app-detail-article p-0">
+                <div class="row  justify-content-between  mg-0 pd-0 ">
+
+                    <div class="col-lg-8 scrollable-y-65 scroll-11">
+                        <div class="details-mail p-3">
+                            <h5 class="bd-b bd-4">{{selectedInterne.libelle}}</h5>
+                            <div class="col-md-12" [innerHTML]="selectedInterne.contenu">
+                            </div>
+                            <!-- <ul class="list-unstyled list-inline mg-y-20">
+                                <li class="list-inline-item card-1 p-2 bg-white rounded-pill  col-12">
+                                    <a class="mg-t-10">
+                                        <div class="caption">
+                                            <p class="text-main mg-0" style="white-space: unset;"> un nouveau fichier
+                                            </p>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul> -->
+                        </div>
+                        <div class="chat">
+
+                            <div class="chat-history" *ngIf="loadResponse && loadResponse.length">
+                                <ul class="m-b-0">
+                                    <ng-container *ngFor="let item of loadResponse">
+                                        <ng-container [ngSwitch]="item.auteur.id === selectedInterne.auteur.id">
+                                            <li class="clearfix" *ngSwitchCase="true">
+                                                <div class="message-data">
+                                                    <span class="message-data-time">{{item.date | date:'medium' : undefined : 'fr'}}</span>
+                                                    <button class="btn btn-link" (click)="onTransfert(item)"><i class="fal fa-retweet"></i></button>
+                                                    <button class="btn btn-link" (click)="onRespond(item)"><i class="fal fa-share"></i></button>
+                                                </div>
+                                                <div class="message my-message">
+                                                    <!-- <div class="col-md-12">
+                                                        <ul class="list-group list-group-flush">
+                                                            <li class="list-group-item rounded-pill d-flex justify-content-start tx-16 flex-wrap">
+                                                                <div class="text-info"> À </div>
+                                                                <div class="tx-yeto2"> <span class="ml-2" *ngFor="let destinataire of item.affectations; let first = first; let last = last;"> {{destinataire.libelle}}{{!last ? ',' : ''}} </span></div>
+                                                            </li>
+                                                        </ul>
+                                                    </div> -->
+                                                    <read-more maxLength="615" [text]="item.contenu"></read-more>
+                                                    <ul class="list-unstyled list-inline mg-y-20 " *ngIf="item.fichiers && item.fichiers.length">
+                                                        <li class="list-inline-item card-1 p-2" *ngFor="let fichier of item.fichiers ">
+                                                            <a [href]="fichier.fichier " target="_blank " class="d-block mg-t-10 ">
+                                                                <ng-container [ngSwitch]="onCheckIfImage(fichier) ">
+                                                                    <div class="mail-file-img " *ngSwitchCase="true ">
+                                                                        <img [src]="fichier.fichier " class="img-fluid wd-100 mx-auto d-block " alt=" ">
+                                                                    </div>
+
+                                                                    <div *ngSwitchDefault class="wd-100 mx-auto ht-65 d-flex align-items-center justify-content-center rounded card-icon-primary ">
+                                                                        <i class="{{onGetIcon(fichier)}} tx-40 "></i>
+                                                                    </div>
+                                                                </ng-container>
+                                                                <div class="caption ">
+                                                                    <p class="text-main mg-0 " style="white-space: unset; ">{{fichier.libelle}}</p>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="clearfix" *ngSwitchDefault>
+                                                <div class="message-data text-right">
+                                                    <button class="btn btn-link" (click)="onTransfert(item)"><i class="fal fa-retweet"></i></button>
+                                                    <button class="btn btn-link" (click)="onRespond(item)"><i class="fal fa-share"></i></button>
+                                                    <span class="message-data-time tx-yeto2">{{item.date | date:'medium' : undefined : 'fr'}}</span>
+                                                    <img [src]="item.auteur.avatar" class="avatar" alt="avatar">
+                                                </div>
+                                                <div class="message other-message float-right">
+                                                    <!-- <div class="col-md-12">
+                                                        <ul class="list-group list-group-flush">
+                                                            <li class="list-group-item rounded-pill d-flex justify-content-start tx-16 flex-wrap">
+                                                                <div class="text-info"> À </div>
+                                                                <div class="tx-yeto2"> <span class="ml-2" *ngFor="let destinataire of item.affectations; let first = first; let last = last;"> {{destinataire.libelle}}{{!last ? ',' : ''}} </span></div>
+                                                            </li>
+                                                        </ul>
+                                                    </div> -->
+                                                    <read-more maxLength="615" [text]="item.contenu"></read-more>
+                                                    <ul class="list-unstyled list-inline mg-y-20 " *ngIf="item.fichiers && item.fichiers.length">
+                                                        <li class="list-inline-item card-1 p-2" *ngFor="let fichier of item.fichiers ">
+                                                            <a [href]="fichier.fichier " target="_blank " class="d-block mg-t-10 ">
+                                                                <ng-container [ngSwitch]="onCheckIfImage(fichier) ">
+                                                                    <div class="mail-file-img " *ngSwitchCase="true ">
+                                                                        <img [src]="fichier.fichier " class="img-fluid wd-100 mx-auto d-block " alt=" ">
+                                                                    </div>
+
+                                                                    <div *ngSwitchDefault class="wd-100 mx-auto ht-65 d-flex align-items-center justify-content-center rounded card-icon-primary ">
+                                                                        <i class="{{onGetIcon(fichier)}} tx-40 "></i>
+                                                                    </div>
+                                                                </ng-container>
+                                                                <div class="caption ">
+                                                                    <p class="text-main mg-0 " style="white-space: unset; ">{{fichier.libelle}}</p>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ng-container>
+                                    </ng-container>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-4 bg-white bd-l scrollable-y-65 scroll-11">
+                        <div class=" row row-xs mg-0  clearfix  ">
+                            <div class="col-md-12">
+                                <div class="text-info"> Collaborateur </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex pd-4" *ngFor="let destinataire of selectedInterne.affectations;">
+                                        <div class="mr-2 mg-l-10 my-auto">
+                                            <div class="avatar ">
+                                                <img class="img-fluid wd-40 rounded-circle" [src]="destinataire.avatar" alt="avatar">
+                                            </div>
+                                        </div>
+                                        <div class=" d-flex justify-content-between mg-t-6 mg-b-5 wd-100p">
+                                            <div class="d-inline-block">
+                                                <h6 class="mb-0 tx-13 tx-echos"> {{destinataire.libelle}}</h6>
+                                                <span class="tx-12 mg-b-0 tx-gray-500"> {{destinataire.email}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 pt-6">
+                                <div class="pt-6" style="text-align: center">
+                                    <img class="bg-white  " src="assets/images/xs/problematique.svg" width="200">
+                                    <p class="tx-16 pt-2 mb-0 tx-echos"> Pas de fichiers pour ce message</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

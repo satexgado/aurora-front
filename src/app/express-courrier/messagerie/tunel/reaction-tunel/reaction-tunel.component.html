@@ -1,0 +1,77 @@
+<div class="tunel scroll-9"
+     *ngIf="tunel">
+  <!--#region Header -->
+  <div class="tunel__header">
+    <!-- header type correspondant-->
+    <div class="tunel__correspondant">
+      <!-- Image correspondant -->
+      <img [src]="isUser(correspondant) ? correspondant.photo : correspondant.image"
+           [alt]="
+          isUser(correspondant) ? correspondant.nom_complet : correspondant.libelle"
+           class="tunel__correspondant-image">
+
+      <!-- Autres information correspondant -->
+      <div class="tunel__correspondant-name">
+
+        <h4 class="tunel__correspondant-name--main">
+          {{ isUser(correspondant) ? correspondant.nom_complet : correspondant.libelle }}
+        </h4>
+
+        <span class="tunel__correspondant-name--sub">
+          Chargé de communication
+        </span>
+      </div>
+
+      <a class="tunel__correspondant-button clickable"
+         (click)="fermerTunel()">
+        <i class="fas fa-times-circle"></i>
+      </a>
+    </div>
+
+    <!-- #region Navigation -->
+    <ul class="tunel__navigation">
+      <!-- Message -->
+      <a (click)="changeTab('message')"
+         [ngClass]="{ 'tunel__navigation-item--active': showTabs.message }"
+         class="tunel__navigation-item  ">
+        <i class="fas fa-comment"></i>
+      </a>
+
+
+      <!-- Fichier -->
+      <a class="tunel__navigation-item"
+         [ngClass]="{ 'tunel__navigation-item--active': showTabs.fichier }"
+         (click)="changeTab('fichier')">
+        <i class="fal fa-file-alt"></i>
+      </a>
+    </ul>
+    <!-- #endregion Navigation -->
+  </div>
+  <!-- #endregion Header -->
+
+  <!-- #region Messages -->
+  <ng-container *ngIf="showTabs.message">
+
+    yeah
+
+    <app-reaction-tunel-list></app-reaction-tunel-list>
+
+    <app-reaction-tunel-create></app-reaction-tunel-create>
+
+  </ng-container>
+  <!-- #endregion Message -->
+
+
+
+
+  <!-- #region fichier -->
+  <div class="tunel__body"
+       *ngIf="showTabs.fichier">
+    <!-- <app-fichier-tunel></app-fichier-tunel> -->
+  </div>
+  <!-- #endregion fichier -->
+
+
+
+
+</div>

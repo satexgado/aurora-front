@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+  </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12 col-sm-6">
+                    <app-select-formgroup label="Structure" formControlName="structure_id" [selected]="editForm.get('structure_id').value" [dataSource]="allCrStructures$"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('structure_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <app-select-formgroup label="Suivi Par" formControlName="suivi_par" [selected]="editForm.get('suivi_par').value" [dataSource]="allUsers$"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('suivi_par')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="libelle">Motif</label>
+                    <textarea name="libelle" class="form-control  form-control-sm" cols="30" rows="3" [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'libelle'), 'is-valid': isValid('libelle')}"></textarea>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Affecter</button>
+</div>

@@ -1,0 +1,40 @@
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Commentaire' }}
+    </h4>
+</ng-template>
+<ng-template #noHelper>
+    <h4 class="text-center title m-2 p-5">
+        {{ "Aucun accès aux données, veuillez contacter le service technique" }}
+    </h4>
+</ng-template>
+<ng-container *ngIf="commentaireDatahelper; else noHelper">
+    <div class="publisher publisher-multi mg-b-20" [class.loading]="is_adding_commentaire">
+        <div class="flexbox bd p-2">
+            <img class="wd-40 avatar avatar-md align-self-start rounded-circle" src="https://via.placeholder.com/100x100" alt="">
+            <textarea class="publisher-input auto-expand mg-t-10 pd-l-15" [(ngModel)]="editorData" rows="3" placeholder="laissez un commentaire"></textarea>
+        </div>
+        <div class="flexbox p-2 bg-light">
+            <div class="gap-items mg-t-5">
+                <span class="publisher-btn file-group">
+        <i class="fal fa-paperclip file-browser"></i>
+        <input type="file">
+        </span>
+                <a class="publisher-btn" href=""><i class="fal fa-map-marker"></i></a>
+                <a class="publisher-btn" href=""><i class="far fa-smile"></i></a>
+            </div>
+            <button class="btn btn-sm btn-custom-primary" [disabled]="!editorData" (click)="onSubmit()">Commenter</button>
+        </div>
+    </div>
+    <ng-container *ngIf="commentaireDatahelper.data$ | async as items">
+        <ng-container *ngIf="items.length; else noItem">
+            <div class="profiletimeline mt-0" *ngFor="let commentaire of items">
+                <app-commentaire-details [commentaire]="commentaire"></app-commentaire-details>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div class="bg-white loading p-5" *ngIf="commentaireDatahelper.loading$ | async">
+    </div>
+    <section *ngIf="commentaireDatahelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="commentaireDatahelper.loadData() ">
+    </section>
+</ng-container>

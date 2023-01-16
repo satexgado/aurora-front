@@ -1,0 +1,7 @@
+<div class="cta d-flex flex-column">
+
+    <a class="btn btn-large btn-light " [routerLink]="['./']" [queryParamsHandling]="'preserve'" [fragment]="'showFilter'"><i class="far fa-filter"></i>
+    Filtrer
+  </a>
+    <a (click)="annulerFiltre()" [routerLink]="['./']" [queryParamsHandling]="'preserve'" *ngIf="isFilterActive" class="tx-danger  tx-center tx-11 mt-1"> <i class="fal fa-times-circle"></i> Annuler</a>
+</div>

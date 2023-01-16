@@ -1,0 +1,40 @@
+<ng-container *ngIf="commentaire;else noItem">
+    <div class="sl-item mb-0">
+        <div class="sl-left"> <img src="./assets/img/10.jpg" alt="user" class="rounded-circle bd avatar"> </div>
+        <div class="sl-right">
+            <a href="" class="link">
+              {{commentaire.auteur?.nom_complet}} <span class="badge badge-primary" *ngIf="isAuthor">auteur</span>
+            </a>
+            <span class="sl-date">{{commentaire.date | date: 'dd/MM/yyyy H:mm'}}</span>
+            <ng-container [ngSwitch]="show_update_form">
+                <ng-container *ngSwitchCase="false">
+                    <div class="comment-content" #content [innerHtml]="commentaire.libelle"></div>
+                    <div class="like-comm">
+                        <button *ngIf="isTopLevelComment" (click)="onReply()" class="btn btn-sm btn-link link mr-2 tx-gray-500 tx-11"><i class="fa fa-reply"></i> repondre</button>
+                        <button *ngIf="commentaire.is_user_comment" (click)="onUpdate(true)" class="btn btn-sm btn-link link mr-2 tx-gray-500 tx-11"><i class="fa fa-edit"></i> modifier</button>
+                        <button href="" class="btn btn-sm btn-link link mr-2 tx-gray-500 tx-11"><i class="fa fa-thumbs-up"></i> 57</button>
+                        <button class="btn btn-sm btn-link link btn-link-danger mr-2 tx-gray-500 tx-11"><i class="fa fa-thumbs-down"></i> 3 </button>
+                        <button (click)="onLoadResponse()" container="body" [ngbTooltip]="'Voir les reponses'" tooltipClass="my-tooltip-class" *ngIf="isTopLevelComment && commentaire.reply_number" class="btn btn-sm btn-link link  mr-2 tx-gray-500 tx-11"><i class="fa fa-comment"></i> {{commentaire.reply_number}}</button>
+                    </div>
+                </ng-container>
+                <div class="bg-white cmt-editor mb-2" *ngSwitchDefault>
+                    <ckeditor [editor]="Editor" [(ngModel)]="editorData" (ready)="onReady($event)"></ckeditor>
+                    <div class="d-flex justify-content-center p-1">
+                        <button type="button" class="btn btn-beoro-3 btn-sm mx-1" [disabled]="!editorData" (click)="onSubmit()">
+                      Modifier
+                    </button>
+                        <button type="button" class="btn btn-beoro-1 btn-sm mx-1" (click)="onUpdate(false)">
+                      Annuler
+                    </button>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <hr>
+</ng-container>
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Commentaire' }}
+    </h4>
+</ng-template>

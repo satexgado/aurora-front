@@ -1,0 +1,51 @@
+<ng-container *ngIf="coordonnee">
+    <div class="structure__header bd-b mt-3">
+        <div class="structure__header-banniere">
+            <div class="structure__header-banniere-designation">
+                <h3 class="tx-ether">{{ coordonnee.libelle}} <button class="btn btn-outline-primary" (click)="onShowUpdateCoordonneeForm()"><i class="fal fa-edit"></i></button></h3>
+                <h6 class="text-info ">
+                  <i class="fal fa-phone"></i>  {{coordonnee.telephone}}
+                </h6>
+                <h6 class="text-info ">
+                  <i class="fal fa-at"></i>  {{coordonnee.email}}
+                </h6>
+                <h6 class="text-info">
+                    <i class="fal fa-map-marked-alt"></i>
+                    {{coordonnee.adresse}}
+                </h6>
+            </div>
+        </div>
+        <div class="structure__header-tab">
+            <ul class="nav justify-content-center">
+                <!-- Details -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./home']" [routerLinkActive]="'active'">
+                        <i class="fal fa-info"></i> Details
+                    </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./courrier-entrant']" [routerLinkActive]="'active'">
+                        <i class="fal fa-envelope"></i> Entrants
+                    </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./courrier-sortant']" [routerLinkActive]="'active'">
+                        <i class="fal fa-envelope-open"></i> Sortants
+                    </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./marche-public']" [routerLinkActive]="'active'">
+                        <i class="fal fa-file-signature"></i> Marche Public
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</ng-container>

@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-12 col-sm-3">
+        <div class="card card-1 mb-3">
+            <div class="card-header bg-info text-white">
+                <h3 class="tx-16 m-0">
+                    <i class="fal fa-cogs tx-second fa-sm"></i> <span> Configurer votre établissement</span>
+                </h3>
+            </div>
+            <ul class="list-group">
+                <a class="list-group-item" routerLinkActive="active tx-bolder" [routerLink]="[ '/mes-etablissements2']">
+                    <i class="fal fa-users fa-sm"></i> Créer un utilisateurs
+                </a>
+                <a class="list-group-item" routerLinkActive="active tx-bolder" [routerLink]="[ '/mes-etablissements']">
+                    <i class="fal fa-school fa-sm"></i> Vos Etablissements
+                </a>
+                <a class="list-group-item" routerLinkActive="active tx-bolder" [routerLink]="[ '/config/service']">
+                    <i class="fal fa-ball-pile fa-sm"></i> Services et Contacts
+                </a>
+                <a class="list-group-item" routerLinkActive="active tx-bolder" [routerLink]="[ '/config/privilege']">
+                    <i class="fal fa-person-carry fa-sm"></i> Rôles et privilèges
+                </a>
+                <a class="list-group-item" routerLinkActive="active tx-bolder" [routerLink]="[ '/config/horloge']">
+                    <i class="fal fa-clock fa-sm"></i> Horloge
+                </a>
+                <a class="list-group-item" routerLinkActive="active tx-bolder" [routerLink]="[ '/update']">
+                    <i class="fal fa-sync fa-sm"></i> Mises à jour
+                </a>
+            </ul>
+        </div>
+    </div>
+    <div class="col-12 col-sm-9">
+        <div class="card card-2 mb-3">
+            <router-outlet>
+            </router-outlet>
+        </div>
+    </div>
+</div>

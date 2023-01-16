@@ -1,0 +1,69 @@
+<div class="row p-2"
+     *ngIf="posteService.data.length && !loading">
+
+  <div class="col-xl-3 col-sm-6 mb-3"
+       *ngFor="let poste of posteService.data">
+    <div class="p-2 border shadow-1 scaleUpOnHover"
+         style="border-radius: 10px;">
+      <div class="d-flex justify-content-center">
+
+        <span class="mt-2">
+          <i class="fal fa-user-hard-hat"
+             style="font-size: 50px;"></i>
+        </span>
+      </div>
+
+      <!-- Infomation -->
+      <div class="mycard-text text-center pt-2 px-2 pb-2">
+        <!-- Nom complet -->
+        <span class="date  tx-bold tx-yeto tx-16">
+          {{ poste.libelle}}
+        </span>
+
+
+      </div>
+
+
+      <div class="pb-3 pt-1 d-flex justify-content-center">
+        <!-- Voir -->
+        <a [routerLink]="[poste.id]"
+           [queryParamsHandling]="'preserve'"
+           class="mr-3 tx-facebook"
+           routerLinkActive="active">
+          <i class="far  fa-info-circle"></i>
+        </a>
+
+
+        <!-- Modifier -->
+        <a [routerLink]="['./']"
+           [fragment]="'edit-postes'"
+           [queryParamsHandling]="'preserve'"
+           class="tx-facebook"
+           (click)="modifier(poste)">
+          <i class="far mr-3 fa-edit"></i>
+        </a>
+
+        <!-- Supprimer -->
+        <a [routerLink]="['./']"
+           class="tx-facebook"
+           [queryParamsHandling]="'preserve'"
+           (click)="supprimer(poste)">
+          <i class="far mr-3 fa-trash"></i>
+        </a>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="my-5"
+     *ngIf="loading">
+  <app-loading></app-loading>
+</div>
+
+
+<div *ngIf="!loading && !posteService.data.length">
+  <app-missing-data></app-missing-data>
+</div>

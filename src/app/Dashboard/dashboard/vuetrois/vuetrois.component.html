@@ -1,0 +1,84 @@
+<div class="col-md-12 p-0 pl-3  bg-light  pb-4 pt-4 pr-3" *ngIf="courrier">
+    <div class="col-md-12" *ngIf="!courrier?.entrant[0] && !courrier?.sortant[0] &&  !courrier?.interne[0]">
+        <br><br><br><br>
+        <div class="col-md-12 text-center noData">
+             <app-no-data></app-no-data>
+        </div>
+        <br><br><br><br> 
+    </div>
+    <div class="col-md-12 p-0" *ngIf="courrier?.entrant[0] || courrier?.sortant[0] ||  courrier?.interne[0]">
+        <div class="row">
+           <div class="col-md-12">
+            <div class="mycard2 bg-white">
+                <apx-chart   [series]="chartOptions3.series"
+                    [chart]="chartOptions3.chart"
+                    [yaxis]="chartOptions3.yaxis"
+                    [xaxis]="chartOptions3.xaxis"
+                    [labels]="chartOptions3.labels"
+                    [stroke]="chartOptions3.stroke"
+                    [markers]="chartOptions3.markers"
+                    [colors]="chartOptions3.colors"
+                    [dataLabels]="chartOptions3.dataLabels">
+                </apx-chart>
+                <div class="mg-b-0"></div>
+            </div>  
+           </div>
+           <div class="col-md-8">
+            <div class="  p-0 pt-4" >
+                <div class="mycard2 bg-white">
+                    <apx-chart
+                        [series]="chartOptions5.series"
+                        [chart]="chartOptions5.chart"
+                        [dataLabels]="chartOptions5.dataLabels"
+                        [plotOptions]="chartOptions5.plotOptions"
+                        [yaxis]="chartOptions5.yaxis"
+                        [legend]="chartOptions5.legend"
+                        [fill]="chartOptions5.fill"
+                        [stroke]="chartOptions5.stroke"
+                        [tooltip]="chartOptions5.tooltip"
+                        [colors]="chartOptions5.colors"
+                        [xaxis]="chartOptions5.xaxis"
+                    ></apx-chart>
+                    <div class="mg-b-0"></div>
+                </div>
+            </div>
+           </div>
+           <div class="col-md-4">
+             <div class="col-md-12 p-0 pt-4" *ngIf="courrierbymonth">
+                <div class="form-group  mb-0 bd-b ">
+                    <div class="input-group bd-b">
+                        <select class="custom-select border-0  tx-ether"  (change)="getId($event.target,'ok')" >
+                            <option selected disabled="disabled"> Choisissez un mois...</option>
+                            <option [value]="i+1" *ngFor="let item of mois;let i=index;"> {{item}}</option>
+                        </select>
+                        <select class="custom-select border-0  tx-ether"  >
+                            <option selected disabled> {{mois[index-1]}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="!courrierbymonth?.entrant[0] && !courrierbymonth?.sortant[0] &&  !courrierbymonth?.interne[0]">
+                    <br><br><br><br>
+                    <div class="col-md-12 text-center noData">
+                         <app-no-data></app-no-data>
+                    </div>
+                    <br><br><br><br> 
+                </div>
+                <div class="col-md-12 p-0" *ngIf="courrierbymonth?.entrant[0] || courrierbymonth?.sortant[0] ||  courrierbymonth?.interne[0]">
+                    <div class="  p-0 " >
+                        <div class="mycard2 bg-white">
+                            <apx-chart  [series]="chartOptions.series"  [colors]="chartOptions.colors"  [chart]="chartOptions.chart" [labels]="chartOptions.labels" ></apx-chart>
+                            <div class="mg-b-0"></div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="col-md-12 text-center" *ngIf="!courrierbymonth">
+                <app-loarding></app-loarding>
+             </div>
+           </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 text-center" *ngIf="!courrier">
+    <app-loarding></app-loarding>
+</div> 

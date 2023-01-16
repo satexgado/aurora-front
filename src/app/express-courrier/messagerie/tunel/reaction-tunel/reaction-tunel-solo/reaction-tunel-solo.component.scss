@@ -1,0 +1,71 @@
+.avatar3 {
+  width: 30px;
+}
+
+.bgm-primary {
+  background: #5d78ff !important;
+  color: white;
+}
+
+.bgm-danger {
+  background: #c0392b !important;
+  color: white;
+}
+
+.bgm-blue {
+  background: #154360 !important;
+  color: white !important;
+}
+
+.bgm-orange {
+  background: #d35400 !important;
+  color: white !important;
+}
+
+.bgm-success {
+  background: #34bfa3 !important;
+  color: white !important;
+}
+
+.bgm-warning {
+  background: #eac459 !important;
+  color: white !important;
+}
+
+.bgm-info {
+  background: #36a2f5 !important;
+  color: white !important;
+}
+
+.bgm-mint {
+  background: #26f8cb !important;
+  color: white !important;
+}
+
+.bgm-indigo {
+  background: #de08e6 !important;
+  color: white !important;
+}
+
+.bgm-yellow {
+  background: #d7e608 !important;
+  color: white !important;
+}
+
+.reaction {
+  max-width: 75%;
+
+  &__icone-action {
+    margin-right: 7px;
+    cursor: pointer;
+    font-size: 10px;
+  }
+}
+
+.light-blue {
+  color: #67baf2;
+}
+
+.dark-blue {
+  color: #1f618d;
+}

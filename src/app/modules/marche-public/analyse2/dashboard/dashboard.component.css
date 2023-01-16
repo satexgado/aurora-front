@@ -1,0 +1,18 @@
+.filter {
+    z-index: 10;
+    overflow-y: auto;
+    position: fixed;
+    top: 52px;
+    right: 0px;
+    height: calc(100% - 52px);
+    box-sizing: border-box;
+    transform: translate(0px, 0px);
+    animation-name: dFPtgK;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
+    box-shadow: rgba(21, 11, 37, 0.5) -2px 0px 10px 2px;
+    background: rgb(23, 16, 56);
+    transition: max-width 0.3s ease-out 0s;
+    border-left: 1px solid rgba(55, 43, 96, 0.5);
+}

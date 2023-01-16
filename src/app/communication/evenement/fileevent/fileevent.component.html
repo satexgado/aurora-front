@@ -1,0 +1,98 @@
+<div class="col-md-3" style="margin-top:1.5%;">
+    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog  modal-right2 w-xl" role="document">
+            <div class="modal-content modal-content2 h-100 no-radius">
+                <div class="modal-header bg-white">
+                    <h5 class="modal-title tx-primary" id="exampleModalLongTitle">
+                        <i class="fad fa-file tx-20"></i> Gestion fichier
+                    </h5>
+                </div>
+                <div class="modal-body scroll-11">
+                    <div class="col-md-12" >
+                        <div class="col-md-12" *ngIf="!selectedFilepostuler[0]">
+                            <div class="fuzone" > 
+                                <div class="fu-text">
+                                    <span (click)="fileInputFacade3.click()"><i class="mdi mdi-image-area"></i> Documents Joints (PDF)</span>
+                                    <input class="upload" type="file" accept=".pdf" style="display: none" multiple (change)="onFileSelected($event)"  #fileInputFacade3 >
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="col-md-12"  *ngIf="selectedFilepostuler[0]"> 
+                            <div class="col-md-12 bd-b tailledesc" *ngFor="let item of selectedFilepostuler"> 
+                                {{item?.name}} 
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="col-md-12 text-center">
+                                 <h5>Fichier disponible</h5>
+                            </div>
+                            <div class="col-md-12" *ngIf="loardfile==true && listfile ">
+                                <div class="list-group  pl-2">
+                                    <ul class="list-group">
+                                       <li class="list-grou-item"  *ngFor="let item of listfile;let i=index">{{item?.nom_fichier}}   
+                                           <span class="pl-2 float-right tx-facebook pointers" (click)="action(item?.id,i)">
+                                              <i class="fal fa-times tx-danger tx-12" style="padding:6px ; border-radius:50%"></i>
+                                           </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-12" *ngIf="!listfile">
+                                <div class="col-md-12 text-center noData">
+                                    <app-loarding></app-loarding>
+                                </div>
+                            </div>
+                            <!-- NO DATA -->
+                            <div *ngIf="loardfile==false && listfile " class="col-md-12">
+                                <br><br><br><br>
+                                <div class="col-md-12 text-center noData">
+                                    <app-no-data></app-no-data>
+                                </div>
+                                <br><br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12 text-center">
+                        <button type="reset" class="btn btn-brand btn-reddit" data-dismiss="modal"
+                            [disabled]="statutpostuler == true" (click)="resetfile()"> <i
+                                class="fal fa-power-off"></i><span class="pd-x-10">Fermer</span></button>&nbsp;
+                        <button type="button" class="btn btn-brand btn-dropbox"
+                            [disabled]="statutpostuler == true" (click)="savepostulerBasereal()"
+                            *ngIf="selectedFilepostuler[0]">
+                            <i *ngIf="statutpostuler == true" class="fas fa-spinner fa-spin"></i>
+                            <i class="fal fa-pen"></i><span class="pd-x-10">Valider </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteFileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog conf2" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-white">
+          <p class=" modal-title tx-20 tx-primary" id="exampleModalLabel"><i class="fad fa-trash tx-20"></i> Supprimer</p>
+        </div>
+        <div class="modal-body col-md-12 text-center">
+            <h5>
+                Voulez vous vraiment supprimer cet élément?
+            </h5>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="reset" class="btn btn-brand btn-reddit" data-dismiss="modal" [disabled]="loardindex==true">
+            <i class="fal fa-power-off"></i><span class="pd-x-20">Annuler </span> 
+          </button>
+          <button class="btn btn-brand btn-dropbox" type="submit" (click)="deletefile()" [disabled]="loardindex==true">
+            <i class="fal fa-trash"></i><span class="pd-x-20"> Supprimer </span> 
+            <i *ngIf="loardindex==true" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

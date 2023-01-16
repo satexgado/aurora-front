@@ -1,0 +1,45 @@
+<ng-container *ngIf="isFullView">
+    <div class="full-view bg_d scroll-11">
+
+        <div class="fixed-top bg_d">
+            <div class="row row-all pr-5 pt-1">
+                <div class="col-12">
+                    <div class="text-center">
+                        <label class="fullview-header">
+                            <i class="fal fa-comments"></i>
+                            Commentaires
+                        </label>
+                        <label class="float-right">
+                          <button class=" btn p-0 mr-1 flex-shrink-1" (click)="onToggleView()">
+                              <i aria-hidden="true" class="fal" style="color: #99600b" [class.fa-window-maximize]="!isFullView"
+                              [class.fa-window-restore]="isFullView"></i>
+                          </button>
+                      </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container comment-container scroll-11 mt-5">
+            <div class="bg-white cmt-editor mb-2" [class.loading]="is_adding_commentaire">
+                <ckeditor [editor]="Editor" [(ngModel)]="editorData" (ready)="onReady($event)"></ckeditor>
+                <div class="d-flex justify-content-center p-1">
+                    <button type="button" class="btn btn-beoro-3 btn-sm" [disabled]="!editorData" (click)="onSubmit()">
+                        Commenter
+                    </button>
+                </div>
+            </div>
+            <div class="bg-white loading p-5" *ngIf="isLoadingData">
+            </div>
+            <ng-container *ngIf="_commentaires && _commentaires.length; else noItem">
+                <div *ngFor="let commentaire of _commentaires">
+                    <app-commentaire-details [commentaire]="commentaire"></app-commentaire-details>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Commentaire' }}
+    </h4>
+</ng-template>

@@ -1,0 +1,172 @@
+<div class="col-lg-12">
+    <h5 class="text-dark"><i class="fal fa-mail-bulk" style="padding: 6px; border-radius: 50%;"></i> Acceuil </h5>
+</div>
+<div class="mt-4" [class.loading]="isLoading">
+    <div *ngIf="datadash">
+        <div class="card-deck p-2">
+            <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-primary">
+                            <i class="fad fa-mailbox tx-primary tx-20"></i>
+                        </div>
+                        <div>
+                            <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">Total Courrier</h4>
+                            <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                <i class="fad fa-arrow-to-right tx-primary "></i>
+                                <span class="tx-primary  d-flex align-items-center">
+                                    {{datadash?.total}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-success">
+                            <i class="fad fa-envelope-open-text tx-success tx-20"></i>
+                        </div>
+                        <div>
+                            <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">
+                                Déja traités
+                            </h4>
+                            <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                <span class="tx-success  d-flex align-items-center">
+                                    <i class="fad fa-arrow-to-top tx-success "></i>
+                                    {{datadash?.traite}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-warning">
+                            <i class="fad fa-envelope-open tx-warning tx-20"></i>
+                        </div>
+                        <div>
+                            <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">
+                                En traitement
+                            </h4>
+                            <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                <span class="tx-warning  d-flex align-items-center">
+                                    <i class="fad fa-arrow-h tx-success "></i>
+                                    {{datadash?.entraitement}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-danger">
+                            <i class="fad fa-envelope tx-danger tx-20"></i>
+                        </div>
+                        <div>
+                            <h4 class="tx-uppercase tx-12 mg-b-10 tx-bold">
+                                Non traités
+                            </h4>
+                            <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                <span class="tx-danger  d-flex align-items-center">
+                                    <i class="fad fa-arrow-to-bottom tx-danger "></i>
+                                    {{datadash?.nontraite}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100">
+            <div class="mycard2 bg-white">
+                <apx-chart [series]="chartOptions4.series" [chart]="chartOptions4.chart" [dataLabels]="chartOptions4.dataLabels" [plotOptions]="chartOptions4.plotOptions" [tooltip]="chartOptions4.tooltip" [colors]="chartOptions4.colors">
+                </apx-chart>
+                <div class="mg-b-0"></div>
+            </div>
+        </div>
+        <div class="card-deck p-2">
+            <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-primary">
+                            <i class="fad fa-mail-bulk tx-primary tx-20"></i>
+                        </div>
+                        <div>
+                            <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold"> Courriers sortis
+                            </h4>
+                            <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                <i class="fad fa-arrow-to-right tx-primary "></i>
+                                <span class="tx-primary  d-flex align-items-center">
+                                    {{datadash?.sortant}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-success">
+                            <i class="fad fa-chair-office tx-success tx-20"></i>
+                        </div>
+                        <div>
+                            <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">
+                                Courriers entrants
+                            </h4>
+                            <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                <span class="tx-success  d-flex align-items-center">
+                                    <i class="fad fa-arrow-to-top tx-success "></i> {{datadash?.entrant}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-warning">
+                            <i class="fad fa-link tx-warning tx-20"></i>
+                        </div>
+                        <div>
+                            <h4 class="tx-uppercase tx-12 mg-b-10  tx-bold">
+                                Courriers internes
+                            </h4>
+                            <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                <span class="tx-warning  d-flex align-items-center">
+                                    <i class="fad fa-arrow-h tx-success "></i>
+                                    {{datadash?.interne}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mg-b-20" style="border-radius:0px 0px 10px 10px">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="wd-20 wd-md-40 ht-0 ht-md-40  d-flex align-items-center justify-content-center rounded-circle card-icon-teal">
+                            <i class="fad fa-building tx-teal tx-20"></i>
+                        </div>
+                        <div>
+                            <h4 class="tx-uppercase tx-12 mg-b-10 tx-bold"> Fichiers</h4>
+                            <div class="d-flex align-items-center tx-gray-500 tx-16">
+                                <span class="tx-teal  d-flex align-items-center">
+                                    <i class="fad fa-arrow-to-bottom tx-teal "></i>
+                                    {{datadash?.fichier}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Horloge</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Type</label>
+                    <app-custom-select-icon [formControlName]="'type'" [items]="typeHorloge"></app-custom-select-icon>
+                    <div class="invalid-feedback" *ngIf="shouldShowRequiredError('type')">veillez choisir le type.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.controls.type.value == typeEnum.periode; else numberInput">
+                <div class="col-10">
+                    <label class="control-label" for="type">Periode</label>
+                    <div class="form-inline justify-content-center">
+                        <div class="form-group hidden">
+                            <div class="input-group">
+                                <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!">
+                                <ng-template #t let-date let-focused="focused">
+                                    <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                                    {{ date.day }}
+                                  </span>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
+                                    <i class="fad fa-calendar-alt fa-lg"></i>
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ml-2">
+                            <div class="input-group">
+                                <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate" [value]="formatter.format(toDate)" (input)="toDate = validateInput(toDate, dpToDate.value)">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
+                                    <i class="fad fa-calendar-alt fa-lg"></i>
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #numberInput>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-10">
+                        <label class="control-label" for="libelle">Nombre</label>
+                        <input type="number" class="form-control form-control-sm" [formControlName]="'valeur'" min="1" [ngClass]="{'is-invalid': shouldShowRequiredError('valeur'), 'is-valid': isValid('valeur')}" name="valeur" required>
+                        <div class="invalid-feedback" *ngIf="shouldShowRequiredError('valeur')">veillez saisir le nombre.</div>
+                    </div>
+                </div>
+            </ng-template>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">Réinitialiser</button>
+</div>

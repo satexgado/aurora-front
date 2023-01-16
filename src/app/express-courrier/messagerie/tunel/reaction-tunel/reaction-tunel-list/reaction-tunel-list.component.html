@@ -1,0 +1,40 @@
+<div class="tunel__body tunel__body--message scroll-11"
+     #chat
+     infinite-scroll
+     [scrollTop]="chat.scrollHeight"
+     [infiniteScrollUpDistance]="0"
+     [infiniteScrollThrottle]="50"
+     (scrolledUp)="onScroll()"
+     [scrollWindow]="false">
+  <div class="tunel__messages "
+       #chat
+       infinite-scroll
+       [scrollTop]="chat.scrollHeight"
+       [infiniteScrollUpDistance]="1.5"
+       [infiniteScrollThrottle]="50"
+       (scrolledUp)="onScroll()"
+       [scrollWindow]="false"
+       *ngIf="reactionService.data.length && !loading">
+
+    <!-- Liste des message -->
+    <!-- <ng-container *ngFor="let reaction of reactionService.data"> -->
+    <app-reaction-tunel-solo *ngFor="let reaction of reactionService.data; let i = index"
+                             [element]="reaction"
+                             [skipProfile]="
+                            reaction.structure?.id == reactionService.data[i - 1]?.structure?.id
+                              ||
+                           !reaction.structure && reaction.inscription?.id == reactionService.data[i - 1]?.inscription?.id"
+                             [reversed]="reaction.inscription?.id === authService.user?.id">
+    </app-reaction-tunel-solo>
+
+    <!-- </ng-container> -->
+  </div>
+</div>
+
+<div class="my-5"
+     *ngIf="loading">
+  <app-loading></app-loading>
+</div>
+
+
+<app-reaction-tunel-empty *ngIf="!loading && !reactionService.data.length"></app-reaction-tunel-empty>
