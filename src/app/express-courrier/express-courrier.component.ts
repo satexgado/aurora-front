@@ -15,7 +15,7 @@ import { distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-express-courrier',
-  templateUrl: './express-courrier.component.html',
+  templateUrl: './aurora.component.html',
   styleUrls: ['./express-courrier.component.scss'],
   styles: [`
   .card-1-hoverable:hover {

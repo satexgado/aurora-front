@@ -11,6 +11,18 @@ import {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  // templateUrl: './template-aurora/template-next.component.html',
+  // templateUrl: './template-aurora/annuaire.component.html',
+  // templateUrl: './template-aurora/fournisseur.component.html',
+  // templateUrl: './template-aurora/groupe-contact.component.html',
+  // templateUrl: './template-aurora/partenaire.component.html',
+  // templateUrl: './template-aurora/service.component.html',
+  // templateUrl: './template-aurora/utilisateur.component.html',
+  // templateUrl: './template-aurora/courrier/acceuil-entrant.component.html',
+  // templateUrl: './template-aurora/courrier/labcolab_courrier.component.html',
+  // templateUrl: './template-aurora/courrier/mes-courriers.component.html',
+  // templateUrl: './template-aurora/courrier/propriete_courrier.component.html',
+
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {

@@ -24,11 +24,11 @@ const routes: Routes = [
     component: ExpressCourrierComponent,
 
     children: [
-      {
-        path: '',
-        component: SidebarCourrierComponent,
-        outlet: 'sidebar',
-      },
+      // {
+      //   path: '',
+      //   component: SidebarCourrierComponent,
+      //   outlet: 'sidebar',
+      // },
       // {
       //   path: '',
       //   loadChildren: () =>

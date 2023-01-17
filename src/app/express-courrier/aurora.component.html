@@ -1,0 +1,294 @@
+<div class="d-flex justify-content-between p-2 bd-b bd-2">
+    <div class="">
+        <a href="" class="d-flex flex-row pt-1 ml-2">
+            <i class="fas fa-alicorn tx-echos tx-28"></i>
+            <span class="d-none d-sm-block tx-echos tx-24 " style="font-family: ''; text-align: center; ; vertical-align: middle; text-shadow: 0px 1px 0px #ffff;">
+            -- Aurora Plus --
+          </span>
+        </a>
+    </div>
+
+    <div class="">
+        <div class="input-group ">
+            <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches...">
+        </div>
+    </div>
+
+    <div class="">
+        <div class="nav-tabs-top ">
+            <ul class="nav   bg-white float-right list-inline justify-content-end">
+                <li class="nav-item mg-0 pd-0 ">
+                    <a class="nav-link3 active show" data-toggle="tab" href="#acceuil_entrant" style="padding: 5px 12px;">
+                        <i class="fas fa-home tx-18  tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos"> Accueil </span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#mes_courriers">
+                        <i class="fas fa-mailbox tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> Mes courriers</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#labcolab_courrier">
+                        <i class="fas fa-union tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> LAbColab</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="">
+        <div class="nav-tabs-top  ">
+            <ul class="nav   bg-white float-right list-inline justify-content-end">
+
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#propriete_courrier">
+                        <i class="fas fa-cog tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos">   </span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link3 " href="" role="button" (click)="newNotification = false" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bells tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos">   </span></a>
+                    <div class="dropdown-menu dropdown-menu-right shadow-2">
+                        <!-- Top Notifications Area -->
+                        <app-notifications-list></app-notifications-list>
+                    </div>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#">
+                        <i class="fas fa-question-circle tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> </span></a>
+                </li>
+                <li class="nac-item dropdown">
+                    <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="select-profile" [ngStyle]="{'vertical-align': authService.user.photo ? 'sub' : 'super'}">Bonjour, {{ authService.user.prenom }}!</span>
+                        <img *ngIf="authService.user.photo" [src]="authService.user.photo" style="object-fit: cover; object-position: center;" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                        <i *ngIf="!authService.user.photo" class="fad fa-user-circle" style="font-size: 35px; vertical-align: bottom;"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-profile shadow-2">
+                        <div class="user-profile-area">
+                            <div class="user-profile-heading">
+                                <div class="profile-thumbnail">
+                                    <img *ngIf="authService.user.photo" [src]="authService.user.photo" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                                    <span *ngIf="!authService.user.photo">
+                                      <i class="fad fa-user-circle"
+                                         style="font-size: 35px;"></i>
+                                    </span>
+                                </div>
+                                <div class="profile-text">
+                                    <h6>{{ authService.user.prenom }} {{ authService.user.nom }}</h6>
+                                    <span>{{ authService.user.email }}</span>
+                                </div>
+                            </div>
+                            <a [routerLink]="['courrier']" *ngIf="
+                          helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+                          || helper.authorisation.check('proprietes courrier', 'LECTURE', undefined)
+                          || helper.authorisation.check('courrier sortant', 'LECTURE', undefined)
+                          || helper.authorisation.check('suivis', 'LECTURE', undefined)
+                          || helper.authorisation.check('dashboard', 'LECTURE', undefined)
+                          " class="dropdown-item"><i class="fas fa-mail-bulk"
+                            aria-hidden="true"></i> Courrier </a>
+                            <a [routerLink]="['document']" *ngIf="
+                          helper.authorisation.check('fichier', 'LECTURE', undefined)
+                          " class="dropdown-item"><i class="fas fa-file-alt"
+                              aria-hidden="true"></i> Document </a>
+                            <a [routerLink]="['marche-public/marche']" class="dropdown-item"><i class="fas fa-balance-scale"
+                                aria-hidden="true"></i> Marche Public </a>
+                            <a [routerLink]="['organisation']" class="dropdown-item"><i class="fal fa-chart-network"
+                   aria-hidden="true"></i> Mes structures </a>
+                            <a [routerLink]="['organisation/organigramme']" class="dropdown-item"><i class="far fa-network-wired"
+                   aria-hidden="true"></i> Organigramme</a>
+                            <a [routerLink]="['organisation/structures/all']" class="dropdown-item"><i class="fad fa-chart-network"
+                   aria-hidden="true"></i> Liste des structures</a>
+                            <a [routerLink]="['users', authService.user.id]" class="dropdown-item"><i class="icon-user"
+                    aria-hidden="true"></i> Mon profile</a>
+                            <a (click)="logout()" class="dropdown-item"><i class="icon-power"
+                   aria-hidden="true"></i> Deconnexion</a>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div class="page-container">
+
+    <div class="page-sidebar" style="width:74px ">
+
+        <div class="page-sidebar-inner">
+            <div class="page-sidebar-menu ">
+
+                <ul class="navbar nav  pb-2 " role="tablist">
+                    <li class="nav-item tx-center  ">
+                        <a class="nav-link " data-toggle="pill" href="#aurora_portail">
+                            <i class="fas fa-door-open tx-facebook  tx-20 pl-2 bg-light" style="padding:10px; border-radius:50%"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0 pl-2">Messages</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item tx-center  pt-4 ">
+                        <a class="nav-link active" data-toggle="pill" href="#aurora_courrier">
+                            <i class="fas fa-mailbox tx-facebook  tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Courriers</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item tx-center  ">
+                        <a class="nav-link " data-toggle="pill" href="#">
+                            <i class="fas fa-file-alt tx-facebook  tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+
+                    <li class="nav-item tx-center    ">
+                        <a class="nav-link " data-toggle="pill" href="#">
+                            <i class="fas fa-balance-scale tx-facebook  tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item tx-center ">
+                        <a class="nav-link " data-toggle="pill" href="#aurora_dashboard">
+                            <i class="fas fa-chart-line tx-facebook tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Dashboard</p> -->
+                        </a>
+                    </li>
+
+                    <li class="nav-item tx-center   pt-4 ">
+                        <a class="nav-link " data-toggle="pill" href="#">
+                            <i class="fas fa-tasks-alt tx-facebook  tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item tx-center    ">
+                        <a class="nav-link " data-toggle="pill" href="#">
+                            <i class="fas fa-clock tx-facebook  tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item tx-center    ">
+                        <a class="nav-link " data-toggle="pill" href="#">
+                            <i class="fas fa-history tx-facebook  tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+
+                    <li class="nav-item tx-center pt-4 ">
+                        <a class="nav-link " data-toggle="pill" href="#aurora_messenger">
+                            <i class="fas fa-comment-alt-lines tx-facebook  tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Messenger</p> -->
+                        </a>
+                    </li>
+
+                    <li class="nav-item tx-center  ">
+                        <a class="nav-link " data-toggle="pill" href="#aurora_message">
+                            <i class="fas fa-at tx-facebook  tx-20 pl-2"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0 pl-2">Messages</p> -->
+                        </a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="page-content flex-1">
+        <div class="page-inner bg-light" [@routeAnimations]="prepareRoute(outlet)">
+            <router-outlet #outlet="outlet"></router-outlet>
+        </div>
+    </div>
+
+    <div class="page-sidebar page-sidebar-danger bd-l bg-light" style="width:74px; height:100vh">
+        <div class="page-sidebar-inner ">
+            <div class="page-sidebar-menu">
+                <div class="p-0 pb-6">
+                    <ul class="navbar nav justify-content-center " role="tablist">
+
+
+
+                        <li class="nav-item tx-center">
+                            <a class="nav-link3 py-1   " data-toggle="tab" href="#services_aurora">
+                                <i class="fas fa-chair-office tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item tx-center">
+                            <a class="nav-link3 py-1   " data-toggle="tab" href="#hierarchie_aurora">
+                                <i class="fas fa-sitemap tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item tx-center ">
+                            <a class="nav-link3 py-1   " data-toggle="tab" href="#structure_aurora">
+                                <i class="fas fa-chart-network tx-echos  tx-18" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item tx-center  ">
+                            <a class="nav-link3 py-1   " data-toggle="tab" href="#groupes_aurora">
+                                <i class="fas fa-books  tx-echos tx-18" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item tx-center pt-4 ">
+                            <a class="nav-link3 py-1   " data-toggle="tab" href="#utilisateur_page">
+                                <i class="fas fa-user  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item tx-center  ">
+                            <a class="nav-link3 py-1   " data-toggle="tab" href="#utilisateurs_partenaires">
+                                <i class="fas fa-handshake-alt  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item tx-center">
+                            <a class="nav-link3 py-1   " data-toggle="tab" href="#utilisateur_fournisseurs">
+                                <i class="fas fa-people-carry  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item tx-center">
+                            <a class="nav-link3 py-1  " data-toggle="tab" href="#groupe_contact">
+                                <i class="fas fa-users tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item tx-center ">
+                            <a class="nav-link3 py-1   " data-toggle="tab" href="#annuaire_aurora">
+                                <i class="fas fa-address-card tx-echos  tx-18" style="padding:6px; border-radius:50%"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="   p-0 pt-6 pr-1 tx-center">
+                <a class="nav-link3  pt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
+                    <img class="rounded-circle" src="assets/images/xs/avatar13.jpg" alt="avatar" width="30">
+                </a>
+                <a class="nav-link3  pt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
+                    <img class="rounded-circle" src="assets/images/xs/avatar9.jpg" alt="avatar" width="30">
+                </a>
+                <a class="nav-link3  pt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
+                    <img class="rounded-circle" src="assets/images/xs/avatar2.jpg" alt="avatar" width="30">
+                </a>
+
+                <a class="nav-link3  pt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
+                    <img class="rounded-circle" src="assets/images/xs/avatar4.jpg" alt="avatar" width="30">
+                </a>
+
+                <a class="nav-link3  pt-2 pb-2 ml-3 " data-toggle="tab" href="#dashboard_memoire">
+                    <div class="avatar "><span class="avatar-initial rounded-circle bg-primary ">+</span></div>
+                </a>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- <app-tunel></app-tunel> -->
+<app-notifications></app-notifications>
+<!-- <app-inbox></app-inbox> -->
+
+<div class="d-flex align-items-center bg-echolight2 py-2 border-light cart-panel-foo-fix justify-content-center">
+    <!-- Logo -->
+    <a class="navbar-brand overflow-hidden p-0" href="https://www.open2sw.com/" target="_blank">
+        <img src="assets/images/connexion/logo-o2sw.svg" alt="logo" width="140px">
+    </a>
+    <div class="tx-ether">
+        © 2022 SIGECAM by Open Software Solution for the World
+    </div>
+</div>
