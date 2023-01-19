@@ -37,6 +37,13 @@ const routes: Routes = [
       //     ),
       // },
       {
+        path: 'administration',
+        loadChildren: () =>
+          import('./administration/administration.module').then(
+            (module) => module.AdministrationModule
+          ),
+      },
+      {
         path: 'communication',
         loadChildren: () =>
           import('../communication/communication.module').then(

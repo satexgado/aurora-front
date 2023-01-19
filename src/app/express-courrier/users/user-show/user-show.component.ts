@@ -25,7 +25,7 @@ export class UserShowComponent
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      if (params.id == this.authService.user.id) {
+      if ((!params.id)  || params.id == this.authService.user.id) {
         this.single = this.authService.user;
         this.userService.singleData = this.authService.user;
       } else {

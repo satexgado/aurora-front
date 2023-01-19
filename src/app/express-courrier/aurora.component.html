@@ -17,15 +17,15 @@
     <div class="">
         <div class="nav-tabs-top ">
             <ul class="nav   bg-white float-right list-inline justify-content-end">
-                <li class="nav-item mg-0 pd-0 ">
+                <li class="nav-item card-1-hoverable mg-0 pd-0 ">
                     <a class="nav-link3 active show" data-toggle="tab" href="#acceuil_entrant" style="padding: 5px 12px;">
                         <i class="fas fa-home tx-18  tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos"> Accueil </span></a>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item card-1-hoverable ">
                     <a class="nav-link3 " data-toggle="tab" href="#mes_courriers">
                         <i class="fas fa-mailbox tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> Mes courriers</span></a>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item card-1-hoverable ">
                     <a class="nav-link3 " data-toggle="tab" href="#labcolab_courrier">
                         <i class="fas fa-union tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> LAbColab</span></a>
                 </li>
@@ -187,7 +187,7 @@
         </div>
     </div>
     <div class="page-content flex-1">
-        <div class="page-inner bg-light" [@routeAnimations]="prepareRoute(outlet)">
+        <div class="page-inner bg-light p-0" [@routeAnimations]="prepareRoute(outlet)">
             <router-outlet #outlet="outlet"></router-outlet>
         </div>
     </div>
