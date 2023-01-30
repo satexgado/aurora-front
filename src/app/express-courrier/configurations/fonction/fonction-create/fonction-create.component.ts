@@ -25,16 +25,18 @@ export class FonctionCreateComponent
   }
 
   ngOnInit(): void {
-    this.subscriptions['structure'] =
-      this.structureService.singleData$.subscribe((structure) => {
-        this.structure = structure;
-      });
+    // this.subscriptions['structure'] =
+    //   this.structureService.singleData$.subscribe((structure) => {
+    //     this.structure = structure;
+    //   });
   }
 
   onCreated(form: FormGroup) {
     this.loading = true;
     this.fonctionService
-      .store({ ...form, structure: this.structure.id })
+      .store({ ...form
+        // , structure: this.structure.id
+      })
       .subscribe(() => {
         this.loading = false;
         this.helper.notification.alertSuccess();

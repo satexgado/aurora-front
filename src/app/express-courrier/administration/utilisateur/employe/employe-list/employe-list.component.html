@@ -1,0 +1,131 @@
+<div class="row" *ngIf="employeService.data.length && !loading">
+
+    <div class="col-xl-3 col-sm-6 mb-3" *ngFor="let employe of employeService.data">
+        <div class="p-2 border shadow-1 scaleUpOnHover position-relative" style="border-radius: 10px;">
+            <!-- Role -->
+            <span class="position-absolute p-1 m-0 border badge badge-light" *ngIf="employe.role" container="body" [ngbTooltip]="'Rôle'" style="top: 10px; right: 5px;">
+        <i class="fal fa-users-crown"></i>
+        {{ employe.role?.libelle }}
+      </span>
+
+
+            <div class="d-flex justify-content-center">
+                <img class="rounded-circle " *ngIf="employe.user?.photo" [src]="employe.user?.photo" style="object-fit: cover;" alt="avatar" width="70" height="70">
+
+                <span *ngIf="!employe?.user?.photo">
+          <i class="fad fa-user-circle"
+             style="font-size: 70px;"></i>
+        </span>
+            </div>
+
+            <!-- Infomation -->
+            <div class="mycard-text text-center pt-4 px-2 pb-2">
+                <!-- Nom complet -->
+                <span class="date  tx-bold tx-yeto tx-16">
+          {{ employe.user.nom_complet }} <span *ngIf="employe.user.id == authService.user.id && employe.status == 'valid'">(Vous)</span>
+                </span>
+
+                <!-- Poste - fonction -->
+                <p class="mb-0 text-center" *ngIf="employe.poste && employe.fonction">
+                    <small>
+            <!-- poste -->
+            <span class="tx-primary">{{ employe.poste?.libelle }} </span> - {{ employe.fonction?.libelle }}
+          </small>
+                </p>
+            </div>
+
+
+            <div class="pb-3 pt-1 d-flex justify-content-center">
+                <!-- Voir -->
+                <a [routerLink]="[employe.id]" class="mr-3 tx-facebook" routerLinkActive="active">
+                    <i class="far  fa-info-circle"></i>
+                </a>
+
+                <ng-container *ngIf="helper.authorisation.check('structure', 'ECRITURE', structure?.id)">
+                    <!-- Renvooyer mail -->
+                    <a [routerLink]="['./']" [queryParamsHandling]="'preserve'" class="mr-3 tx-facebook" (click)="resendMailVerification(employe.user.id)" container="body" [ngbTooltip]="'renvoyer le mail de confirmation'" *ngIf="
+                      (employe.status == 'unverified' ||( employe.status == 'invalid' && helper.navigation.getParams(route, 'status') == 'unverified'))
+                    " routerLinkActive="active">
+                        <i class="far  fa-external-link"></i>
+                    </a>
+
+
+                    <!-- valider -->
+                    <a [routerLink]="['./']" class="mr-3 tx-facebook" [ngbTooltip]="'Valider l\'utilisateur'" [queryParamsHandling]="'preserve'" (click)="validate(employe.id)" *ngIf="(
+                       employe.status == 'unactivated' ||
+                       (employe.status == 'invalid' && helper.navigation.getParams(route, 'status') == 'unactivated'))" routerLinkActive="
+             active">
+                        <i class="fas  fa-check"></i>
+                    </a>
+
+                    <!-- Set role -->
+                    <a [routerLink]="['./']" container="body" [ngbTooltip]="'Attribuer un rôle'" [queryParamsHandling]="'preserve'" class="tx-facebook" (click)="setRole(employe)">
+                        <i class="far mr-3 fa-users-crown"></i>
+                    </a>
+
+
+                    <!-- Modifier -->
+                    <a [routerLink]="['./']" [fragment]="'edit-employe'" [queryParamsHandling]="'preserve'" class="tx-facebook" (click)="modifier(employe)">
+                        <i class="far mr-3 fa-edit"></i>
+                    </a>
+
+                    <!-- Supprimer -->
+                    <a [routerLink]="['./']" class="tx-facebook" [queryParamsHandling]="'preserve'" (click)="supprimer(employe)">
+                        <i class="far mr-3 fa-trash"></i>
+                    </a>
+                </ng-container>
+
+
+                <!-- Tunel -->
+                <!-- <a (click)="tunel(employe.user)"
+           *ngIf="employe.user.id != authService.user.id && employe.status == 'valid'"
+           [routerLink]="['./']"
+           [queryParamsHandling]="'preserve'"
+           class="mr-3 tx-facebook"
+           routerLinkActive="active">
+          <i class="far  fa-comments"></i>
+        </a> -->
+
+
+
+                <!-- <ng-container *ngIf="parent.name === 'service' && !parent.item.service_com"> -->
+                <!-- Designer comme chargé com -->
+                <!-- <a [routerLink]="['./']"
+             class="tx-facebook"
+             container="body"
+             [ngbTooltip]="'designerCommeChargerDeCommunication' | translate"
+             *ngIf="!employe.charger_com"
+             (click)="designerCommeChargerCom(employe)">
+            <i class="fad mr-3 fa-comment-plus"></i>
+          </a> -->
+
+                <!-- Supprimer des  chargés com -->
+                <!-- <a [routerLink]="['./']"
+             class="tx-danger"
+             *ngIf="employe.charger_com"
+             container="body"
+             [ngbTooltip]="'supprimerDesChargesDeCommunication' | translate"
+             (click)="designerCommeNonChargerCom(employe)">
+            <i class="fad mr-3 fa-comment-times"></i>
+          </a> -->
+                <!-- </ng-container> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="my-5" *ngIf="loading">
+    <app-loading></app-loading>
+</div>
+
+
+<div *ngIf="!loading && !employeService.data.length">
+    <app-missing-data></app-missing-data>
+</div>
+
+
+<app-modal [configuration]="{ name: 'role-employes-modal', titre: 'Definir un rôle', icone:'users-crown', taille: 'md' }" (closed)="router.navigate(['./'], { queryParamsHandling: 'preserve', relativeTo:route })">
+    <app-role-employes (created)="onNewRoleSetted($event)" *ngIf="shouldSetRole">
+    </app-role-employes>
+</app-modal>

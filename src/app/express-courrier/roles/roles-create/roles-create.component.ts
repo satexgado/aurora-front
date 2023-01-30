@@ -45,7 +45,7 @@ export class RolesCreateComponent
   initForm(): void {
     this.form = this.fb.group({
       libelle: [null, Validators.required],
-      structure: [null, Validators.required],
+      // structure: [null, Validators.required],
       description: [null],
       authorisations: this.fb.group({}),
     });
@@ -108,7 +108,7 @@ export class RolesCreateComponent
       this.roleService.store(data).subscribe(() => {
         this.loading = false;
         this.initForm();
-        this.formValuePatcher('structure', this.structure);
+        // this.formValuePatcher('structure', this.structure);
         this.helper.notification.alertSuccess();
         this.created.emit();
       });

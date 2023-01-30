@@ -12,7 +12,7 @@ export class AutorisationsCreateComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.value);
+
   }
 
   changeValue(value: string) {

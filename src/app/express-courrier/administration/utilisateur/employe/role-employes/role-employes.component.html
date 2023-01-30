@@ -1,0 +1,35 @@
+<!-- <h6>Choisissez un rôle</h6> -->
+
+<input type="text"
+       (keyup)="search($event)"
+       class="form-control form-control-lg mb-3"
+       placeholder="Rechercher">
+
+<form [formGroup]="form"
+      *ngIf="!roleLoading && roleService?.data?.length"
+      (submit)="update()">
+  <ul class="list-group">
+    <li class="list-group-item"
+        *ngFor="let role of roles">
+      <input type="radio"
+             [id]="role.id"
+             [value]="role.id"
+             formControlName="role"
+             class="mr-2">
+      <label [for]="role.id">{{ role.libelle }}</label>
+    </li>
+  </ul>
+
+  <div class="d-flex justify-content-end mt-2">
+    <button class="btn btn-primary">
+      Valider <i class="fal fa-circle-notch fa-spin"
+         *ngIf="loading"></i>
+    </button>
+  </div>
+</form>
+
+
+<app-missing-data [subMessage]="'Veuillez créer les roles dans configurations'"
+                  *ngIf="!roleLoading && !roleService?.data?.length"></app-missing-data>
+
+<app-loading *ngIf="roleLoading"></app-loading>

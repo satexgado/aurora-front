@@ -1,0 +1,59 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group flex-wrap  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <!-- Label -->
+                    <label class="control-label" for="structure">
+                      Structure
+                      <i class="fad fa-circle-notch fa-spin"
+                          *ngIf="dependanciesLoading.structures"></i>
+                    </label>
+
+                    <angular2-multiselect [data]="dependancies.structures" formControlName="structure" [settings]="helper2.dropdownSettings.single" [ngClass]="{'is-invalid': shouldShowRequiredError( 'structure') || hasError('structure_id','alreadyUsedStructure'), 'is-valid': isValid('structure')}"
+                        (click)="getStructures()" class="form-control p-0 ">
+                    </angular2-multiselect>
+                    <div *ngIf="hasError('structure_id','alreadyUsedStructure')" class="invalid-feedback">Cette structure est deja attribuer.</div>
+                    <span style="zoom: 50%;" [class.loading]="editForm.get('structure_id').status === 'PENDING'"></span>
+                </div>
+            </div>
+            <div class="formSep form-group flex-wrap d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('structure_id').value">
+
+                <div class="col-12">
+                    <!-- Label -->
+                    <label class="control-label" for="user">
+                      Personnes
+                      <i class="fad fa-circle-notch fa-spin"
+                          *ngIf="dependanciesLoading.users"></i>
+                    </label>
+
+                    <angular2-multiselect [data]="dependancies.users" formControlName="users" [settings]="multiParameter2" [ngClass]="{'is-invalid': shouldShowRequiredError( 'users'), 'is-valid': isValid('users')}" (click)="getUsers()" class="form-control p-0 ">
+                        <c-badge>
+                            <ng-template let-item="item">
+                                {{item.prenom}} {{item.nom}}
+                            </ng-template>
+                        </c-badge>
+                        <c-item>
+                            <ng-template let-item="item">
+                                <label style="color: #333;min-width: 150px;">{{item.prenom}} {{item.nom}}</label>
+                                <img [src]="item.avatar" class="rounded-cirlce border" style="width: 30px; height: 30px; object-fit: cover;margin-right: 20px; float: right;" />
+                            </ng-template>
+                        </c-item>
+                    </angular2-multiselect>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+</div>

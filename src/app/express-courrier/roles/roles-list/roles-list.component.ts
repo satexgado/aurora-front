@@ -20,12 +20,13 @@ export class RolesListComponent extends BaseListComponent implements OnInit {
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.subscriptions['structure'] =
-      this.structureService.singleData$.subscribe((structure) => {
-        this.route.queryParams.subscribe((params) => {
-          this.getByStructure(structure.id!, params);
-        });
-      });
+    this.getAll();
+    // this.subscriptions['structure'] =
+    //   this.structureService.singleData$.subscribe((structure) => {
+    //     this.route.queryParams.subscribe((params) => {
+    //       this.getByStructure(structure.id!, params);
+    //     });
+    //   });
   }
 
   getByStructure(structure: number, params: Params): void {
@@ -38,6 +39,20 @@ export class RolesListComponent extends BaseListComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  getAll() {
+    this.loading = true;
+    this.roleService.get().subscribe(
+      {
+        error: () => {
+          this.loading = false;
+        },
+        next: () => {
+          this.loading = false;
+        },
+      }
+    );
   }
 
   modifier(item: any): void {

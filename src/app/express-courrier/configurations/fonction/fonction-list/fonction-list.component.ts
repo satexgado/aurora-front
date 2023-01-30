@@ -20,10 +20,11 @@ export class FonctionListComponent extends BaseListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscriptions['structure'] =
-      this.structureService.singleData$.subscribe((structure) => {
-        this.getByStructure(structure);
-      });
+    // this.subscriptions['structure'] =
+    //   this.structureService.singleData$.subscribe((structure) => {
+    //     this.getByStructure(structure);
+    //   });
+    this.getAll();
   }
 
   getByStructure(structure: Structure): void {
@@ -36,5 +37,19 @@ export class FonctionListComponent extends BaseListComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  getAll() {
+    this.loading = true;
+    this.fonctionService.get().subscribe(
+      {
+        error: () => {
+          this.loading = false;
+        },
+        next: () => {
+          this.loading = false;
+        },
+      }
+    );
   }
 }

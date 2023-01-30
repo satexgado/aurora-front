@@ -1,56 +1,35 @@
-<div class="pageheader pd-t-25 pd-b-35 d-flex justify-content-between align-items-center">
-  <!-- BreadCrumbs -->
-  <div>
-    <div class="pd-t-5 pd-b-5">
-      <h1 class="pd-0 mg-0 tx-20">Structure et organisation</h1>
-    </div>
-    <div class="breadcrumb pd-0 mg-0">
-      <span class="breadcrumb-item"><i class="icon ion-ios-home-outline"></i> Acceuil</span>
-      <span class="breadcrumb-item">Structure et organisation</span>
-      <span class="breadcrumb-item active">Mes structures</span>
-    </div>
-  </div>
-
-</div>
-
 <!-- header -->
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Recherche -->
-  <app-search-field></app-search-field>
+<div class="d-flex mt-3 justify-content-between align-items-center mb-3">
+    <!-- Recherche -->
+    <app-search-field></app-search-field>
 
 
-  <!-- CTA -->
-  <div class="cta d-flex">
-    <!-- ajouter -->
-    <div *ngIf="helper.authorisation.check()">
-      <a [routerLink]="['./']"
-         [queryParamsHandling]="'preserve'"
-         [fragment]="'add-structure'"
-         class="btn btn-large btn-custom-primary mr-3">
-        <i class="far fa-plus"></i> Ajouter
-      </a>
+    <!-- CTA -->
+    <div class="cta d-flex">
+        <!-- ajouter -->
+        <div *ngIf="helper.authorisation.check()">
+            <a [routerLink]="['./']" [queryParamsHandling]="'preserve'" [fragment]="'add-structure'" class="btn btn-large btn-custom-primary mr-3">
+                <i class="far fa-plus"></i> Ajouter
+            </a>
+        </div>
+
+        <!-- FIltre -->
+        <app-filter-button></app-filter-button>
     </div>
-
-    <!-- FIltre -->
-    <app-filter-button></app-filter-button>
-  </div>
 </div>
 
 <ng-container *ngIf="!loading">
-  <div class="row"
-       *ngIf="!loading && data.length">
-    <div class="col-xl-4 col-sm-6 mb-3"
-         *ngFor="let structure of data">
-      <app-structure-solo [structure]="structure">
-      </app-structure-solo>
+    <div class="row" *ngIf="!loading && data.length">
+        <div class="col-xl-4 col-sm-6 mb-3" *ngFor="let structure of data">
+            <app-structure-solo [structure]="structure">
+            </app-structure-solo>
+        </div>
     </div>
-  </div>
 
-  <app-missing-data *ngIf="!loading && !data.length"></app-missing-data>
+    <app-missing-data *ngIf="!loading && !data.length"></app-missing-data>
 </ng-container>
 
 
-<div class="my-5"
-     *ngIf="loading">
-  <app-loading></app-loading>
+<div class="my-5" *ngIf="loading">
+    <app-loading></app-loading>
 </div>

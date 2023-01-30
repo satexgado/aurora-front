@@ -1,0 +1,69 @@
+<div class="row"
+     *ngIf="single">
+
+  <div class="col-12 ">
+    <div class="d-flex users-icon mb-2 clickable w-100 align-items-center justify-content-center ">
+      <span class="icone m-0">
+        
+        <img  *ngIf="single.user?.photo" [src]="single.user?.photo"
+             [alt]="single.user?.nom_complet">
+             <span *ngIf="!single.user?.photo">
+              <i class="fad fa-user-circle"
+                 style="font-size: 200px;"></i>
+            </span>
+
+      </span>
+
+    </div>
+  </div>
+
+  <div class="col-12">
+    <h5 class="text-center tx-facebook">{{ single.user?.nom_complet }}</h5>
+  </div>
+
+
+</div>
+
+<div class="row d-flex justify-content-between mt-3"
+     *ngIf="single">
+  <!-- Point de vente -->
+  <div class="col-4">
+    <p class="font-weight-bolder mb-0 tx-facebook">Sexe</p>
+    <p class="tx-light">{{ single.user?.sexe }}</p>
+  </div>
+
+  <!-- Fonction -->
+  <div class="col-4">
+    <p class="font-weight-bolder mb-0 tx-facebook">Identifiant</p>
+    <p class="tx-light">{{ single.user?.identifiant }}</p>
+  </div>
+
+  <!-- Superieur -->
+  <div class="col-4">
+    <p class="font-weight-bolder mb-0 tx-facebook">Email</p>
+    <p class="tx-light">{{ single.user?.email }}</p>
+  </div>
+
+  <!-- COntrat -->
+  <div class="col-4">
+    <p class="font-weight-bolder mb-0 tx-facebook">Structure</p>
+    <p class="tx-light">{{ single.structure?.libelle }}</p>
+  </div>
+
+
+  <!-- debut -->
+  <div class="col-4">
+    <p class="font-weight-bolder mb-0 tx-facebook">Fonction</p>
+    <p class="tx-light">{{ single.fonction?.libelle }}</p>
+  </div>
+
+
+  <!-- fin -->
+  <div class="col-4">
+    <p class="font-weight-bolder mb-0 tx-facebook">Poste</p>
+    <p class="tx-light">{{ single.poste?.libelle }}</p>
+  </div>
+
+
+
+</div>

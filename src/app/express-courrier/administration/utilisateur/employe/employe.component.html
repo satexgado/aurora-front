@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-between my-3">
+    <div class="search">
+        <input type="text" (keyup)="research$.next(search.value)" #search placeholder="Rechercher" class="form-control">
+    </div>
+
+    <div class="cta">
+        <!-- Boutton ajouter -->
+        <a class="btn btn-large btn-custom-primary mr-3" [routerLink]="['./']" [queryParamsHandling]="'preserve'" *ngIf="helper.authorisation.check('structure', 'ECRITURE')" [fragment]="'add-employe'">
+            <i class="far fa-plus"></i> Ajouter
+        </a>
+
+
+        <!-- Boutton filtrer -->
+        <button class="btn btn-large btn-light "><i class="far fa-filter"></i> Filtrer</button>
+    </div>
+</div>
+
+
+<!-- Navigation -->
+<nav class="nav" *ngIf="helper.authorisation.check('structure', 'ECRITURE')">
+
+
+
+    <!-- Status = valid -->
+    <a class="nav-link" [routerLinkActive]="'text-primary'" [routerLink]="['./']" [queryParams]="{ status: 'valid' }" [queryParamsHandling]="'merge'">
+    Validé
+  </a>
+
+    <!-- Status = unverified -->
+    <a class="nav-link" [routerLinkActive]="'text-primary'" [routerLink]="['./']" [queryParams]="{ status: 'unverified' }" [queryParamsHandling]="'merge'">En attente de verification de l'utilisateur</a>
+
+    <!-- status = unactivated  -->
+    <a class="nav-link" [routerLinkActive]="'text-primary'" [routerLink]="['./']" [queryParams]="{ status: 'unactivated' }" [queryParamsHandling]="'merge'">En attente d'approbation de l'admin</a>
+</nav>
+
+<app-employe-list></app-employe-list>
+
+
+
+
+<app-modal [configuration]="{ name: 'employe-create-modal', titre: 'Ajouter un nouvel employé', icone:'users-crown' }" (closed)="router.navigate(['./'], { queryParamsHandling: 'preserve', relativeTo:route })">
+    <app-employe-create *ngIf="create" (created)="onCreated()">
+    </app-employe-create>
+</app-modal>
+
+
+
+<app-modal [configuration]="{ name: 'employe-show-modal', titre: 'Details de l\'employé', icone:'users-crown' }" (closed)="router.navigate(['./'], { queryParamsHandling: 'preserve', relativeTo:route })">
+    <router-outlet></router-outlet>
+</app-modal>
+
+
+<app-modal [configuration]="{ name: 'employe-edit-modal', titre: 'Modifier les détails de l\'employé', icone:'users-crown' }" (closed)="router.navigate(['./'], { queryParamsHandling: 'preserve', relativeTo:route })">
+    <app-employe-edit *ngIf="edit" (edited)="onEdited()">
+    </app-employe-edit>
+</app-modal>

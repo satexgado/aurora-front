@@ -34,11 +34,11 @@ export class RolesShowComponent extends BaseSingleComponent implements OnInit {
 
     this.subscriptions['roles'] = this.roleService.singleData$.subscribe((data) => {
       this.single?.authorisations?.forEach((authorisation: Authorisation) => {
-        this.scopes[(authorisation.scope as Scope).ensemble]
-          ? this.scopes[(authorisation.scope as Scope).ensemble].push(
+        this.scopes[authorisation.scope_name]
+          ? this.scopes[authorisation.scope_name].push(
               authorisation
             )
-          : (this.scopes[(authorisation.scope as Scope).ensemble] = [
+          : (this.scopes[authorisation.scope_name] = [
               authorisation,
             ]);
       });

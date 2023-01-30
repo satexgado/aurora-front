@@ -1,17 +1,17 @@
 <div class="row mt-5 " *ngIf="single">
 
     <!-- Information personnel -->
-    <div class="col-8 offset-2 mt-3">
+    <div class="col-10 offset-1 mt-3 card">
         <!-- Image -->
         <span class="d-flex justify-content-center">
-          <img class="rounded-circle"
+          <img class="profile rounded-circle"
             *ngIf="single.photo"
-             style="height: 200px; width: 200px; object-fit: cover;"
+             style="height: 100px; width: 100px; object-fit: cover;"
              [src]="single.photo"
              [alt]="'user'">
              <span *ngIf="!single.photo">
-              <i class="fad fa-user-circle"
-                 style="font-size: 200px; margin-top:-450px"></i>
+              <i class="fad fa-user-circle profile"
+                 style="font-size: 100px; margin-top:-450px"></i>
             </span>
         </span>
         <h3 class="tx-rubik tx-dark tx-center">
@@ -98,7 +98,7 @@
               <i class="fad tx-primary fa-venus-mars"></i>
             </span> Date de naissance:
                     </span>
-                    <span class="tx-rubik tx-dark">{{single.date_naissance}}</span>
+                    <span class="tx-rubik tx-dark">{{single.date_naissance | date:'mediumDate' : undefined : 'fr'}}</span>
                 </div>
 
 
@@ -132,7 +132,7 @@
 
 
     <!-- Changer mot de passe -->
-    <div class="col-8 offset-2 mt-3" *ngIf="single.id == authService.user.id">
+    <div class="col-10 offset-1 card my-3 py-4" *ngIf="single.id == authService.user.id">
         <h3 class="tx-rubik tx-dark tx-center">Modifier votre mot de passe</h3>
         <app-user-password-edit></app-user-password-edit>
     </div>

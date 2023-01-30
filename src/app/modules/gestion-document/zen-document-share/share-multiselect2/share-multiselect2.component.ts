@@ -6,7 +6,7 @@ import { FormControl } from '@angular/forms';
 import { shareReplay, map, switchMap, retryWhen, delay, take } from 'rxjs/operators';
 import { IUser } from 'src/app/core/models/user';
 import { UserFactory } from 'src/app/core/services/user.factory';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { collect } from 'src/app/shared/models/collection-master/Collection';
 import { NotificationService } from 'src/app/shared';
 import { IBase } from 'src/app/core/models/base.interface';

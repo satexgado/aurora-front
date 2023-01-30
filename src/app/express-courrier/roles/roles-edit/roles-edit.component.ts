@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SlugifyPipe } from '../../../shared/pipes/slugify.pipe';
 import { StructureService } from '../../structure/structure/structure.service';
 import { RolesCreateComponent } from '../roles-create/roles-create.component';
@@ -18,6 +18,7 @@ import { Authorisation } from '../autorisations/authorisations.model';
 export class RolesEditComponent extends RolesCreateComponent implements OnInit {
   single: Role;
   constructor(
+    private cdRef : ChangeDetectorRef,
     public roleService: RolesService,
     public roleDependancies: RolesDependancies,
     public slugifyPipe: SlugifyPipe,
@@ -38,7 +39,7 @@ export class RolesEditComponent extends RolesCreateComponent implements OnInit {
   initForm(role?: any): void {
     this.form = this.fb.group({
       libelle: [role.libelle, Validators.required],
-      structure: [role.structure, Validators.required],
+      // structure: [role.structure, Validators.required],
       description: [role.description],
       authorisations: this.fb.group({}),
     });
@@ -54,12 +55,13 @@ export class RolesEditComponent extends RolesCreateComponent implements OnInit {
       // Update des roles deja existante
       this.single.authorisations?.forEach((authorisation) => {
         (this.form.get('authorisations') as FormGroup)
-          .get((authorisation.scope as Scope).libelle)
+          .get(authorisation.scope_name)
           ?.patchValue(authorisation.authorisation);
       });
 
       // Création des ensembles de scopes pour l'organisation en accordion
       this.scopes = {};
+
       this.roleDependancies.data.scopes.forEach((scope) => {
         this.scopes[scope.ensemble]
           ? this.scopes[scope.ensemble].push(scope)
@@ -69,14 +71,14 @@ export class RolesEditComponent extends RolesCreateComponent implements OnInit {
       this.activePanelId = this.slugifyPipe.transform(
         Object.keys(this.scopes)[0]
       );
-
+      this.cdRef.detectChanges();
       this.isFormOk = true;
     });
   }
 
   getAuthorisationByScope(scope: string) {
     return this.single.authorisations!.find(
-      (authorisation) => (authorisation?.scope as Scope)?.libelle == scope
+      (authorisation) => authorisation?.scope_name == scope
     );
   }
 

@@ -42,7 +42,7 @@ export class ResourceScrollableHelper {
         //create a copy of queryoptions to avoid some error
         this._queryOptions = JSON.parse(JSON.stringify(queryOptions));
 
-        this._queryOptions.paginate = 64;
+        this._queryOptions.paginate = 20;
         this._queryOptions.page = 1;
 
         this._search$.pipe(
