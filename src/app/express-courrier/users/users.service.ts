@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Params } from '@angular/router';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Storage } from 'src/app/helpers/storage/storage';
 import { BaseService } from '../../shared/services/base.service';
@@ -49,6 +51,15 @@ export class UsersService extends BaseService<User> {
         error: (error) => this.errorResponseHandler(error),
       })
     );
+  }
+
+  getEmployes(params: Params): Observable<any> {
+    return this.factory
+      .get(
+        `users/employes`
+        // , { params }
+      )
+      .pipe(tap(this.listResponseHandler()));
   }
 
   getByRole(role: number) {

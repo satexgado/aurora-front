@@ -1,128 +1,97 @@
-<app-users-edit [loading]="loading"
-                *ngIf="!single.user.email_verified_at"
-                [submitDisabled]="this.form.invalid"
-                (edited)="editWithUser($event)">
+<app-users-edit [loading]="loading" *ngIf="!single.user.email_verified_at" [submitDisabled]="this.form.invalid" (edited)="editWithUser($event)">
 
-  <form class="custom-placeholder"
-        [formGroup]="form">
+    <form class="custom-placeholder" [formGroup]="form">
 
-    <!-- Poste et fonction -->
-    <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
-      <!-- poste -->
-      <div class="col-6">
-        <!-- Label -->
-        <label class="control-label"
-               for="postes">
+        <!-- Poste et fonction -->
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
+            <!-- poste -->
+            <div class="col-6">
+                <!-- Label -->
+                <label class="control-label" for="postes">
           Poste
           <i class="fad fa-circle-notch fa-spin"
              *ngIf="dependancies.loading.postes"></i>
         </label>
 
-        <angular2-multiselect [data]="dependancies.data.postes"
-                              [settings]="helper.dropdownSettings.single"
-                              (click)="dependancies.getPostes(structure)"
-                              formControlName="poste"
-                              [ngClass]="{'is-invalid': shouldShowRequiredError( 'poste'), 'is-valid': isValid('poste')}"
-                              class="form-control p-0 ">
-        </angular2-multiselect>
+                <angular2-multiselect [data]="dependancies.data.postes" [settings]="helper.dropdownSettings.single" (click)="dependancies.getPostes(structure)" formControlName="poste" [ngClass]="{'is-invalid': shouldShowRequiredError( 'poste'), 'is-valid': isValid('poste')}"
+                    class="form-control p-0 ">
+                </angular2-multiselect>
 
-        <!-- Message d'erreur -->
-        <div *ngIf="shouldShowRequiredError('poste')"
-             class="invalid-feedback">
-          Veuillez renseigner le poste.
-        </div>
-      </div>
+                <!-- Message d'erreur -->
+                <div *ngIf="shouldShowRequiredError('poste')" class="invalid-feedback">
+                    Veuillez renseigner le poste.
+                </div>
+            </div>
 
 
-      <!-- fonction -->
-      <div class="col-6">
-        <!-- Label -->
-        <label class="control-label"
-               for="fonction">
+            <!-- fonction -->
+            <div class="col-6">
+                <!-- Label -->
+                <label class="control-label" for="fonction">
           Fonction
           <i class="fad fa-circle-notch fa-spin"
              *ngIf="dependancies.loading.fonctions"></i>
         </label>
 
-        <angular2-multiselect [data]="dependancies.data.fonctions"
-                              [settings]="helper.dropdownSettings.single"
-                              formControlName="fonction"
-                              (click)="dependancies.getFonctions(structure)"
-                              [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}"
-                              class="form-control p-0 ">
-        </angular2-multiselect>
+                <angular2-multiselect [data]="dependancies.data.fonctions" [settings]="helper.dropdownSettings.single" formControlName="fonction" (click)="dependancies.getFonctions(structure)" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}"
+                    class="form-control p-0 ">
+                </angular2-multiselect>
 
-      </div>
-    </div>
+            </div>
+        </div>
 
-  </form>
+    </form>
 
 
 </app-users-edit>
 
 
 
-<form class="custom-placeholder"
-      *ngIf="single.user.email_verified_at"
-      (submit)="edit()"
-      [formGroup]="form">
+<form class="custom-placeholder" *ngIf="single.user.email_verified_at" (submit)="edit()" [formGroup]="form">
 
-  <!-- Poste et fonction -->
-  <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
-    <!-- poste -->
-    <div class="col-6">
-      <!-- Label -->
-      <label class="control-label"
-             for="postes">
+    <!-- Poste et fonction -->
+    <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
+        <!-- poste -->
+        <div class="col-6">
+            <!-- Label -->
+            <label class="control-label" for="postes">
         Poste
         <i class="fad fa-circle-notch fa-spin"
            *ngIf="dependancies.loading.postes"></i>
       </label>
 
-      <angular2-multiselect [data]="dependancies.data.postes"
-                            [settings]="helper.dropdownSettings.single"
-                            (click)="dependancies.getPostes(structure)"
-                            formControlName="poste"
-                            [ngClass]="{'is-invalid': shouldShowRequiredError( 'poste'), 'is-valid': isValid('poste')}"
-                            class="form-control p-0 ">
-      </angular2-multiselect>
+            <angular2-multiselect [data]="dependancies.data.postes" [settings]="helper.dropdownSettings.single" (click)="dependancies.getPostes(structure)" formControlName="poste" [ngClass]="{'is-invalid': shouldShowRequiredError( 'poste'), 'is-valid': isValid('poste')}"
+                class="form-control p-0 ">
+            </angular2-multiselect>
 
-      <!-- Message d'erreur -->
-      <div *ngIf="shouldShowRequiredError('poste')"
-           class="invalid-feedback">
-        Veuillez renseigner le poste.
-      </div>
-    </div>
+            <!-- Message d'erreur -->
+            <div *ngIf="shouldShowRequiredError('poste')" class="invalid-feedback">
+                Veuillez renseigner le poste.
+            </div>
+        </div>
 
 
-    <!-- fonction -->
-    <div class="col-6">
-      <!-- Label -->
-      <label class="control-label"
-             for="fonction">
+        <!-- fonction -->
+        <div class="col-6">
+            <!-- Label -->
+            <label class="control-label" for="fonction">
         Fonction
         <i class="fad fa-circle-notch fa-spin"
            *ngIf="dependancies.loading.fonctions"></i>
       </label>
 
-      <angular2-multiselect [data]="dependancies.data.fonctions"
-                            [settings]="helper.dropdownSettings.single"
-                            formControlName="fonction"
-                            (click)="dependancies.getFonctions(structure)"
-                            [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}"
-                            class="form-control p-0 ">
-      </angular2-multiselect>
+            <angular2-multiselect [data]="dependancies.data.fonctions" [settings]="helper.dropdownSettings.single" formControlName="fonction" (click)="dependancies.getFonctions(structure)" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}"
+                class="form-control p-0 ">
+            </angular2-multiselect>
 
+        </div>
     </div>
-  </div>
 
-  <div class="d-flex justify-content-end px-2">
-
+    <div class="d-flex justify-content-end px-2">
 
 
-    <button class="btn btn-lg btn-primary mr-1"
-            type="submit"
-            [disabled]="form.invalid">
+
+        <button class="btn btn-lg btn-primary mr-1" type="submit" [disabled]="form.invalid">
       <i class="fad fa-circle-notch fa-spin"
          *ngIf="loading"></i>
       Valider
@@ -130,6 +99,6 @@
 
 
 
-  </div>
+    </div>
 
 </form>

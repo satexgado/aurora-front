@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AuthService } from 'src/app/express-courrier/auth/auth.service';
 import { Structure } from 'src/app/express-courrier/structure/structure/structure.model';
 import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
+import { UsersService } from 'src/app/express-courrier/users/users.service';
 import { BaseListComponent } from 'src/app/shared/base-component/base-list.component';
 import { Employe } from '../employe.model';
 import { EmployeService } from '../employe.service';
@@ -17,17 +18,20 @@ export class EmployeListComponent extends BaseListComponent implements OnInit {
   shouldSetRole = false;
   constructor(
     public employeService: EmployeService,
+    public userService: UsersService,
     public structureService: StructureService,
     public route: ActivatedRoute,
     public authService: AuthService,
     public router: Router
   ) {
-    super(employeService, route, 'employes');
+    super(userService, route, 'employes');
   }
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.getAll();
+    this.route.queryParams.subscribe((params) => {
+      this.getEmployes(params);
+    });
     // this.subscriptions['structure'] = this.employeService.structure$.subscribe(
     //   (structure) => {
     //     this.structure = structure;
@@ -50,9 +54,9 @@ export class EmployeListComponent extends BaseListComponent implements OnInit {
     });
   }
 
-  getAll() {
+  getEmployes(params: Params) {
     this.loading = true;
-    this.employeService.get().subscribe(
+    this.userService.getEmployes(params).subscribe(
       {
         error: () => {
           this.loading = false;

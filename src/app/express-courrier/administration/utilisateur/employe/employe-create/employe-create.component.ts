@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
+import { merge, Subject } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
 import { Structure } from 'src/app/express-courrier/structure/structure/structure.model';
 import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
 import { BaseCreateComponent } from 'src/app/shared/base-component/base-create.component';
@@ -18,6 +19,16 @@ export class EmployeCreateComponent
 {
   reset = new Subject<boolean>();
   structure: Structure;
+  changesUnsubscribe = new Subject();
+  multiParameter2 = {
+    singleSelection: false,
+    selectAllText: 'Tout selectionner',
+    unSelectAllText: 'Tout deselectionner',
+    itemsShowLimit: 5,
+    labelKey: 'libelle',
+    enableSearchFilter: true,
+    disabled: false,
+  };
 
   constructor(
     public employeService: EmployeService,
@@ -33,15 +44,77 @@ export class EmployeCreateComponent
         this.structure = structure;
         this.initForm();
       });
+
+      this.initForm();
   }
 
   initForm(employe?: any): void {
     this.form = this.fb.group({
-      fonction: [null, Validators.required],
-      poste: [null, Validators.required],
-      role: [null, Validators.required],
-      structure: [this.structure?.id, Validators.required],
+      // fonction: [null, Validators.required],
+      // poste: [null, Validators.required],
+      // role: [null, Validators.required],
+      // structure: [this.structure?.id, Validators.required],
+      affectation_structures: this.fb.array([])
     });
+  }
+
+  addAffectationStructure() {
+    const control = this.form.get('affectation_structures') as FormArray;
+    control.push(this.fb.group({
+        fonction: new FormControl(null, Validators.required),
+        poste : new FormControl(null,Validators.required),
+        role : new FormControl(null,Validators.required),
+        structure : new FormControl(null, Validators.required),
+      })
+    );
+    this.watchForChanges();
+  }
+
+  removeAffectationStructure(child_index) {
+    const control = this.form.get('affectation_structures') as FormArray;
+    control.markAsDirty();
+    control.removeAt(child_index);
+    this.watchForChanges();
+  }
+
+  watchForChanges() {
+    // cleanup any prior subscriptions before re-establishing new ones
+    this.changesUnsubscribe.next();
+    let arrayF = this.form.get('affectation_structures') as FormArray;
+    merge(...arrayF.controls.map((control: AbstractControl, index: number) =>
+              control.get('role').valueChanges.pipe(
+                  takeUntil(this.changesUnsubscribe),
+                  map(value => ({ rowIndex: index, control: control, data: value })))
+      )).subscribe(changes => {
+        let posteCtrl = arrayF.at(changes.rowIndex).get('poste');
+        let fonctionCtrl = arrayF.at(changes.rowIndex).get('fonction');
+        let structureCtrl = arrayF.at(changes.rowIndex).get('structure');
+
+        if(changes.data && changes.data[0]?.id == 1) {
+          posteCtrl.setValidators(null);
+          fonctionCtrl.setValidators(null);
+          structureCtrl.setValidators(null);
+
+          posteCtrl.setValue(null);
+          fonctionCtrl.setValue(null);
+          structureCtrl.setValue(null);
+
+        } else {
+          posteCtrl.setValidators([Validators.required]);
+          fonctionCtrl.setValidators([Validators.required]);
+          structureCtrl.setValidators([Validators.required]);
+        }
+
+        posteCtrl.updateValueAndValidity();
+        fonctionCtrl.updateValueAndValidity();
+        structureCtrl.updateValueAndValidity();
+
+      });
+
+  }
+
+  get affectation_structures() : FormArray {
+    return this.form.get("affectation_structures") as FormArray
   }
 
   resetUserForm(): void {
@@ -56,20 +129,27 @@ export class EmployeCreateComponent
 
   fillForm(form: FormData): void {
     this.formData = form;
+    let arrayF = this.form.get('affectation_structures') as FormArray;
+    let arrayV =arrayF.controls.map((control: AbstractControl, index: number) => {
+        return {
+          poste: control.value.poste ? control.value.poste[0]?.id : null,
+          fonction: control.value.fonction ? control.value.fonction.map((element)=>element.id) : null,
+          role: control.value.role ? control.value.role[0]?.id : null,
+          structure: control.value.structure ? control.value.structure[0]?.id : null,
+        }
+      }
+    );
 
     const data = {
       ...this.form.value,
-      poste: this.form.controls.poste.value[0]?.id,
-      fonction: this.form.controls.fonction.value[0]?.id,
-      role: this.form.controls.role.value[0]?.id,
+      affectation_structures: arrayV
     };
 
-    Object.keys(data).forEach((key) => this.formData.append(key, data[key]));
+    Object.keys(data).forEach((key) => this.formData.append(key, JSON.stringify(data[key])));
   }
 
   create(form: FormData): void {
     this.loading = true;
-
     this.fillForm(form);
 
     this.employeService.store(this.formData).subscribe((response) => {
