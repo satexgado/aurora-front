@@ -2,6 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseSingleComponent } from 'src/app/shared/base-component/base-single.component';
 import { EmployeService } from '../employe.service';
+import { UsersService } from 'src/app/express-courrier/users/users.service';
 
 @Component({
   selector: 'app-employe-show',
@@ -14,9 +15,10 @@ export class EmployeShowComponent
 {
   constructor(
     public employeService: EmployeService,
+    public userService: UsersService,
     public route: ActivatedRoute
   ) {
-    super(employeService, route);
+    super(userService, route);
   }
 
   ngOnInit(): void {
@@ -28,7 +30,7 @@ export class EmployeShowComponent
 
   showElement(id: number) {
     this.loading = true;
-    this.employeService.show(id, true).subscribe(() => {
+    this.userService.show(id, true).subscribe(() => {
       this.helper.modal.show('employe-show-modal');
       this.loading = false;
     });

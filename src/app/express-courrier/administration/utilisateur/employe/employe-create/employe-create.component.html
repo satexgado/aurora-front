@@ -9,7 +9,7 @@
                 <div class="card card-accent-primary  mg-y-15">
                     <div class="card-header">
                         <h4 class="card-header-title">
-                            Elements
+                            Affectations
                         </h4>
                         <div>
                             <button (click)="addAffectationStructure()" class="btn btn-primary btn-sm" style="font-size: 13px"> <i class="fal fa-layer-plus"></i> Ajouter</button>
@@ -82,8 +82,8 @@
                                             *ngIf="dependancies.loading.fonctions"></i>
                                         </label>
 
-                                        <angular2-multiselect [data]="dependancies.data.fonctions" [settings]="affectation_structures.at(y).get('role').value && affectation_structures.at(y).get('role').value[0]?.id == 1 ? helper.dropdownSettings.singleDisabled : multiParameter2" formControlName="fonction"
-                                            (click)="dependancies.getFonctions()" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}" class="form-control p-0 ">
+                                        <angular2-multiselect [data]="dependancies.data.fonctions" [settings]="affectation_structures.at(y).get('role').value && affectation_structures.at(y).get('role').value[0]?.id == 1 ? helper.dropdownSettings.singleDisabled : multiParameter2" formControlName="fonctions"
+                                            (click)="dependancies.getFonctions()" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonctions'), 'is-valid': isValid('fonctions')}" class="form-control p-0 ">
                                         </angular2-multiselect>
 
                                     </div>

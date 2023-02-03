@@ -7,6 +7,7 @@ import { EmployeDependancies } from './employe.dependancies';
 import { BaseContainerComponent } from 'src/app/shared/base-component/base-container.component';
 import { Structure } from 'src/app/express-courrier/structure/structure/structure.model';
 import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
+import { UsersService } from 'src/app/express-courrier/users/users.service';
 
 @Component({
   selector: 'app-employe',
@@ -20,6 +21,7 @@ export class EmployeComponent extends BaseContainerComponent implements OnInit {
   constructor(
     public structureService: StructureService,
     public employeService: EmployeService,
+    public userService: UsersService,
     public dependancies: EmployeDependancies,
     public router: Router,
     public route: ActivatedRoute
@@ -50,7 +52,25 @@ export class EmployeComponent extends BaseContainerComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    super.ngAfterViewInit();
+    this.route.fragment.subscribe((fragment) => {
+      if (fragment === `add-${this.element}`) {
+        this.create = true;
+        this.helper.modal.toggle(`${this.element}-create-modal`);
+      } else if (fragment === `edit-${this.element}`) {
+        if (this.userService.singleData || this.service.singleData || this.service.loading) {
+          this.edit = true;
+          this.helper.modal.toggle(`${this.element}-edit-modal`);
+        } else {
+          this.router.navigate(['./'], {
+            relativeTo: this.route,
+            queryParamsHandling: 'preserve',
+          });
+        }
+      } else if (fragment === 'showFilter') {
+        this.filter = true;
+        this.helper.modal.toggle(`${this.element}-filter-modal`);
+      }
+    });
     this.route.queryParams.subscribe((params) => {
       if (params.search) {
         if (!this.search.nativeElement.value) {

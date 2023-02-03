@@ -1,45 +1,103 @@
-<app-users-edit [loading]="loading" *ngIf="!single.user.email_verified_at" [submitDisabled]="this.form.invalid" (edited)="editWithUser($event)">
+<app-users-edit [loading]="loading" *ngIf="!single.email_verified_at" [submitDisabled]="this.form.invalid" (edited)="editWithUser($event)">
 
     <form class="custom-placeholder" [formGroup]="form">
 
-        <!-- Poste et fonction -->
-        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
-            <!-- poste -->
-            <div class="col-6">
-                <!-- Label -->
-                <label class="control-label" for="postes">
-          Poste
-          <i class="fad fa-circle-notch fa-spin"
-             *ngIf="dependancies.loading.postes"></i>
-        </label>
+        <!-- Role -->
+        <div class="formSep form-group  d-flex pb-0 pt-2">
+            <!-- role -->
+            <div class="col-12">
+                <div class="card card-accent-primary  mg-y-15">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Affectations
+                        </h4>
+                        <div>
+                            <button (click)="addAffectationStructure()" class="btn btn-primary btn-sm" style="font-size: 13px"> <i class="fal fa-layer-plus"></i> Ajouter</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0" formArrayName="affectation_structures">
+                        <article class="invoice_preview px-4 mb-4" *ngFor="let affectation_structure of affectation_structures.controls; let y = index;" [formGroupName]="y">
+                            <div class="inv_notes">
+                                <span class="badge badge-secondary">Affectation</span>
+                                <div class="formSep form-group  d-flex flex-wrap justify-content-center pb-0 pt-2">
 
-                <angular2-multiselect [data]="dependancies.data.postes" [settings]="helper.dropdownSettings.single" (click)="dependancies.getPostes(structure)" formControlName="poste" [ngClass]="{'is-invalid': shouldShowRequiredError( 'poste'), 'is-valid': isValid('poste')}"
-                    class="form-control p-0 ">
-                </angular2-multiselect>
+                                    <!-- role -->
+                                    <div class="col-6 mb-3">
+                                        <!-- Label -->
+                                        <label class="control-label" for="roles">
+                                      Rôle
+                                      <i class="fad fa-circle-notch fa-spin"
+                                        *ngIf="dependancies.loading.roles"></i>
+                                    </label>
 
-                <!-- Message d'erreur -->
-                <div *ngIf="shouldShowRequiredError('poste')" class="invalid-feedback">
-                    Veuillez renseigner le poste.
+                                        <angular2-multiselect [data]="dependancies.data.roles" [settings]="helper.dropdownSettings.single" (click)="dependancies.getRoles()" formControlName="role" [ngClass]="{'is-invalid': shouldShowRequiredError( 'role'), 'is-valid': isValid('role')}" class="form-control p-0 ">
+                                        </angular2-multiselect>
+
+                                        <!-- Message d'erreur -->
+                                        <div *ngIf="shouldShowRequiredError('role')" class="invalid-feedback">
+                                            Veuillez renseigner le role.
+                                        </div>
+                                    </div>
+
+                                    <!-- structure -->
+                                    <div class="col-6 mb-3">
+                                        <!-- Label -->
+                                        <label class="control-label" for="structure">
+                                      Structure
+                                      <i class="fad fa-circle-notch fa-spin"
+                                        *ngIf="dependancies.loading.structures"></i>
+                                    </label>
+
+                                        <angular2-multiselect [data]="dependancies.data.structures" [settings]="affectation_structures.at(y).get('role').value && affectation_structures.at(y).get('role').value[0]?.id == 1 ? helper.dropdownSettings.singleDisabled : helper.dropdownSettings.single"
+                                            formControlName="structure" (click)="dependancies.getStructures()" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}" class="form-control p-0 ">
+                                        </angular2-multiselect>
+
+                                    </div>
+
+                                    <!-- poste -->
+                                    <div class="col-6 mb-3">
+                                        <!-- Label -->
+                                        <label class="control-label" for="postes">
+                                      Poste
+                                      <i class="fad fa-circle-notch fa-spin"
+                                        *ngIf="dependancies.loading.postes"></i>
+                                    </label>
+
+                                        <angular2-multiselect [data]="dependancies.data.postes" [settings]="affectation_structures.at(y).get('role').value && affectation_structures.at(y).get('role').value[0]?.id == 1 ? helper.dropdownSettings.singleDisabled : helper.dropdownSettings.single"
+                                            (click)="dependancies.getPostes()" formControlName="poste" [ngClass]="{'is-invalid': shouldShowRequiredError( 'poste'), 'is-valid': isValid('poste')}" class="form-control p-0 ">
+                                        </angular2-multiselect>
+
+                                        <!-- Message d'erreur -->
+                                        <div *ngIf="shouldShowRequiredError('poste')" class="invalid-feedback">
+                                            Veuillez renseigner le poste.
+                                        </div>
+                                    </div>
+
+                                    <!-- fonction -->
+                                    <div class="col-6 mb-3">
+                                        <!-- Label -->
+                                        <label class="control-label" for="fonction">
+                                      Fonctions
+                                      <i class="fad fa-circle-notch fa-spin"
+                                        *ngIf="dependancies.loading.fonctions"></i>
+                                    </label>
+
+                                        <angular2-multiselect [data]="dependancies.data.fonctions" [settings]="affectation_structures.at(y).get('role').value && affectation_structures.at(y).get('role').value[0]?.id == 1 ? helper.dropdownSettings.singleDisabled : multiParameter2" formControlName="fonctions"
+                                            (click)="dependancies.getFonctions()" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonctions'), 'is-valid': isValid('fonctions')}" class="form-control p-0 ">
+                                        </angular2-multiselect>
+
+                                    </div>
+
+                                    <i *ngIf="affectation_structures.controls.length > 1" (click)="removeAffectationStructure(y)" class="fal fa-minus-square fal fa-minus-square fa-2x m-2 text-danger cursor-pointer"></i>
+                                </div>
+                            </div>
+                        </article>
+
+
+                    </div>
                 </div>
             </div>
-
-
-            <!-- fonction -->
-            <div class="col-6">
-                <!-- Label -->
-                <label class="control-label" for="fonction">
-          Fonction
-          <i class="fad fa-circle-notch fa-spin"
-             *ngIf="dependancies.loading.fonctions"></i>
-        </label>
-
-                <angular2-multiselect [data]="dependancies.data.fonctions" [settings]="helper.dropdownSettings.single" formControlName="fonction" (click)="dependancies.getFonctions(structure)" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}"
-                    class="form-control p-0 ">
-                </angular2-multiselect>
-
-            </div>
         </div>
-
     </form>
 
 
@@ -47,43 +105,102 @@
 
 
 
-<form class="custom-placeholder" *ngIf="single.user.email_verified_at" (submit)="edit()" [formGroup]="form">
+<form class="custom-placeholder" *ngIf="single.email_verified_at" (submit)="edit()" [formGroup]="form">
 
-    <!-- Poste et fonction -->
-    <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
-        <!-- poste -->
-        <div class="col-6">
-            <!-- Label -->
-            <label class="control-label" for="postes">
-        Poste
-        <i class="fad fa-circle-notch fa-spin"
-           *ngIf="dependancies.loading.postes"></i>
-      </label>
+    <!-- Role -->
+    <div class="formSep form-group  d-flex pb-0 pt-2">
+        <!-- role -->
+        <div class="col-12">
+            <div class="card card-accent-primary  mg-y-15">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Affectations
+                    </h4>
+                    <div>
+                        <button (click)="addAffectationStructure()" class="btn btn-primary btn-sm" style="font-size: 13px"> <i class="fal fa-layer-plus"></i> Ajouter</button>
+                    </div>
+                </div>
+                <div class="card-body p-0" formArrayName="affectation_structures">
+                    <article class="invoice_preview px-4 mb-4" *ngFor="let affectation_structure of affectation_structures.controls; let y = index;" [formGroupName]="y">
+                        <div class="inv_notes">
+                            <span class="badge badge-secondary">Affectation</span>
+                            <div class="formSep form-group  d-flex flex-wrap justify-content-center pb-0 pt-2">
 
-            <angular2-multiselect [data]="dependancies.data.postes" [settings]="helper.dropdownSettings.single" (click)="dependancies.getPostes(structure)" formControlName="poste" [ngClass]="{'is-invalid': shouldShowRequiredError( 'poste'), 'is-valid': isValid('poste')}"
-                class="form-control p-0 ">
-            </angular2-multiselect>
+                                <!-- role -->
+                                <div class="col-6 mb-3">
+                                    <!-- Label -->
+                                    <label class="control-label" for="roles">
+                                    Rôle
+                                    <i class="fad fa-circle-notch fa-spin"
+                                      *ngIf="dependancies.loading.roles"></i>
+                                  </label>
 
-            <!-- Message d'erreur -->
-            <div *ngIf="shouldShowRequiredError('poste')" class="invalid-feedback">
-                Veuillez renseigner le poste.
+                                    <angular2-multiselect [data]="dependancies.data.roles" [settings]="helper.dropdownSettings.single" (click)="dependancies.getRoles()" formControlName="role" [ngClass]="{'is-invalid': shouldShowRequiredError( 'role'), 'is-valid': isValid('role')}" class="form-control p-0 ">
+                                    </angular2-multiselect>
+
+                                    <!-- Message d'erreur -->
+                                    <div *ngIf="shouldShowRequiredError('role')" class="invalid-feedback">
+                                        Veuillez renseigner le role.
+                                    </div>
+                                </div>
+
+                                <!-- structure -->
+                                <div class="col-6 mb-3">
+                                    <!-- Label -->
+                                    <label class="control-label" for="structure">
+                                    Structure
+                                    <i class="fad fa-circle-notch fa-spin"
+                                      *ngIf="dependancies.loading.structures"></i>
+                                  </label>
+
+                                    <angular2-multiselect [data]="dependancies.data.structures" [settings]="affectation_structures.at(y).get('role').value && affectation_structures.at(y).get('role').value[0]?.id == 1 ? helper.dropdownSettings.singleDisabled : helper.dropdownSettings.single"
+                                        formControlName="structure" (click)="dependancies.getStructures()" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}" class="form-control p-0 ">
+                                    </angular2-multiselect>
+
+                                </div>
+
+                                <!-- poste -->
+                                <div class="col-6 mb-3">
+                                    <!-- Label -->
+                                    <label class="control-label" for="postes">
+                                    Poste
+                                    <i class="fad fa-circle-notch fa-spin"
+                                      *ngIf="dependancies.loading.postes"></i>
+                                  </label>
+
+                                    <angular2-multiselect [data]="dependancies.data.postes" [settings]="affectation_structures.at(y).get('role').value && affectation_structures.at(y).get('role').value[0]?.id == 1 ? helper.dropdownSettings.singleDisabled : helper.dropdownSettings.single"
+                                        (click)="dependancies.getPostes()" formControlName="poste" [ngClass]="{'is-invalid': shouldShowRequiredError( 'poste'), 'is-valid': isValid('poste')}" class="form-control p-0 ">
+                                    </angular2-multiselect>
+
+                                    <!-- Message d'erreur -->
+                                    <div *ngIf="shouldShowRequiredError('poste')" class="invalid-feedback">
+                                        Veuillez renseigner le poste.
+                                    </div>
+                                </div>
+
+                                <!-- fonction -->
+                                <div class="col-6 mb-3">
+                                    <!-- Label -->
+                                    <label class="control-label" for="fonction">
+                                    Fonctions
+                                    <i class="fad fa-circle-notch fa-spin"
+                                      *ngIf="dependancies.loading.fonctions"></i>
+                                  </label>
+
+                                    <angular2-multiselect [data]="dependancies.data.fonctions" [settings]="affectation_structures.at(y).get('role').value && affectation_structures.at(y).get('role').value[0]?.id == 1 ? helper.dropdownSettings.singleDisabled : multiParameter2" formControlName="fonctions"
+                                        (click)="dependancies.getFonctions()" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonctions'), 'is-valid': isValid('fonctions')}" class="form-control p-0 ">
+                                    </angular2-multiselect>
+
+                                </div>
+
+                                <i *ngIf="affectation_structures.controls.length > 1" (click)="removeAffectationStructure(y)" class="fal fa-minus-square fal fa-minus-square fa-2x m-2 text-danger cursor-pointer"></i>
+                            </div>
+                        </div>
+                    </article>
+
+
+                </div>
             </div>
-        </div>
-
-
-        <!-- fonction -->
-        <div class="col-6">
-            <!-- Label -->
-            <label class="control-label" for="fonction">
-        Fonction
-        <i class="fad fa-circle-notch fa-spin"
-           *ngIf="dependancies.loading.fonctions"></i>
-      </label>
-
-            <angular2-multiselect [data]="dependancies.data.fonctions" [settings]="helper.dropdownSettings.single" formControlName="fonction" (click)="dependancies.getFonctions(structure)" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fonction'), 'is-valid': isValid('fonction')}"
-                class="form-control p-0 ">
-            </angular2-multiselect>
-
         </div>
     </div>
 

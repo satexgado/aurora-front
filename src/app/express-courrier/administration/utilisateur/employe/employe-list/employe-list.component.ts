@@ -16,6 +16,10 @@ import { EmployeService } from '../employe.service';
 export class EmployeListComponent extends BaseListComponent implements OnInit {
   structure: Structure;
   shouldSetRole = false;
+  create = false;
+  edit = false;
+  filter = false;
+
   constructor(
     public employeService: EmployeService,
     public userService: UsersService,
@@ -104,7 +108,4 @@ export class EmployeListComponent extends BaseListComponent implements OnInit {
     );
   }
 
-  modifier(employe: Employe) {
-    this.employeService.singleData = employe;
-  }
 }

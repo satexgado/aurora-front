@@ -50,7 +50,7 @@ export class EmployeCreateComponent
 
   initForm(employe?: any): void {
     this.form = this.fb.group({
-      // fonction: [null, Validators.required],
+      // fonctions: [null, Validators.required],
       // poste: [null, Validators.required],
       // role: [null, Validators.required],
       // structure: [this.structure?.id, Validators.required],
@@ -61,7 +61,7 @@ export class EmployeCreateComponent
   addAffectationStructure() {
     const control = this.form.get('affectation_structures') as FormArray;
     control.push(this.fb.group({
-        fonction: new FormControl(null, Validators.required),
+        fonctions: new FormControl(null, Validators.required),
         poste : new FormControl(null,Validators.required),
         role : new FormControl(null,Validators.required),
         structure : new FormControl(null, Validators.required),
@@ -87,7 +87,7 @@ export class EmployeCreateComponent
                   map(value => ({ rowIndex: index, control: control, data: value })))
       )).subscribe(changes => {
         let posteCtrl = arrayF.at(changes.rowIndex).get('poste');
-        let fonctionCtrl = arrayF.at(changes.rowIndex).get('fonction');
+        let fonctionCtrl = arrayF.at(changes.rowIndex).get('fonctions');
         let structureCtrl = arrayF.at(changes.rowIndex).get('structure');
 
         if(changes.data && changes.data[0]?.id == 1) {
@@ -133,7 +133,7 @@ export class EmployeCreateComponent
     let arrayV =arrayF.controls.map((control: AbstractControl, index: number) => {
         return {
           poste: control.value.poste ? control.value.poste[0]?.id : null,
-          fonction: control.value.fonction ? control.value.fonction.map((element)=>element.id) : null,
+          fonctions: control.value.fonctions ? control.value.fonctions.map((element)=>element.id) : null,
           role: control.value.role ? control.value.role[0]?.id : null,
           structure: control.value.structure ? control.value.structure[0]?.id : null,
         }

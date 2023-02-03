@@ -1,68 +1,52 @@
-<div class="row m-0 p-0"
-     *ngIf="usersService.data.length && !loading">
+<div class="row m-0 p-0" *ngIf="usersService.data.length && !loading">
 
-  <div class="col-xl-4 col-sm-6 mb-3"
-       *ngFor="let user of usersService.data | paginate: {itemsPerPage: itemsPerPage, id: element, currentPage: currentPage, totalItems: totalItems}">
-    <div class="p-2 border shadow-1 scaleUpOnHover"
-         style="border-radius: 10px;">
-      <div class="d-flex justify-content-center">
-        <img class="rounded-circle "
-             *ngIf="user.photo"
-             [src]="user.photo"
-             style="object-fit: cover;"
-             alt="avatar"
-             width="70"
-             height="70">
+    <div class="col-xl-4 col-sm-6 mb-3" *ngFor="let user of usersService.data | paginate: {itemsPerPage: itemsPerPage, id: element, currentPage: currentPage, totalItems: totalItems}">
+        <div class="p-2 border shadow-1 scaleUpOnHover" style="border-radius: 10px;">
+            <div class="d-flex justify-content-center">
+                <img class="rounded-circle " *ngIf="user.photo" [src]="user.photo" style="object-fit: cover;" alt="avatar" width="70" height="70">
 
-        <span *ngIf="!user?.photo">
+                <span *ngIf="!user?.photo">
           <i class="fal fa-user-circle"
              style="font-size: 70px;"></i>
         </span>
-      </div>
+            </div>
 
-      <!-- Infomation -->
-      <div class="mycard-text text-center pt-4 px-2 pb-2">
-        <!-- Nom complet -->
-        <span class="date  tx-bold tx-yeto tx-16">
+            <!-- Infomation -->
+            <div class="mycard-text text-center pt-4 px-2 pb-2">
+                <!-- Nom complet -->
+                <span class="date  tx-bold tx-yeto tx-16">
           {{ user?.nom_complet }}
         </span>
 
-        <!-- Poste - fonction -->
-        <p class="mb-0 text-center">
-          <small *ngIf="user.affectation_structure">
+                <!-- Poste - fonction -->
+                <p class="mb-0 text-center">
+                    <small *ngIf="user.affectation_structure">
             <!-- poste -->
             <b>{{ user?.affectation_structure?.fonction?.libelle }}</b> à <span class="tx-primary">{{
               user.affectation_structure?.structure?.libelle
               }}</span>
           </small>
-        </p>
-      </div>
+                </p>
+            </div>
 
 
-      <div class="pb-3 pt-1 d-flex justify-content-center">
-        <!-- Voir -->
-        <a [routerLink]="[user.employe ? 'employes/' + user.employe?.id : 'livreurs/' + user.livreur?.id]"
-           class="mr-3 tx-facebook"
-           routerLinkActive="active">
-          <i class="far  fa-info-circle"></i>
-        </a>
+            <div class="pb-3 pt-1 d-flex justify-content-center">
+                <!-- Voir -->
+                <a [routerLink]="[user.employe ? 'employes/' + user.employe?.id : 'livreurs/' + user.livreur?.id]" class="mr-3 tx-facebook" routerLinkActive="active">
+                    <i class="far  fa-info-circle"></i>
+                </a>
 
 
-        <!-- Supprimer -->
-        <a [routerLink]="['./']"
-           class="tx-facebook"
-           container="body"
-           [ngbTooltip]="'Enlever role'"
-           [queryParamsHandling]="'preserve'"
-           (click)="enleverRole(user)">
-          <i class="far mr-3 fa-times"></i>
-        </a>
+                <!-- Supprimer -->
+                <a [routerLink]="['./']" class="tx-facebook" container="body" [ngbTooltip]="'Enlever role'" [queryParamsHandling]="'preserve'" (click)="enleverRole(user)">
+                    <i class="far mr-3 fa-times"></i>
+                </a>
 
 
 
-        <!-- <ng-container *ngIf="parent.name === 'service' && !parent.item.service_com"> -->
-        <!-- Designer comme chargé com -->
-        <!-- <a [routerLink]="['./']"
+                <!-- <ng-container *ngIf="parent.name === 'service' && !parent.item.service_com"> -->
+                <!-- Designer comme chargé com -->
+                <!-- <a [routerLink]="['./']"
              class="tx-facebook"
              container="body"
              [ngbTooltip]="'designerCommeChargerDeCommunication' | translate"
@@ -71,8 +55,8 @@
             <i class="falmr-3 fa-comment-plus"></i>
           </a> -->
 
-        <!-- Supprimer des  chargés com -->
-        <!-- <a [routerLink]="['./']"
+                <!-- Supprimer des  chargés com -->
+                <!-- <a [routerLink]="['./']"
              class="tx-danger"
              container="body"
              *ngIf="user.charger_com"
@@ -80,31 +64,25 @@
              (click)="designerCommeNonChargerCom(user)">
             <i class="falmr-3 fa-comment-times"></i>
           </a> -->
-        <!-- </ng-container> -->
-      </div>
+                <!-- </ng-container> -->
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
-<div class="my-5"
-     *ngIf="loading">
-  <app-loading></app-loading>
+<div class="my-5" *ngIf="loading">
+    <app-loading></app-loading>
 </div>
 
 
 <div *ngIf="!loading && !usersService.data.length">
-  <app-missing-data></app-missing-data>
+    <app-missing-data></app-missing-data>
 </div>
 
 
 <!-- Pagination -->
-<div class="col-12 mt-1 d-flex justify-content-center"
-     *ngIf="usersService.data.length">
-  <pagination-controls [id]="element"
-                       (pageChange)="changePage($event)"
-                       autoHide="true"
-                       previousLabel="{{ 'PRECEDENT' }}"
-                       nextLabel="{{ 'SUIVANT' }}">
-  </pagination-controls>
+<div class="col-12 mt-1 d-flex justify-content-center" *ngIf="usersService.data.length">
+    <pagination-controls [id]="element" (pageChange)="changePage($event)" autoHide="true" previousLabel="{{ 'PRECEDENT' }}" nextLabel="{{ 'SUIVANT' }}">
+    </pagination-controls>
 </div>

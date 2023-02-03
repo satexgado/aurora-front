@@ -3,19 +3,25 @@
     <div class="col-xl-3 col-sm-6 mb-3" *ngFor="let employe of userService.data">
         <div class="p-2 border shadow-1 scaleUpOnHover position-relative" style="border-radius: 10px;">
             <!-- Role -->
-            <span class="position-absolute p-1 m-0 border badge badge-light" *ngIf="employe.affectation_structure?.role" container="body" [ngbTooltip]="'Rôle'" style="top: 10px; right: 5px;">
-        <i class="fal fa-users-crown"></i>
-        {{ employe.affectation_structure?.role?.libelle }}
-      </span>
+            <ng-template #tipsAnnees>
+                <p class="" *ngFor="let item of employe.affectation_structures">
+                    <span class="bg-soft-warning">{{item.role.libelle}}</span> ({{item.structure?.libelle}})
+                </p>
+            </ng-template>
+            <span class="position-absolute p-1 m-0 border badge badge-light" *ngIf="employe.affectation_structures?.length" [ngbTooltip]="tipsAnnees" container="body" style="top: 10px; right: 5px;">
+              <i class="fal fa-users-crown"></i>
+              {{ (employe.affectation_structures | slice:0:1)[0].role?.libelle }}
+              {{ employe.affectation_structures.length > 1 ? '('+ (employe.affectation_structures.length-1) +')' : ''}}
+            </span>
 
 
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center mt-3">
                 <img class="rounded-circle " *ngIf="employe.photo" [src]="employe.photo" style="object-fit: cover;" alt="avatar" width="70" height="70">
 
                 <span *ngIf="!employe?.photo">
-          <i class="fad fa-user-circle"
-             style="font-size: 70px;"></i>
-        </span>
+                  <i class="fad fa-user-circle"
+                    style="font-size: 70px;"></i>
+                </span>
             </div>
 
             <!-- Infomation -->
@@ -38,7 +44,7 @@
 
             <div class="pb-3 pt-1 d-flex justify-content-center">
                 <!-- Voir -->
-                <a [routerLink]="[employe.affectation_structure?.id]" class="mr-3 tx-facebook" routerLinkActive="active">
+                <a [routerLink]="[employe.id]" class="mr-3 tx-facebook" routerLinkActive="active">
                     <i class="far  fa-info-circle"></i>
                 </a>
 
@@ -66,7 +72,7 @@
 
 
                     <!-- Modifier -->
-                    <a [routerLink]="['./']" [fragment]="'edit-employe'" [queryParamsHandling]="'preserve'" class="tx-facebook" (click)="modifier(employe.affectation_structure)">
+                    <a [routerLink]="['./']" [fragment]="'edit-employe'" [queryParamsHandling]="'preserve'" class="tx-facebook" (click)="modifier(employe)">
                         <i class="far mr-3 fa-edit"></i>
                     </a>
 
