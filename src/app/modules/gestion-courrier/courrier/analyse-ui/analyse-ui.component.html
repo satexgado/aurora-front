@@ -1,23 +1,27 @@
-<div class="col-lg-12">
-    <h5 class="text-dark"><i class="fal fa-chart-bar" style="padding: 6px; border-radius: 50%;"></i> Analyse </h5>
-</div>
+<div class="col-10 my-3 mx-auto">
+    <div class="container">
+        <div class="col-lg-12">
+            <h6 class="tx-echos1"><i class="fal fa-chart-bar  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Analyse</h6>
+        </div>
 
-<ul ngbNav #nav="ngbNav" [destroyOnHide]="false" [activeId]="route.fragment | async" class="nav-tabs nav-fill">
-    <li [ngbNavItem]="'entrant'">
-        <a ngbNavLink routerLink="." [fragment]="'entrant'">
-            <i class="fal fa-envelope tx-facebook bold"></i> Courriers entrants
-        </a>
-        <ng-template ngbNavContent>
-            <app-dashboard-courrier-entrant></app-dashboard-courrier-entrant>
-        </ng-template>
-    </li>
-    <li [ngbNavItem]="'sortant'">
-        <a ngbNavLink routerLink="." [fragment]="'sortant'">
-            <i class="fal fa-envelope-open tx-facebook bold"></i> Courriers sortants
-        </a>
-        <ng-template ngbNavContent>
-            <app-dashboard-courrier-sortant></app-dashboard-courrier-sortant>
-        </ng-template>
-    </li>
-</ul>
-<div [ngbNavOutlet]="nav"></div>
+        <ul ngbNav #nav="ngbNav" [destroyOnHide]="false" [activeId]="route.fragment | async" class="nav-tabs nav-fill">
+            <li [ngbNavItem]="'entrant'">
+                <a ngbNavLink routerLink="." [fragment]="'entrant'">
+                    <i class="fal fa-envelope tx-facebook bold"></i> Courriers entrants
+                </a>
+                <ng-template ngbNavContent>
+                    <app-dashboard-courrier-entrant></app-dashboard-courrier-entrant>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="'sortant'">
+                <a ngbNavLink routerLink="." [fragment]="'sortant'">
+                    <i class="fal fa-envelope-open tx-facebook bold"></i> Courriers sortants
+                </a>
+                <ng-template ngbNavContent>
+                    <app-dashboard-courrier-sortant></app-dashboard-courrier-sortant>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+    </div>
+</div>

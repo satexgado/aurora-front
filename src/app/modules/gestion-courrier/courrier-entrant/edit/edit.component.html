@@ -60,7 +60,7 @@
                             <span class="badge badge-secondary">Correspondant</span>
                             <div class="formSep form-group  row justify-content-center pb-0 pt-3">
                                 <div class="col-12 col-sm-6 mb-2">
-                                    <app-select-formgroup label="Provenance" formControlName="provenance_id" [selected]="editForm.get('provenance_id').value" [dataSource]="allCrProvenances$"></app-select-formgroup>
+                                    <app-select-formgroup label="Provenance" formControlName="provenance_id" [selected]="editForm.get('provenance_id').value" [dataSource]="allfilteredProvenance$"></app-select-formgroup>
                                     <div *ngIf="shouldShowRequiredError('provenance_id')" class="invalid-feedback">veillez remplir ce champ.</div>
                                 </div>
                                 <div class="col-12 col-sm-6 mb-2">

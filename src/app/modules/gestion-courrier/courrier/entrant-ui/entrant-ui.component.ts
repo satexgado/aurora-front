@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { of, Subscription } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { interval, of, Subject, Subscription } from 'rxjs';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { ICrCourrierEntrant } from 'src/app/core/models/gestion-courrier/cr-courrier-entrant';
 import { CrCoordonneeFactory } from 'src/app/core/services/gestion-courrier/cr-coordonnee';
 import { CrCourrierEntrantFactory } from 'src/app/core/services/gestion-courrier/cr-courrier-entrant';
@@ -70,9 +70,19 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
   editModal = EditComponent;
   selectedCourrier: ICrCourrierEntrant;
   parentData: {relationName: string,relationId: number} = null;
+  externe = true;
   expediteur: ICrCoordonnee;
   subscription: Subscription = new Subscription();
-  
+
+  // last entrant
+  TASK_REFRESH_INTERVAL_MS = 30000;
+  private readonly autoRefresh$ = interval(this.TASK_REFRESH_INTERVAL_MS).pipe(
+    startWith(0)
+  );
+
+  lastEntrant$;
+  // last entrant
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
@@ -146,21 +156,25 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
     if(this.showClose && this.showOpen) {
       this.dataHelper.query = [
         {or: false, filters:[new Filter('IsIns2', 1, 'eq')]},
+        {or: false, filters:[new Filter('externe', this.externe, 'eq')]},
       ];
     } else if(this.showOpen && !this.showClose) {
       this.dataHelper.query = [
         {or: false, filters:[new Filter('IsIns2', 1, 'eq')]},
         {or: false, filters:[new Filter('is_closed', 0, 'eq')]},
+        {or: false, filters:[new Filter('externe', this.externe, 'eq')]},
       ];
     } else if (this.showClose && !this.showOpen) {
       this.dataHelper.query = [
         {or: false, filters:[new Filter('IsIns2', 1, 'eq')]},
         {or: false, filters:[new Filter('is_closed', 1, 'eq')]},
+        {or: false, filters:[new Filter('externe', this.externe, 'eq')]},
       ];
     } else {
       this.dataHelper.query = [
         {or: false, filters:[new Filter('IsIns2', 1, 'eq')]},
         {or: false, filters:[new Filter('id', '', 'eq')]},
+        {or: false, filters:[new Filter('externe', this.externe, 'eq')]},
       ];
     }
     this.dataHelper.loadData(1);
@@ -219,6 +233,26 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
   }
 
   ngOnInit() {
+
+    if(!(this.route.routeConfig?.data&&this.route.routeConfig?.data?.externe)) {
+      this.externe = this.route.routeConfig?.data?.externe;
+    }
+
+    const courrierEntrantService = new CrCourrierEntrantFactory();
+    this.lastEntrant$ = this.autoRefresh$.pipe(
+      switchMap(() => courrierEntrantService.list(
+        new QueryOptions(
+          [
+              {or: false, filters:[new Filter('externe', this.externe, 'eq')]},
+            {or: false, filters:[new Filter('IsIns2', 1, 'eq')]},
+          ],
+          [],
+          10,
+          1,
+          [new Sort('created_at','DESC')]
+      )).pipe(map(data=>data.data)))
+    );
+
     this.subscription.add(
       this.uiService.courrierEntrantData$.subscribe(
         (courrier)=> {
@@ -233,14 +267,15 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
         }
       )
     )
-    
+
     this.subscription.add(
       this.cacheService.get('affectation-parent').subscribe(
         (data: {relationName: string,relationId: number})=>{
           const queryOptions = new QueryOptions(
             [
                 {or: false, filters:[new Filter('isIns2', true, 'eq')]},
-                {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]}
+                {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]},
+                {or: false, filters:[new Filter('externe', this.externe, 'eq')]},
             ],
             [
               'cr_courrier.cr_statut',
@@ -260,15 +295,16 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
         },
         ()=>{
           this.dataHelper.query = [
+            {or: false, filters:[new Filter('externe', this.externe, 'eq')]},
             {or: false, filters:[new Filter('is_closed', 0, 'eq')]},
             {or: false, filters:[new Filter('IsIns2', 1, 'eq')]},
           ];
-  
+
           super.ngOnInit();
         }
       )
       )
-    
+
     const detailsView = 'details,copie,affectation,schema,tache,commentaire,fichier';
     this.subscription.add(
       this.route.fragment.subscribe(fragment => {
@@ -278,7 +314,7 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
         }
       })
       )
-   
+
 
     this.subscription.add(
       this.router.events.subscribe((event: Event) => {
@@ -295,7 +331,7 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
         }
       })
       )
-    
+
 
     this.onLoadChild();
   }
@@ -309,15 +345,49 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
   }
 
   onShowCreateForm(item?, modal = this.editModal) {
-    super.onShowCreateForm(item).subscribe(
-       (data:ICrCourrierEntrant)=>{
-         if(!this.parentData)  {return;}
-         const service = new CrCourrierEntrantFactory();
-         service.attachAffectation(data.id, this.parentData.relationName+'s', this.parentData.relationId).subscribe();
-       }
-    )
-    return of(true);
- }
+    let _result$ = new Subject<any>();
+    const result$ = _result$.asObservable();
+    if (modal) {
+        const modalRef = this.modalService.open(this.editModal, { size: 'lg', centered: true, backdrop: 'static' });
+        modalRef.componentInstance.isUpdating = false;
+        modalRef.componentInstance.title = 'Créer';
+        modalRef.componentInstance.externe = this.externe;
+
+        // In case it's create from existing element
+        if (item) {
+          modalRef.componentInstance.title = item.libelle ? `Créer comme: ${item.libelle}` : 'Créer';
+          modalRef.componentInstance.item = item;
+        }
+
+        modalRef.componentInstance.newItem.subscribe(
+          (data: any) => {
+            this.dataHelper.addItem(data);
+            _result$.next(data);
+          }
+        );
+    }
+
+    return result$;
+  }
+
+  onShowUpdateForm(item: any, modal = this.editModal) {
+    let _result$ = new Subject<any>();
+    const result$ = _result$.asObservable();
+    if (modal) {
+        const modalRef = this.modalService.open(this.editModal, { size: 'lg', centered: true,  backdrop: 'static' });
+        modalRef.componentInstance.title = `Modifier: ${item.libelle}`;
+        modalRef.componentInstance.item = item;
+        modalRef.componentInstance.externe = this.externe;
+        modalRef.componentInstance.isUpdating = true;
+        modalRef.componentInstance.newItem.subscribe(
+          (data) => {
+            this.dataHelper.updateItem(data);
+            _result$.next(data);
+          }
+        );
+    }
+    return result$;
+  }
 
  public getStructures(): void {
   if(this.dependancies.structures && this.dependancies.structures.length) {
@@ -525,6 +595,7 @@ isEcheanceExpired(date: Date) {
     const modalRef = this.modalService.open(CourrierEntrantEditFormComponent, { size: 'lg', centered: true,  backdrop: 'static' });
     modalRef.componentInstance.item = this.selectedCourrier;
     modalRef.componentInstance.isUpdating = true;
+    modalRef.componentInstance.externe = this.externe;
     modalRef.componentInstance.newItem.subscribe(
       (data) => {
         // this.dataHelper.updateItem(data);

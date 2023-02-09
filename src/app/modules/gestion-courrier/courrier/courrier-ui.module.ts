@@ -1,3 +1,4 @@
+import { CourrierDossierUiComponent } from './dossier-ui/dossier-ui.component';
 import { AnalyseCourrierUiComponent } from './analyse-ui/analyse-ui.component';
 import { AnalyseCourrierEntrantModule } from './../courrier-entrant/analyse-entrant/analyse2.module';
 import { AnalyseCourrierSortantModule } from './../courrier-sortant/analyse-sortant/analyse2.module';
@@ -32,7 +33,8 @@ import { TypeModule } from '../type/type.module';
       CourrierSortantUiComponent,
       CourrierUiHomeComponent,
       CourrierUiProprieteComponent,
-      AnalyseCourrierUiComponent
+      AnalyseCourrierUiComponent,
+      CourrierDossierUiComponent
     ],
     imports: [
         CommonModule,

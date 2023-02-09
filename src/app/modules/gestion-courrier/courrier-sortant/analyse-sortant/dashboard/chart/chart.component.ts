@@ -65,7 +65,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
     this.dateFin = this.dateFinControl.value ? moment(this.dateFinControl.value).toDate() : null;
     this.updateDate = false;
     this.chartConfig.query.map(element => {
-      element.query.filter_groups[0] = 
+      element.query.filter_groups[0] =
         {or: false, filters: this.getFilterDate()}
     });
     if(this.chartConfig.chartFormData.chartType) {
@@ -79,7 +79,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
       filter.push(
         new Filter('date_envoie', this.dateDebut, 'gte')
       )
-    } 
+    }
     if(this.dateFin) {
       filter.push(
         new Filter('date_envoie', this.dateFin, 'lte')
@@ -158,7 +158,26 @@ export class ChartComponent implements OnInit, AfterViewInit {
                 or: true, filters: customfilter
               })
             }
-            let libelle = dataset.libelle ? dataset.libelle : 'aucun libelle';
+            let libelle = 'Nombre de courriers';
+
+            if (dataset.libelle) {
+              libelle = dataset.libelle;
+            } else if(dataset.filters && dataset.filters.length) {
+              libelle = '';
+              dataset.filters.forEach(filter => {
+                libelle += ( dataset.filters.length > 1 ?  '[' : '');
+                if(Array.isArray(filter.value)) {
+                  libelle += filter.value.map(
+                    (val)=> val.libelle ?? `${val.prenom} ${val.nom}`
+                  ).toString();
+                } else {
+                  libelle += filter.value;
+                }
+                libelle += ( dataset.filters.length > 1 ?  '] ': '');
+              })
+
+            }
+
             this.chartConfig.query.push({
               libelle: libelle, query: queryOptions, couleur: dataset.couleur, type: dataset.chartType
             });

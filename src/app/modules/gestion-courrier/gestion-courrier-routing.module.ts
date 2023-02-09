@@ -7,6 +7,7 @@ import { CourrierSortantDetailsResolver } from './courrier-sortant/details/courr
 import { CourrierUiComponent } from './courrier/courrier-ui.component';
 import { CourrierEntrantUiComponent } from './courrier/entrant-ui/entrant-ui.component';
 import { CourrierSortantUiComponent } from './courrier/sortant-ui/sortant-ui.component';
+import { CourrierDossierUiComponent } from './courrier/dossier-ui/dossier-ui.component';
 import { CourrierUiHomeComponent } from './courrier/home/home.component';
 import { CourrierUiProprieteComponent } from './courrier/propriete-ui/propriete-ui.component';
 import { AnalyseCourrierUiComponent } from './courrier/analyse-ui/analyse-ui.component';
@@ -15,7 +16,7 @@ import { CourrierSortantUiResolver } from './courrier/sortant-ui/sortant-ui.reso
 import { AuthorisationGuardService } from 'src/app/shared/guard/authorisation.guard';
 
 const routes: Routes = [
-    { path: '', component: CourrierUiComponent, 
+    { path: '', component: CourrierUiComponent,
     data: {
       guards: [{
         scope: 'courrier entrant',
@@ -43,14 +44,15 @@ const routes: Routes = [
       {path:'', pathMatch: 'full', redirectTo:'acceuil'},
       {path:'acceuil', component: CourrierUiHomeComponent},
       {
-        path:'entrant', 
+        path:'entrant',
         component: CourrierEntrantUiComponent,
         canActivate: [AuthorisationGuardService],
         data: {
             guards: [{
               scope: 'courrier entrant',
               access: 'LECTURE'
-          }]
+            }],
+            externe: 1
         },
         children: [
           {
@@ -60,7 +62,25 @@ const routes: Routes = [
         ]
       },
       {
-        path:'sortant', 
+        path:'interne',
+        component: CourrierEntrantUiComponent,
+        canActivate: [AuthorisationGuardService],
+        data: {
+            guards: [{
+              scope: 'courrier entrant',
+              access: 'LECTURE'
+            }],
+            externe: 0
+        },
+        children: [
+          {
+            path: ':id',
+            resolve: { courrier: CourrierEntrantUiResolver}
+          }
+        ]
+      },
+      {
+        path:'sortant',
         component: CourrierSortantUiComponent,
         canActivate: [AuthorisationGuardService],
         data: {
@@ -77,7 +97,7 @@ const routes: Routes = [
         ]
       },
       {
-        path:'propriete', 
+        path:'propriete',
         component: CourrierUiProprieteComponent,
         canActivate: [AuthorisationGuardService],
         data: {
@@ -87,7 +107,7 @@ const routes: Routes = [
           }]
         },
       },
-      {path:'dossier', component: DossierComponent},
+      {path:'dossier', component: CourrierDossierUiComponent},
       // {path:'form', component: JsonFormControlListComponent},
       // {path:'analyse', component: DashboardComponent},
       {path:'analyse', component: AnalyseCourrierUiComponent}

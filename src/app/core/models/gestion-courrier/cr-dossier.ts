@@ -15,6 +15,9 @@ export interface ICrDossier extends IBase {
 
   courrier_entrants: any;
   courrier_sortants: any;
+  nb_courrier_entrants: number;
+  nb_courrier_sortants: number;
+  nb_courrier_internes: number;
 }
 
 export class CrDossier implements ICrDossier {
@@ -25,6 +28,9 @@ export class CrDossier implements ICrDossier {
     responsable_id: number = 0;
     inscription_id: number = 0;
     structure: any = null;
+    nb_courrier_entrants: number = 0;
+    nb_courrier_sortants: number = 0;
+    nb_courrier_internes: number = 0;
 
     @adaptableMap('cr_courrier_entrants')
     courrier_entrants: any = null;

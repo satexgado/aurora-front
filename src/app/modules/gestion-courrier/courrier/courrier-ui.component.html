@@ -1,4 +1,48 @@
-<div class="row clearfix">
+<div class="d-flex flex-wrap justify-content-between px-3 py-2 bd-b bd-2">
+    <div>
+        <h6 class="tx-echos1"><i class="fas fa-mailbox  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Gestion de courriers</h6>
+    </div>
+    <div>
+
+        <div class="nav-tabs-top  ">
+            <ul class="nav   bg-white float-right list-inline justify-content-end">
+
+
+                <li class="nav-item ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['dossier']" routerLinkActive="active">
+                        <i class="fas fa-folder-open tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Dossiers</span></a>
+                </li>
+
+
+                <li class="nav-item  ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['entrant']" routerLinkActive="active">
+                        <i class="fas fa-envelope tx-18  tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Entrants </span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['sortant']" routerLinkActive="active">
+                        <i class="fas fa-envelope-open tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Sortants</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['interne']" routerLinkActive="active">
+                        <i class="fas fa-envelope-open-text tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Internes</span></a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['rapport']" routerLinkActive="active">
+                        <i class="fas fa-clock tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Rapports</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3  card-1-hoverable" [routerLink]="['analyse']" routerLinkActive="active">
+                        <i class="fas fa-history tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Suivis</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>
+
+<!-- <div class="row clearfix">
     <div class="col-lg-3 hidden-sm hidden-xs p-0">
 
         <div class="card-body p-2 pb-2 tx-gray-600 tx-14 bg-light active">
@@ -48,7 +92,7 @@
                                     <span class="text-info mb-0" *ngIf="!courrier.courrier?.cloture">{{courrier.courrier?.statut?.libelle | titlecase}}</span>
                                     <span class="mb-0" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
                                         {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
-                                    </span> 
+                                    </span>
                                 </div>
                                 <div class="mg-l-auto text-right" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
                                     <p class="mg-b-0  tx-dar"><small>{{courrier?.created_at |
@@ -91,7 +135,7 @@
         </div>
     </div>
     <div class="col-12 col-lg-9 p-3" style="background: #f5f5f4  ">
-        <!-- <div class="row">
+        <div class="row">
             <div class="col-lg-12">
                 <h5 class="text-dark"><i class="fal fa-mail-bulk" style="padding: 6px; border-radius: 50%;"></i> Gestion des courriers</h5>
             </div>
@@ -158,7 +202,7 @@
                     </ul>
                 </div>
             </div>
-        </div> -->
+        </div>
         <router-outlet></router-outlet>
     </div>
-</div>
+</div> -->

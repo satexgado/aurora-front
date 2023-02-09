@@ -6,26 +6,26 @@
                 <img class="rounded-circle " *ngIf="user.photo" [src]="user.photo" style="object-fit: cover;" alt="avatar" width="70" height="70">
 
                 <span *ngIf="!user?.photo">
-          <i class="fal fa-user-circle"
-             style="font-size: 70px;"></i>
-        </span>
+                  <i class="fal fa-user-circle"
+                    style="font-size: 70px;"></i>
+                </span>
             </div>
 
             <!-- Infomation -->
             <div class="mycard-text text-center pt-4 px-2 pb-2">
                 <!-- Nom complet -->
                 <span class="date  tx-bold tx-yeto tx-16">
-          {{ user?.nom_complet }}
-        </span>
+                  {{ user?.nom_complet }}
+                </span>
 
                 <!-- Poste - fonction -->
                 <p class="mb-0 text-center">
                     <small *ngIf="user.affectation_structure">
-            <!-- poste -->
-            <b>{{ user?.affectation_structure?.fonction?.libelle }}</b> à <span class="tx-primary">{{
-              user.affectation_structure?.structure?.libelle
-              }}</span>
-          </small>
+                      <!-- poste -->
+                      <b>{{ user?.affectation_structure?.fonction?.libelle }}</b> à <span class="tx-primary">{{
+                        user.affectation_structure?.structure?.libelle
+                        }}</span>
+                    </small>
                 </p>
             </div>
 
@@ -47,23 +47,23 @@
                 <!-- <ng-container *ngIf="parent.name === 'service' && !parent.item.service_com"> -->
                 <!-- Designer comme chargé com -->
                 <!-- <a [routerLink]="['./']"
-             class="tx-facebook"
-             container="body"
-             [ngbTooltip]="'designerCommeChargerDeCommunication' | translate"
-             *ngIf="!user.charger_com"
-             (click)="designerCommeChargerCom(user)">
-            <i class="falmr-3 fa-comment-plus"></i>
-          </a> -->
+                  class="tx-facebook"
+                  container="body"
+                  [ngbTooltip]="'designerCommeChargerDeCommunication' | translate"
+                  *ngIf="!user.charger_com"
+                  (click)="designerCommeChargerCom(user)">
+                  <i class="falmr-3 fa-comment-plus"></i>
+                </a> -->
 
                 <!-- Supprimer des  chargés com -->
                 <!-- <a [routerLink]="['./']"
-             class="tx-danger"
-             container="body"
-             *ngIf="user.charger_com"
-             [ngbTooltip]="'supprimerDesChargesDeCommunication' | translate"
-             (click)="designerCommeNonChargerCom(user)">
-            <i class="falmr-3 fa-comment-times"></i>
-          </a> -->
+                  class="tx-danger"
+                  container="body"
+                  *ngIf="user.charger_com"
+                  [ngbTooltip]="'supprimerDesChargesDeCommunication' | translate"
+                  (click)="designerCommeNonChargerCom(user)">
+                  <i class="falmr-3 fa-comment-times"></i>
+                </a> -->
                 <!-- </ng-container> -->
             </div>
         </div>

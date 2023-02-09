@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { of, Subscription } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { interval, of, Subscription } from 'rxjs';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { ICrCourrierSortant } from 'src/app/core/models/gestion-courrier/cr-courrier-sortant';
 import { CrCoordonneeFactory } from 'src/app/core/services/gestion-courrier/cr-coordonnee';
 import { CrCourrierSortantFactory } from 'src/app/core/services/gestion-courrier/cr-courrier-sortant';
@@ -56,6 +56,13 @@ import { CourrierUiService } from '../courrier-ui.service';
 })
 
 export class CourrierSortantUiComponent extends EditableListComponent implements OnInit {
+
+  TASK_REFRESH_INTERVAL_MS = 30000;
+  private readonly autoRefresh$ = interval(this.TASK_REFRESH_INTERVAL_MS).pipe(
+    startWith(0)
+  );
+
+  lastSortant$;
 
   @ViewChild('scrollContainer')
   scrollContainer: ElementRef;
@@ -206,6 +213,21 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
   }
 
   ngOnInit() {
+
+    const courrierSortantService = new CrCourrierSortantFactory();
+    this.lastSortant$ = this.autoRefresh$.pipe(
+      switchMap(() => courrierSortantService.list(
+        new QueryOptions(
+          [
+            {or: false, filters:[new Filter('IsIns2', 1, 'eq')]},
+          ],
+          [],
+          3,
+          1,
+          [new Sort('created_at','DESC')])
+      ).pipe(map(data=>data.data)))
+    );
+
     this.subscription.add(
       this.uiService.courrierSortantData$.subscribe(
         (courrier) => {

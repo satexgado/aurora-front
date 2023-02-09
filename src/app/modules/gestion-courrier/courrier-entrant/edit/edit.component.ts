@@ -52,6 +52,7 @@ export class EditComponent extends BaseEditComponent  {
   heading = 'courrier-entrant';
   @Input() item: CrCourrierEntrant = new CrCourrierEntrant();
   @ViewChild(JsonForm2Component) extraFormComp;
+  @Input() externe = null;
 
   // protected readonly allCoordonnees$ = this.cacheService.get(
   //   'allCoordonnees',
@@ -150,6 +151,15 @@ export class EditComponent extends BaseEditComponent  {
     activeModal: NgbActiveModal)
   {
     super(new CrCourrierEntrantFactory(),cdRef, activeModal);
+  }
+
+  get allfilteredProvenance$() {
+    if(this.externe !== null) {
+      return this.allCrProvenances$.pipe(
+        map(data=> data.filter(element=> element.externe == this.externe))
+      )
+    }
+    return this.allCrProvenances$;
   }
 
   ngOnInit() {
@@ -351,7 +361,7 @@ doCreateItem(closeModalAfter: boolean = true) {
 onSubmit(closeModalAfter?: boolean): void {
   if(this.extraFormComp){
     this.editForm.addControl(
-      'additional_field', new FormControl(this.extraFormComp.getVal()) 
+      'additional_field', new FormControl(this.extraFormComp.getVal())
     );
     let control = this.editForm.get('additional_field');
     control.markAsDirty();
@@ -369,7 +379,7 @@ shouldDisableSubmit() {
   if(this.extraFormComp) {
    bool = this.extraFormComp.shouldDisableSubmit();
   }
-  
+
   return (super.shouldDisableSubmit() || bool);
 }
 
