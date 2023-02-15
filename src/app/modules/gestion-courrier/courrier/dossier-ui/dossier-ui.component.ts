@@ -1,5 +1,5 @@
 import { CrDossierFactory } from 'src/app/core/services/gestion-courrier/cr-dossier';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditComponent } from '../../dossier/edit/edit.component';
 
@@ -7,7 +7,7 @@ import { AppTitleService, CacheService } from 'src/app/shared/services';
 import { EditableListComponent } from 'src/app/shared';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { ICrDossier } from 'src/app/core/models/gestion-courrier/cr-dossier';
 import {
   trigger,
@@ -16,13 +16,15 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, Router } from '@angular/router';
 import { CourrierUiService } from '../courrier-ui.service';
 import { ICrCourrierEntrant } from 'src/app/core/models/gestion-courrier/cr-courrier-entrant';
 import { ICrCourrierSortant } from 'src/app/core/models/gestion-courrier/cr-courrier-sortant';
 import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
 import { AuthService } from 'src/app/express-courrier/auth/auth.service';
 import { IBase } from 'src/app/core/models/base.interface';
+import { CrCourrierEntrantFactory } from 'src/app/core/services/gestion-courrier/cr-courrier-entrant';
+import { CrCourrierSortantFactory } from 'src/app/core/services/gestion-courrier/cr-courrier-sortant';
 
 @Component({
   selector: 'app-courrier-dossier-ui',
@@ -42,7 +44,7 @@ import { IBase } from 'src/app/core/models/base.interface';
   ]
 })
 
-export class CourrierDossierUiComponent extends EditableListComponent implements OnInit {
+export class CourrierDossierUiComponent extends EditableListComponent implements OnInit, OnDestroy {
 
   editModal = EditComponent;
   parentData: {relationName: string,relationId: number} = null;
@@ -50,6 +52,55 @@ export class CourrierDossierUiComponent extends EditableListComponent implements
   fragment: string;
   allUserStructures: any[] = [];
   selectedStructure: IBase = null;
+  entrantHelper: ResourceScrollableHelper;
+  sortantHelper: ResourceScrollableHelper;
+  interneHelper: ResourceScrollableHelper;
+  subscription: Subscription = new Subscription();
+
+  onSelectDossier(dossier: ICrDossier) {
+    if(!dossier) {
+      this.modalData = null;
+      this.entrantHelper = null;
+      this.sortantHelper = null;
+      this.interneHelper = null;
+      return;
+    }
+
+    const entrantQueryOptions = new QueryOptions(
+      [
+        {or: false, filters:[
+          new Filter('externe', 1, 'eq'),
+          new Filter('dossier_id', dossier.id, 'eq'),
+        ]},
+      ]
+    );
+    this.entrantHelper = new ResourceScrollableHelper(new CrCourrierEntrantFactory(), entrantQueryOptions);
+    this.entrantHelper.withoutPaginate = true;
+    this.entrantHelper.loadData(1);
+
+    const sortantQueryOptions = new QueryOptions(
+      [
+        {or: false, filters:[new Filter('dossier_id', dossier.id, 'eq')]},
+      ]
+    );
+    this.sortantHelper = new ResourceScrollableHelper(new CrCourrierSortantFactory(), sortantQueryOptions);
+    this.sortantHelper.withoutPaginate = true;
+    this.sortantHelper.loadData(1);
+
+    const interneQueryOptions = new QueryOptions(
+      [
+        {or: false, filters:[
+          new Filter('externe', 0, 'eq'),
+          new Filter('dossier_id', dossier.id, 'eq'),
+        ]},
+      ]
+    );
+    this.interneHelper = new ResourceScrollableHelper(new CrCourrierEntrantFactory(), interneQueryOptions);
+    this.interneHelper.withoutPaginate = true;
+    this.interneHelper.loadData(1);
+
+    this.modalData = dossier;
+  }
 
   constructor(
     protected cacheService: CacheService,
@@ -98,11 +149,46 @@ export class CourrierDossierUiComponent extends EditableListComponent implements
         this.fragment = 'entrant';
       }
     });
+
     this.structureService.getByUser(this.authService.user.id).subscribe(
       (data)=> {
         this.allUserStructures = data ? data.data : [];
       }
     );
+
+    this.subscription.add(
+      this.router.events.subscribe((event: Event) => {
+        switch (true) {
+          case event instanceof NavigationEnd:
+          case event instanceof NavigationCancel:
+          case event instanceof NavigationError: {
+            this.onLoadChild();
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      })
+      )
+    this.onLoadChild();
+  }
+
+  onLoadChild() {
+    if(this.route.firstChild) {
+       return this.route.firstChild.data.subscribe(
+        (data: { dossier: ICrDossier }) =>
+        {
+          if((!data.dossier))
+          {
+            this.router.navigate(['/courrier/dossier']);
+          }
+          this.titleservice.setTitle(data.dossier.libelle);
+          this.onSelectDossier(data.dossier);
+        }
+      );
+    }
+    this.onSelectDossier(null);
   }
 
   onShowCreateForm(item?, modal = this.editModal) {
@@ -135,11 +221,21 @@ onSelectCourrierSortant(courrier: ICrCourrierSortant = null) {
   this.router.navigate(['/courrier/sortant', courrier.id]);
 }
 
+onSelectCourrierInterne(courrier: ICrCourrierEntrant = null) {
+  this.serviceCourrierUi.courrierEntrantData = courrier;
+  this.router.navigate(['/courrier/interne', courrier.id]);
+}
+
+
 onSetSelected(structure: IBase) {
   if(this.selectedStructure && this.selectedStructure.id == structure.id) {
     this.selectedStructure = null;
     return;
   }
   this.selectedStructure = structure;
+}
+
+ngOnDestroy() {
+  this.subscription.unsubscribe();
 }
 }

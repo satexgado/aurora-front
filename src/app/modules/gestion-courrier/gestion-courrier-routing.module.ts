@@ -14,6 +14,7 @@ import { AnalyseCourrierUiComponent } from './courrier/analyse-ui/analyse-ui.com
 import { CourrierEntrantUiResolver } from './courrier/entrant-ui/entrant-ui.resolver';
 import { CourrierSortantUiResolver } from './courrier/sortant-ui/sortant-ui.resolver';
 import { AuthorisationGuardService } from 'src/app/shared/guard/authorisation.guard';
+import { DossierUiResolver } from './courrier/dossier-ui/dossier-ui.resolver';
 
 const routes: Routes = [
     { path: '', component: CourrierUiComponent,
@@ -107,7 +108,15 @@ const routes: Routes = [
           }]
         },
       },
-      {path:'dossier', component: CourrierDossierUiComponent},
+      {
+        path:'dossier', component: CourrierDossierUiComponent,
+        children: [
+          {
+            path: ':id',
+            resolve: { dossier: DossierUiResolver}
+          }
+        ]
+      },
       // {path:'form', component: JsonFormControlListComponent},
       // {path:'analyse', component: DashboardComponent},
       {path:'analyse', component: AnalyseCourrierUiComponent}
@@ -119,6 +128,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],
-  providers: [CourrierEntrantDetailsResolver, CourrierSortantDetailsResolver, CourrierEntrantUiResolver, CourrierSortantUiResolver]
+  providers: [CourrierEntrantDetailsResolver, CourrierSortantDetailsResolver, CourrierEntrantUiResolver, CourrierSortantUiResolver, DossierUiResolver]
 })
 export class GestionCourrierRoutingModule {}

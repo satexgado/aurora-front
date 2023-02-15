@@ -17,7 +17,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { CoodCourrierSortantComponent } from './details/sortant/cood-csortant.component';
 import { CoodMarchePublicComponent } from './details/marche-public/cood-marche-public.component';
 import { ZenDocumentModule } from 'src/app/modules/gestion-document/zen-document.module';
-
+import { CoordonneeActionComponent } from './coordonnee-action.component'
 @NgModule({
     declarations: [
         CoordonneeComponent,
@@ -26,6 +26,7 @@ import { ZenDocumentModule } from 'src/app/modules/gestion-document/zen-document
         CoodCourrierEntrantComponent,
         CoodCourrierSortantComponent,
         CoodMarchePublicComponent,
+        CoordonneeActionComponent,
         EditComponent
     ],
     imports: [
@@ -41,7 +42,7 @@ import { ZenDocumentModule } from 'src/app/modules/gestion-document/zen-document
         AngularMultiSelectModule,
         ZenDocumentModule
     ],
-    entryComponents: [EditComponent],
+    entryComponents: [EditComponent, CoordonneeActionComponent],
 })
 export class CoordonneeModule {
 

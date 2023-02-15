@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/express-courrier/auth/auth.service';
 import { NotificationService } from 'src/app/shared';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, Router } from '@angular/router';
-import { MailInterneService } from './interne.service'
+import { MailInterneService } from './interne.service';
 import { DatePipe } from '@angular/common';
 import { IFichier } from 'src/app/core/models/gestion-document/fichier.model';
 @Component({

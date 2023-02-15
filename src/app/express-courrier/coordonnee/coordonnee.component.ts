@@ -10,11 +10,13 @@ import {
   transition
 } from '@angular/animations';
 import { AppTitleService, CacheService } from 'src/app/shared/services';
-import { EditableListComponent } from 'src/app/shared';
+import { EditableListComponent, NotificationService } from 'src/app/shared';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
-import { of } from 'rxjs';
+import { interval, of } from 'rxjs';
 import { ICrCoordonnee } from 'src/app/core/models/gestion-courrier/cr-coordonnee';
+import { startWith } from 'rxjs/operators';
+import { CoordonneeActionComponent } from './coordonnee-action.component';
 
 @Component({
   selector: 'app-coordonnee',
@@ -102,11 +104,16 @@ a {
 })
 export class CoordonneeComponent extends EditableListComponent implements OnInit {
 
+  TASK_REFRESH_INTERVAL_MS = 30000;
+  private readonly autoRefresh$ = interval(this.TASK_REFRESH_INTERVAL_MS).pipe(
+    startWith(0)
+  );
+
   editModal = EditComponent;
   modalData: ICrCoordonnee;
   parentData: {relationName: string,relationId: number} = null;
   view: 'card' | 'list' =  localStorage.getItem("coordonneeViewType") ? <'card' | 'list'>localStorage.getItem("coordonneeViewType"):  'card';
-
+  onGroupeCoordonnee;
   onChangeView(view : 'card' | 'list') {
     this.view = view;
     localStorage.setItem('coordonneeViewType',view);
@@ -115,10 +122,17 @@ export class CoordonneeComponent extends EditableListComponent implements OnInit
   constructor(
     protected cacheService: CacheService,
     protected titleservice: AppTitleService,
+    protected notificationService: NotificationService,
     protected modalService: NgbModal) {
     super(new ResourceScrollableHelper(new CrCoordonneeFactory()));
     this.titleservice.setTitle('mes Coordonnees')
     this.modalService = modalService;
+
+    let service = new CoordonneeActionComponent(notificationService, modalService);
+    this.onGroupeCoordonnee= (coordonnee: ICrCoordonnee) =>  service.onGroupeCoordonnee(coordonnee).subscribe(
+      (statuts)=> {
+      }
+    );
   }
 
   ngOnInit() {
@@ -135,7 +149,7 @@ export class CoordonneeComponent extends EditableListComponent implements OnInit
         );
         this.parentData = data;
         this.dataHelper = new ResourceScrollableHelper(new CrCoordonneeFactory(), queryOptions);
-        super.ngOnInit()
+        super.ngOnInit();
       },
       ()=>{
         super.ngOnInit();

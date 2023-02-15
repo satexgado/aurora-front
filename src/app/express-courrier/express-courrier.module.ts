@@ -51,10 +51,10 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'coordonnee',
+        path: 'annuaire',
         data: {
           guards: [{
-            scope: 'coordonnees',
+            scope: 'annuaire',
             access: 'LECTURE'
           }]
         },
@@ -62,6 +62,20 @@ const routes: Routes = [
         loadChildren: () =>
           import('./coordonnee/coordonnee.module').then(
             (module) => module.CoordonneeModule
+          ),
+      },
+      {
+        path: 'groupe-contact',
+        data: {
+          guards: [{
+            scope: 'groupe-contact',
+            access: 'LECTURE'
+          }]
+        },
+        canLoad:[AuthorisationGuardService],
+        loadChildren: () =>
+          import('./coordonnee-groupe/coordonnee-groupe.module').then(
+            (module) => module.CoordonneeGroupeModule
           ),
       },
       {

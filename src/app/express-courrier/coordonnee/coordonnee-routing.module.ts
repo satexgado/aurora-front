@@ -19,18 +19,18 @@ const routes: Routes = [
     component: CoordonneeComponent,
     data: {
       guards: [{
-        scope: 'coordonnees',
+        scope: 'annuaire',
         access: 'LECTURE'
       }]
     },
     canActivate: [AuthorisationGuardService]
   },
   {
-    path:':id', 
+    path:':id',
     component: CoordonneeDetailsComponent,
     data: {
       guards: [{
-        scope: 'coordonnees',
+        scope: 'annuaire',
         access: 'LECTURE'
       }]
     },

@@ -1,52 +1,100 @@
-<span class="mt-4"></span>
-<div class="col-lg-12 my-2">
-    <h5 class="text-dark"><i class="fal fa-address-card" style="padding: 6px; border-radius: 50%;"></i> Coordonnees </h5>
-</div>
-<div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
-
-    <div class="col-lg-7">
+<div class="row  justify-content-between mg-0 pd-0 bg-light bd-b pt-2 pb-2">
+    <div class="col-lg-3">
+        <h5 class="tx-echos1"><i class="fas fa-address-card  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Annuaire de contacs</h5>
+    </div>
+    <div class="col-lg-4 ">
         <div class="input-group ">
-            <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
+            <input type="text" class="form-control  border-0 bg-white" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
         </div>
     </div>
 
-    <div class="col-lg-5 ">
+    <div class="col-lg-5">
         <ul class="nav float-right list-inline h-100  justify-content-end">
             <li class="nav-item">
                 <button class="btn btn-link" (click)="onChangeView('card')">
-                    <span class="tx-echos">
-                        <i class="fad fa-th card-1  tx-16"
-                            [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
-                            style="padding:6px; border-radius:50%"></i>
-                    </span>
-                </button>
+                <span class="tx-echos">
+                    <i class="fad fa-th card-1  tx-16"
+                        [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                        style="padding:6px; border-radius:50%"></i>
+                </span>
+            </button>
             </li>
             <li class="nav-item">
                 <button class="btn btn-link" (click)="onChangeView('list')">
-                    <span class="tx-echos">
-                        <i class="fad fa-list card-1 tx-16 "
-                            [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
-                            style="padding:6px; border-radius:50%"></i>
-                    </span>
-                </button>
+                <span class="tx-echos">
+                    <i class="fad fa-list card-1 tx-16 "
+                        [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
+                        style="padding:6px; border-radius:50%"></i>
+                </span>
+            </button>
             </li>
             <li class="nav-item">
                 <button class="btn btn-link" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();">
-                    <span class="tx-echos">
-                        <i class="fal fa-plus-circle bg-yeto tx-16 tx-white card-1"
-                            style="padding:6px; border-radius:50%"></i>
-                    </span>
-                </button>
+                <span class="tx-echos">
+                    <i class="fal fa-plus-circle bg-yeto tx-16 tx-white card-1"
+                        style="padding:6px; border-radius:50%"></i>
+                </span>
+            </button>
             </li>
         </ul>
     </div>
 </div>
 <div class="card-body" *ngIf="view == 'card'; else listView " [class.loading]="dataHelper.loading$ | async">
-    <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="d-flex scrollable-y-75 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+    <div [scrollWindow]="false" infiniteScroll  (scrolled)="checkData()" class="d-flex scrollable-y-75 justify-content-center flex-wrap  mg-l-0 mg-r-0">
         <ng-container *ngIf="dataHelper.data$ | async as items">
             <ng-container *ngIf="items.length; else noItem">
                 <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'" *ngFor="let coordonnee of items;trackBy: dataHelper.trackByFn">
-                    <div class="card">
+                    <div class="mycard4 card-profile-1 mb-3">
+                        <a class="card-body tx-center p-0" [routerLink]="['./',coordonnee.id]">
+                            <div class="mx-auto my-2 avatar-md">
+                                <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
+                            </div>
+                            <h6 class="m-0 tx-primary">{{coordonnee.libelle}}
+                            </h6>
+                            <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{coordonnee.telephone}} </p>
+                            <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{coordonnee.email}} </p>
+                        </a>
+                        <div class="pt-2 bg-light ">
+                            <ul class="nav float-center list-inline justify-content-center">
+                                <li class="nav-item">
+                                    <a class="nav-link3" container="body" ngbTooltip="Details" (click)="openModal(content, coordonnee)">
+                                        <span class="tx-echos">
+                                          <i class="fas fa-address-card tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link3" container="body" ngbTooltip="Groupes" (click)="onGroupeCoordonnee(coordonnee)">
+                                      <span class="tx-echos">
+                                        <i class="fas fa-users tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                      </span>
+                                  </a>
+                              </li>
+                                <li class="nav-item">
+                                    <a class="nav-link3" container="body" ngbTooltip="Modifier" (click)="onShowUpdateForm(coordonnee)">
+                                        <span class="tx-echos">
+                                          <i class="fas fa-edit tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link3" container="body" ngbTooltip="Dupliquer" (click)="onShowCreateForm(coordonnee)">
+                                        <span class="tx-echos">
+                                          <i class="fas fa-clone tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link3" container="body" ngbTooltip="Supprimer" (click)="onDelete(coordonnee)">
+                                        <span class="tx-echos">
+                                          <i class="fas fa-times-square tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- <div class="card">
                         <div class="card-body">
                             <div class="float-right no-caret" container="body" ngbDropdown>
                                 <button class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" ngbDropdownToggle role="button"><i class="fal fa-comment-alt-dots fa-lg rounded-circle"></i></button>
@@ -74,7 +122,7 @@
                                 <a type="button" class="btn btn-primary btn-sm w-50" [routerLink]="['./',coordonnee.id]"><i class="bx bx-message-square-dots me-1"></i> Voir plus</a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </ng-container>
         </ng-container>
@@ -82,7 +130,7 @@
 </div>
 <ng-template #listView>
     <div class="card px-0 card-2 card-accent-primary col-12 info" [class.loading]="dataHelper.loading$ | async">
-        <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-5">
+        <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-75 scroll-11">
             <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
                 <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
                     <thead class="tx-10 tx-uppercase">
@@ -99,10 +147,11 @@
                                 </a>
                             </td>
                             <td>
-                                <a class="table-action cursor-pointer float-right mx-2" (click)="onDelete(coordonnee) "><i class="fal fa-times-square tx-second "></i></a>
-                                <a class="table-action cursor-pointer float-right mx-2" (click)="onShowCreateForm(coordonnee) "><i class="fal fa-clone tx-second "></i></a>
-                                <a class="table-action cursor-pointer float-right mx-2" (click)="onShowUpdateForm(coordonnee) "><i class="fal fa-edit tx-second "></i></a>
-                                <a class="table-action cursor-pointer float-right mx-2" (click)="openModal(content, coordonnee)"><i class="fal fa-search tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Supprimer" (click)="onDelete(coordonnee) "><i class="fal fa-times-square tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Dupliquer" (click)="onShowCreateForm(coordonnee) "><i class="fal fa-clone tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Modifier" (click)="onShowUpdateForm(coordonnee) "><i class="fal fa-edit tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Groupes" (click)="onGroupeCoordonnee(coordonnee)"><i class="fal fa-users tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Details" (click)="openModal(content, coordonnee)"><i class="fal fa-address-card tx-second "></i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -110,7 +159,7 @@
             </div>
         </div>
     </div>
-    
+
 </ng-template>
 
 <ng-template #noItem>

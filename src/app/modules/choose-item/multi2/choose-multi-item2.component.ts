@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { IBase } from 'src/app/core/models/base.interface';
@@ -19,6 +19,7 @@ export class ChooseMultiItem2Component extends ItemSelectHelper implements OnIni
   @Output() creationService: Factory<IBase>;
   newItem: string;
   searchString: string;
+  changeIndicator = 0;
 
   @Input() imageCol: string;
   @Input() otherCols: {libelle: string, value: string[]}[];
@@ -40,7 +41,9 @@ export class ChooseMultiItem2Component extends ItemSelectHelper implements OnIni
     this.addSelectedItem(data);
   }
 
-  constructor(protected activeModal: NgbActiveModal, protected modalService: NgbModal) {
+  constructor(protected activeModal: NgbActiveModal,
+    protected cdRef: ChangeDetectorRef,
+    protected modalService: NgbModal) {
     super();
   }
 
@@ -58,6 +61,7 @@ export class ChooseMultiItem2Component extends ItemSelectHelper implements OnIni
             this.items.push(data);
             this.addSelectedItem(data.id);
             this.itemCreated.emit(data);
+            this.changeIndicator++;
           }
         );
     }
@@ -80,9 +84,12 @@ export class ChooseMultiItem2Component extends ItemSelectHelper implements OnIni
         this.itemCreated.emit(data);
         this.isLoading = false;
         this.newItem = '';
+        this.cdRef.detectChanges();
+        this.changeIndicator++;
       }
     )
   }
+
   onCloseModal(result: string) {
     this.activeModal.close(result);
   }

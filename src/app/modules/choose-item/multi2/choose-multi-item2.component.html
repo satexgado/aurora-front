@@ -27,7 +27,7 @@
     <div *ngIf="items && items.length; else noItem">
         <table class="table m-0">
             <tbody>
-                <tr class="cursor-pointer" [class.info]="hasSelectedItem(item.id)" *ngFor="let item of (items | searchFilter:searchString | selectedSort:selectedItem );trackBy: trackByFn" (click)="toggleSelectedItem(item.id)">
+                <tr class="cursor-pointer" [class.info]="hasSelectedItem(item.id)" *ngFor="let item of (items | searchFilter:searchString:changeIndicator | selectedSort:selectedItem );trackBy: trackByFn" (click)="toggleSelectedItem(item.id)">
                     <td class="tx-18" *ngIf="imageCol">
                         <img style="width: 60px;" src="{{item[imageCol]}}" alt="image for item">
                     </td>
