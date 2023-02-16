@@ -66,6 +66,11 @@ export class LoginComponent extends BaseCreateComponent implements OnInit {
 
   login() {
     this.loading = true;
+    //Ajouter par moi
+    // this.helper.navigation.navigate(['/']);
+    // this.loading = false;
+    //Fin
+
     this.authService.login(this.form.value).subscribe(
       () => {
         this.helper.navigation.navigate(['/']);

@@ -1,0 +1,270 @@
+<div class="col-md-12 py-3" *ngIf="!fichlab">                     
+    <div class="col-md-12 text-center noData">
+        <app-loarding></app-loarding>
+    </div>
+</div>
+<div class="col-md-12 p-0 " *ngIf="fichlab">
+    <ng-container *ngIf="fichlab.file[0]">
+        <div class="row row-xs clearfix mg-0 pd-0 ">
+            <div class="col-lg-12  bg-light  ">
+                <div class=" bd-b pt-3  bg-white ">
+                    <div class=" align-items-center">
+                        <div class="row row-xs clearfix p-2 mg-0 ">
+                                <div class="col-lg-5  ">
+                                    <h6 class="tx-echos tx-16 tx-bold">
+                                        <i class="fas fa-file-alt tx-20 tx-echos1"></i> {{currentfichier?.nom}}
+                                    </h6>
+                                </div>
+                                <div class="col-lg-2 ">
+                                    <ng-container *ngIf="currentfichier?.observateurs[0]">
+                                        <div class=" float-right justify-content-end">
+                                            <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                                                <ng-container *ngFor="let items of currentfichier?.observateurs ">
+                                                    <ng-container *ngIf="items?.type=='Observateur'">
+                                                        <li data-toggle="tooltip" data-placement="top" [ngbTooltip]="items?.participant?.prenom +' '+ items?.participant?.nom"  data-skin-class="tooltip-base" data-html="true" title="">
+                                                            <div class="avatar"> 
+                                                                <span class="">
+                                                                    <ng-container *ngIf="items?.participant?.photo">
+                                                                        <img class="avatarlab"  [src]="items?.participant?.photo" alt="avatar">
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="!items?.participant?.photo">
+                                                                        <img class="avatarlab"  src="./assets/images/avatar-placeholder.png">
+                                                                    </ng-container>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ul>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class=" float-right justify-content-end" *ngIf="affichedetail">
+                                        <ul class="nav float-right list-inline justify-content-end">
+                                            <ng-container *ngIf="!afficheinterv && !affichefinal">
+                                                <li class="nav-item no-caret pr-2" ngbDropdown [autoClose]="'outside'" container="body">
+                                                    <button class="btn bg-echos1" ngbDropdownToggle>
+                                                        <span class="">
+                                                            {{statutextend[0]}}
+                                                        </span>
+                                                    </button>
+                                                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                        <ng-container  *ngFor="let val of statutextend;let i=index;"> 
+                                                            <button  class="d-flex justify-content-between" ngbDropdownItem
+                                                            [disabled]="addextendForm.invalid || statut==true" (click)="addexect(val)">
+                                                        <span>   <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i>  {{val}}</span>
+                                                        </button>
+                                                        </ng-container>
+                                                    </div>
+                                                </li>
+                                            </ng-container>
+                                            <li class="nav-item " *ngIf="afficheinterv || affichefinal">
+                                                <button class="btn bg-danger text-white" (click)="resetValue()">
+                                                    <span class="">
+                                                        Fermer
+                                                    </span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="!affichedetail">
+                    <div class="row bg-light  ">
+                        <div class="col-lg-2  bg-light  "></div>
+                        <div class="col-lg-8  bg-light  ">
+                            <div class="tx-center">
+                                <span class=" tx-12  tx-echos1 ">{{currentfichier?.inscription?.prenom}} {{currentfichier?.inscription?.nom}}</span>
+                                <span class="  tx-warning tx-12 "> {{currentfichier?.created_at | date:'mediumDate' : undefined : 'fr'}}, {{currentfichier?.created_at | date:'shortTime' : undefined : 'fr'}}</span>
+                            </div>
+                            <div class="card-body card-activities collapse show" id="">
+                                <div class="media-list">
+                                    <div class="media pd-b-20">
+                                        <div class="activity-icon bg-white ">
+                                            <i class="fad fa-pen-square tx-18 tx-echos"></i>
+                                        </div>
+                                        <div class="card ml-3 flex-1 pointers" (click)="showdetail()">
+                                            <div class="d-flex align-items-center flex-1 ">
+                                                <div class=" pd-y-15 pd-x-20 bg-light">
+                                                    <ng-container *ngIf="currentfichier?.inscription?.photo">
+                                                        <img class="avatarpegasus"  [src]="currentfichier?.inscription?.photo" alt="avatar">
+                                                    </ng-container>
+                                                    <ng-container *ngIf="!currentfichier?.inscription?.photo">
+                                                        <img class="avatarpegasus"  src="./assets/images/avatar-placeholder.png">
+                                                    </ng-container>
+                                                </div>
+                                                <div class="pl-4">
+                                                    <h6 class="tx-echos tx-14">
+                                                        <i class="fad fa-file-alt tx-14 tx-echos"></i> {{currentfichier?.nom}}
+                                                    </h6>
+                                                    <span  class=" tx-12 mg-b-5 tx-echos1 ">
+                                                        {{currentfichier?.inscription?.prenom}} {{currentfichier?.inscription?.nom}}
+                                                    </span>
+                                                    <span class="tx-10  mg-b-5 tx-echos1 ">
+                                                        {{currentfichier?.created_at | date:'mediumDate' : undefined : 'fr'}}, {{currentfichier?.created_at | date:'shortTime' : undefined : 'fr'}}
+                                                    </span>
+                                                    <span class=" pl-2 pr-2">
+                                                        <i [ngClass]="{'fas fa-watch tx-16':true,
+                                                            'text-primary':currentfichier?.statut==statfile[0],'text-success':currentfichier?.statut==statfile[1],
+                                                            'text-warning':currentfichier?.statut==statfile[2],'text-danger':currentfichier?.statut==statfile[3]}"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <ng-container *ngIf="colabfile">
+                                    <ng-container *ngIf="colabfile[0]">
+                                        <ng-container *ngFor="let value of listvalue;let i=index;">
+                                            <ng-container *ngIf="value?.element[0]">
+                                                <div [class]="value?.class1" (click)="showinterv(i)">
+                                                    <div [class]="value?.class2">
+                                                        <i [class]="value?.class3"></i>
+                                                    </div>
+                                                    <div [class]="value?.class4">
+                                                        <div class="d-flex align-items-center flex-1 ">
+                                                            <div class=" pd-y-15 pd-x-20 bg-light">
+                                                                <ng-container *ngIf="value?.element[0]?.inscription?.photo">
+                                                                    <img class="avatarpegasus"  [src]="value?.element[0]?.inscription?.photo" alt="avatar">
+                                                                </ng-container>
+                                                                <ng-container *ngIf="!value?.element[0]?.inscription?.photo">
+                                                                    <img class="avatarpegasus"  src="./assets/images/avatar-placeholder.png">
+                                                                </ng-container>
+                                                            </div>
+                                                            <div class="pl-4">
+                                                                <h6 class="tx-echos tx-14">
+                                                                    <i class="fad fa-file-alt tx-14 tx-echos"></i> {{currentfichier?.nom}}
+                                                                </h6>
+                                                                <span  class=" tx-12 mg-b-5 tx-echos1 ">
+                                                                    {{value?.element[0]?.inscription?.prenom}} {{value?.element[0]?.inscription?.nom}}
+                                                                </span>
+                                                                <span class="tx-10  mg-b-5 tx-danger ">
+                                                                    {{value?.element[0]?.created_at | date:'mediumDate' : undefined : 'fr'}}, {{value?.element[0]?.created_at | date:'shortTime' : undefined : 'fr'}}
+                                                                </span>
+                                                                <span  class=" float-right justify-content-end ml-2 ">
+                                                                    <ng-container *ngIf="value?.enfants[0]">
+                                                                        <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                                                                            <ng-container *ngFor="let items of value?.enfants  ; let el=index;">
+                                                                                <ng-container  *ngIf="el<7">
+                                                                                    <li data-toggle="tooltip" data-placement="top"  [ngbTooltip]="items?.inscription?.prenom +' '+ items?.inscription?.nom" data-skin-class="tooltip-base" data-html="true" title="">
+                                                                                            <div class="avatar">
+                                                                                                <span class="">
+                                                                                                    <ng-container *ngIf="items?.inscription?.photo">
+                                                                                                        <img class="avatarlab"  [src]="items?.inscription?.photo" alt="avatar">
+                                                                                                    </ng-container>
+                                                                                                    <ng-container *ngIf="!items?.inscription?.photo">
+                                                                                                        <img class="avatarlab"  src="./assets/images/avatar-placeholder.png">
+                                                                                                    </ng-container>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                    </li>
+                                                                                </ng-container>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="value?.enfants?.length>7">
+                                                                                <li class="mg-l--10" data-original-title="" title="">
+                                                                                    <div class="avatar"><span class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{value?.enfants?.length-7}}+</span></div>
+                                                                                </li>
+                                                                            </ng-container>
+                                                                        </ul>
+                                                                    </ng-container>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentfichier?.statut==statfile[1]">
+                                            <div class="media pd-b-30 pointers" (click)="showdetail()">
+                                                <div class="activity-icon bg-echolight4">
+                                                    <i class="fad fa-badge-check tx-18 tx-success"></i>
+                                                </div>
+                                                <div class="card ml-3 flex-1">
+                                                    <div class="d-flex align-items-center flex-1 ">
+                                                        <div class=" pd-y-15 pd-x-20 bg-light">
+                                                            <ng-container *ngIf="currentfichier?.inscription?.photo">
+                                                                <img class="avatarpegasus" [src]="currentfichier?.inscription?.photo" alt="avatar">
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!currentfichier?.inscription?.photo">
+                                                                <img class="avatarpegasus" src="./assets/images/avatar-placeholder.png">
+                                                            </ng-container>
+                                                        </div>
+                                                        <div class="pl-4">
+                                                            <h6 class="tx-echos tx-14">
+                                                                <i class="fad fa-file-alt tx-14 tx-echos"></i> {{currentfichier?.nom}}
+                                                            </h6>
+                                                            <span class=" tx-12 mg-b-5 tx-echos1 ">
+                                                                {{currentfichier?.inscription?.prenom}} {{currentfichier?.inscription?.nom}}
+                                                            </span>
+                                                            <span class="tx-10  mg-b-5 tx-danger ">
+                                                                {{currentfichier?.updated_at | date:'mediumDate' : undefined : 'fr'}},
+                                                                {{currentfichier?.updated_at | date:'shortTime' : undefined : 'fr'}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                    </ng-container> 
+                                    <ng-container *ngIf="!colabfile">
+                                        <div class="col-md-12 text-center noData">
+                                            <app-loarding></app-loarding>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2  bg-light  "></div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="affichedetail">
+                    <div class="row">
+                        <div class="col-md-1" *ngIf="currentextend?.all[0]" >
+                            <div class="p-0 pt-5 pr-1 text-center">
+                                <ng-container *ngFor="let item of currentextend?.all">
+                                    <a class="nav-link3"  (click)="currentpart(item)">
+                                        <div class="green_icon"></div>
+                                        <ng-container *ngIf="item?.inscription?.photo">
+                                            <img [ngClass]="{'rounded-circle':true,'bdselect':item?.id==currentparticipant?.id}"  [src]="item?.inscription?.photo" alt="avatar" width="40" height="40">
+                                        </ng-container>
+                                        <ng-container *ngIf="!item?.inscription?.photo">
+                                            <img class="rounded-circle"  src="./assets/images/avatar-placeholder.png" width="40" height="40">
+                                        </ng-container>
+                                    </a>
+                                </ng-container>
+                            </div> 
+                        </div>
+                        <div [ngClass]="{'col-md-10':true, 'offset-md-1':!currentextend?.all[0]}">
+                            <div class="col-md-12 text-center">
+                                    <div class="tx-center py-2" *ngIf="currentparticipant">
+                                        <span class=" tx-18 tx-bold  tx-echos1 ">{{currentparticipant?.inscription?.prenom}} {{currentparticipant?.inscription?.nom}}</span>
+                                        <span class="  tx-warning tx-18 tx-bold "> {{currentparticipant?.created_at | date:'mediumDate' : undefined : 'fr'}}, {{currentparticipant?.created_at | date:'shortTime' : undefined : 'fr'}}</span>
+                                    </div>
+                                </div>
+                                <form [formGroup]="addextendForm">
+                                    <div class="col-md-12 p-0 mt-2">
+                                        <div class="form-group">
+                                            <div class="document-editor">
+                                                <div class="document-editor__toolbar"></div>
+                                                <div class="document-editor__editable-container">
+                                                    <div class="document-editor__editable">
+                                                        <ckeditor  [editor]="Editor" formControlName="contenu" (ready)="onReady($event)"  [config]="ckeConfig"></ckeditor>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+    <div class="col-md-12 py-2" *ngIf="!fichlab.file[0]">
+        <app-no-data [img]=img [text1]=text1></app-no-data>
+    </div>
+</div>

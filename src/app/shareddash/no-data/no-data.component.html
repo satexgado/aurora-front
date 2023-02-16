@@ -1,5 +1,13 @@
 <div class="col-md-12 text-center noData">                     
-    <div class="col-md-12 mt-2">
-       <h5>Aucune donnée disponible</h5>
-    </div>
-  </div>
+   <div class="col-md-12 mt-2" *ngIf="!img">
+      <h5>Aucune donnée disponible</h5>
+   </div>
+   <div class="col-lg-12" *ngIf="img">
+     <div style="text-align: center">
+       <img class="bg-white rounded-circle monimage2" [src]="'assets/images/'+img" width="" />
+       <p class="tx-20 mb-0"> {{text1}}</p>
+       <p class="tx-16"> {{text2}}</p>
+     </div>
+ 
+   </div>
+</div>

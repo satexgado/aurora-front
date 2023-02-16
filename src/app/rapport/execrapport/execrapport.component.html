@@ -1,0 +1,936 @@
+<div class="col-md-12 p-0">
+    <div class="row  justify-content-between   pt-2 bd-b" *ngIf="name">
+        <div class="col-lg-12">
+            <h6 class="tx-echos"><i class="fas fa-envelope-open" style="padding:6px; border-radius: 50%; "></i>  {{name?.courrier?.objet}}</h6>
+        </div>
+    </div>
+    <div class="col-md-12 p-0" *ngIf="!affichedetticket">
+        <div class="row bg-light">
+            <div class="col-lg-5">
+                <div class="input-group ">
+                    <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="searchexecution"> 
+                </div>
+            </div>
+            <div class="col-lg-7 ">
+                <ul class="nav float-right list-inline justify-content-end">
+                    <li class="nav-item ">
+                        <a class="nav-link3 " (click)="showvu('card')" ngbTooltip="Vue carte">
+                            <span class="tx-echos">
+                            <i [ngClass]="{'fas fa-th tx-echos1  tx-16':true,'bg-white':!affichecard,'bg-gray':affichecard}"  style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item " >
+                        <a class="nav-link3 " (click)="showvu('plan')" ngbTooltip="Vue plan">
+                            <span class="tx-echos">
+                            <i [ngClass]="{'fas fa-line-columns tx-echos1  tx-16':true,'bg-white':!afficheplan,'bg-gray':afficheplan}" style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link3 " (click)="showvu('list')" ngbTooltip="Vue liste">
+                            <span class="tx-echos">
+                            <i [ngClass]="{'fas fa-list tx-echos1  tx-16':true,'bg-white':!affichelist,'bg-gray':affichelist}" style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item no-caret" ngbDropdown [autoClose]="'outside'"  container="body"    ngbTooltip="Filtrer">
+                        <button class="btn btn-link" ngbDropdownToggle>
+                            <span class="tx-echos">
+                                <i class="fas fa-filter bg-white tx-16 tx-echos1" style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem class="d-flex justify-content-between" *ngFor="let item of confirmation; let i = index" 
+                            (click)="typeFilterSelectHelper.toggleSelectedItem(item)" >
+                                <span>  {{item}}</span> 
+                                <i class="my-auto"
+                                    [ngClass]="typeFilterSelectHelper.hasSelectedItem(item) ? 'fas fa-check-square' : 'fal fa-square'"></i>
+                            </button>
+                            <ng-container *ngIf="typeFilterSelectHelper.selectedItemsNumber">
+                                <div class="dropdown-divider"></div>
+                                <button ngbDropdownItem (click)="clearDropdownFilter()">
+                                    <i class="fas fa-times-circle tx-danger" style="border-radius:50%"></i> Effacer le filtre
+                                </button>
+                            </ng-container>
+                        </div>
+                    </li>
+                    <li class="nav-item " ngbTooltip="Ajouter">
+                        <a class="nav-link3 " data-toggle="modal" href="#executionModal">
+                            <span class="tx-echos">
+                            <i class="fas fa-plus-circle bg-white tx-16 tx-echos1" style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12" *ngIf="typeFilterSelectHelper.selectedItemsNumber">
+            <button class="btn btn-oblong btn-sm card-1 btn-outline-yeto mx-1" *ngFor="let item of typeFilterSelectHelper.selectedItem;" (click)="typeFilterSelectHelper.removeSelectedItem(item)">
+                {{item}}
+                <i class="fal fa-times tx-danger"></i>
+            </button>
+        </div>
+        <div class="col-md-12 p-0 contentstdetail3 scroll-11" *ngIf="loarding==true && execution ">
+            <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4">
+                <ng-container *ngIf="affichecard">
+                    <div class="col-lg-4 p-2">
+                        <div class="mycard4" style="border-radius: 0% 10% 10% 10%;">
+                            <div class="text-center bd-b bg-white p-4"> <i class="fas fa-shield-check tx-echos1 tx-40"></i></div>
+                            <div class=" text-center p-2">
+                                <span class="tx-echos1 tx-bold "> {{name?.courrier?.objet}} </span>
+                                <p class="p-0"> 
+                                    <span class="tx-echos tx-bold"> {{name?.courrier?.libelle}}  </span>
+                                </p>
+                                <p class="">
+                                    <!-- <span class="tx-bold mr-2"> <i class="fas fa-edit tx-echos"></i> </span> -->
+                                    <span class="tx-bold mr-2" (click)="showticket('detail')"> <i class="fas fa-clone tx-echos"></i> </span>
+                                    <!-- <span class="tx-bold"> <i class="fas fa-times-square tx-echos"></i> </span> -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 p-2" *ngFor="let items of execution|appFilter: searchexecution:'user'|statutrapport: typeFilterSelectHelper.selectedItem;let i=index;">
+                        <div class="mycard4 card-profile-1" style="border-radius: 10% 0% 0% 0%;" (click)="getIdexec(items,'detail',i)">
+                            <div class="avatar box-shadow-2 mb-3 tx-center">
+                                <ng-container *ngIf="items?.inscription?.photo">
+                                    <img [src]="items?.inscription?.photo">
+                                </ng-container>
+                                <ng-container *ngIf="!items?.inscription?.photo"> 
+                                    <img  src="./assets/images/avatar-placeholder.png">
+                                </ng-container>
+                            </div>
+                            <div class=" text-center p-2 bg-light">
+                                <span class="tx-echos1 tx-bold taille33"> {{items?.inscription?.prenom}} {{items?.inscription?.nom}} </span>
+                                <p class="p-0 tx-14">
+                                    <span  [ngClass]="{'bg-light tx-bolder':true,
+                                    'tx-primary':items?.statut==statutdepot[0],
+                                    'tx-success':items?.statut==statutdepot[1],
+                                    'tx-warning':items?.statut==statutdepot[2],
+                                    'tx-danger':items?.statut==statutdepot[3]}"> {{items?.created_at|date:'mediumDate': undefined : 'fr'}}</span>
+                                </p>
+                                <p class="p-0">
+                                    <span class="tx-echos tx-bold"> {{items?.statut}} </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div> 
+                </ng-container> 
+                <div class="col-md-12 p-0" *ngIf="affichelist">
+                    <ul class="list-group" >
+                        <li class="card-1 list-group-item p-2 mb-2 pointers"  *ngFor="let items of execution| appFilter: searchexecution:'user'|statutrapport: typeFilterSelectHelper.selectedItem ; let i=index;" (click)="getIdexec(items,'detail',i)">
+                            <div class="col-md-12" > 
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <ng-container *ngIf="items?.inscription?.photo">
+                                            <img [src]="items?.inscription?.photo" title="{{items?.inscription.prenom}}" class="myavatar">
+                                        </ng-container>
+                                        <ng-container *ngIf="!items?.inscription?.photo"> 
+                                            <img  src="./assets/images/avatar-placeholder.png"  title="{{items?.inscription.prenom}}" class="myavatar">
+                                        </ng-container>
+                                        <span class="pl-2">
+                                            {{items?.inscription?.prenom}} {{items?.inscription?.nom}}
+                                        </span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="pd-sm-l-10">
+                                            <p class="tx-facebook mg-b-0 float-right" style="word-break: break-all;">{{ items.statut }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="pd-sm-l-10">
+                                            <p class="tx-dark mg-b-0" style="word-break: break-all;">{{ items.statut }}</p>
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span class=" mg-b-0 tx-gray-500">
+                                            {{items?.created_at | date: 'dd/MM/yyyy  H:mm'}}
+                                        </span>
+                                    </div>
+                                </div>
+                        </div>
+                        </li>
+                    </ul>
+                </div>
+                <div  class="col-md-12" *ngIf="afficheplan">
+                    <div  class="card-deck">
+                        <div  [ngClass]="{'card mb-2':true, 
+                        'card-accent-primary':val==statutdepot[0],
+                        'card-accent-warning':val==statutdepot[2],
+                        'card-accent-success':val==statutdepot[1],
+                        'card-accent-danger':val==statutdepot[3]}" *ngFor="let val of statutdepot;let el=index;"> 
+                            <div class="card-header">
+                                <h4 class="card-header-title">
+                                    <ng-container *ngIf="val==statutdepot[0]">
+                                        <i  class="fad fa-exclamation-circle text-primary"></i>
+                                    </ng-container>
+                                    <ng-container *ngIf="val==statutdepot[1]">
+                                        <i class="fad fa-badge-check text-success"></i>
+                                    </ng-container>
+                                    <ng-container *ngIf="val==statutdepot[2]">
+                                        <i class="fad fa-typewriter text-warning"></i>
+                                    </ng-container>
+                                    <ng-container *ngIf="val==statutdepot[3]">
+                                        <i class="fad fa-badge-check text-danger"></i>
+                                    </ng-container>
+                                    {{val}}
+                                </h4>
+                            </div>
+                            <div class="card-body p-0" *ngIf="myfilterplan[el]?.value"> 
+                                <ng-container *ngIf="myfilterplan[el]?.value[0]">
+                                    <ul class=" list-group list-group-flush pointers">
+                                        <li class="list-group-item card card-1 m-0" *ngFor="let value of myfilterplan[el]?.value | appFilter: searchexecution:'user'|statutrapport: typeFilterSelectHelper.selectedItem;let i=index "
+                                        (click)="getIdexec(value,'detail',i)">
+                                                <div [ngClass]="{'todo-indicator':true,
+                                                    'bg-primary':val==statutdepot[0],
+                                                    'bg-warning':val==statutdepot[2],
+                                                    'bg-success':val==statutdepot[1],
+                                                    'bg-danger':val==statutdepot[3]} ">
+                                                </div>
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-wrapper">
+                                                        <div class="widget-content-left">
+                                                            <div class="widget-heading text-dark tx-16 tailledesc">{{value?.statut_depot}}
+                                                            </div>
+                                                            <div class="widget-subheading">
+                                                                <strong class="text-dark" >{{value?.created_at | date:'mediumDate' : undefined : 'fr'}}</strong>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-between bg-light">
+                                                    <div class="justify-content-between p-0">
+
+                                                    </div>
+                                                    <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                                                        <li  class="mg-l--10">
+                                                            <div class="avatar avatar-xs">
+                                                                <ng-container *ngIf="value?.inscription?.photo">
+                                                                    <img [src]="value?.inscription?.photo" title="{{value?.inscription.prenom}}" class="avatar-initial  border border-secondary rounded-circle">
+                                                                </ng-container>
+                                                                <ng-container *ngIf="!value?.inscription?.photo"> 
+                                                                    <img  src="./assets/images/avatar-placeholder.png"  title="{{value?.inscription.prenom}}" class="avatar-initial  border border-secondary rounded-circle">
+                                                                </ng-container>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                        </li>
+                                    </ul>
+                                </ng-container>
+                                <ng-container *ngIf="!myfilterplan[el]?.value[0]">
+                                    <app-no-data></app-no-data>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" *ngIf="!execution">
+            <div class="col-md-12 text-center noData">
+                <app-loarding></app-loarding>
+            </div>
+        </div>
+        <!-- NO DATA -->
+        <div *ngIf="loarding==false && execution " class="col-md-12 p-0">
+            <div class="col-lg-4 p-2">
+                <div class="mycard4" style="border-radius: 0% 10% 10% 10%;">
+                    <div class="text-center bd-b bg-white p-4"> <i class="fas fa-shield-check tx-echos1 tx-40"></i></div>
+                    <div class=" text-center p-2">
+                        <span class="tx-echos1 tx-bold "> {{name?.courrier?.objet}} </span>
+                        <p class="p-0"> 
+                            <span class="tx-echos tx-bold"> {{name?.courrier?.libelle}}  </span>
+                        </p>
+                        <p class=""> 
+                            <span class="tx-bold mr-2"> <i class="fas fa-edit tx-echos"></i> </span>
+                            <span class="tx-bold mr-2" (click)="showticket('detail')"> <i class="fas fa-clone tx-echos"></i> </span>
+                            <span class="tx-bold"> <i class="fas fa-times-square tx-echos"></i> </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 pt-2" *ngIf="affichedetticket">
+        <div class="row">
+            <div class="col-md-3 bg-white">
+                <nav class="monmenu nav flex-column py-2 ">
+                    <a class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b active" data-toggle="tab" href="#creerun">
+                        <a class="nav-link3 "><i class="fal fa-user tx-16  mg-r-10"></i> Créer par</a>
+                    </a>
+                    <a class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" data-toggle="tab" href="#detailun">
+                        <a class="nav-link3"><i class="fal fa-info-circle tx-16  mg-r-10"></i> Détails</a>
+                    </a>
+                    <a class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" data-toggle="tab" href="#objectif">
+                        <a class="nav-link3"><i class="fal fa-sticky-note	 tx-16  mg-r-10"></i> Objectif</a>
+                    </a>
+                    <a   class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" data-toggle="tab" href="#intervenant">
+                        <a class="nav-link3"><i class="fal fa-users tx-16  mg-r-10"></i> Intervenant</a>
+                    </a>
+                </nav>
+                <div class="col-md-12 text-center pb-2">
+                    <button class="btn btn-danger" (click)="resetticket()">
+                        <i class="fas fa-times-square tx-16" style="padding: 6px; border-radius: 50%;"></i> Fermer
+                    </button>
+                </div>
+            </div>  
+            <div class="col-md-9">
+                <div  class="tab-content flex-1 contentstdetail3 scroll-11">
+                    <div class="tab-pane fade  active show" id="creerun">
+                        <div class="row row-xs clearfix pt-2 bd-b pb-2 mg-0 pd-0 ">
+                            <div class="col-lg-12" >
+                                <div class="image2">
+                                    <ng-container *ngIf="name?.inscription?.photo">
+                                    <span>  <img [src]="name?.inscription?.photo"></span>
+                                    </ng-container>
+                                    <ng-container *ngIf="!name?.inscription?.photo"> 
+                                        <span><img  src="./assets/images/avatar-placeholder.png"></span>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-xs  mg-0 pd-0  ">
+                            <div class=" col-lg-12 " >
+                                <div class="   p-0">
+                                    <table class="table  table-hover table-lg mb-0 ">
+                                        <tbody class=" border-0 ">
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Prenom </a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from">
+                                                        <a class=" tx-gray-600 tx-14"  > {{name?.inscription?.prenom}} </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="  ">
+                                                <td class=" bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Nom </a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.inscription?.nom}} </a></div>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Genre</a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.inscription?.sexe}} </a></div>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Email</a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.inscription?.email}}</a></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="detailun">
+                        <div class="row row-xs  mg-0 pd-0  ">
+                            <div class=" col-lg-12 " >
+                                <div class="   p-0">
+                                    <table class="table  table-hover table-lg mb-0 ">
+                                        <tbody class=" border-0 ">
+                                            <tr class="  ">
+                                                <td class=" bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Orientation </a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.orientation}} </a></div>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Modalité</a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.modalite}} </a></div>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Date modalité</a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.date_modalite|date:'mediumDate': undefined : 'fr'}}</a></div>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Date d'execution</a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.date_exec|date:'mediumDate': undefined : 'fr'}} </a></div>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Durée (en jour)</a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.duree}} </a></div>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Date d'expiration</a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.date_exp|date:'mediumDate': undefined : 'fr'}} </a></div>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td class="bg-light2">
+                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Niveau</a></div>
+                                                </td>
+                                                <td class=" width40 ">
+                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{name?.niveau}} </a></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade " id="objectif">
+                        <p class="tx-facebook p-2">
+                            {{name?.objectif}}
+                        </p>
+                    </div>
+                    <div class="tab-pane fade " id="intervenant">
+                       <div class="col-md-12 p-0 " *ngIf="loarding==true && execution ">
+                        <div class="table-responsive" >
+                            <table class="table table-hover text-nowrap mb-0" >
+                                <tbody>
+                                    <tr class="bd-b bd-2 bg-white"  *ngFor="let items of execution;let i = index;">
+                                        <td>
+                                            <button container="body" ngbTooltip="Voir les details"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="getIdexec(items,'detail',i)">
+                                                <i class="fal fa-square tx-14 rounded-circle"></i>
+                                            </button>
+                                        </td> 
+                                        <td >
+                                            <i [ngClass]="{'fal fa-dot-circle':true,
+                                            'text-primary':items?.statut==statutdepot[0],'text-success':items?.statut==statutdepot[1],'text-warning':items?.statut==statutdepot[2],'text-danger':items?.statut==statutdepot[3]
+                                        }" container="body" [ngbTooltip]="items?.statut"  ></i>
+                                        </td>
+                                        <td >
+                                            {{items?.inscription?.prenom}}
+                                        </td>
+                                        <td class="col" >
+                                            {{items?.inscription?.nom}}
+                                        </td>
+                                        <td  class="p-0">
+                                            <div  class="profiles avatar avatar-xs">
+                                                <ng-container *ngIf="items.inscription?.photo">
+                                                    <img class="rounded-circle avatar-xs"  [src]="items.inscription?.photo" alt="avatar">
+                                                </ng-container>
+                                                <ng-container *ngIf="!items.inscription?.photo">
+                                                    <img class="rounded-circle avatar-xs"  src="./assets/images/avatar-placeholder.png">
+                                                </ng-container>
+                                            </div>
+                                        </td>
+                                        <td >
+                                            {{items?.created_at | date:'mediumDate' : undefined : 'fr'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                       </div>
+                       <div *ngIf="loarding==false && execution " class="col-md-12">
+                            <br> <br>
+                            <div class="col-md-12 text-center noData">
+                                <app-no-data></app-no-data>
+                            </div>
+                            <br> <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="executionModal" class="modal fade"  data-backdrop="static"  >
+    <div class="modal-dialog modal-lg  ">
+        <div class="modal-content modal-content2">
+            <div class="modal-header">
+                <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-plus-circle tx-20"></i> Ajouter execution</h5>
+                <button type="button" class="close" [disabled]="statut==true"  (click)="resetexec()"style="color:  #0000FF ">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body scroll-11">
+                <div class="col-md-10 offset-md-1">
+                        <form [formGroup]="addexecutionForm">
+                          <div class="col-md-12 p-0">
+                            <div class="row">
+                                <div [ngClass]="{'col-md-12':!affichedepot && !affichenondepot || affichedepot,'col-md-6':affichenondepot}">
+                                    <div class=" form-group">
+                                        <label  class="tx-facebook">Avez vous déposé ?&nbsp;</label>
+                                        <div class="input-group">
+                                            <select class="custom-select no-radius scroll-11 form-control"  formControlName="statut_depot" (change)="listenconfirmation('statut',$event?.target?.value)">
+                                                <option value="" disabled>Avez vous déposé ?</option>
+                                                <option *ngFor="let q of confirmation " [value]="q">
+                                                    {{q}}
+                                                </option>
+                                            </select> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="affichenondepot">
+                                    <div class=" form-group">
+                                        <label  class="tx-facebook">Raison non dépôt&nbsp;</label>
+                                        <div class="input-group">
+                                            <select class="custom-select no-radius scroll-11 form-control"  formControlName="raison_non_depot">
+                                                <option value="" disabled>Raison non dépôt</option>
+                                                <option *ngFor="let q of raisonnondepot " [value]="q">
+                                                    {{q}}
+                                                </option>
+                                            </select> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="affichedepot">
+                                    <div class="col-md-6"> 
+                                        <div class="form-group"> 
+                                            <label  class="tx-facebook">Date dépôt &nbsp;</label>
+                                            <input type="date" class="form-control " formControlName="date_depot" (change)="verifyDateexec(addexecutionForm,'date_depot')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"> 
+                                        <div class="form-group"> 
+                                            <label  class="tx-facebook">Heure dépôt &nbsp;</label>
+                                            <input type="time" class="form-control " formControlName="heure_depot">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class=" form-group">
+                                            <label  class="tx-facebook">Moyen&nbsp;</label>
+                                            <div class="input-group">
+                                                <select class="custom-select no-radius scroll-11 form-control"  formControlName="moyen_depot">
+                                                    <option value="" disabled>Moyen</option>
+                                                    <option *ngFor="let q of moyen " [value]="q">
+                                                        {{q}}
+                                                    </option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class=" form-group">
+                                            <label  class="tx-facebook">Déposé par ?&nbsp;</label>
+                                            <div class="input-group">
+                                                <select class="custom-select no-radius scroll-11 form-control"  formControlName="entite_depot" (change)="listenconfirmation('depot_par',$event?.target?.value)">
+                                                    <option value="" disabled>Déposé par ?</option>
+                                                    <option *ngFor="let q of depot_par " [value]="q">
+                                                        {{q}}
+                                                    </option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" *ngIf="afficheagent">
+                                        <div class="form-group">
+                                            <label class="tx-facebook">Agent interne &nbsp;</label>
+                                            <div class="input-group p-0 m-0">
+                                                <input type="text"  class="form-control no-radius"  id="resp" disabled formControlName="personnelle" placeholder="Rechercher par prenom,nom, email" aria-label="Username" aria-describedby="basic-addon1">
+                                                <div class="input-group-prepend" >
+                                                    <span class="p-1 bg-light" id="basic-addon1" >
+                                                    <button  style="background:none !important; border:none !important; cursor:pointer"  (click)="showsearch('#resp')">
+                                                        <i class="fal fa-search"></i>
+                                                    </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-12" *ngIf="affichecoordonne">
+                                        <div class="form-group">
+                                            <label class="tx-facebook">Agent externe &nbsp;</label>
+                                            <div class="input-group p-0 m-0">
+                                                <input type="text"  class="form-control no-radius"  id="nouveau" disabled formControlName="coordonnee" placeholder="Rechercher par nom" aria-label="Username" aria-describedby="basic-addon1">
+                                                <div class="input-group-prepend" >
+                                                    <span class="p-1 bg-light" id="basic-addon1" >
+                                                    <button  style="background:none !important; border:none !important; cursor:pointer" (click)="showsearch('#nouveau')">
+                                                        <i class="fal fa-search"></i>
+                                                    </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </ng-container>
+                                <div class="col-md-12">
+                                    <div class=" form-group">
+                                        <label  class="tx-facebook">Statut rapport&nbsp;</label>
+                                        <div class="input-group">
+                                            <select class="custom-select no-radius scroll-11 form-control"  formControlName="statut">
+                                                <option value="" disabled>Statut rapport</option>
+                                                <option *ngFor="let q of statutdepot " [value]="q">
+                                                    {{q}}
+                                                </option>
+                                            </select> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div  class="col-md-12"> 
+                                    <div class="form-group"> 
+                                        <label  class="tx-facebook">Observation &nbsp;</label>
+                                        <textarea class="form-control" rows="4"  formControlName="observation"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button  (click)="resetexec()" class="btn btn-secondary"  [disabled]="statut == true"> Annuler</button>&nbsp;
+                    <button  type="button" class="btn btn-primary" [disabled]="addexecutionForm.invalid || statut==true" (click)="addexect()" >
+                        <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i> Ajouter
+                    </button>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+<!-- Search proprio -->
+<div id="searchproprioModal" class="modal fade"  data-backdrop="static">
+    <div class="modal-dialog modal-right">
+        <div class="modal-content modal-content2">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-search tx-20"></i> Rechercher</h5>
+                <button type="button" class="close" data-dismiss="modal"  style="color:  #0000FF " (click)="resetsearch()" >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body scroll-11 bgtera">
+                <div class="col-md-12 " >
+                    <form  [formGroup]="addsearchForm">
+                        <div class="col-md-12 pt-2">
+                            <div class="form-group">
+                            <label class="tx-facebook">Rechercher &nbsp;</label>
+                            <div class="input-group p-0 m-0">
+                                <input type="text"  class="form-control no-radius"   formControlName="search" placeholder="Rechercher" aria-label="Username" aria-describedby="basic-addon1">
+                                <div class="input-group-prepend" >
+                                    <span class="p-1 bg-white" id="basic-addon1" >
+                                        <button (click)="getMembre(addsearchForm.value.search)"  [disabled]="!addsearchForm.value.search"
+                                                style="background:none !important; border:none !important; cursor:pointer" >
+                                                <i class="fal fa-spinner spin" *ngIf="statutsearch==true"></i><i class="fal fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            </div> 
+                        </div>
+                        <div class="col-md-12" *ngIf="membres">
+                            <div class="col-md-12 p-0" >
+                                <ng-container *ngIf="afficheresultsearch">
+                                    <div class="bd-b"  *ngFor="let c of membres">
+                                        <div class="card-body p-0 bg-white">
+                                            <div class="col-md-12 p-1">
+                                                <div class="row align-items-center">
+                                                    <ng-container *ngIf="afficheagent">
+                                                        <div class="col-md-3">
+                                                            <ng-container *ngIf="c?.photo">
+                                                                <img [src]="c?.photo" class="rounded-circle user-circle-img">
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!c?.photo"> 
+                                                                <img class="rounded-circle user-circle-img" src="./assets/images/avatar-placeholder.png">
+                                                            </ng-container>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <span class="taillebody d-block">{{c?.prenom}}&nbsp;{{c?.nom}}</span>
+                                                        </div>
+                                                        <div class="col-md-1"> 
+                                                            <input type="checkbox"  id="customcheck1" (click)="addValue(c)" class="checkClass bg-danger"> 
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="affichecoordonne">
+                                                        <div class="col-md-10 p-2">
+                                                            <span class="tailledesc d-block ml-2">{{c?.libelle}}</span>
+                                                        </div>
+                                                        <div class="col-md-1"> 
+                                                            <input type="checkbox"  id="customcheck1" (click)="addValue(c)" class="checkClass bg-danger"> 
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button data-dismiss="modal"  class="btn  btn-secondary" (click)="resetsearch()" >Annuler </button>&nbsp;
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+<div id="detailexecutionModal" class="modal fade"  data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content modal-content5">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-eye tx-20"></i> Detail execution</h5>
+                <button type="button" class="close" data-dismiss="modal"  style="color:  #0000FF "  >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body scroll-11">
+                <div class="col-md-12 "  *ngIf="currentexect">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div  class="tab-content flex-1">
+                                <div class="tab-pane fade  active show" id="creer">
+                                    <div class="row row-xs clearfix pt-2  pb-2 mg-0 pd-0 ">
+                                        <div class="col-lg-12" >
+                                            <div class="image2">
+                                                <ng-container *ngIf="currentexect?.execution?.inscription?.photo">
+                                                <span>  <img [src]="currentexect?.execution?.inscription?.photo"></span>
+                                                </ng-container>
+                                                <ng-container *ngIf="!currentexect?.execution?.inscription?.photo"> 
+                                                    <span><img  src="./assets/images/avatar-placeholder.png"></span>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row row-xs  mg-0 pd-0  ">
+                                        <div class=" col-lg-12 " >
+                                            <div class="   p-0">
+                                                <table class="table  table-hover table-lg mb-0 ">
+                                                    <tbody class=" border-0 ">
+                                                        <tr >
+                                                            <td class="bg-light2">
+                                                                <div class=" from"><a class=" tx-facebook tx-14"  > Prenom </a></div>
+                                                            </td>
+                                                            <td class=" width40 ">
+                                                                <div class=" from">
+                                                                    <a class=" tx-gray-600 tx-14"  > {{currentexect?.execution?.inscription?.prenom}}</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="  ">
+                                                            <td class=" bg-light2">
+                                                                <div class=" from"><a class=" tx-facebook tx-14"  > Nom </a></div>
+                                                            </td>
+                                                            <td class=" width40 ">
+                                                                <div class=" from"><a class=" tx-gray-600 tx-14"  >{{currentexect?.execution?.inscription?.nom}} </a></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td class="bg-light2">
+                                                                <div class=" from"><a class=" tx-facebook tx-14"  > Genre</a></div>
+                                                            </td>
+                                                            <td class=" width40 ">
+                                                                <div class=" from"><a class=" tx-gray-600 tx-14"  >{{currentexect?.execution?.inscription?.sexe}} </a></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td class="bg-light2">
+                                                                <div class=" from"><a class=" tx-facebook tx-14"  > Email</a></div>
+                                                            </td>
+                                                            <td class=" width40 ">
+                                                                <div class=" from"><a class=" tx-gray-600 tx-14"  >{{currentexect?.execution?.inscription?.email}} </a></div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade " id="detail">
+                                    <div class="row row-xs  mg-0 pd-0  ">
+                                        <div class=" col-lg-12 " >
+                                            <div class="   p-0">
+                                                <table class="table  table-hover table-lg mb-0 ">
+                                                    <tbody class=" border-0 ">
+                                                        <tr >
+                                                            <td class="bg-light2">
+                                                                <div class=" from"><a class=" tx-facebook tx-14"  >Créer le  </a></div>
+                                                            </td>
+                                                            <td class=" width40 ">
+                                                                <div class=" from">
+                                                                    <a class=" tx-gray-600 tx-14"  > {{currentexect?.execution?.created_at|date:'mediumDate': undefined : 'fr'}}</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td class="bg-light2">
+                                                                <div class=" from"><a class=" tx-facebook tx-14"  >Avez vous déposé ?  </a></div>
+                                                            </td>
+                                                            <td class=" width40 ">
+                                                                <div class=" from">
+                                                                    <a class=" tx-gray-600 tx-14"  > {{currentexect?.execution?.statut_depot}}</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <ng-container *ngIf="currentexect?.execution?.statut_depot==confirmation[1]">
+                                                            <tr >
+                                                                <td class="bg-light2">
+                                                                    <div class=" from"><a class=" tx-facebook tx-14"  >Raison non dépôt  </a></div>
+                                                                </td>
+                                                                <td class=" width40 ">
+                                                                    <div class=" from">
+                                                                        <a class=" tx-gray-600 tx-14"  > {{currentexect?.execution?.raison_non_depot}}</a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="currentexect?.execution?.statut_depot==confirmation[0]">
+                                                            <tr  >
+                                                                <td class="bg-light2">
+                                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Date et heure de dépôt </a></div>
+                                                                </td>
+                                                                <td class=" width40 ">
+                                                                    <div class=" from">
+                                                                        <a class=" tx-gray-600 tx-14"  > {{currentexect?.execution?.date_depot|date:'mediumDate': undefined : 'fr'}} à {{currentexect?.execution?.heure_depot}} </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="  ">
+                                                                <td class=" bg-light2">
+                                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Moyen </a></div>
+                                                                </td>
+                                                                <td class=" width40 ">
+                                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{currentexect?.execution?.moyen_depot}} </a></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="  ">
+                                                                <td class=" bg-light2">
+                                                                    <div class=" from"><a class=" tx-facebook tx-14"  > Déposé par </a></div>
+                                                                </td>
+                                                                <td class=" width40 ">
+                                                                    <div class=" from"><a class=" tx-gray-600 tx-14"  >{{currentexect?.execution?.entite_depot}} </a></div>
+                                                                </td>
+                                                            </tr>
+                                                            <ng-container *ngIf="currentexect?.execution?.personnelle">
+                                                                <tr >
+                                                                    <td class="bg-light2">
+                                                                        <div class=" from"><a class=" tx-facebook tx-14"  > Agent interne </a></div>
+                                                                    </td>
+                                                                    <td class=" width40 ">
+                                                                        <div class=" from">
+                                                                            <ng-container *ngIf="currentexect?.execution?.personnelle?.photo">
+                                                                                <img [src]="currentexect?.execution?.personnelle?.photo" title="{{currentexect?.execution?.personnelle?.prenom}}" class="myavatar">
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="!currentexect?.execution?.personnelle?.photo"> 
+                                                                                <img  src="./assets/images/avatar-placeholder.png"  title="{{currentexect?.execution?.personnelle?.prenom}}" class="myavatar">
+                                                                            </ng-container>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="currentexect?.execution?.coordonnee">
+                                                                <tr >
+                                                                    <td class="bg-light2">
+                                                                        <div class=" from"><a class=" tx-facebook tx-14"  > Agent externe </a></div>
+                                                                    </td>
+                                                                    <td class=" width40 ">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-gray-600 tx-14"  > {{currentexect?.execution?.coordonnee?.libelle}} </a>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+
+                                                        </ng-container>
+                                                        <tr >
+                                                            <td class="bg-light2">
+                                                                <div class=" from"><a class=" tx-facebook tx-14"  > Statut rapport</a></div>
+                                                            </td>
+                                                            <td class=" width40 ">
+                                                                <div class=" from"><a class=" tx-gray-600 tx-14"  >{{currentexect?.execution?.statut}} </a></div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade " id="result">
+                                    <p class="tx-facebook p-2">
+                                        {{currentexect?.execution?.observation}}
+                                    </p>
+                                </div>
+                                <div class="tab-pane fade " id="suivi">
+                                    <div class="col-md-12 p-0" *ngIf="currentexect?.suivi[0] ">
+                                      <div class="row">
+                                        <div class="col-lg-6 p-2" *ngFor="let item of currentexect?.suivi">
+                                            <div class="mycard4 bg-light" style="border-radius: 0% 10% 10% 10%;" (click)="getexecution(item?.id)">
+                                                <div class="text-center bd-b bg-gray p-4"> <i class="fas fa-shield-check tx-echos1 tx-40"></i></div>
+                                                <div class=" text-center p-2">
+                                                    <span class="tx-echos1 tx-bold ">Ticket_de_rapport_{{item?.id}} </span>
+                                                    <p class="p-0"> 
+                                                        <span class="tx-echos tx-bold"> {{item?.created_at |date:'mediumDate': undefined : 'fr'}}  </span>
+                                                    </p> 
+                                                    <p class="">
+                                                        <span class="tx-bold mr-2" (click)="getexecution(item?.id)"> <i class="fas fa-clone tx-echos bg-white tx-bold" style="padding:6px; border-radius: 50%; "></i> </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                       <!-- NO DATA -->
+                                    <div *ngIf="!currentexect?.suivi[0] " class="col-md-12 p-0">
+                                        <br> <br>
+                                        <div class="col-md-12 text-center noData">
+                                            <app-no-data></app-no-data>
+                                        </div>
+                                        <br> <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 bg-light">
+                            <nav class="monmenu nav flex-column py-2 ">
+                                <a class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b active" data-toggle="tab" href="#creer">
+                                    <a class="nav-link3 "><i class="fal fa-user tx-16  mg-r-10"></i> Créer par</a>
+                                </a>
+                                <a class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" data-toggle="tab" href="#detail">
+                                    <a class="nav-link3"><i class="fal fa-info-circle tx-16  mg-r-10"></i> Détails</a>
+                                </a>
+                                <a class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" data-toggle="tab" href="#result">
+                                    <a class="nav-link3"><i class="fal fa-sticky-note	 tx-16  mg-r-10"></i> Observations</a>
+                                </a>
+                                <a   class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b" data-toggle="tab" href="#suivi">
+                                    <a class="nav-link3"><i class="fal fa-history tx-16  mg-r-10"></i> Ses rapports</a>
+                                </a>
+                            </nav>
+                        </div> 
+                    </div>
+                </div>
+                <div *ngIf="!currentexect" class="col-md-12 p-0">
+                    <div class="col-md-12 text-center noData">
+                        <app-loarding></app-loarding>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button data-dismiss="modal"  class="btn  btn-secondary" >Fermer </button>&nbsp;
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>

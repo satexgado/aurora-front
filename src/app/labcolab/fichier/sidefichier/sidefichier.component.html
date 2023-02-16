@@ -1,0 +1,471 @@
+<div class="col-md-12 p-0">
+    <div class="row row-xs clearfix mg-0 pd-0 ">
+        <div class=" col-lg-4 bd-r " *ngIf="!affichecontenu">
+            <div class="row clearfix mg-0 pd-0 justify-content-between  p-1 bg-light bd-b">
+                <div class="col-lg-12 p-0">
+                    <h6 class="tx-echos1"><i class="fas fa-send-backward" style="padding:6px; border-radius: 50%; "></i> Groupes de modèles de fichiers</h6>
+                </div>
+            </div>
+            <div class="card-body p-0 bg-white">
+                <div class="col-md-12">
+                    <div class="row bg-light">
+                        <div class="col-lg-9">
+                            <div class="input-group ">
+                                <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="searchfichlab">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 ">
+                            <ul class="nav float-right list-inline justify-content-end">
+                                <li class="nav-item ">
+                                    <a class="nav-link3 " data-toggle="modal" href="#fichlabModal" >
+                                        <span class="tx-echos">
+                                            <i class="fas fa-plus-circle bg-yeto tx-16 tx-white" style="padding:6px; border-radius:50%"></i> 
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 p-0 contentstdetail3 scroll-11"  *ngIf="loarding==true && fichlab;">
+                    <div [ngClass]="{'d-flex align-items-center bd-b pointers':true,'bg-gray':item?.id==detailfichlab?.id}" *ngFor="let item of fichlab | appFilter: searchfichlab:'nom2' ; let i=index;"  (click)="showdetail(item)">
+                        <div class=" p-2">
+                            <h6 class="tx-echos tx-14 taille3"><i class="fas fa-folder-open tx-18 tx-echos"></i> {{item?.nom}}</h6>
+                            <span class=" tx-14 mg-b-5 tx-echos1 pl-2 ">{{item?.created_at |date:'longDate': undefined : 'fr'}}</span>
+                            <span class=" tx-14 mg-b-5 tx-warning mr-1"> Fichiers</span>
+                            <span class="  mg-b-5 tx-echos1 ">{{item?.extensions_count}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="!fichlab">
+                    <div class="col-md-12 text-center noData">
+                        <app-loarding></app-loarding>
+                    </div>
+                </div> 
+                <!-- NO DATA -->
+                <div *ngIf="loarding==false && fichlab " class="col-md-12">
+                    <br> <br>
+                    <div class="col-md-12 text-center noData">
+                        <app-no-data></app-no-data>
+                    </div>
+                    <br> <br>
+                </div>
+
+            </div>
+        </div>
+        <div [ngClass]="{' bg-light':true,'col-lg-8':!affichecontenu,'col-lg-12':affichecontenu }  ">
+            <div class="col-md-12 pt-2" *ngIf="!affichedetail">
+                <app-no-data [img]=img [text1]=text1></app-no-data>
+            </div>
+            <div class="col-md-12 p-0" *ngIf="affichedetail">
+                <div class=" row bg-white clearfix mg-0 pd-0">
+                    <div class="col-lg-12 pt-1 tx-echos1">
+                        <h6 class=""><i class="fas fa-folder-open tx-20 tx-echos" style="padding:6px; border-radius: 50%; "></i> 
+                            <span class="tx-echos">{{detailfichlab?.nom}}</span>
+                            <ng-container *ngIf="affichecontenu">
+                               <span class="tx-echos1">|| {{detailextend?.nom}}</span>
+                            </ng-container>
+                        </h6>
+                    </div>
+                </div> 
+                <div class="col-md-12 p-0">
+                    <ng-container *ngIf="!affichecontenu">
+                      <div class="col-md-12">
+                          <div class="row bg-light">
+                              <div class="col-lg-5">
+                                  <div class="input-group ">
+                                      <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="searchextend"> 
+                                  </div>
+                              </div>
+                              <div class="col-lg-7 ">
+                                  <ul class="nav float-right list-inline justify-content-end">
+                                      <li class="nav-item ">
+                                          <a class="nav-link3 " data-toggle="tab"  (click)="showvu('card')" ngbTooltip="Vue carte">
+                                              <span class="tx-echos1">
+                                                  <i [ngClass]="{'fas fa-th tx-echos1  tx-16':true,'bg-white':!affichecard,'bg-gray':affichecard}" style="padding:6px; border-radius:50%"></i>
+                                              </span>
+                                          </a>
+                                      </li>
+                                      <li class="nav-item ">
+                                          <a class="nav-link3" data-toggle="tab"  (click)="showvu('list')" ngbTooltip="Vue liste">
+                                              <span class="tx-echos1">
+                                                  <i [ngClass]="{'fas fa-list tx-echos1  tx-16':true,'bg-white':!affichelist,'bg-gray':affichelist}" style="padding:6px; border-radius:50%"></i>
+                                              </span>
+                                          </a>
+                                      </li>
+                                      <li class="nav-item pointers mt-1"  ngbTooltip="Vue Kanban">
+                                        <a target="_blank" routerLink="vue_kanban">
+                                            <i  class="fas fa-line-columns  tx-18 tx-echos1 bg-white" style="padding: 6px; border-radius: 50%"></i> 
+                                        </a>
+                                      </li>
+                                      <li class="nav-item no-caret" ngbDropdown [autoClose]="'outside'" container="body" ngbTooltip="Filtrer">
+                                          <button class="btn btn-link" ngbDropdownToggle>
+                                              <span class="tx-echos">
+                                                  <i class="fas fa-filter bg-white tx-16 tx-echos1" style="padding:6px; border-radius:50%"></i>
+                                              </span>
+                                          </button>
+                                          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                              <button ngbDropdownItem class="d-flex justify-content-between"
+                                                  *ngFor="let item of statutextend; let i = index"
+                                                  (click)="typeFilterSelectHelper.toggleSelectedItem(item)">
+                                                  <span> {{item}}</span>
+                                                  <i class="my-auto"
+                                                      [ngClass]="typeFilterSelectHelper.hasSelectedItem(item) ? 'fas fa-check-square' : 'fal fa-square'"></i>
+                                              </button>
+                                              <ng-container *ngIf="typeFilterSelectHelper.selectedItemsNumber">
+                                                  <div class="dropdown-divider"></div>
+                                                  <button ngbDropdownItem (click)="clearDropdownFilter()">
+                                                      <i class="fas fa-times-circle tx-danger" style="border-radius:50%"></i> Effacer le filtre
+                                                  </button>
+                                              </ng-container>
+                                          </div>
+                                      </li>
+                                      <li class="nav-item " ngbTooltip="Ajouter">
+                                          <a class="nav-link3 " data-toggle="modal" href="#extendModal">
+                                              <span class="tx-echos">
+                                                  <i class="fas fa-plus-circle bg-white tx-16 tx-echos1" style="padding:6px; border-radius:50%"></i>
+                                              </span>
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12" *ngIf="typeFilterSelectHelper.selectedItemsNumber">
+                          <button class="btn btn-oblong btn-sm card-1 btn-outline-yeto mx-1" *ngFor="let item of typeFilterSelectHelper.selectedItem;" (click)="typeFilterSelectHelper.removeSelectedItem(item)">
+                              {{item}}
+                              <i class="fal fa-times tx-danger"></i>
+                          </button>
+                      </div>
+                    </ng-container>
+                    <div class="col-md-12 p-0 " *ngIf="loardingextend==true && extend ">
+                        <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4">
+                            <ng-container *ngIf="!affichecontenu">
+                                  <ng-container *ngIf="affichecard">
+                                      <div class="col-lg-4 p-2" *ngFor="let items of extend|appFilter: searchextend:'nom2'|statutfilelab: typeFilterSelectHelper.selectedItem;let i=index;">
+                                          <div class="mycard4" style="border-radius:5% 5% 5% 5%" (click)="getIdexec(items,'detail',i)">
+                                              <div class="text-center bd-b bg-white p-2"> <i class="fas fa-text tx-echos tx-30"></i></div>
+                                              <div class=" text-center p-3"> 
+                                                  <span class="tx-echos tx-bold taille33"><i class="fas fa-line-columns tx-echos tx-20 pr-2"></i> {{items?.nom}} </span>
+                                                  <p class="p-0 tx-20">
+                                                      <span [ngClass]="{'badge tx-bolder':true,
+                                                      'badge-primary':items?.statut==statutextend[0],
+                                                      'badge-success':items?.statut==statutextend[1],
+                                                      'badge-warning':items?.statut==statutextend[2],
+                                                      'badge-danger':items?.statut==statutextend[3]}"> {{items?.statut}}</span>
+                                                  </p>
+                                                  <p class="">
+                                                      <span class=""> {{items?.created_at|date:'mediumDate': undefined : 'fr'}} </span>
+                                                      <span class=""> || </span>
+                                                      <span class="tx-bold"> {{items?.created_at|date:'shortTime': undefined : 'fr'}} </span>
+                                                  </p>
+                                              </div>
+                                          </div>
+                                      </div> 
+                                  </ng-container> 
+                                  <div class="col-md-12 p-0" *ngIf="affichelist">
+                                      <div class="table-responsive" >
+                                          <table class="table table-hover text-nowrap mb-0" >
+                                              <tbody>
+                                                  <tr class="bd-b bd-2 bg-white"  *ngFor="let items of extend| appFilter: searchextend:'nom2'|statutfilelab: typeFilterSelectHelper.selectedItem ; let i=index;" >
+                                                      <td>
+                                                          <button container="body" ngbTooltip="Voir les details"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="getIdexec(items,'detail',i)">
+                                                              <i class="fal fa-square tx-14 rounded-circle"></i>
+                                                          </button>
+                                                      </td> 
+                                                      <td >
+                                                          <i [ngClass]="{'fal fa-dot-circle':true,
+                                                          'text-primary':items?.statut==statutextend[0],'text-success':items?.statut==statutextend[1],'text-warning':items?.statut==statutextend[2],'text-danger':items?.statut==statutextend[3]
+                                                      }" container="body" [ngbTooltip]="items?.statut"  ></i>
+                                                      </td>
+                                                      <td >
+                                                         <span class="taille33"> {{items?.nom}}</span>
+                                                      </td>
+                                                      <td >
+                                                          <span class="taille33">{{items?.inscription?.prenom}} {{items?.inscription?.nom}}</span>
+                                                      </td>
+                                                      <td  class="p-0">
+                                                          <div  class="profiles avatar avatar-xs">
+                                                              <ng-container *ngIf="items.inscription?.photo">
+                                                                  <img class="rounded-circle avatar-xs"  [src]="items.inscription?.photo" alt="avatar">
+                                                              </ng-container>
+                                                              <ng-container *ngIf="!items.inscription?.photo">
+                                                                  <img class="rounded-circle avatar-xs"  src="./assets/images/avatar-placeholder.png">
+                                                              </ng-container>
+                                                          </div>
+                                                      </td>
+                                                      <td >
+                                                          {{items?.created_at | date:'mediumDate' : undefined : 'fr'}}
+                                                      </td>
+                                                  </tr>
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+                            </ng-container>
+                            <ng-container *ngIf="affichecontenu">
+                                 <div class="col-md-12 bd-b " style="border-color: #b5b9be;">
+                                  <div class=" row clearfix mg-0 pd-0">
+                                      <div class="col-md-5 pt-1 tx-facebook">
+                                        <ul class="nav  list-inline">
+                                            <li class="nav-item mr-2 pointers" (click)="switchtab('detail')">
+                                                <h4><i class="fas fa-text-size bg-white" style="padding:6px; border-radius: 50%; "></i> X-File  ||</h4>
+                                            </li>
+                                            <li class="nav-item mr-2">
+                                                <button class="btn btn-secondary text-white"  (click)="switchtab('obs','ok')">
+                                                    <span class="">
+                                                        Propriétés
+                                                    </span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item pointers mt-1 mr-2"  ngbTooltip="Vue en Arbre">
+                                                <a target="_blank" [routerLink]="'vue_arbre/'+detailextend?.id">
+                                                    <i  class="fas fa-folder-tree tx-18 tx-echos1 bg-white" style="padding: 6px; border-radius: 50%"></i> 
+                                                </a>
+                                            </li>
+                                            <li class="nav-item pointers mt-1"  ngbTooltip="Vue Kanban">
+                                                <a target="_blank" routerLink="vue_kanban">
+                                                    <i  class="fas fa-line-columns  tx-18 tx-echos1 bg-white" style="padding: 6px; border-radius: 50%"></i> 
+                                                </a>
+                                            </li>
+                                        </ul>
+                                      </div>
+                                      <div class="col-md-5">
+                                        <app-echeancefichier [id]=idextend></app-echeancefichier>
+                                      </div>
+                                      <div class="col-md-2 float-right">
+                                        <ul class="nav float-right list-inline justify-content-end">
+                                            <li class="nav-item no-caret pr-2" ngbDropdown [autoClose]="'outside'" container="body">
+                                                <button class="btn bg-echos1" ngbDropdownToggle>
+                                                    <span class="">
+                                                        {{detailextend?.statut}}
+                                                    </span>
+                                                </button> 
+                                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                    <button ngbDropdownItem class="d-flex justify-content-between"
+                                                        *ngFor="let item of statutextend; let i = index"
+                                                        (click)="changestat('statut',item)">
+                                                        <span> {{item}}</span>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <button class="btn bg-danger text-white" (click)="resetexec()">
+                                                    <span class="">
+                                                         Fermer
+                                                    </span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                      </div>
+                                  </div>
+                                 </div>
+                                 <div class="col-md-12 pt-3">
+                                      <div class="row">
+                                          <div class="col-md-10 offset-md-1">
+                                            <div class="row">
+                                                <div class="col-md-3 bg-white" *ngIf="affichepropriete">
+                                                    <nav class="monmenu nav flex-column py-2 ">
+                                                        <a [ngClass]="{'d-flex align-items-center justify-content-between pb-2 pt-1 bd-b':true,'active':currenttab=='obs'}" data-toggle="tab" (click)="switchtab('obs','ok')">
+                                                            <a class="nav-link3"><i class="fal fa-users	 tx-16  "></i> Participant</a>
+                                                        </a>
+                                                        <a  [ngClass]="{'d-flex align-items-center justify-content-between pb-2 pt-1 bd-b':true,'active':currenttab=='comment'}" data-toggle="tab" href="#comment" (click)="switchtab('comment','ok')">
+                                                            <a class="nav-link3"><i class="fal fa-comment-alt-lines  tx-16  "></i> Commentaire</a>
+                                                        </a>
+                                                        <a class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b " data-toggle="tab" href="#detail" (click)="switchtab('detail')">
+                                                           <ng-container *ngIf="detailextend?.definir_modele=='Non'">
+                                                             <a class="nav-link3 " (click)="changestat('modele','Oui')"> <i class="fal fa-text-width  tx-16  "></i> <i *ngIf="updatestatut == true" class="fas fa-spinner fa-spin"></i> Définir comme modèle</a>
+                                                           </ng-container>
+                                                           <ng-container *ngIf="detailextend?.definir_modele=='Oui'">
+                                                            <a class="nav-link3 " (click)="changestat('modele','Non')"><i class="fal fa-text-width  tx-16  "></i>  <i *ngIf="updatestatut == true" class="fas fa-spinner fa-spin"></i> Enlever comme modèle</a>
+                                                          </ng-container>
+                                                        </a>
+                                                        <a [ngClass]="{'d-flex align-items-center justify-content-between pb-2 pt-1 bd-b':true,'active':currenttab=='service'}" data-toggle="tab" href="#service" (click)="switchtab('service','ok')">
+                                                            <a class="nav-link3"><i class="fal fa-user-shield  tx-16  "></i> Service</a>
+                                                        </a>
+                                                        <a [ngClass]="{'d-flex align-items-center justify-content-between pb-2 pt-1 ':true,'active':currenttab=='mot_cle'}" data-toggle="tab" href="#mot_cle" (click)="switchtab('mot_cle','ok')">
+                                                            <a class="nav-link3"> <i class="fal fa-language  tx-16  "></i> Mots clés</a>
+                                                        </a>
+                                                    </nav>  
+                                                </div> 
+                                                <div [ngClass]="{'col-md-12':!affichepropriete,'col-md-9':affichepropriete}">
+                                                    <div class="tab-content flex-1">
+                                                        <div  [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='detail'}" id="detail">
+                                                            <div class="col-md-12 p-0">
+                                                                <form [formGroup]="updateextendForm">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <div class="document-editor">
+                                                                                <div class="document-editor__toolbar"></div>
+                                                                                <div class="document-editor__editable-container">
+                                                                                    <div class="document-editor__editable">
+                                                                                        <ckeditor  [editor]="Editor" formControlName="contenu" (ready)="onReady($event)"  [config]="ckeConfig"></ckeditor>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                                <div class="col-md-12 text-center">
+                                                                    <button  (click)="resetexec()" class="btn btn-secondary"  [disabled]="updatestatut == true"> Annuler</button>&nbsp;
+                                                                    <button  type="button" class="btn btn-primary" [disabled]="updateextendForm.invalid || updatestatut==true" (click)="updateValueexec()" >
+                                                                        <i *ngIf="updatestatut == true" class="fas fa-spinner fa-spin"></i> Modifier
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div   [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='obs'}" id="obs" *ngIf="currenttab=='obs'">
+                                                            <app-basecolobs [urlget]="urlgetobs" [id]=idextend [urlpost]="urlpostobs"></app-basecolobs>
+                                                        </div>
+                                                        <div  [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='comment'}" id="comment">
+                                                            <app-commentaction [urlpost]=urlpostcomment [url]=urlgetcomment [id]=idextend> </app-commentaction>
+                                                        </div>
+                                                        <div  [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='service'}" id="service" *ngIf="currenttab=='service'">
+                                                           <app-servicefichier [id]=idextend></app-servicefichier>
+                                                        </div>
+                                                        <div  [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='mot_cle'}" id="mot_cle" *ngIf="currenttab=='mot_cle'">
+                                                            <app-motclefichier [id]=idextend></app-motclefichier>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          </div>
+                                      </div>
+                                 </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="col-md-12" *ngIf="!extend">
+                        <div class="col-md-12 text-center noData">
+                            <app-loarding></app-loarding>
+                        </div>
+                    </div>
+                      <!-- NO DATA -->
+                    <div *ngIf="loardingextend==false && extend " class="col-md-12 p-0">
+                        <br> <br>
+                        <div class="col-md-12 text-center noData">
+                            <app-no-data></app-no-data>
+                        </div>
+                        <br> <br>
+                    </div> 
+                </div>
+                <!-- <router-outlet></router-outlet> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fichlabModal" class="modal fade"  data-backdrop="static"  >
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-plus-circle tx-20"></i> Modèle de fichier</h5>
+                <button type="button" class="close" [disabled]="statut==true"  (click)="resetValue()"style="color:  #0000FF ">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+            </div>
+            <div class="modal-body">
+                <div class="col-md-10 offset-md-1">
+                        <form [formGroup]="addfichlabForm">
+                            <div class="col-md-12 p-0">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class=" form-group">
+                                            <label  class="tx-facebook">Nom&nbsp;</label>
+                                            <input type="text" formControlName="nom" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" >
+                                        <div class=" form-group">
+                                            <label  class="tx-facebook">Description&nbsp;</label>
+                                            <textarea class="form-control" rows="4"  formControlName="description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button  (click)="resetValue()" class="btn btn-secondary"  [disabled]="statut == true"> Annuler</button>&nbsp;
+                    <button  type="button" class="btn btn-primary" [disabled]="addfichlabForm.invalid || statut==true" (click)="add()" >
+                        <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i> Ajouter
+                    </button>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+<!-- Extend -->
+<div id="extendModal" class="modal fade"  data-backdrop="static"  >
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-plus-circle tx-20"></i> Ajouter fichier</h5>
+                <button type="button" class="close" [disabled]="statut==true"  (click)="resetexec()"style="color:  #0000FF ">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body scroll-11">
+                <div class="col-md-10 offset-md-1">
+                    <form [formGroup]="addextendForm">
+                        <div class="col-md-12 p-0">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class=" form-group">
+                                        <label  class="tx-facebook">Nom&nbsp;</label>
+                                        <input type="text" class="form-control " formControlName="nom">
+                                    </div>
+                                </div>
+                                <div class="col-md-6" >
+                                    <div class=" form-group">
+                                        <label  class="tx-facebook">Statut&nbsp;</label>
+                                        <div class="input-group">
+                                            <select class="custom-select no-radius scroll-11 form-control"  formControlName="statut">
+                                                <option value="" disabled>Statut</option>
+                                                <option *ngFor="let q of statutextend " [value]="q">
+                                                    {{q}}
+                                                </option>
+                                            </select> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button  (click)="resetexec()" class="btn btn-secondary"  [disabled]="statut == true"> Annuler</button>&nbsp;
+                    <button  type="button" class="btn btn-primary" [disabled]="addextendForm.invalid || statut==true" (click)="addexect()" >
+                        <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i> Ajouter
+                    </button>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteextendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog conf2" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-white">
+          <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-trash tx-20"></i> Supprimer</h5>
+        </div>
+        <div class="modal-body col-md-12 text-center">
+            <h5>
+                Voulez vous vraiment supprimer ?
+            </h5>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="reset" class="btn btn-secondary" data-dismiss="modal" [disabled]="del==true">
+            Annuler
+          </button>
+          <button class="btn btn-primary" type="submit" (click)="deleteexec()" [disabled]="del==true">
+             Supprimer
+            <i *ngIf="del==true" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="col-md-12">
+    <div class="row">
+         <div class="col-md-12  bg-white py-2 pr-2">
+             <button class="btn btn-primary btn-rounded float-right" href="#addmotcles" data-toggle="modal" > Ajouter </button>
+         </div>
+    </div>
+ </div> 
+<div class="col-md-12 p-0 mt-2" *ngIf="loadmotcles==true && motcles ">
+    <button class="btn btn-oblong btn-sm card-1 btn-outline-yeto mx-1 bg-white" *ngFor="let item of motcles;let i=index;" (click)="showdelmotcles(i)">
+        {{item?.mot}}
+        <i class="fal fa-times tx-danger"></i>
+    </button>
+</div>
+<div class="col-md-12" *ngIf="!motcles">
+    <div class="col-md-12 text-center noData">
+        <app-loarding></app-loarding>
+    </div>
+</div>
+<!-- NO DATA -->
+<div *ngIf="loadmotcles==false && motcles " class="col-md-12 p-0">
+    <br> <br>
+    <div class="col-md-12 text-center noData">
+        <app-no-data></app-no-data>
+    </div>
+    <br> <br>
+</div> 
+<div class="col-md-3" style="margin-top:1.5%;">
+    <div class="modal" id="addmotcles" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-white">
+            <p class=" modal-title tx-20 tx-primary" id="exampleModalLabel">
+                <i class="fad fa-user-shield tx-20"></i> Ajouter Mots clés
+            </p>
+          </div>
+          <div class="modal-body">
+            <form class="form" role="form" autocomplete="off" [formGroup]="addmotclesForm">
+              <div class="col-md-12">
+                <div class="col-md-12 pt-2" >
+                    <div class=" form-group">
+                        <label  class="tx-facebook">Mots clés&nbsp;</label>
+                        <input class="form-control" type="text" formControlName="mot">
+                    </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <div class="col-md-12 text-center">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal" (click)="resetmotcles()" [disabled]="statut==true">
+                Annuler 
+              </button> &nbsp;
+              <button type="submit" class="btn btn-primary" (click)="addmotcles()" [disabled]="addmotclesForm.invalid  || statut==true">
+                <i class="fas fa-spinner fa-spin" *ngIf="statut==true"></i> Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="delmotclesbaseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog conf2" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-white">
+        <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-trash tx-20"></i> Supprimer</h5>
+      </div>
+      <div class="modal-body col-md-12 text-center">
+          <h5>
+              Voulez vous vraiment supprimer ?
+          </h5>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="reset" class="btn btn-secondary" data-dismiss="modal" [disabled]="statut==true">
+          Annuler
+        </button>
+        <button class="btn btn-primary" type="submit" (click)="delmotclesbase()" [disabled]="statut==true">
+           Supprimer
+          <i *ngIf="statut==true" class="fas fa-spinner fa-spin"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

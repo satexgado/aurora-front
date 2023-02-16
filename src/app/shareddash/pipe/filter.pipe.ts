@@ -54,9 +54,9 @@ export class FilterPipe implements PipeTransform {
           return it.Libelle_Continent.toLocaleLowerCase().includes(searchText);
         });
       }
-      if($name=='association'){
+      if($name=='ticket'){
         return items.filter(it => {
-          return it.relation.libelle.toLocaleLowerCase().includes(searchText); 
+          return it.courrier.objet.toLocaleLowerCase().includes(searchText); 
         });
       }
     }

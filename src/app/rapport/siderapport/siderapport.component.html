@@ -1,0 +1,242 @@
+<div class="row pd-y-8 bd-b bd-2">
+    <div class="col-lg-3 ">
+        <h6 class="tx-echos1"><i class="fas fa-mailbox  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Gestion de courriers</h6>
+    </div>
+    <div class="col-lg-9">
+        <div class="nav-tabs-top  ">
+            <ul class="nav   bg-white float-right list-inline justify-content-end">
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#dossiers">
+                        <i class="fas fa-folder-open tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Dossiers</span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link " data-toggle="tab" id="personal_chat_tab" href="#courrier_entrant" style="padding: 5px 12px;">
+                        <i class="fas fa-envelope tx-18  tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Entrants </span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#courrier_sortant">
+                        <i class="fas fa-envelope-open tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Sortants</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#courrier_interne">
+                        <i class="fas fa-envelope-open-text tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Internes</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#rapports">
+                        <i class="fas fa-clock tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Rapports</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link3 " data-toggle="tab" href="#suivis">
+                        <i class="fas fa-history tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Suivis</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row  justify-content-between  pt-2 bd-b ">
+            <div class="col-lg-6">
+                <h6 class="tx-echos1"><i class="fas fa-clock  bg-m" style="padding:6px; border-radius: 50%; "></i> Rapports des courriers</h6>
+            </div>
+            <div class="col-lg-6 ">
+                <ul class="nav float-right list-inline justify-content-end">
+                    <li class="nav-item ">
+                        <a class="nav-link3 " data-toggle="tab" href="#">
+                            <span  class="tx-echos">
+                                <i class="fas fa-envelope  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i> 
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link3 " data-toggle="tab" href="#">
+                            <span class="tx-echos">
+                                <i class="fas fa-envelope-open  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i> 
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link3 " data-toggle="tab" href="#">
+                            <span class="tx-echos">
+                                <i class="fas fa-envelope-open-text  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i> 
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row bd-t">
+            <div class=" col-lg-4 bd-r bd-2 " style="background:#FFFF; height:100vh ">
+                <div class="row  justify-content-between  bg-light pt-2 bd-b">
+                    <div class="col-lg-12">
+                        <h6 class="tx-echos"><i class="fas fa-list" style="padding:6px; border-radius: 50%; "></i> Liste des rapports</h6>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="col-md-12 p-0">
+                        <div class="row bg-light">
+                            <div class="col-lg-9">
+                                <div class="input-group ">
+                                    <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="searchticketrap">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 ">
+                                <ul class="nav float-right list-inline justify-content-end">
+                                    <li class="nav-item ">
+                                        <a class="nav-link3 " data-toggle="modal" href="#ticketrapModal" >
+                                            <span class="tx-echos">
+                                                <i class="fas fa-plus-circle bg-yeto tx-16 tx-white" style="padding:6px; border-radius:50%"></i> 
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 p-0 contentstdetail3 scroll-11"  *ngIf="loarding==true && ticketrap;"> 
+                        <div [ngClass]="{'d-flex align-items-center bd-b pointers':true,'bg-gray':item?.id==detailticketrap?.id}" *ngFor="let item of ticketrap | appFilter: searchticketrap:'ticket' ; let i=index;" (click)="getId(item,'detail',i)">
+                            <div class=" p-2">
+                                <h6 class="tx-echos tx-14 taille3"><i class="fas fa-envelope-open tx-18 tx-echos"></i> {{item?.courrier?.objet}}</h6>
+                                <span class=" tx-14 mg-b-5 tx-echos1 pl-2 ">Créer le</span>
+                                <span class="  mg-b-5 tx-echos1 ml-1 pr-4 ">{{item?.created_at |date:'longDate': undefined : 'fr'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" *ngIf="!ticketrap">
+                        <div class="col-md-12 text-center noData">
+                            <app-loarding></app-loarding>
+                        </div>
+                    </div>
+                    <!-- NO DATA -->
+                    <div *ngIf="loarding==false && ticketrap " class="col-md-12">
+                        <br> <br>
+                        <div class="col-md-12 text-center noData">
+                            <app-no-data></app-no-data>
+                        </div>
+                        <br> <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 ">
+                <div class="col-md-12 pt-2" *ngIf="!affichedetail">
+                    <app-no-data [img]=img [text1]=text1></app-no-data>
+                </div>
+                <div class="col-md-12 p-0" *ngIf="affichedetail">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ticketrapModal" class="modal fade"  data-backdrop="static"  >
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-plus-circle tx-20"></i> Ticket de Rapport</h5>
+                <button type="button" class="close" [disabled]="statut==true"  (click)="resetValue()"style="color:  #0000FF ">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+            </div>
+            <div class="modal-body scroll-11">
+                <div class="col-md-10 offset-md-1">
+                        <form [formGroup]="addticketrapForm">
+                            <div class="col-md-12 p-0">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class=" form-group">
+                                            <label  class="tx-facebook">Courrier&nbsp;</label>
+                                            <div class="input-group">
+                                                <select class="custom-select no-radius scroll-11 form-control"  formControlName="courrier">
+                                                    <option value="" disabled>Courrier</option>
+                                                    <option *ngFor="let q of courrier " [value]="q?.id">
+                                                        {{q?.objet}}
+                                                    </option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class=" form-group">
+                                            <label  class="tx-facebook">Orientation&nbsp;</label>
+                                            <div class="input-group">
+                                                <select class="custom-select no-radius scroll-11 form-control"  formControlName="orientation">
+                                                    <option value="" disabled>Orientation</option>
+                                                    <option *ngFor="let q of orientation " [value]="q">
+                                                        {{q}}
+                                                    </option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div [ngClass]="{'col-md-6':affichemodalite,'col-md-12':!affichemodalite}">
+                                        <div class=" form-group">
+                                            <label  class="tx-facebook">Modalité&nbsp;</label>
+                                            <div class="input-group">
+                                                <select class="custom-select no-radius scroll-11 form-control"  formControlName="modalite" (change)="listenmodalite(addticketrapForm,$event?.target?.value)">
+                                                    <option value="" disabled>Modalité</option>
+                                                    <option *ngFor="let q of modalite " [value]="q">
+                                                        {{q}}
+                                                    </option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="affichemodalite"> 
+                                        <div class="form-group"> 
+                                            <label  class="tx-facebook"> Date modalité&nbsp;</label>
+                                            <input type="date" class="form-control " formControlName="date_modalite" (change)="verifyDate(addticketrapForm,'date_modalite')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12"> 
+                                        <div class="form-group"> 
+                                            <label  class="tx-facebook">Objectif &nbsp;</label>
+                                            <textarea class="form-control " rows="4" formControlName="objectif" ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"> 
+                                        <div class="form-group"> 
+                                            <label  class="tx-facebook"> Date d'execution&nbsp;</label>
+                                            <input type="date" class="form-control " formControlName="date_exec" (change)="verifyDate(addticketrapForm,'date_exec')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"> 
+                                        <div class="form-group"> 
+                                            <label  class="tx-facebook"> Durée (en jour)&nbsp;</label>
+                                            <input type="number" min="0" class="form-control " formControlName="duree">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class=" form-group">
+                                            <label  class="tx-facebook">Niveau&nbsp;</label>
+                                            <div class="input-group">
+                                                <select class="custom-select no-radius scroll-11 form-control"  formControlName="niveau">
+                                                    <option value="" disabled>Niveau</option>
+                                                    <option *ngFor="let q of niveau " [value]="q">
+                                                        {{q}}
+                                                    </option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button  (click)="resetValue()" class="btn btn-secondary"  [disabled]="statut == true"> Annuler</button>&nbsp;
+                    <button  type="button" class="btn btn-primary" [disabled]="addticketrapForm.invalid || statut==true" (click)="add()" >
+                        <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i> Ajouter
+                    </button>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>

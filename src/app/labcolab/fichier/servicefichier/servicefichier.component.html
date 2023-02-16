@@ -1,0 +1,123 @@
+<div class="col-md-12" *ngIf="!vue">
+    <div class="row">
+         <div class="col-md-12  bg-white py-2 pr-2">
+             <button class="btn btn-primary btn-rounded float-right" href="#addServ" data-toggle="modal" > Ajouter </button>
+         </div>
+    </div>
+ </div> 
+<div class="col-md-12 p-0 mt-2" *ngIf="loadservice==true && service ">
+    <div class="table-responsive" >
+        <table class="table table-hover text-nowrap mb-0" >
+            <tbody>
+                <tr class="bd-b bd-2 bg-white"  *ngFor="let items of service; let i=index;" >
+                   <ng-container *ngIf="!vue">
+                      <td>
+                          <button container="body" ngbTooltip="Supprimer"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="showdelserv(i)">
+                              <i class="fal fa-times tx-14 rounded-circle tx-danger bg-light" style="padding:6px; border-radius: 50%; "></i>
+                          </button>
+                      </td> 
+                    </ng-container>
+                    <td  class="p-0 pl-2"> 
+                      <div  class="profiles avatar avatar-xs">
+                          <ng-container *ngIf="items?.service?.image">
+                              <img class="rounded-circle avatar-xs"  [src]="items?.service?.image" alt="avatar">
+                          </ng-container>
+                          <ng-container *ngIf="!items?.service?.image">
+                              <img class="rounded-circle avatar-xs"  src="./assets/images/xs/avatar14.png">
+                          </ng-container>
+                      </div>
+                  </td>
+                    <td >
+                        <span class="taille33">{{items?.service?.libelle}}</span>
+                    </td>
+                    <td  class="p-0">
+                        <span class="taille33">{{items?.service?.cigle}}</span>
+                    </td>
+                    <td >
+                        {{items?.created_at | date:'mediumDate' : undefined : 'fr'}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-md-12" *ngIf="!service">
+    <div class="col-md-12 text-center noData">
+        <app-loarding></app-loarding>
+    </div>
+</div>
+<!-- NO DATA -->
+<div *ngIf="loadservice==false && service " class="col-md-12 p-0">
+    <br> <br>
+    <div class="col-md-12 text-center noData">
+        <app-no-data></app-no-data>
+    </div>
+    <br> <br>
+</div> 
+<div class="col-md-3" style="margin-top:1.5%;">
+    <div class="modal" id="addServ" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-white">
+            <p class=" modal-title tx-20 tx-primary" id="exampleModalLabel">
+                <i class="fad fa-user-shield tx-20"></i> Ajouter service
+            </p>
+          </div>
+          <div class="modal-body">
+            <form class="form" role="form" autocomplete="off" [formGroup]="addserviceForm">
+              <div class="col-md-12">
+                  <div class="col-md-12 pt-2" >
+                    <div class=" form-group">
+                        <label  class="tx-facebook">Service&nbsp;</label>
+                        <div class="input-group">
+                            <select class="custom-select no-radius scroll-11 form-control"  formControlName="service">
+                                <option value="" disabled>Service</option>
+                                <option *ngFor="let q of typestructure " [value]="q?.id">
+                                    {{q?.libelle}}
+                                </option>
+                            </select> 
+                        </div>
+                    </div>
+                  </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <div class="col-md-12 text-center">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal" (click)="resetservice()" [disabled]="statut==true">
+                Annuler 
+              </button>
+              &nbsp;
+              <button type="submit" class="btn btn-primary" (click)="addservice()" [disabled]="addserviceForm.invalid  || statut==true">
+                <i class="fas fa-spinner fa-spin" *ngIf="statut==true"></i> Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delservbaseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog conf2" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-white">
+        <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-trash tx-20"></i> Supprimer</h5>
+      </div>
+      <div class="modal-body col-md-12 text-center">
+          <h5>
+              Voulez vous vraiment supprimer ?
+          </h5>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="reset" class="btn btn-secondary" data-dismiss="modal" [disabled]="statut==true">
+          Annuler
+        </button>
+        <button class="btn btn-primary" type="submit" (click)="delservbase()" [disabled]="statut==true">
+           Supprimer
+          <i *ngIf="statut==true" class="fas fa-spinner fa-spin"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

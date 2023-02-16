@@ -1,52 +1,47 @@
 <div class="card bg-white p-0 contentcomment no-radius" >
      <div class="col-md-12 p-0" *ngIf="commentaire">
         <form   [formGroup]="addcommentForm">
-                <div class="card-body pd-0">
-                  <div class="publisher publisher-multi mg-b-20">
+             <div class="card-body pd-0">
+                <div class="publisher publisher-multi mg-b-20">
                      <div class="flexbox bd ">
-                        <!-- <img src="./assets/img/avatarH.png" class="avatar2" > -->
                         <textarea class="publisher-input auto-expand mg-t-10 pd-l-15" rows="3" formControlName="commentaire" placeholder="Votre Commentaire"></textarea>
                      </div>
                      <div class="flexbox p-2">
                         <div class="col-md-2 offset-md-10">
-                                <button class="btn btn-sm btn-custom-primary "  [disabled]="addcommentForm.invalid || statut==true"  (click)="add()">
-                                        <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i>&nbsp;Commenter
-                                </button> 
+                            <button class="btn btn-sm btn-custom-primary  float-right"  [disabled]="addcommentForm.invalid || statut==true"  (click)="add()">
+                                <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i>&nbsp;Commenter
+                            </button> 
                         </div>
                      </div>
-                  </div>
                 </div>
+             </div>
         </form>    
      </div>
      <div class="mycoment scroll-11" *ngIf="commentaire && loarding==true">
-                <div class="profiletimeline mt-0 border-0 " *ngFor="let item of commentaire">
-                        <div class="sl-item">
-                                <div class="sl-left"> 
-                                        <ng-container *ngIf="item?.inscription?.photo">
-                                          <img class="avatar3" [src]="item?.inscription?.photo" alt="card image" >
-                                        </ng-container>
-                                        <ng-container *ngIf="!item?.inscription?.photo">
-                                                <i class="fal fa-user fa-3x"></i>
-                                        </ng-container>
-                                </div>
-                                <div class="sl-right">
-                                        <div> 
-                                                <a [routerLink]="['/profil/',item?.inscription?.id_inscription]" class="link tx-primary">{{item?.inscription?.prenom}}&nbsp;{{item?.inscription?.nom}}</a>
-                                                &nbsp;<span class="sl-date">{{item?.created_at |date:'fullDate'}}</span>
-                                                <!-- <p class=" tx-danger"> Fonctions <a class="tx-facebook" href=""> Design
-                                                        weblayout</a></p> -->
-                                                <div class="mg-t-4">
-                                                        <p class="tx-facebook tx-14 bg-light p-2 mb-1" style="text-align:justify;   vertical-align: middle;">
-                                                                {{item?.commentaire}}
-                                                        </p>
-                                                </div>
-                                        </div>
-                                </div>
-                        </div>
-                        <hr>
-                   
+        <div class="profiletimeline mt-0 border-0 " *ngFor="let item of commentaire">
+             <div class="sl-item">
+                <div class="sl-left"> 
+                   <ng-container *ngIf="item?.inscription?.photo">
+                      <img class="avatar avatar-md align-self-start rounded-circle" [src]="item?.inscription?.photo" alt="card image" >
+                   </ng-container> 
+                   <ng-container *ngIf="!item?.inscription?.photo">
+                      <img class="avatar avatar-md align-self-start rounded-circle"  src="./assets/images/avatar-placeholder.png">
+                   </ng-container>
                 </div>
-       
+                <div class="sl-right">
+                   <div> 
+                      <a class="link tx-primary">{{item?.inscription?.prenom}}&nbsp;{{item?.inscription?.nom}}</a>&nbsp;
+                      <span class="sl-date">{{item?.created_at |date:'fullDate'}}</span>
+                      <div class="mg-t-4">
+                        <p class="tx-facebook tx-14 bg-light p-2 mb-1" style="text-align:justify;   vertical-align: middle;">
+                           {{item?.commentaire}}
+                        </p>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <hr>
+        </div>
      </div>
     <div class="col-md-12" *ngIf="!commentaire">
         <div class="col-md-12 text-center noData">
@@ -61,5 +56,4 @@
         </div>
         <br><br><br><br> 
     </div>
-    
 </div>

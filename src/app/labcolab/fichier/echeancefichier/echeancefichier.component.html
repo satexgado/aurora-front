@@ -1,0 +1,38 @@
+<div class="col-md-12" *ngIf="!echeance">
+    <div class="col-md-12 text-center noData">
+        <app-loarding></app-loarding>
+    </div>
+</div>
+<div *ngIf="echeance " class="col-md-12 p-0">
+    <form [formGroup]="addecheanceForm">
+        <div class="col-md-12 p-0">
+          <div class="row">
+              <div class="col-md-4"> 
+                  <div class="form-group"> 
+                      <!-- <label  class="tx-facebook">Date de debut &nbsp;</label> -->
+                      <input type="date" class="form-control " formControlName="date_debut" (change)="verifyDate(addecheanceForm,'date_debut')">
+                  </div>
+              </div>
+              <div class="col-md-4"> 
+                  <div class="form-group"> 
+                      <!-- <label  class="tx-facebook">Date de fin &nbsp;</label> -->
+                      <input type="date" class="form-control " formControlName="date_fin" (change)="verifyDate(addecheanceForm,'date_fin')">
+                  </div>
+              </div>
+              <div class="col-md-4">
+                <button  (click)="resetecheance()" class="btn btn-secondary"  [disabled]="statut == true"> <i class="fal fa-times tx-white"></i></button>&nbsp;
+                <ng-container *ngIf="!echeance[0] ">
+                    <button  type="button" class="btn btn-primary" [disabled]="addecheanceForm.invalid || statut==true" (click)="addecheance()" >
+                        <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i> <i class="fal fa-plus tx-white"></i>
+                    </button>
+                </ng-container>
+                <ng-container *ngIf="echeance[0] ">
+                    <button  type="button" class="btn btn-primary" [disabled]="addecheanceForm.invalid || statut==true" (click)="updatecheance()" >
+                        <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i> <i class="fal fa-edit tx-white"></i>
+                    </button>
+                </ng-container> 
+              </div>
+          </div>
+        </div>
+    </form>
+</div> 

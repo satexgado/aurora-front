@@ -1,0 +1,254 @@
+<div class="col-md-12 p-0">
+    <div class="row row-xs clearfix mg-0 pd-0 ">
+        <div class="col-lg-6 p-2 bd-b">
+            <h6 class="tx-echos1">
+                <i class="fas fa-text bg-light" style="padding:6px; border-radius: 50%; "></i> Espace Fichier
+            </h6>
+        </div>
+        <div class="col-lg-6 p-2 bd-b">
+
+        </div>
+    </div>
+    <div class="row row-xs clearfix mg-0 pd-0 "  *ngIf="!afficheupdate">
+        <div class=" col-lg-4 bd-r ">
+            <div class="row clearfix mg-0 pd-0 justify-content-between  p-1 bg-light bd-b">
+                <div class="col-lg-12 p-0">
+                    <h6 class="tx-echos1"><i class="fas fa-send-backward" style="padding:6px; border-radius: 50%; "></i> Groupes de modèles de fichiers</h6>
+                </div>
+            </div>
+            <div class="card-body p-0 bg-white">
+                <div class="col-md-12">
+                    <div class="row bg-light">
+                        <div class="col-lg-9">
+                            <div class="input-group ">
+                                <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="searchfichlab">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 ">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 p-0 contentstdetail3 scroll-11"  *ngIf="loadlab==true && fichlab;">
+                    <div [ngClass]="{'d-flex align-items-center bd-b pointers':true,'bg-gray':item?.id==detailfichlab?.id}" *ngFor="let item of fichlab | appFilter: searchfichlab:'nom2' ; let i=index;"  (click)="showdetail(item)">
+                        <div class=" p-2">
+                            <h6 class="tx-echos tx-14 taille3"><i class="fas fa-folder-open tx-18 tx-echos"></i> {{item?.nom}}</h6>
+                            <span class=" tx-14 mg-b-5 tx-echos1 pl-2 ">{{item?.created_at |date:'longDate': undefined : 'fr'}}</span>
+                            <span class=" tx-14 mg-b-5 tx-warning mr-1"> Fichiers</span>
+                            <span class="  mg-b-5 tx-echos1 ">{{item?.extensions_count}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="!fichlab">
+                    <div class="col-md-12 text-center noData">
+                        <app-loarding></app-loarding>
+                    </div>
+                </div> 
+                <!-- NO DATA -->
+                <div *ngIf="loadlab==false && fichlab " class="col-md-12">
+                    <br> <br>
+                    <div class="col-md-12 text-center noData">
+                        <app-no-data></app-no-data>
+                    </div>
+                    <br> <br>
+                </div>
+
+            </div>
+        </div>
+        <div  class="col-md-8 bg-light" >
+            <div class="col-md-12 pt-2" *ngIf="!affichedetail">
+                <app-no-data [img]=img [text1]=text1></app-no-data>
+            </div>
+            <div class="col-md-12 p-0" *ngIf="affichedetail">
+                <div class=" row bg-white clearfix mg-0 pd-0">
+                    <div class="col-lg-12 pt-1 tx-echos1">
+                        <h6 class=""><i class="fas fa-folder-open tx-20 tx-echos" style="padding:6px; border-radius: 50%; "></i> 
+                            <span class="tx-echos">{{detailfichlab?.nom}}</span>
+                        </h6>
+                    </div>
+                </div> 
+                <div class="row row-xs mg-0 pd-0 clearfix pt-2">
+                    <div class="col-lg-4 ">
+                        <div class="input-group ">
+                            <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="searchmodel"> 
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <ul class="nav float-right list-inline justify-content-end">
+                            <li class="nav-item ">
+                                <a class="nav-link3 " data-toggle="tab"  (click)="showvu('card')" ngbTooltip="Vue carte">
+                                    <span class="tx-echos1">
+                                        <i [ngClass]="{'fas fa-th tx-echos1  tx-16':true,'bg-white':!affichecard,'bg-gray':affichecard}" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link3" data-toggle="tab"  (click)="showvu('list')" ngbTooltip="Vue liste">
+                                    <span class="tx-echos1">
+                                        <i [ngClass]="{'fas fa-list tx-echos1  tx-16':true,'bg-white':!affichelist,'bg-gray':affichelist}" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row row-xs mg-0 pd-0 clearfix contentstdetail3 scroll-11 " *ngIf="loarding==true && model ">
+                    <div class="col-lg-12" *ngIf="affichecard">
+                        <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4">
+                            <div class="col-lg-4 p-2"  *ngFor="let items of model|appFilter: searchmodel:'nom2';let i=index;">
+                                <div class="mycard4"  style="border-radius:5% 5% 5% 5%" (click)="getIdmodel(items,'detail',i)">
+                                    <div class="text-center bd-b  bg-white  p-2"><i class="fas fa-text tx-echos tx-30"></i></div>
+                                    <div class=" text-center p-3">
+                                        <span class="tx-echos py-3 tx-bold taille33"><i class="fas fa-line-columns tx-echos tx-20 pr-2"></i>  {{items?.nom}} </span>
+                                        <p class="">
+                                            <span class=""> {{items?.created_at|date:'mediumDate': undefined : 'fr'}} </span>
+                                            <span class=""> || </span>
+                                            <span class="tx-bold"> {{items?.created_at|date:'shortTime': undefined : 'fr'}} </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 p-0 pt-3" *ngIf="affichelist">
+                        <div class="table-responsive" >
+                            <table class="table table-hover text-nowrap mb-0" >
+                                <tbody>
+                                    <tr  class="bd-b bd-2 bg-white"  *ngFor="let items of model| appFilter: searchmodel:'nom2';let i=index;" >
+                                        <td>
+                                            <button container="body" ngbTooltip="Voir les details"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="getIdmodel(items,'detail',i)">
+                                                <i class="fal fa-square tx-14 rounded-circle"></i>
+                                            </button>
+                                        </td> 
+                                        <td  class="p-0">
+                                            <div  class="profiles avatar avatar-xs" [ngbTooltip]="items?.inscription?.prenom +' '+ items?.inscription?.nom">
+                                                <ng-container *ngIf="items?.inscription?.photo">
+                                                    <img class="rounded-circle avatar-xs"  [src]="items?.inscription?.photo" alt="avatar">
+                                                </ng-container>
+                                                <ng-container *ngIf="!items?.inscription?.photo">
+                                                    <img class="rounded-circle avatar-xs"  src="./assets/images/avatar-placeholder.png">
+                                                </ng-container>
+                                            </div>
+                                        </td>
+                                        <td (click)="getIdmodel(items,'detail',i)" >
+                                           <span class="taille34"> {{items?.nom}}</span>
+                                        </td>
+                                        <td (click)="getIdmodel(items,'detail',i)">
+                                            {{items?.created_at | date:'mediumDate' : undefined : 'fr'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="!model">
+                    <div class="col-md-12 text-center noData">
+                        <app-loarding></app-loarding>
+                    </div>
+                </div>
+                <!-- NO DATA -->
+                <div *ngIf="loarding==false && model " class="col-md-12 p-0">
+                    <br> <br>
+                    <div class="col-md-12 text-center noData">
+                        <app-no-data [img]=img [text1]=text2></app-no-data>
+                    </div>
+                    <br> <br>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 p-0" *ngIf="afficheupdate" >
+        <div class=" row bg-white clearfix mg-0 pd-0">
+            <div class="col-lg-12 pt-1 tx-echos1">
+                <h6 class=""><i class="fas fa-folder-open tx-20 tx-echos" style="padding:6px; border-radius: 50%; "></i> 
+                    <span class="tx-echos">{{detailfichlab?.nom}}</span>
+                    <span class="tx-echos1">|| {{detailmodel?.nom}}</span>
+                </h6>
+            </div>
+        </div> 
+        <div class="col-md-12 bd-b pt-2" style="border-color: #b5b9be;">
+            <div class=" row clearfix mg-0 pd-0">
+                <div class="col-md-5 pt-1 tx-facebook">
+                  <ul class="nav  list-inline">
+                      <li class="nav-item mr-2 pointers" (click)="switchtab('detail')">
+                          <h4><i class="fas fa-text-size bg-white" style="padding:6px; border-radius: 50%; "></i> X-File  ||</h4>
+                      </li>
+                      <li class="nav-item mr-2">
+                          <button class="btn btn-secondary text-white"  (click)="switchtab('obs','ok')">
+                              <span class="">
+                                  Propriétés
+                              </span>
+                          </button>
+                      </li>
+                  </ul>
+                </div>
+                <div class="col-md-5">
+                  <!-- <app-echeancefichier [id]=idmodel></app-echeancefichier> -->
+                </div>
+                <div class="col-md-2 float-right">
+                  <ul class="nav float-right list-inline justify-content-end">
+                      <li class="nav-item ">
+                          <button class="btn bg-danger text-white" (click)="resetmodel()">
+                              <span class="">
+                                   Fermer
+                              </span>
+                          </button>
+                      </li>
+                  </ul>
+                </div>
+            </div>
+        </div>
+        <div class=" col-md-12 pt-3">
+            <div class="col-md-10 offset-md-1 pt-2">
+                <div class="row pb-4">
+                    <div class="col-md-3 bg-white" *ngIf="affichepropriete">
+                        <nav class="monmenu nav flex-column py-2 ">
+                            <a [ngClass]="{'d-flex align-items-center justify-content-between pb-2 pt-1 bd-b':true,'active':currenttab=='obs'}" data-toggle="tab" (click)="switchtab('obs','ok')">
+                                <a class="nav-link3"><i class="fal fa-users	 tx-16  "></i> Participant</a>
+                            </a>
+                            <a  [ngClass]="{'d-flex align-items-center justify-content-between pb-2 pt-1 bd-b':true,'active':currenttab=='comment'}" data-toggle="tab" href="#comment" (click)="switchtab('comment','ok')">
+                                <a class="nav-link3"><i class="fal fa-comment-alt-lines  tx-16  "></i> Commentaire</a>
+                            </a>
+                            <a [ngClass]="{'d-flex align-items-center justify-content-between pb-2 pt-1 bd-b':true,'active':currenttab=='service'}" data-toggle="tab" href="#service" (click)="switchtab('service','ok')">
+                                <a class="nav-link3"><i class="fal fa-user-shield  tx-16  "></i> Service</a>
+                            </a>
+                        </nav>  
+                    </div> 
+                    <div [ngClass]="{'col-md-12':!affichepropriete,'col-md-9':affichepropriete}">
+                        <div class="tab-content flex-1">
+                            <div [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='detail'}" id="detail">
+                                <form [formGroup]="addmodelForm">
+                                    <div class="col-md-12 p-0">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="document-editor">
+                                                        <div class="document-editor__toolbar"></div>
+                                                        <div class="document-editor__editable-container">
+                                                            <div class="document-editor__editable">
+                                                                <ckeditor  [editor]="Editor" formControlName="contenu" (ready)="onReady($event)" [config]="ckeConfig"  ></ckeditor>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div   [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='obs'}" id="obs" *ngIf="currenttab=='obs'">
+                                <app-basecolobs [vue]="vue" [urlget]="urlgetobs" [id]=idmodel [urlpost]="urlpostobs"></app-basecolobs>
+                            </div>
+                            <div  [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='comment'}" id="comment">
+                                <app-commentaction [urlpost]=urlpostcomment [url]=urlgetcomment [id]=idmodel> </app-commentaction>
+                            </div>
+                            <div  [ngClass]="{'tab-pane fade':true,  'active show':currenttab=='service'}" id="service" *ngIf="currenttab=='service'">
+                               <app-servicefichier [vue]="vue" [id]=idmodel></app-servicefichier>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>

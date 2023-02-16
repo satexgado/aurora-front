@@ -2,6 +2,8 @@ import { Factory as AuthAccess} from 'src/app/helpers/factory/factory'
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+// import ImportWord from '@ckeditor/ckeditor5-import-word/src/importword';
+
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +51,31 @@ export class CrudService {
     // console.clear();
     // console.log("%c" + "ATTENTION !!!", "color: red; font-size: x-large");
     // console.log("%c" + "Il s’agit d’une fonctionnalité de navigateur conçue pour les développeurs. Si quelqu’un vous a invité(e) à copier-coller quelque chose ici pour activer une fonctionnalité ou soit-disant pirater le compte d’un tiers, sachez que c’est une escroquerie permettant à cette personne d’accéder à votre compte.", "color: black; font-size: 20px");
+  }
+  getckconfig(){
+    return  {
+      toolbar: {
+        items: [
+          'heading', '|',
+          'fontfamily', 'fontsize', '|',
+          'alignment', '|',
+          'fontColor', 'fontBackgroundColor', '|',
+          'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
+          'link', '|',
+          'outdent', 'indent', '|',
+          'bulletedList', 'numberedList', 'todoList', '|',
+          'code', 'codeBlock', '|',
+          'insertTable', '|',
+          'blockQuote', '|',
+          'undo', 'redo','|'
+      ],
+      shouldNotGroupWhenFull: true
+      }
+      // plugins:{
+      //   items:[
+      //     ImportWord
+      //   ]
+      // }
+    };
   }
 }

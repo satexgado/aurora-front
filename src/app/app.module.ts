@@ -27,19 +27,20 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'bad-url',
-    component: PageBadUrlComponent,
-  },
-  {
     path: '',
-    canActivate: [AuthGuard],
-    canLoad: [AuthGuard],
-    canActivateChild: [AuthGuard],
+    // canActivate: [AuthGuard],
+    // canLoad: [AuthGuard],
+    // canActivateChild: [AuthGuard], 
     loadChildren: () =>
       import('./express-courrier/express-courrier.module').then(
         (module) => module.ExpressCourrierModule
       ),
   },
+  {
+    path: 'bad-url',
+    component: PageBadUrlComponent,
+  },
+
 
   // {
   //   path: '**',

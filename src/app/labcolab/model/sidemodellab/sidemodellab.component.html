@@ -1,0 +1,197 @@
+<div class="col-md-12 p-0">
+    <div class="row row-xs clearfix mg-0 pd-0 ">
+        <div class="col-lg-6 p-2 bd-b">
+            <h6 class="tx-echos1">
+                <i class="fas fa-text-size bg-light" style="padding:6px; border-radius: 50%; "></i> Modèles Fichiers
+            </h6>
+        </div>
+        <div class="col-lg-6 p-2 bd-b">
+
+        </div>
+    </div>
+    <div class="row row-xs clearfix mg-0 pd-0 "  *ngIf="!afficheupdate">
+        <div class=" col-lg-4 bd-r ">
+            <div class="row clearfix mg-0 pd-0 justify-content-between  p-1 bg-light bd-b">
+                <div class="col-lg-12 p-0">
+                    <h6 class="tx-echos1"><i class="fas fa-send-backward" style="padding:6px; border-radius: 50%; "></i> Groupes de modèles de fichiers</h6>
+                </div>
+            </div>
+            <div class="card-body p-0 bg-white">
+                <div class="col-md-12">
+                    <div class="row bg-light">
+                        <div class="col-lg-9">
+                            <div class="input-group ">
+                                <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="searchfichlab">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 ">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 p-0 contentstdetail3 scroll-11"  *ngIf="loadlab==true && fichlab;">
+                    <div [ngClass]="{'d-flex align-items-center bd-b pointers':true,'bg-gray':item?.id==detailfichlab?.id}" *ngFor="let item of fichlab | appFilter: searchfichlab:'nom2' ; let i=index;"  (click)="showdetail(item)">
+                        <div class=" p-2">
+                            <h6 class="tx-echos tx-14 taille3"><i class="fas fa-folder-open tx-18 tx-echos"></i> {{item?.nom}}</h6>
+                            <span class=" tx-14 mg-b-5 tx-echos1 pl-2 ">{{item?.created_at |date:'longDate': undefined : 'fr'}}</span>
+                            <span class=" tx-14 mg-b-5 tx-warning mr-1"> Fichiers</span>
+                            <span class="  mg-b-5 tx-echos1 ">{{item?.extensions_count}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="!fichlab">
+                    <div class="col-md-12 text-center noData">
+                        <app-loarding></app-loarding>
+                    </div>
+                </div> 
+                <!-- NO DATA -->
+                <div *ngIf="loadlab==false && fichlab " class="col-md-12">
+                    <br> <br>
+                    <div class="col-md-12 text-center noData">
+                        <app-no-data></app-no-data>
+                    </div>
+                    <br> <br>
+                </div>
+
+            </div>
+        </div>
+        <div  class="col-md-8 bg-light" >
+            <div class="col-md-12 pt-2" *ngIf="!affichedetail">
+                <app-no-data [img]=img [text1]=text1></app-no-data>
+            </div>
+            <div class="col-md-12 p-0" *ngIf="affichedetail">
+                <div class=" row bg-white clearfix mg-0 pd-0">
+                    <div class="col-lg-12 pt-1 tx-echos1">
+                        <h6 class=""><i class="fas fa-folder-open tx-20 tx-echos" style="padding:6px; border-radius: 50%; "></i> 
+                            <span class="tx-echos">{{detailfichlab?.nom}}</span>
+                        </h6>
+                    </div>
+                </div> 
+                <div class="row row-xs mg-0 pd-0 clearfix pt-2">
+                    <div class="col-lg-4">
+                        <div class="input-group ">
+                            <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="searchmodel"> 
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <ul class="nav float-right list-inline justify-content-end">
+                            <li class="nav-item ">
+                                <a class="nav-link3 " data-toggle="tab"  (click)="showvu('card')" ngbTooltip="Vue carte">
+                                    <span class="tx-echos1">
+                                        <i [ngClass]="{'fas fa-th tx-echos1  tx-16':true,'bg-white':!affichecard,'bg-gray':affichecard}" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link3" data-toggle="tab"  (click)="showvu('list')" ngbTooltip="Vue liste">
+                                    <span class="tx-echos1">
+                                        <i [ngClass]="{'fas fa-list tx-echos1  tx-16':true,'bg-white':!affichelist,'bg-gray':affichelist}" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row row-xs mg-0 pd-0 clearfix contentstdetail3 scroll-11 " *ngIf="loarding==true && model ">
+                    <div class="col-lg-12" *ngIf="affichecard">
+                        <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4">
+                            <div class="col-lg-4 p-2"  *ngFor="let items of model|appFilter: searchmodel:'nom2';let i=index;">
+                                <div class="mycard4"  style="border-radius:5% 5% 5% 5%" (click)="getIdmodel(items,'detail',i)">
+                                    <div class="text-center bd-b  p-2"> <i class="fas fa-text-width tx-echos tx-30"></i></div>
+                                    <div class=" text-center p-3">
+                                        <span class="tx-primary tx-bold taille33 py-3"><i class="fas fa-line-height tx-primary tx-20 pr-2"></i>  {{items?.nom}} </span>
+                                        <p class="p-0 tx-20">
+                                            <span class="bg-facebook badge badge-primary tx-white  tx-bolder taille33">  {{items?.created_at | date:'mediumDate' : undefined : 'fr'}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 p-0 pt-3" *ngIf="affichelist">
+                        <div class="table-responsive" >
+                            <table class="table table-hover text-nowrap mb-0" >
+                                <tbody>
+                                    <tr  class="bd-b bd-2 bg-white"  *ngFor="let items of model| appFilter: searchmodel:'nom2';let i=index;" >
+                                        <td>
+                                            <button container="body" ngbTooltip="Voir les details"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="getIdmodel(items,'detail',i)">
+                                                <i class="fal fa-square tx-14 rounded-circle"></i>
+                                            </button>
+                                        </td> 
+                                        <td  class="p-0">
+                                            <div  class="profiles avatar avatar-xs" [ngbTooltip]="items?.inscription?.prenom +' '+ items?.inscription?.nom">
+                                                <ng-container *ngIf="items?.inscription?.photo">
+                                                    <img class="rounded-circle avatar-xs"  [src]="items?.inscription?.photo" alt="avatar">
+                                                </ng-container>
+                                                <ng-container *ngIf="!items?.inscription?.photo">
+                                                    <img class="rounded-circle avatar-xs"  src="./assets/images/avatar-placeholder.png">
+                                                </ng-container>
+                                            </div>
+                                        </td>
+                                        <td (click)="getIdmodel(items,'detail',i)" >
+                                           <span class="taille34"> {{items?.nom}}</span>
+                                        </td>
+                                        <td (click)="getIdmodel(items,'detail',i)">
+                                            {{items?.created_at | date:'mediumDate' : undefined : 'fr'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="!model">
+                    <div class="col-md-12 text-center noData">
+                        <app-loarding></app-loarding>
+                    </div>
+                </div>
+                <!-- NO DATA -->
+                <div *ngIf="loarding==false && model " class="col-md-12 p-0">
+                    <br> <br>
+                    <div class="col-md-12 text-center noData">
+                        <app-no-data [img]=img [text1]=text2></app-no-data>
+                    </div>
+                    <br> <br>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 p-0" *ngIf="afficheupdate" >
+            <div class="col-md-12 p-0 py-2 bg-white">
+                <h6 class="">
+                    <span  class="pointers"><i class="fas fa-circle tx-20" style="padding:6px; border-radius: 50%; "></i></span> {{detailmodel?.nom}}
+                </h6>
+            </div>
+            <div class="col-md-10 offset-md-1 pt-2">
+                    <form [formGroup]="addmodelForm">
+                        <div class="col-md-12 p-0">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class=" form-group">
+                                        <label  class="tx-facebook">Nom&nbsp;</label>
+                                        <input type="text" formControlName="nom" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="document-editor">
+                                            <div class="document-editor__toolbar"></div>
+                                            <div class="document-editor__editable-container">
+                                                <div class="document-editor__editable">
+                                                    <ckeditor  [editor]="Editor" formControlName="contenu" (ready)="onReady($event)" [config]="ckeConfig"  ></ckeditor>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-md-12 text-center pb-2">
+                                    <button  (click)="resetmodel()" class="btn btn-secondary"  [disabled]="statut == true"> Annuler</button>&nbsp;
+                                    <button  type="button" class="btn btn-primary" [disabled]="addmodelForm.invalid || statut==true" (click)="addmodelt()" >
+                                        <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i> Ajouter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+    </div>
+</div>

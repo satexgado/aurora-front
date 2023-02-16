@@ -1,0 +1,238 @@
+<div class="col-md-12 " *ngIf="!vue">
+    <div class="row">
+      <div class="col-md-12 bg-white py-2 pr-2">
+        <button class="btn btn-primary btn-rounded float-right" href="#addMembre" data-toggle="modal" > Ajouter </button>
+      </div>
+    </div>
+ </div> 
+<div class="col-md-12 p-0" *ngIf="loadcolab==true && colab ">
+  <ng-container *ngIf="filterparticip[0]?.value[0]">
+    <div class="col-md-12  py-2 p-0">
+      <h5 class="text-primary">Observateur</h5>
+    </div>
+    <div class="col-md-12 p-0"> 
+      <div class="table-responsive" >
+        <table class="table table-hover text-nowrap mb-0" >
+            <tbody>
+                <tr class="bd-b bd-2 bg-white"  *ngFor="let items of filterparticip[0]?.value; let i=index;" >
+                  <ng-container *ngIf="!vue">
+                    <td>
+                        <button container="body" ngbTooltip="Supprimer"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="showdelete(items?.id)">
+                            <i class="fal fa-times tx-14 rounded-circle tx-danger bg-light" style="padding:6px; border-radius: 50%; "></i>
+                        </button>
+                    </td> 
+                  </ng-container>
+                    <td  class="p-0 pl-2">
+                        <div  class="profiles avatar avatar-xs">
+                            <ng-container *ngIf="items?.participant?.photo">
+                                <img class="rounded-circle avatar-xs"  [src]="items?.participant?.photo" alt="avatar">
+                            </ng-container>
+                            <ng-container *ngIf="!items?.participant?.photo">
+                                <img class="rounded-circle avatar-xs"  src="./assets/images/avatar-placeholder.png">
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td >
+                      <span class="taille33">{{items?.participant?.prenom}} {{items?.participant?.nom}}</span>
+                    </td>
+                    <td >
+                        {{items?.created_at | date:'mediumDate' : undefined : 'fr'}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="filterparticip[1]?.value[1]">
+    <div class="col-md-12 py-2 p-0">
+      <h5 class="text-primary">Collaborateur</h5>
+    </div>
+    <div class="col-md-12 p-0"> 
+      <div class="table-responsive" >
+        <table class="table table-hover text-nowrap mb-0" >
+            <tbody>
+                <tr class="bd-b bd-2 bg-white"  *ngFor="let items of filterparticip[1]?.value; let i=index;" >
+                    <ng-container *ngIf="!vue" >
+                      <td>
+                        <button container="body" ngbTooltip="Supprimer"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="showdelete(items?.id)">
+                            <i class="fal fa-times tx-14 rounded-circle tx-danger bg-light" style="padding:6px; border-radius: 50%; "></i>
+                        </button>
+                      </td> 
+                    </ng-container>
+                    <td  class="p-0 pl-2" >
+                      <div  class="profiles avatar avatar-xs">
+                          <ng-container *ngIf="items?.participant?.photo">
+                              <img class="rounded-circle avatar-xs"  [src]="items?.participant?.photo" alt="avatar">
+                          </ng-container>
+                          <ng-container *ngIf="!items?.participant?.photo">
+                              <img class="rounded-circle avatar-xs"  src="./assets/images/avatar-placeholder.png">
+                          </ng-container>
+                      </div>
+                  </td>
+                    <td >
+                        <span class="taille33">{{items?.participant?.prenom}} {{items?.participant?.nom}}</span>
+                    </td>
+             
+                    <td >
+                        {{items?.created_at | date:'mediumDate' : undefined : 'fr'}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<div class="col-md-12" *ngIf="!colab">
+    <div class="col-md-12 text-center noData">
+        <app-loarding></app-loarding>
+    </div>
+</div>
+<!-- NO DATA -->
+<div *ngIf="loadcolab==false && colab " class="col-md-12 p-0">
+    <br> <br>
+    <div class="col-md-12 text-center noData">
+        <app-no-data></app-no-data>
+    </div>
+    <br> <br>
+</div> 
+<div class="col-md-3" style="margin-top:1.5%;">
+    <div class="modal" id="addMembre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-right" role="document">
+        <div class="modal-content modal-content2">
+          <div class="modal-header bg-white">
+            <p class=" modal-title tx-20 tx-primary" id="exampleModalLabel">
+                <i class="fad fa-user-plus tx-20"></i> Ajouter membre
+            </p>
+          </div>
+          <div class="modal-body bg-light myshared scroll-11">
+            <form class="form" role="form" autocomplete="off" [formGroup]="addaffectresForm">
+              <div class="col-md-12 bg-light ">
+                  <div class="col-md-12  mt-1">
+                    <div class="form-group">
+                      <label class="p-0 m-1"> Membre(s) </label>
+                      <div class="input-group p-0 m-0" style="border-bottom: 0px !important">
+                        <input type="text" class="form-control no-radius" min="1" id="membres" formControlName="membres"
+                          placeholder="Chercher par téléphone,email,nom,prenom,..." aria-label="Username"
+                          aria-describedby="basic-addon1">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1"><button
+                              (click)="getMembre(addaffectresForm.value.membres)"
+                              [disabled]="!addaffectresForm.value.membres"
+                              style="background:none !important; border:none !important; cursor:pointer"><i
+                                class="fal fa-spinner spin" *ngIf="statutsearch==true"></i><i
+                                class="fal fa-search"></i></button></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12" *ngIf="membres">
+                      <ng-container *ngIf="afficheresultsearch">
+                          <div class="bd-b" *ngFor="let c of membres">
+                            <div class="card-body p-0 bg-white">
+                              <div class="col-md-12 p-1">
+                                <div class="row align-items-center">
+                                  <div class="col-md-3">
+                                    <ng-container *ngIf="c?.photo">
+                                      <img class="rounded-circled user-circle-img" [src]="c?.photo" alt="card image" >
+                                    </ng-container> 
+                                    <ng-container *ngIf="!c?.photo">
+                                        <img class="rounded-circle user-circle-img" src="./assets/images/avatar-placeholder.png">
+                                    </ng-container>
+                                  </div>
+                                  <div class="col-md-7">
+                                    {{c?.prenom}}&nbsp;{{c?.nom}}
+                                  </div>
+                                  <div class="col-md-1">
+                                    <input type="checkbox" id="customcheck1" (click)="addValue(c)" class="checkClass bg-danger">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </ng-container>
+                  </div>
+                  <div class="col-md-12" *ngIf="valueequipe[0]">
+                      <div class="col-md-12">
+                         <h5 class="text-primary"> Les membres</h5>
+                      </div>
+                      <div class="bd-b" *ngFor="let c of valueequipe">
+                            <div class="card-body p-1 bg-white">
+                              <div class="col-md-12 p-0 ">
+                                <div class="row align-items-center">
+                                  <div class="col-md-3">
+                                    <ng-container *ngIf="c?.photo">
+                                      <img class="rounded-circled user-circle-img" [src]="c?.photo" alt="card image" >
+                                    </ng-container>
+                                    <ng-container *ngIf="!c?.photo">
+                                        <img class="rounded-circle user-circle-img" src="./assets/images/avatar-placeholder.png">
+                                    </ng-container>
+                                  </div>
+                                  <div class="col-md-7  ">
+                                    {{c?.prenom}}&nbsp;{{c?.nom}}
+                                  </div>
+                                  <div class="col-md-1">
+                                    <span (click)="removeMember(i)" class="pointers"> <i class="fal fa-times tx-danger"></i></span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                      </div>
+                  </div>
+                  <div class="col-md-12 pt-2" >
+                    <div class=" form-group">
+                        <label  class="tx-facebook">Type&nbsp;</label>
+                        <div class="input-group">
+                            <select class="custom-select no-radius scroll-11 form-control"  formControlName="type">
+                                <option value="" disabled>Type</option>
+                                <option *ngFor="let q of typeparticipant " [value]="q">
+                                    {{q}}
+                                </option>
+                            </select> 
+                        </div>
+                    </div>
+                  </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <div class="col-md-12 text-center">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal" (click)="resetmember()" [disabled]="statut==true">
+                Annuler 
+              </button>
+              &nbsp;
+              <button type="submit" class="btn btn-primary" (click)="addmember()" [disabled]="addaffectresForm.invalid || !valueequipe[0] || statut==true">
+                <i class="fas fa-spinner fa-spin" *ngIf="statut==true"></i> Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deletebaseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog conf2" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-white">
+        <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-trash tx-20"></i> Supprimer</h5>
+      </div>
+      <div class="modal-body col-md-12 text-center">
+          <h5>
+              Voulez vous vraiment supprimer ?
+          </h5>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="reset" class="btn btn-secondary" data-dismiss="modal" [disabled]="statut==true">
+          Annuler
+        </button>
+        <button class="btn btn-primary" type="submit" (click)="deletebase()" [disabled]="statut==true">
+           Supprimer
+          <i *ngIf="statut==true" class="fas fa-spinner fa-spin"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

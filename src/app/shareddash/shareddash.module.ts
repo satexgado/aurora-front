@@ -13,6 +13,10 @@ import { FilterPipe } from './pipe/filter.pipe';
 import { MargePipe } from './pipe/marge.pipe';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { EscapeHtmlPipe } from './pipe/afficheHTML.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StatutsuivPipe } from './pipe/statutsuiv.pipe';
+import { StatutrapportPipe } from './pipe/statutrapport.pipe';
+import { StatutfilelabPipe } from './pipe/statutfilelab.pipe';
 // import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
@@ -24,7 +28,10 @@ import { EscapeHtmlPipe } from './pipe/afficheHTML.pipe';
     EscapeHtmlPipe,
     DeleteConfirmationComponent,
     CommentactionComponent,
-    PartageComponent
+    PartageComponent,
+    StatutsuivPipe,
+    StatutrapportPipe,
+    StatutfilelabPipe
   ],
   imports: [
     CommonModule,
@@ -33,7 +40,8 @@ import { EscapeHtmlPipe } from './pipe/afficheHTML.pipe';
     FormsModule,
     RouterModule,
     CKEditorModule,
-    NotificationModule
+    NotificationModule,
+    NgbModule
     // NgxPaginationModule,
   ],
   exports:[
@@ -43,6 +51,8 @@ import { EscapeHtmlPipe } from './pipe/afficheHTML.pipe';
     MargePipe,
     FilterPipe,
     EscapeHtmlPipe,
+    StatutsuivPipe,
+    StatutrapportPipe,
     ColorPickerModule,
     DeleteConfirmationComponent,
     FormsModule,
@@ -50,7 +60,10 @@ import { EscapeHtmlPipe } from './pipe/afficheHTML.pipe';
     CommentactionComponent,
     RouterModule,
     CKEditorModule,
-    NotificationModule
+    NotificationModule,
+    StatutfilelabPipe,
+    NgbModule
+
     // NgxPaginationModule,
   ]
 })
