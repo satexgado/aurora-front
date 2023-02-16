@@ -6,6 +6,7 @@ import { DossierComponent } from './dossier.component';
 import { EditComponent } from './edit/edit.component';
 import { InlineEditorModule } from 'src/app/inline-editor/inline-editor.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
         SharedModule,
         InlineEditorModule,
         InfiniteScrollModule,
+        AngularMultiSelectModule,
     ],
     exports: [
         DossierComponent,

@@ -25,43 +25,26 @@
         </div>
 
         <div class="card-body p-0 ">
-            <div class="row row-xs bd-b mg-0 pd-0 clearfix">
-
-                <div class="col-lg-8">
-                    <div class="input-group ">
-                        <input type="text" class="form-control  border-0 " placeholder="Recherches...">
-                    </div>
-                </div>
-
-                <div class="col-lg-4 ">
-                    <ul class="nav float-right list-inline justify-content-end">
-
-                        <li class="nav-item ">
-                            <a class="nav-link3 " data-toggle="tab" href="#"><span
-                          class="tx-echos">
-                          <i class="fas fa-plus-circle bg-yeto tx-16 tx-white"
-                              style="padding:6px; border-radius:50%"></i> </span></a>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
             <div class="d-flex align-items-center flex-wrap bd-b" *ngIf="allUserStructures && allUserStructures.length;">
 
-                <div class="p-2" *ngFor="let structure of allUserStructures" [class.accent-facebook-left]="selectedStructure && structure.id == selectedStructure.id" (click)="onSetSelected(structure)">
+                <div class="p-2 cursor-pointer" *ngFor="let structure of allUserStructures" [class.accent-facebook-left]="selectedStructure && structure.id == selectedStructure.id" (click)="onSetSelected(structure)">
                     <h6 class="tx-echos tx-14"><i class="fas fa-folder-open tx-18 tx-echos"></i> {{structure.cigle}} : {{structure.libelle | titlecase}}</h6>
+                    <span class=" mr-1  tx-14 mg-b-5 tx-echos pl-2 ">
+                      <i class="fas fa-folder tx-echos tx-14 mg-b-5"></i>
+                    </span>
+                    <span class=" mr-1   mg-b-5 tx-echos ">{{structure.cr_dossiers_count}}</span>
                     <span class=" mr-1  tx-14 mg-b-5 tx-success pl-2 ">
                       <i class="fas fa-envelope tx-14 mg-b-5 tx-success"></i>
                     </span>
-                    <span class=" mr-1   mg-b-5 tx-success ">58</span>
+                    <span class=" mr-1   mg-b-5 tx-success ">{{structure.nb_courrier_entrants}}</span>
                     <span class=" mr-1  tx-14 mg-b-5 tx-warning ">
                       <i class="fas fa-envelope-open tx-14 mg-b-5 tx-warning"></i>
                     </span>
-                    <span class=" mr-1  mg-b-5 tx-warning">10 </span>
+                    <span class=" mr-1  mg-b-5 tx-warning">{{structure.nb_courrier_sortants}} </span>
                     <span class=" mr-1  tx-14 mg-b-5 tx-echos1 ">
                       <i class="fas fa-envelope-open-text tx-14 mg-b-5 tx-echos1"></i>
                     </span>
-                    <span class=" mr-1  mg-b-5 tx-echos1">10 </span>
+                    <span class=" mr-1  mg-b-5 tx-echos1">{{structure.nb_courrier_internes}} </span>
                 </div>
             </div>
 
@@ -73,6 +56,14 @@
     <div class="col-lg-8 ">
         <div class="grid-container">
             <div class="sidebar" [class.sidebar_small]="modalData">
+              <div class="col-12  mg-0 pd-0 clearfix   bd-b" *ngIf="selectedStructure">
+                <div class="d-flex ">
+                  <button class="btn btn-sm btn-link" (click)="onSetSelected(selectedStructure)">
+                    <i class="fal fa-2x fa-arrow-circle-left"></i>
+                  </button>
+                    <h6 class="tx-echos"><i class="fas fa-folder" style="padding:6px; border-radius: 50%; "></i> Dossiers : {{selectedStructure.libelle}}</h6>
+                </div>
+              </div>
                 <div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
 
                     <div class="col-lg-7">
@@ -110,9 +101,9 @@
                                         <span class=" mr-1 bg-light tx-echos1  tx-bolder">{{dossier.nb_courrier_internes}}</span>
                                     </p>
                                     <p class="">
-                                        <span class=" mr-1 tx-bold" container="body" ngbTooltip="Modifier" (click)="onShowUpdateForm(dossier) "> <i class="fas fa-edit tx-echos"></i> </span>
-                                        <span class=" mr-1 tx-bold" container="body" ngbTooltip="Dupliquer" (click)="onShowCreateForm(dossier) "> <i class="fas fa-clone tx-echos"></i> </span>
-                                        <span class=" mr-1 tx-bold" container="body" ngbTooltip="Supprimer" (click)="onDelete(dossier) "> <i class="fas fa-times-square tx-echos"></i> </span>
+                                        <span class=" mx-2 tx-bold" container="body" ngbTooltip="Modifier" (click)="onShowUpdateForm(dossier) "> <i class="fas fa-edit tx-echos"></i> </span>
+                                        <span class=" mx-2 tx-bold" container="body" ngbTooltip="Dupliquer" (click)="onShowCreateForm(dossier) "> <i class="fas fa-clone tx-echos"></i> </span>
+                                        <span class=" mx-2 tx-bold" container="body" ngbTooltip="Supprimer" (click)="onDelete(dossier) "> <i class="fas fa-times-square tx-echos"></i> </span>
                                     </p>
                                 </div>
 
@@ -286,16 +277,16 @@
                                               <!-- NOm -->
                                               <div class="my-3 " style="font-size: 16px;">
                                                   <span class="mr-2">
-                                  Provenance:
-                                </span>
+                                                    Provenance:
+                                                  </span>
                                                   <span class="tx-rubik tx-dark">{{courrier.provenance?.libelle}}</span>
                                               </div>
 
                                               <!-- NOm -->
                                               <div class="my-3 " style="font-size: 16px;">
                                                   <span class="mr-2">
-                                    Expediteur:
-                                  </span>
+                                                    Expediteur:
+                                                  </span>
                                                   <span class="tx-rubik tx-dark">{{courrier.expediteur?.libelle}}</span>
                                               </div>
                                           </div>
@@ -304,8 +295,8 @@
                                               <!-- NOm -->
                                               <div class="my-3 " style="font-size: 16px;text-align: justify;">
                                                   <span class="mr-2">
-                                  Description:
-                                </span>
+                                                    Description:
+                                                  </span>
                                                   <span class="tx-rubik tx-dark">{{courrier.courrier?.commentaire}}</span>
                                               </div>
                                           </div>
@@ -359,16 +350,16 @@
                                           <!-- Code -->
                                           <div class="my-3  " style="font-size: 16px;" *ngIf="courrier.courrier?.dossier">
                                               <span class="mr-2">
-                                          Dossier:
-                                        </span>
+                                                Dossier:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.dossier?.libelle}}</span>
                                           </div>
 
                                           <!-- Code -->
                                           <div class="my-3  " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Code:
-                                        </span>
+                                                  Code:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.libelle}}</span>
                                           </div>
 
@@ -376,8 +367,8 @@
                                           <!-- CNI -->
                                           <div class="my-3  " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Objet:
-                                        </span>
+                                                  Objet:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.objet}}</span>
                                           </div>
 
@@ -385,8 +376,8 @@
                                           <!-- Email  -->
                                           <div class="my-3 " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Type:
-                                        </span>
+                                                  Type:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.type?.libelle}}</span>
                                           </div>
 
@@ -394,24 +385,24 @@
                                           <!-- Addresse -->
                                           <div class="my-3 " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Nature:
-                                        </span>
+                                                  Nature:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.nature?.libelle}}</span>
                                           </div>
 
                                           <!-- NOm -->
                                           <div class="my-3 " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Structure:
-                                        </span>
+                                                  Structure:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.structure?.libelle}}</span>
                                           </div>
 
                                           <!-- Addresse -->
                                           <div class="my-3 " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Ajouter par:
-                                        </span>
+                                                  Ajouter par:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.created_by?.libelle}}</span>
                                           </div>
                                       </div>
@@ -420,24 +411,24 @@
                                           <!-- Numero -->
                                           <div class="my-3 " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Numero Courrier:
-                                        </span>
+                                                  Numero Courrier:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.numero}}</span>
                                           </div>
 
                                           <!-- Urgence -->
                                           <div class="my-3 " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Urgence:
-                                        </span>
+                                                  Urgence:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.urgence?.libelle}}</span>
                                           </div>
 
                                           <!-- Statut -->
                                           <div class="my-3 " style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Statut:
-                                        </span>
+                                                  Statut:
+                                              </span>
                                               <span class="text-warning mb-0" *ngIf="!courrier.courrier?.cloture">{{courrier.courrier?.statut?.libelle | titlecase}}</span>
                                               <span class="mb-0" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
                                                   {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
@@ -448,16 +439,16 @@
                                           <!-- Role -->
                                           <div class="my-3" style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Date de redaction:
-                                        </span>
+                                                  Date de redaction:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{ courrier.courrier?.date_redaction | date:'mediumDate' : undefined : 'fr'}}</span>
                                           </div>
 
                                           <!-- Telephone -->
                                           <div class="my-3" style="font-size: 16px;">
                                               <span class="mr-2">
-                                            Date envoie:
-                                        </span>
+                                                  Date envoie:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.date_envoie | date:'mediumDate' : undefined : 'fr'}}</span>
                                           </div>
                                       </div>
@@ -466,8 +457,8 @@
                                           <!-- NOm -->
                                           <div class="my-3 " style="font-size: 16px;text-align: justify;">
                                               <span class="mr-2">
-                                            Description:
-                                        </span>
+                                                  Description:
+                                              </span>
                                               <span class="tx-rubik tx-dark">{{courrier.courrier?.commentaire}}</span>
                                           </div>
                                       </div>

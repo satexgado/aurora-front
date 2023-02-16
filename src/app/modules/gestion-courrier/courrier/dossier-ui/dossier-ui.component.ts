@@ -56,6 +56,7 @@ export class CourrierDossierUiComponent extends EditableListComponent implements
   sortantHelper: ResourceScrollableHelper;
   interneHelper: ResourceScrollableHelper;
   subscription: Subscription = new Subscription();
+  changeIndicator = 0;
 
   onSelectDossier(dossier: ICrDossier) {
     if(!dossier) {
@@ -150,9 +151,9 @@ export class CourrierDossierUiComponent extends EditableListComponent implements
       }
     });
 
-    this.structureService.getByUser(this.authService.user.id).subscribe(
+    this.structureService.getByUserWCountCourrier(this.authService.user.id).subscribe(
       (data)=> {
-        this.allUserStructures = data ? data.data : [];
+        this.allUserStructures = data ? data : [];
       }
     );
 

@@ -89,6 +89,12 @@ export class StructureService extends BaseService<Structure> {
       .pipe(tap(this.onlyErrorResponseHandler()));
   }
 
+  getByUserWCountCourrier(user: number) {
+    return this.factory
+      .get(`users/${user}/structuresWCountCourriers`)
+      .pipe(tap(this.onlyErrorResponseHandler()));
+  }
+
   update(id: number, data: Object) {
     return this.factory.put(`${this.endPoint}/${id}`, data).pipe(
       tap({
