@@ -63,7 +63,7 @@
                     </app-users-image-grouped>
                 </div>
 
-                <div *ngIf="single.charge_courriers.length" class="d-flex flex-column align-items-end">
+                <div *ngIf="single.charge_courriers?.length" class="d-flex flex-column align-items-end">
                     <p class="mr-2">Chargés du courrier:</p>
                     <app-users-image-grouped [maxSize]="true" [users]="single.charge_courriers" [displayCount]="5" [tooltipPlacement]="'left'">
                     </app-users-image-grouped>

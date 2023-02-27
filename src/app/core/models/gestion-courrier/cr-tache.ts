@@ -11,7 +11,7 @@ export interface ICrTache extends IBase {
   date_limit: Date;
   courrier_id: number;
   inscription_id: number;
-  courrier: ICrCourrier;
+  courriers: ICrCourrier[];
   structures: any[];
   statut_color: string;
   statut_bgcolor: string;
@@ -73,8 +73,8 @@ export class CrTache implements ICrTache {
     @hasOneMap({field:'inscription', class: User})
     inscription: IUser = null;
 
-    @hasOneMap({field:'courrier', class: CrCourrier})
-    courrier: ICrCourrier = null;
+    @hasManyMap({field:'courrier', class: CrCourrier})
+    courriers: ICrCourrier[] = null;
 
     get affectations() {
       return [...this.responsables, ...this.structures];

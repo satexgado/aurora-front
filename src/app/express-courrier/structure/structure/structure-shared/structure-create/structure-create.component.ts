@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { BaseCreateComponent } from 'src/app/shared/base-component/base-create.component';
 import { StructureTypeService } from '../../../structure-type.service';
 import { StructureService } from '../../structure.service';
+import { NgxPicaImageService, NgxPicaService } from '@digitalascetic/ngx-pica';
 
 @Component({
   selector: 'app-structure-create',
@@ -15,10 +16,13 @@ export class StructureCreateComponent
   implements OnInit
 {
   @Input() ancestor: any;
+  imageUrl: any;
 
   constructor(
     public structureService: StructureService,
-    public dependancies: StructureDependancies
+    public dependancies: StructureDependancies,
+    public ngxPicaService: NgxPicaService,
+    public ngxPicaImageService: NgxPicaImageService
   ) {
     super(structureService);
   }
@@ -33,8 +37,8 @@ export class StructureCreateComponent
       type: [structure ? [structure.type] : null, [Validators.required]],
       cigle: [structure?.cigle, Validators.required],
       description: [structure?.description, Validators.required],
-      parent: [structure && structure.parent ? [structure.parent] : null],
-      image: [structure?.libelle],
+      parent: [structure && structure.parent ? [structure.parent] : null, Validators.required],
+      // image: [structure?.libelle],
     });
   }
 
@@ -76,9 +80,41 @@ export class StructureCreateComponent
           this.initForm();
           this.formData = new FormData();
           this.helper.notification.toastSuccess();
+          this.dependancies.data.structures = [];
+          this.imageUrl = null;
         });
     } else {
       this.helper.notification.alertDanger('Formulaire invalide');
     }
+  }
+
+   // Chercher le type de change
+   onFileChanged(event: any) {
+    const files: File[] = event.target.files;
+
+    if (files?.length && this.ngxPicaImageService.isImage(files[0])) {
+      const image = files[0];
+      this.formData.append('image', image);
+      this.ngxPicaService
+        .resizeImage(image, 150, 150)
+        .subscribe((imageRetailler) => {
+          // this.formData.append(
+          //   'photo_min',
+          //   new File([imageRetailler], imageRetailler.name, {
+          //     type: imageRetailler.type,
+          //   })
+          // );
+
+          this.displayImage(imageRetailler);
+        });
+    }
+  }
+
+  displayImage(image: File): void {
+    let reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = () => {
+      this.imageUrl = reader.result;
+    };
   }
 }

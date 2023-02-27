@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/shared';
 import { AppTitleService } from 'src/app/shared/services';
@@ -17,7 +17,7 @@ export class SiderapportComponent implements OnInit {
   public addticketrapForm: any=FormGroup;
   statut: boolean=false;
   ticketrap:any;
-  loarding:boolean=false; 
+  loarding:boolean=false;
   detailticketrap:any;
   idticketrap:any;
   searchticketrap = '';
@@ -33,25 +33,20 @@ export class SiderapportComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,public crud:CrudService, public title:AppTitleService,
     public notification:NotificationService,public informe:InformeService,public router:Router)
-    { 
+    {
       this.title.setTitle("Rapports des courriers");
     }
 
   ngOnInit(): void {
-    this.getcourrier();
     this.getticketrap(this.urlpost);
     this.initaddticketrapForm();
   }
- 
-  getcourrier(){
-    this.crud.get('mycourrier').subscribe((data)=>{
-      this.courrier=data;
-    });
-  }
+
     //Initial add services form
     initaddticketrapForm() {
       this.addticketrapForm = this.formBuilder.group({
         courrier : ['',Validators.required],
+        courrierDT : [null],
         orientation : ['',Validators.required],
         modalite : ['',Validators.required],
         date_modalite : ['',Validators.required],
@@ -60,6 +55,23 @@ export class SiderapportComponent implements OnInit {
         duree : ['',Validators.required],
         niveau : ['',Validators.required]
       });
+      this.onChangeCourrier();
+    }
+
+    onChangeCourrier() {
+      const courriereIdControl = this.addticketrapForm.get('courrier') as FormControl;
+      const courriereControl = this.addticketrapForm.get('courrierDT') as FormControl;
+      courriereControl.valueChanges.subscribe(
+        (value)=>{
+          if(value && value.length) {
+            courriereIdControl.setValue(value[0].id);
+          } else {
+            courriereIdControl.setValue(null);
+          }
+          courriereIdControl.markAsDirty();
+          courriereIdControl.markAsTouched();
+        }
+      )
     }
 
     getticketrap(url:any){
@@ -74,7 +86,6 @@ export class SiderapportComponent implements OnInit {
       });
     }
 
- 
     //Function to add data to service form
   add(){
       this.statut=true;
@@ -86,7 +97,7 @@ export class SiderapportComponent implements OnInit {
       var month=date.getMonth() + 1;
       var day = date.getDate();
       formValue.date_exp=myear+'-'+month+'-'+day;
-      
+
       this.crud.post(this.urlpost,formValue).subscribe({
         next:(data)=>{
           this.ticketrap.unshift(data);
@@ -98,7 +109,7 @@ export class SiderapportComponent implements OnInit {
           this.statut=false;
           this.notification.onError("Nous n'avons pas pu effectuer cette opération. Veuillez essayer de nouveau");
         }
-      });    
+      });
   }
   resetValue(){
     this.statut=false;
@@ -113,10 +124,10 @@ export class SiderapportComponent implements OnInit {
     if(this.detailticketrap){
        if($name=='detail'){
         this.affichedetail='ok';
-        this.router.navigate(['/rapport/'+this.idticketrap]);
-       } 
+        this.router.navigate(['/courrier/rapport/'+this.idticketrap]);
+       }
     }
-   
+
   }
 
   listenmodalite($form,$event){
@@ -130,7 +141,7 @@ export class SiderapportComponent implements OnInit {
       var month=mydate.getMonth() + 1;
       var day = mydate.getDate();
       var currentyear=myear+'-'+month+'-'+day;
-      $form.controls['date_modalite'].setValue(currentyear); 
+      $form.controls['date_modalite'].setValue(currentyear);
     }
   }
   verifyDate($form:any,$name){

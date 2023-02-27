@@ -33,7 +33,7 @@ export class StructureOrganigrammeComponent
   getData(): void {
     this.loading = true;
     this.structureService
-      .getOldestAncestor(this.authService.structuresID[0])
+      .getOldestAncestor(this.authService.structuresID[0]??1)
       .subscribe(() => {
         this.loading = false;
       });

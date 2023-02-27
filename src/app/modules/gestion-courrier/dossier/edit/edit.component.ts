@@ -15,7 +15,7 @@ import { Helper } from 'src/app/helpers/helper/helper';
 export class EditComponent extends BaseEditComponent  {
   heading = 'dossier';
   @Input() item: CrDossier = new CrDossier();
-
+  @Input() structure: any = null;
   dependancies = {
     structures: [],
   };
@@ -69,6 +69,12 @@ export class EditComponent extends BaseEditComponent  {
   }
 
   createFormGroup(item: ICrDossier) {
+
+    if(this.structure) {
+      item.structure_id = this.structure.id;
+      item.structure = this.structure;
+    }
+
     return this.formBuilder.group({
       // 'structure_id': [item.structure_id, Validators.required],
       // 'responsable_id': [item.responsable_id, Validators.required],

@@ -5,7 +5,7 @@
   container="body"
        [ngbTooltip]="user.nom_complet"
        [placement]="tooltipPlacement"
-       *ngFor="let user of users.slice(0, displayCount)">
+       *ngFor="let user of users.slice(0, displayCount); trackBy: trackByFn">
   <button class="users-grouped__more"
           *ngIf="users.length > displayCount">
     +{{ users.length - displayCount }}

@@ -9,12 +9,15 @@ import { InlineEditorModule } from 'src/app/inline-editor/inline-editor.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CustomInputModule } from 'src/app/shared/components/custom-input/custom-input.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { AffectationTacheCourrierEditComponent } from './affectation-courrier/affectation-courrier.component';
+import { CourrierSharedModule } from '../courrier-shared/courrier-shared.module';
 
 @NgModule({
     declarations: [
         TacheComponent,
         TacheStatutEditComponent,
         AffectationTacheEditComponent,
+        AffectationTacheCourrierEditComponent,
         EditComponent
     ],
     imports: [
@@ -23,9 +26,12 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
         InlineEditorModule,
         InfiniteScrollModule,
         CustomInputModule,
-        AngularMultiSelectModule
+        AngularMultiSelectModule,
+        CourrierSharedModule
     ],
-    entryComponents: [EditComponent, AffectationTacheEditComponent, TacheStatutEditComponent],
+    entryComponents: [EditComponent, AffectationTacheEditComponent,
+      AffectationTacheCourrierEditComponent,
+      TacheStatutEditComponent],
 })
 export class TacheModule {
 

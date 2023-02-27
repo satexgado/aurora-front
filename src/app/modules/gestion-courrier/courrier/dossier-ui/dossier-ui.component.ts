@@ -7,8 +7,8 @@ import { AppTitleService, CacheService } from 'src/app/shared/services';
 import { EditableListComponent } from 'src/app/shared';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
-import { of, Subscription } from 'rxjs';
-import { ICrDossier } from 'src/app/core/models/gestion-courrier/cr-dossier';
+import { of, Subject, Subscription } from 'rxjs';
+import { CrDossier, ICrDossier } from 'src/app/core/models/gestion-courrier/cr-dossier';
 import {
   trigger,
   state,
@@ -25,11 +25,13 @@ import { AuthService } from 'src/app/express-courrier/auth/auth.service';
 import { IBase } from 'src/app/core/models/base.interface';
 import { CrCourrierEntrantFactory } from 'src/app/core/services/gestion-courrier/cr-courrier-entrant';
 import { CrCourrierSortantFactory } from 'src/app/core/services/gestion-courrier/cr-courrier-sortant';
+import { BaseColumnIdFilterPipe } from 'src/app/shared/pipes';
 
 @Component({
   selector: 'app-courrier-dossier-ui',
   templateUrl: 'dossier-ui.component.html',
   styleUrls: ['./dossier-ui.component.css'],
+  providers: [BaseColumnIdFilterPipe],
   animations: [
     trigger('flyInOut', [
       state('in', style({ transform: 'translateX(0)' })),
@@ -108,6 +110,7 @@ export class CourrierDossierUiComponent extends EditableListComponent implements
     protected titleservice: AppTitleService,
     public serviceCourrierUi: CourrierUiService,
     protected structureService: StructureService,
+    protected pipeBaseColumnId: BaseColumnIdFilterPipe,
     public authService: AuthService,
     private router: Router,
     public route: ActivatedRoute,
@@ -115,6 +118,26 @@ export class CourrierDossierUiComponent extends EditableListComponent implements
     super(new ResourceScrollableHelper(new CrDossierFactory()));
     this.titleservice.setTitle('mes Dossiers')
     this.modalService = modalService;
+  }
+
+  recount() {
+    if(!this.allUserStructures) {
+      return;
+    }
+    this.dataHelper.data$.subscribe(
+      (data) => {
+        this.allUserStructures = this.allUserStructures.map(
+          structure => {
+            let dossiers = this.pipeBaseColumnId.transform(data,[{column: 'structure', filterBase: [structure]}], 0) as CrDossier[];
+            structure['cr_dossiers_count'] = dossiers.length;
+            structure['nb_courrier_entrants'] =  dossiers.reduce((sum, current) => sum + current.nb_courrier_entrants, 0);
+            structure['nb_courrier_sortants'] =  dossiers.reduce((sum, current) => sum + current.nb_courrier_sortants, 0);
+            structure['nb_courrier_internes'] =  dossiers.reduce((sum, current) => sum + current.nb_courrier_internes, 0);
+            return structure;
+          }
+        )
+      }
+    )
   }
 
   ngOnInit() {
@@ -192,16 +215,46 @@ export class CourrierDossierUiComponent extends EditableListComponent implements
     this.onSelectDossier(null);
   }
 
-  onShowCreateForm(item?, modal = this.editModal) {
-    super.onShowCreateForm(item).subscribe(
-       (data:ICrDossier)=>{
-         if(!this.parentData)  {return;}
-         const service = new CrDossierFactory();
-         service.attachAffectation(data.id, this.parentData.relationName+'s', this.parentData.relationId).subscribe();
-       }
-    )
-    return of(true);
- }
+ onShowCreateForm(item?, modal = this.editModal) {
+  let _result$ = new Subject<any>();
+  const result$ = _result$.asObservable();
+  if (modal) {
+      const modalRef = this.modalService.open(this.editModal, { size: 'lg', centered: true, backdrop: 'static' });
+      modalRef.componentInstance.isUpdating = false;
+      modalRef.componentInstance.title = 'Créer';
+      if((!item) && this.selectedStructure) {
+        modalRef.componentInstance.structure = this.selectedStructure;
+      }
+
+      // In case it's create from existing element
+      if (item) {
+        modalRef.componentInstance.title = item.libelle ? `Créer comme: ${item.libelle}` : 'Créer';
+        modalRef.componentInstance.item = item;
+      }
+
+      modalRef.componentInstance.newItem.subscribe(
+        (data: any) => {
+          this.dataHelper.addItem(data);
+          this.recount();
+          _result$.next(data);
+        }
+      );
+  }
+
+  return result$;
+}
+
+onShowUpdateForm(item?, modal = this.editModal) {
+  super.onShowUpdateForm(item).subscribe(
+     (data:ICrDossier)=>{
+      this.recount();
+       if(!this.parentData)  {return;}
+       const service = new CrDossierFactory();
+       service.attachAffectation(data.id, this.parentData.relationName+'s', this.parentData.relationId).subscribe();
+     }
+  )
+  return of(true);
+}
 
  openModal(content, data: ICrDossier) {
   this.modalData = data;

@@ -35,7 +35,7 @@ export class ChooseItem2Component implements OnInit {
 
   @Input() closeOnSelect = true;
 
-  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal, private notificationService: NotificationService) {
+  constructor(public activeModal: NgbActiveModal, public modalService: NgbModal, public notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -43,13 +43,15 @@ export class ChooseItem2Component implements OnInit {
 
   userCanSelect(item): boolean {
     let result = true;
-    this.cantSelectList.forEach(
-      element => {
-        if (element.data.includes(item[element.searchColumn])) {
-          result = false;
+    if(this.cantSelectList) {
+      this.cantSelectList.forEach(
+        element => {
+          if (element.data.includes(item[element.searchColumn])) {
+            result = false;
+          }
         }
-      }
-    );
+      );
+    }
     return result;
   }
 

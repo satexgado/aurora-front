@@ -1,44 +1,3 @@
-<div class="row pd-y-8 bd-b bd-2">
-    <div class="col-lg-3 ">
-        <h6 class="tx-echos1"><i class="fas fa-mailbox  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Gestion de courriers</h6>
-    </div>
-    <div class="col-lg-9">
-        <div class="nav-tabs-top  ">
-            <ul class="nav   bg-white float-right list-inline justify-content-end">
-                <li class="nav-item ">
-                    <a class="nav-link3 " data-toggle="tab" href="#dossiers">
-                        <i class="fas fa-folder-open tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Dossiers</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a class="nav-link " data-toggle="tab" id="personal_chat_tab" href="#courrier_entrant" style="padding: 5px 12px;">
-                        <i class="fas fa-envelope tx-18  tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Entrants </span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link3 " data-toggle="tab" href="#courrier_sortant">
-                        <i class="fas fa-envelope-open tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Sortants</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link3 " data-toggle="tab" href="#courrier_interne">
-                        <i class="fas fa-envelope-open-text tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos1">  Internes</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link3 " data-toggle="tab" href="#rapports">
-                        <i class="fas fa-clock tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Rapports</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link3 " data-toggle="tab" href="#suivis">
-                        <i class="fas fa-history tx-18 tx-echos1 bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos1"> Suivis</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-md-12">
             <div class="row  justify-content-between  pt-2 bd-b ">
@@ -50,21 +9,21 @@
                         <li class="nav-item ">
                             <a class="nav-link3 " data-toggle="tab" href="#">
                                 <span  class="tx-echos">
-                                    <i class="fas fa-envelope  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i> 
+                                    <i class="fas fa-envelope  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i>
                                 </span>
                             </a>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link3 " data-toggle="tab" href="#">
                                 <span class="tx-echos">
-                                    <i class="fas fa-envelope-open  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i> 
+                                    <i class="fas fa-envelope-open  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i>
                                 </span>
                             </a>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link3 " data-toggle="tab" href="#">
                                 <span class="tx-echos">
-                                    <i class="fas fa-envelope-open-text  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i> 
+                                    <i class="fas fa-envelope-open-text  tx-16 tx-echos1 bg-light" style="padding:6px; border-radius:50%"></i>
                                 </span>
                             </a>
                         </li>
@@ -88,9 +47,9 @@
                             <div class="col-lg-3 ">
                                 <ul class="nav float-right list-inline justify-content-end">
                                     <li class="nav-item ">
-                                        <a class="nav-link3 " data-toggle="modal" href="#ticketModal" >
+                                        <a class="nav-link3 " data-toggle="modal" href="#ticketModal">
                                             <span class="tx-echos">
-                                                <i class="fas fa-plus-circle bg-yeto tx-16 tx-white" style="padding:6px; border-radius:50%"></i> 
+                                                <i class="fas fa-plus-circle bg-yeto tx-16 tx-white" style="padding:6px; border-radius:50%"></i>
                                             </span>
                                         </a>
                                     </li>
@@ -152,7 +111,7 @@
                 <h5 class="modal-title tx-primary" id="exampleModalLongTitle"><i class="fad fa-plus-circle tx-20"></i> Ticket de Suivi</h5>
                 <button type="button" class="close" [disabled]="statut==true"  (click)="resetValue()"style="color:  #0000FF ">
                     <span aria-hidden="true">&times;</span>
-                </button> 
+                </button>
             </div>
             <div class="modal-body scroll-11">
                 <div class="col-md-10 offset-md-1">
@@ -161,15 +120,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class=" form-group">
-                                        <label  class="tx-facebook">Courrier&nbsp;</label>
-                                        <div class="input-group">
-                                            <select class="custom-select no-radius scroll-11 form-control"  formControlName="courrier">
-                                            <option value="" disabled>Courrier</option>
-                                            <option *ngFor="let q of courrier " [value]="q?.id">
-                                                {{q?.objet}}
-                                            </option>
-                                            </select> 
-                                        </div>
+                                          <label  class="tx-facebook">Courrier&nbsp;</label>
+                                          <app-courrier-select [formControlName]="'courrier'"></app-courrier-select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -181,7 +133,7 @@
                                             <option *ngFor="let q of mobilesuivi " [value]="q">
                                                 {{q}}
                                             </option>
-                                            </select> 
+                                            </select>
                                         </div>
                                         </div>
                                     </div>
@@ -194,7 +146,7 @@
                                             <option *ngFor="let q of orientation " [value]="q">
                                                 {{q}}
                                             </option>
-                                            </select> 
+                                            </select>
                                         </div>
                                         </div>
                                     </div>
@@ -207,30 +159,30 @@
                                             <option *ngFor="let q of modalite " [value]="q">
                                                 {{q}}
                                             </option>
-                                            </select> 
+                                            </select>
                                         </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" *ngIf="affichemodalite"> 
-                                        <div class="form-group"> 
+                                    <div class="col-md-6" *ngIf="affichemodalite">
+                                        <div class="form-group">
                                             <label  class="tx-facebook"> Date modalité&nbsp;</label>
                                             <input type="date" class="form-control " formControlName="date_modalite" (change)="verifyDate(addticketForm,'date_modalite')">
                                         </div>
                                     </div>
-                                    <div class="col-md-12"> 
-                                        <div class="form-group"> 
+                                    <div class="col-md-12">
+                                        <div class="form-group">
                                             <label  class="tx-facebook">Objectif &nbsp;</label>
                                             <textarea class="form-control " rows="4" formControlName="objectif" ></textarea>
                                         </div>
                                     </div>
-                                    <div class="col-md-4"> 
-                                        <div class="form-group"> 
+                                    <div class="col-md-4">
+                                        <div class="form-group">
                                             <label  class="tx-facebook"> Date d'execution&nbsp;</label>
                                             <input type="date" class="form-control " formControlName="date_exec" (change)="verifyDate(addticketForm,'date_exec')">
                                         </div>
                                     </div>
-                                    <div class="col-md-4"> 
-                                        <div class="form-group"> 
+                                    <div class="col-md-4">
+                                        <div class="form-group">
                                             <label  class="tx-facebook"> Durée (en jour)&nbsp;</label>
                                             <input type="number" min="0" class="form-control " formControlName="duree">
                                         </div>
@@ -244,18 +196,18 @@
                                                     <option *ngFor="let q of niveau " [value]="q">
                                                         {{q}}
                                                     </option>
-                                                </select> 
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"> 
-                                        <div class="form-group"> 
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label  class="tx-facebook"> Jour de suivi&nbsp;</label>
                                             <input type="text" class="form-control " formControlName="dossier_exec">
                                         </div>
                                     </div>
-                                    <div class="col-md-6"> 
-                                        <div class="form-group"> 
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label  class="tx-facebook">Intervalle séparant les dates de suivis &nbsp;</label>
                                             <input type="number" min="0" class="form-control " formControlName="dossier_period">
                                         </div>
@@ -272,7 +224,7 @@
                         <i *ngIf="statut == true" class="fas fa-spinner fa-spin"></i> Ajouter
                     </button>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 </div>

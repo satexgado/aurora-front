@@ -69,6 +69,6 @@
 </div>
 
 <div [class.loading]="is_loading_schema">
-    <app-gestionnaire-tache-kanban *ngIf="view == 'kanban'" [filterStatut$]="filterStatutHelper.selectedItem$" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator" (tacheUpdateFormEmitter)="onShowUpdateTacheForm($event)" (tacheDeleteEmitter)="onDeleteTache($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-kanban>
-    <app-gestionnaire-tache-list *ngIf="view == 'list'" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator | tacheStatutObs:filterStatutHelper.selectedItem" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-list>
+    <app-gestionnaire-tache-kanban *ngIf="view == 'kanban'" [filterStatut$]="filterStatutHelper.selectedItem$" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator" (tacheUpdateFormEmitter)="onShowUpdateTacheForm($event)" (tacheDeleteEmitter)="onDeleteTache($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (courrierAffectationFormEmitter)="onShowAffectationCourrierForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-kanban>
+    <app-gestionnaire-tache-list *ngIf="view == 'list'" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator | tacheStatutObs:filterStatutHelper.selectedItem" (courrierAffectationFormEmitter)="onShowAffectationCourrierForm($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-list>
 </div>

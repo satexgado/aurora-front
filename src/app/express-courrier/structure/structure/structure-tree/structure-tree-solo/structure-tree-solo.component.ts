@@ -42,13 +42,13 @@ export class StructureTreeSoloComponent
   }
 
   private _showSousStructures = () => {
-    this.structureCopy.sous_structures = this.structure.sous_structures;
+    this.structureCopy['sous_structures'] = this.structure.sous_structures;
     this.displaySousStructure = true;
   };
 
   hideSousStructures(): void {
     this.displaySousStructure = false;
-    this.structureCopy.sous_structures = null;
+    this.structureCopy['sous_structures'] = null;
   }
 
   getSousStructures(callback: Function): void {

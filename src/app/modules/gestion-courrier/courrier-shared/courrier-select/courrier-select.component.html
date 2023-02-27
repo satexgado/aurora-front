@@ -1,0 +1,10 @@
+<div>
+  <div class="input-group">
+    <input class="form-control" (click)="onChooseCourrier()" type="text" [placeholder]="libelle" readonly>
+    <div class="input-group-append" *ngIf="libelle">
+      <button class="btn btn-outline-secondary" (click)="onSetSelected()" type="button" id="button-addon2">
+        <i class="fa fa-times-circle"></i>
+      </button>
+    </div>
+  </div>
+</div>

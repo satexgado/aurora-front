@@ -1,65 +1,87 @@
-<div style="position: relative;" class="m-0 p-0">
-    <a class="card p-2 card-structure scaleUpOnHover">
-        <!-- Header -->
-        <div class="d-flex justify-content-between">
-            <!-- Logo et type -->
-            <div class="d-flex align-items-center">
-                <!-- Logo -->
-                <img *ngIf="structure.image" [src]="structure.image" class="rounded-circle border" height="35" width="35" alt="">
-                <i *ngIf="!structure.image" class="fad fa-circle" style="font-size: 35px; vertical-align: bottom;"></i>
-                <!-- Type -->
-                <p class="ml-2 m-0 card-structure__type">{{ structure.type.libelle }}</p>
-            </div>
+<div style="position: relative;"
+     class="m-0 p-0">
+  <a class="card p-2 card-structure scaleUpOnHover">
+    <!-- Header -->
+    <div class="d-flex justify-content-between">
+      <!-- Logo et type -->
+      <div class="d-flex align-items-center">
+        <!-- Logo -->
+        <img [src]="structure.image"
+             class="rounded-circle border"
+             height="35"
+             width="35"
+             alt="">
+
+        <!-- Type -->
+        <p class="ml-2 m-0 card-structure__type">{{ structure.type.libelle }}</p>
+      </div>
 
 
 
-            <!-- responsable -->
-            <div class="d-flex align-items-center" *ngIf="structure.responsable">
-                <!-- Logo -->
-                <img [src]="structure?.responsable?.photo" container="body" [ngbTooltip]="structure?.responsable?.nom_complet" tooltipClass="tooltip-class" class="rounded-circle border" height="35" width="35" alt="">
-            </div>
-        </div>
+      <!-- responsable -->
+      <div class="d-flex align-items-center"
+           *ngIf="structure.responsable">
+        <!-- Logo -->
+        <img [src]="structure?.responsable?.photo"
+        container="body"
+             [ngbTooltip]="structure?.responsable?.nom_complet"
+             tooltipClass="tooltip-class"
+             class="rounded-circle border"
+             height="35"
+             width="35"
+             alt="">
+      </div>
+    </div>
 
-        <!-- Body -->
-        <div class="text-center">
-            <h6 class="tx-rubik card-structure__title">{{ structure.cigle }}</h6>
-            <a (click)="show()" [routerLink]="['./']" [queryParamsHandling]="'preserve'" class="tx-light mb-2">{{ structure.libelle }}</a>
-        </div>
+    <!-- Body -->
+    <div class="text-center">
+      <h6 class="tx-rubik card-structure__title">{{ structure.cigle }}</h6>
+      <a (click)="show()"
+         [routerLink]="['./']"
+         [queryParamsHandling]="'preserve'"
+         class="tx-light mb-2">{{ structure.libelle }}</a>
+    </div>
 
-        <!-- footer -->
-        <div class="d-flex justify-content-between">
-            <!-- Responsable courriers -->
-            <app-users-image-grouped [displayCount]="3" [users]="structure.charge_courriers">
-            </app-users-image-grouped>
-
-
-            <!-- Membres -->
-            <app-users-image-grouped [displayCount]="3" [users]="structure.employes">
-            </app-users-image-grouped>
-        </div>
-
-
-
-        <div #ref>
-            <ng-content></ng-content>
-        </div>
-
-        <div class="d-flex justify-content-center" *ngIf="!ref.hasChildNodes()">
-            <!-- Afficher les details -->
-            <a [routerLink]="['/', 'administration', 'composante', 'service','show', structure.id]" container="body" [ngbTooltip]="'Afficher les details'" class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">
-                <i class="far fa-eye"></i>
-            </a>
+    <!-- footer -->
+    <div class="d-flex justify-content-between">
+      <!-- Responsable courriers -->
+      <app-users-image-grouped [displayCount]="3"
+                               [users]="structure.charge_courriers">
+      </app-users-image-grouped>
 
 
-            <!-- Envoyer un courrier -->
-            <!-- <a [routerLink]="['./']"
+      <!-- Membres -->
+      <app-users-image-grouped [displayCount]="3"
+                               [users]="structure.employes">
+      </app-users-image-grouped>
+    </div>
+
+
+
+    <div #ref>
+      <ng-content></ng-content>
+    </div>
+
+    <div class="d-flex justify-content-center"
+         *ngIf="!ref.hasChildNodes()">
+      <!-- Afficher les details -->
+      <a [routerLink]="['/', 'organisation', 'structures', 'show', structure.id]"
+      container="body"
+         [ngbTooltip]="'Afficher les details'"
+         class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">
+        <i class="far fa-eye"></i>
+      </a>
+
+
+      <!-- Envoyer un courrier -->
+      <!-- <a [routerLink]="['./']"
          [ngbTooltip]="'Envoyer un courrier'"
          container="body"
          class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">
         <i class="far fa-envelope"></i>
       </a> -->
 
-            <!-- Discuter
+      <!-- Discuter
       <a (click)="tunel()"
          [routerLink]="['./']"
          [ngbTooltip]="'Ouvrir un tunel'"
@@ -70,24 +92,35 @@
       </a> -->
 
 
-            <ng-container *ngIf="structure.isUserAdmin">
-                <!-- Modifier les details -->
-                <a [routerLink]="['./']" (click)="edit()" container="body" [ngbTooltip]="'Modifier les details'" class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">
-                    <i class="far fa-edit"></i>
-                </a>
+      <ng-container *ngIf="structure.isUserAdmin">
+        <!-- Modifier les details -->
+        <a [routerLink]="['./']"
+           (click)="edit()"
+           container="body"
+           [ngbTooltip]="'Modifier les details'"
+           class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">
+          <i class="far fa-edit"></i>
+        </a>
 
 
-                <!-- Supprimer  -->
-                <a (click)="delete()" [routerLink]="['./']" container="body" [ngbTooltip]="'Supprimer'" class="more-structure rounded-circle btn btn-sm btn-outline-primary border">
-                    <i class="far fa-trash"></i>
-                </a>
-            </ng-container>
+        <!-- Supprimer  -->
+        <a (click)="delete()"
+           [routerLink]="['./']"
+           container="body"
+           [ngbTooltip]="'Supprimer'"
+           class="more-structure rounded-circle btn btn-sm btn-outline-primary border">
+          <i class="far fa-trash"></i>
+        </a>
+      </ng-container>
 
-        </div>
+    </div>
 
-    </a>
+  </a>
 
-    <span class="star" *ngIf="isUserEmploye" container="body" [ngbTooltip]="'Vous appartenez à cette structure'">
+  <span class="star"
+        *ngIf="isUserEmploye"
+        container="body"
+        [ngbTooltip]="'Vous appartenez à cette structure'">
     <i class="fas fa-star tx-light"></i>
   </span>
 </div>

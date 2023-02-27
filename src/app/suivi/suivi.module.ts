@@ -1,3 +1,4 @@
+import { CourrierSharedModule } from './../modules/gestion-courrier/courrier-shared/courrier-shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidesuiviComponent } from './sidesuivi/sidesuivi.component';
@@ -21,8 +22,8 @@ const appRoute: Routes = [
   imports: [
     CommonModule,
     ShareddashModule,
-    RouterModule.forChild(appRoute)
+    RouterModule.forChild(appRoute),
+    CourrierSharedModule
   ]
 })
 export class SuiviModule { }
- 

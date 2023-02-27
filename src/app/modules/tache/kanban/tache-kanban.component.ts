@@ -41,6 +41,7 @@ export class GestionnaireTacheKanbanComponent  {
     @Output() tacheUpdateFormEmitter = new EventEmitter<ICrTache>();
     @Output() tacheDeleteEmitter = new EventEmitter<ICrTache>();
     @Output() tacheAffectationFormEmitter = new EventEmitter<ICrTache>();
+    @Output() courrierAffectationFormEmitter = new EventEmitter<ICrTache>();
     @Output() tacheSoftUpdateEmitter = new EventEmitter<ICrTache>();
 
     constructor(
@@ -60,6 +61,10 @@ export class GestionnaireTacheKanbanComponent  {
 
     onShowAffectationTacheForm(item: ICrTache) {
       this.tacheAffectationFormEmitter.emit(item);
+    }
+
+    onShowAffectationCourrierForm(item: ICrTache) {
+      this.courrierAffectationFormEmitter.emit(item);
     }
 
     drop(event: CdkDragDrop<ICrTache[]>, statut: CrTacheStatut) {

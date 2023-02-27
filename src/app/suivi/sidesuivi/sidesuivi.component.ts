@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/shared';
 import { AppTitleService } from 'src/app/shared/services';
@@ -16,7 +16,7 @@ export class SidesuiviComponent implements OnInit {
   public addticketForm: any=FormGroup;
   statut: boolean=false;
   ticket:any;
-  loarding:boolean=false; 
+  loarding:boolean=false;
   detailticket:any;
   idticket:any;
   searchticket = '';
@@ -34,25 +34,20 @@ export class SidesuiviComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,public crud:CrudService, public title:AppTitleService,
     public notification:NotificationService,public informe:InformeService,public router:Router)
-    { 
+    {
       this.title.setTitle("Suivis des courriers");
     }
 
   ngOnInit(): void {
-    this.getcourrier();
     this.getticket(this.urlpost);
     this.initaddticketForm();
   }
- 
-  getcourrier(){
-    this.crud.get('mycourrier').subscribe((data)=>{
-      this.courrier=data;
-    });
-  }
+
     //Initial add services form
     initaddticketForm() {
       this.addticketForm = this.formBuilder.group({
         courrier : ['',Validators.required],
+        courrierDT : [null],
         mobile : ['',Validators.required],
         orientation : ['',Validators.required],
         modalite : ['',Validators.required],
@@ -64,6 +59,23 @@ export class SidesuiviComponent implements OnInit {
         niveau : ['',Validators.required],
         dossier_period : ['',Validators.required]
       });
+      this.onChangeCourrier();
+    }
+
+    onChangeCourrier() {
+      const courriereIdControl = this.addticketForm.get('courrier') as FormControl;
+      const courriereControl = this.addticketForm.get('courrierDT') as FormControl;
+      courriereControl.valueChanges.subscribe(
+        (value)=>{
+          if(value && value.length) {
+            courriereIdControl.setValue(value[0].id);
+          } else {
+            courriereIdControl.setValue(null);
+          }
+          courriereIdControl.markAsDirty();
+          courriereIdControl.markAsTouched();
+        }
+      )
     }
 
     getticket(url:any){
@@ -78,7 +90,7 @@ export class SidesuiviComponent implements OnInit {
       });
     }
 
- 
+
     //Function to add data to service form
   add(){
       this.statut=true;
@@ -90,7 +102,7 @@ export class SidesuiviComponent implements OnInit {
       var month=date.getMonth() + 1;
       var day = date.getDate();
       formValue.date_exp=myear+'-'+month+'-'+day;
-      
+
       this.crud.post(this.urlpost,formValue).subscribe({
         next:(data)=>{
           this.ticket.unshift(data);
@@ -102,7 +114,7 @@ export class SidesuiviComponent implements OnInit {
           this.statut=false;
           this.notification.onError("Nous n'avons pas pu effectuer cette opération. Veuillez essayer de nouveau");
         }
-      });    
+      });
   }
   resetValue(){
     this.statut=false;
@@ -112,17 +124,17 @@ export class SidesuiviComponent implements OnInit {
     this.affichemodalite=undefined;
     this.detailticket=undefined;
   }
-  
+
   getId(item:any,$name:any,$i?:any){
     this.detailticket=item;
     this.idticket=item.id;
     if(this.detailticket){
        if($name=='detail'){
         this.affichedetail='ok';
-        this.router.navigate(['/suivi/'+this.idticket]);
-       } 
+        this.router.navigate(['/courrier/suivi/'+this.idticket]);
+       }
     }
-   
+
   }
   listenmodalite($form,$event){
     this.affichemodalite=undefined;
@@ -135,7 +147,7 @@ export class SidesuiviComponent implements OnInit {
       var month=mydate.getMonth() + 1;
       var day = mydate.getDate();
       var currentyear=myear+'-'+month+'-'+day;
-      $form.controls['date_modalite'].setValue(currentyear); 
+      $form.controls['date_modalite'].setValue(currentyear);
     }
   }
   verifyDate($form:any,$name){

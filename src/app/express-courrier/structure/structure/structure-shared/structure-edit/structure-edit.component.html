@@ -2,6 +2,36 @@
       [formGroup]="form"
       *ngIf="structure"
       (submit)="edit()">
+
+      <!-- Photo de profil -->
+<div class="row justify-content-center">
+  <div class="d-flex users-icon bg-light clickable align-items-center justify-content-center border rounded-circle"
+       (click)="userPhoto.click()">
+    <span class="icone m-0">
+      <i class="far  fa-user"
+         *ngIf="!imageUrl"></i>
+      <img [src]="imageUrl"
+           *ngIf="imageUrl">
+
+    </span>
+
+    <span class="cam-icon tx-primary"><i class="far fa-camera"></i></span>
+    <div class="text border-top tx-primary"><i class="far fa-pen"></i> Changer </div>
+    <input type="file"
+           [accept]="'image/*'"
+           hidden
+           #userPhoto
+           (change)="onFileChanged($event)">
+  </div>
+
+  <!-- Label -->
+  <label class="control-label col-12 tx-center "
+         for="libelle">
+    Image de la structure
+  </label>
+
+</div>
+
   <!-- Libelle et cigle -->
   <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
     <!-- Libelle -->
@@ -87,8 +117,9 @@
       </label>
 
       <angular2-multiselect [data]="dependancies.data.structures"
-                            [settings]="structure.parent ? helper.dropdownSettings.single : helper.dropdownSettings.singleDisabled"
+                            [settings]="structure.parent ? helper.dropdownSettings.single : helper.dropdownSettings.single"
                             formControlName="parent"
+                            (click)="getStructures()"
                             [ngClass]="{'is-invalid': shouldShowRequiredError( 'parent'), 'is-valid': isValid('parent')}"
                             class="form-control p-0 ">
       </angular2-multiselect>

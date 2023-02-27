@@ -1,6 +1,36 @@
 <form class="custom-placeholder"
       [formGroup]="form"
       (submit)="create()">
+
+<!-- Photo de profil -->
+<div class="row justify-content-center">
+  <div class="d-flex users-icon bg-light clickable align-items-center justify-content-center border rounded-circle"
+       (click)="userPhoto.click()">
+    <span class="icone m-0">
+      <i class="far  fa-user"
+         *ngIf="!imageUrl"></i>
+      <img [src]="imageUrl"
+           *ngIf="imageUrl">
+
+    </span>
+
+    <span class="cam-icon tx-primary"><i class="far fa-camera"></i></span>
+    <div class="text border-top tx-primary"><i class="far fa-pen"></i> Changer </div>
+    <input type="file"
+           [accept]="'image/*'"
+           hidden
+           #userPhoto
+           (change)="onFileChanged($event)">
+  </div>
+
+  <!-- Label -->
+  <label class="control-label col-12 tx-center "
+         for="libelle">
+    Image de la structure
+  </label>
+
+</div>
+
   <!-- Libelle et cigle -->
   <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
     <!-- Libelle -->
@@ -95,21 +125,6 @@
 
     </div>
   </div>
-
-
-  <!-- Image -->
-  <!-- TODO: Definir une validation pour l'image -->
-  <div class="formSep form-group  d-flex justify-content-center pb-0 pt-2">
-    <div class="col-12">
-      <label for="formFile"
-             class="form-label">Ajouter une image pour la structure</label>
-      <input class="form-control"
-             type="file"
-             (change)="onFileChanged($event, 'image')"
-             id="formFile">
-    </div>
-  </div>
-
 
   <!-- Description -->
   <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">

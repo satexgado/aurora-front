@@ -4,7 +4,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { BaseService } from '../../../shared/services/base.service';
 import { Structure } from './structure.model';
-
+import { concat, isNil, pull } from 'lodash';
 @Injectable({
   providedIn: 'root',
 })
@@ -111,10 +111,7 @@ export class StructureService extends BaseService<Structure> {
   }
 
   private appendSousStructure(structureParent: number, structure: any): void {
-    let _structureParent = this._data
-      .flatMap((_structure) => _structure.sous_structures)
-      .find((_structure) => _structure.id == structureParent);
-
+    let _structureParent = this.findItemInList(this._data, structureParent);
     if (_structureParent?.sous_structures)
       _structureParent.sous_structures.push(structure);
     else this.getSousStructure(structureParent).subscribe();
@@ -127,11 +124,10 @@ export class StructureService extends BaseService<Structure> {
       .pipe(
         tap({
           next: (response) => {
-            let _structure = this._organigrammeData
-              .flatMap((_structure) => _structure.sous_structures)
-              .find((_structure) => _structure.id == structure);
-
-            _structure.sous_structures = response.data;
+            let _structure = this.findItemInList(this._organigrammeData, structure);
+              if(_structure) {
+                _structure['sous_structures'] = response.data;
+              }
             this.organigrammeData$.next(this._organigrammeData);
           },
           error: (error) => {
@@ -139,6 +135,42 @@ export class StructureService extends BaseService<Structure> {
           },
         })
       );
+  }
+
+  findItem(root: any, value: any): any {
+    if (isNil(root)) {
+      return undefined;
+    }
+
+    if (root.id == value) {
+      return root;
+    }
+
+    if (root.sous_structures) {
+      for (const child of root.sous_structures) {
+        const foundItem = this.findItem(child, value);
+        if (foundItem) {
+          return foundItem;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  findItemInList(list: any[], value: any): any {
+    if (isNil(list)) {
+      return undefined;
+    }
+
+    for (const item of list) {
+      const foundItem = this.findItem(item, value);
+      if (foundItem) {
+        return foundItem;
+      }
+    }
+
+    return undefined;
   }
 
   // Recuperer tous les structures enfants ou petits enfants de la structure donnée

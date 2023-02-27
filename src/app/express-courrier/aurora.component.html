@@ -18,15 +18,15 @@
         <div class="nav-tabs-top ">
             <ul class="nav   bg-white float-right list-inline justify-content-end">
                 <li class="nav-item card-1-hoverable mg-0 pd-0 ">
-                    <a class="nav-link3 active show" data-toggle="tab" href="#acceuil_entrant" style="padding: 5px 12px;">
+                    <a class="nav-link3" [routerLink]="['home']" routerLinkActive="active" style="padding: 5px 12px;">
                         <i class="fas fa-home tx-18  tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos"> Accueil </span></a>
                 </li>
                 <li class="nav-item card-1-hoverable ">
-                    <a class="nav-link3 " data-toggle="tab" href="#mes_courriers">
+                    <a class="nav-link3" [routerLink]="['courrier']" routerLinkActive="active">
                         <i class="fas fa-mailbox tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> Mes courriers</span></a>
                 </li>
                 <li class="nav-item card-1-hoverable ">
-                    <a class="nav-link3 " data-toggle="tab" href="#labcolab_courrier">
+                    <a class="nav-link3" [routerLink]="['labcolab']" routerLinkActive="active">
                         <i class="fas fa-union tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> LAbColab</span></a>
                 </li>
             </ul>

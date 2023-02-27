@@ -1,3 +1,4 @@
+import { CourrierSharedModule } from './../modules/gestion-courrier/courrier-shared/courrier-shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SiderapportComponent } from './siderapport/siderapport.component';
@@ -18,10 +19,11 @@ const appRoute: Routes = [
     SiderapportComponent,
     ExecrapportComponent
   ],
-  imports: [ 
+  imports: [
     CommonModule,
     ShareddashModule,
-    RouterModule.forChild(appRoute)
+    RouterModule.forChild(appRoute),
+    CourrierSharedModule
   ]
 })
 export class RapportModule { }

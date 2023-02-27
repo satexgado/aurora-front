@@ -10,6 +10,7 @@ import { NotificationService } from 'src/app/shared';
 import { ICrTache, CrTacheStatut } from 'src/app/core/models/gestion-courrier/cr-tache';
 import { EditComponent } from 'src/app/modules/gestion-courrier/tache/edit/edit.component';
 import { ItemSelectHelper } from 'src/app/shared/state';
+import { AffectationTacheCourrierEditComponent } from '../gestion-courrier/tache/affectation-courrier/affectation-courrier.component';
 
 @Component({
   selector: 'app-gestionnaire-tache',
@@ -61,7 +62,7 @@ export class GestionnaireTacheComponent implements OnDestroy {
               new Filter('is_ins', 1, 'eq'),
             ]}
           ],
-          ['responsables', 'structures', 'inscription'],
+          ['responsables', 'structures', 'inscription', 'courriers'],
           undefined,
           undefined,
           [new Sort('created_at','ASC')]
@@ -127,8 +128,29 @@ export class GestionnaireTacheComponent implements OnDestroy {
     }
 
     onShowAffectationTacheForm(item: ICrTache) {
-      const modalRef = this.modalService.open(AffectationTacheEditComponent, { size: 'lg', centered: true,  backdrop: 'static' });
+      const modalRef = this.modalService.open(AffectationTacheEditComponent, { size: 'lg',   backdrop: 'static' });
       modalRef.componentInstance.title = `Collaborateur`;
+      modalRef.componentInstance.item = item;
+      modalRef.componentInstance.isUpdating = true;
+      modalRef.componentInstance.newItem.subscribe(
+        (data: ICrTache) => {
+          let taches = this._taches$.value ? this._taches$.value : [] ;
+          taches = taches.map(element => {
+              if (element.id === item.id ) {
+                  Object.assign(element,data);
+              }
+              return element;
+          });
+          this._taches$.next(taches);
+          this.changeIndicator++;
+
+        }
+      );
+    }
+
+    onShowAffectationCourrierForm(item: ICrTache) {
+      const modalRef = this.modalService.open(AffectationTacheCourrierEditComponent, { size: 'lg', centered: true,  backdrop: 'static' });
+      modalRef.componentInstance.title = `Courrier`;
       modalRef.componentInstance.item = item;
       modalRef.componentInstance.isUpdating = true;
       modalRef.componentInstance.newItem.subscribe(

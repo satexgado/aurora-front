@@ -37,8 +37,13 @@ export class Factory {
     });
   }
 
-  public put(endPoint: string, elements: {}, options?: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${endPoint}`, elements, {
+  public put(endPoint: string, elements: any, options?: any): Observable<any> {
+    if(elements instanceof FormData) {
+      elements.append('_method', 'PUT')
+    } else {
+      elements['_method'] = 'PUT';
+    }
+    return this.http.post<any>(`${this.baseUrl}/${endPoint}`, elements, {
       headers: {
         Authorization: `Bearer ${this.storage.getAccessToken()}`,
       },

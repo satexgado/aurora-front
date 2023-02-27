@@ -183,20 +183,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'suivi',
-        loadChildren: () =>
-          import('../suivi/suivi.module').then(
-            (module) => module.SuiviModule
-          ),
-      },
-      {
-        path: 'rapport',
-        loadChildren: () =>
-          import('../rapport/rapport.module').then(
-            (module) => module.RapportModule
-          ),
-      },
-      {
         path: 'labcolab',
         loadChildren: () =>
           import('../labcolab/labcolab.module').then(

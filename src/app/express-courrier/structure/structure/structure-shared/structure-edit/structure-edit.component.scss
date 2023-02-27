@@ -1,0 +1,45 @@
+.users-icon {
+  position: relative;
+  width: 150px;
+  height: 140px;
+
+  img {
+    width: 150px;
+    height: 140px;
+    border-radius: 50%;
+    border: 5px solid #1f618d !important;
+    object-fit: cover;
+  }
+
+  .icone i {
+    font-size: 75px;
+  }
+
+  .cam-icon {
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+    font-size: 20px;
+  }
+
+  .text {
+    position: absolute;
+    bottom: 2px;
+    font-size: 10px;
+    width: 70%;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-align: center;
+    display: none;
+  }
+
+  &:hover {
+    > .text {
+      display: inline-block;
+    }
+
+    > .cam-icon {
+      display: none;
+    }
+  }
+}
