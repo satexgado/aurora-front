@@ -87,7 +87,7 @@ export class EmployeEditComponent extends BaseEditComponent implements OnInit {
     const control = this.form.get('affectation_structures') as FormArray;
     control.markAsDirty();
     let child = control.at(child_index);
-    if(child.get('id').value) {
+    if(child.get('id').value && !this.removedAffectation.includes(child.get('id').value)) {
       this.removedAffectation.push(child.get('id').value);
     }
     control.removeAt(child_index);
@@ -134,8 +134,8 @@ export class EmployeEditComponent extends BaseEditComponent implements OnInit {
     return this.form.get("affectation_structures") as FormArray
   }
 
-  fillForm(form: FormData): void {
-    this.formData = form;
+  fillForm(form: FormData = null): void {
+    this.formData = form ? form : new FormData();
     let arrayF = this.form.get('affectation_structures') as FormArray;
     let arrayV =arrayF.controls.map((control: AbstractControl, index: number) => {
         return {
@@ -154,7 +154,7 @@ export class EmployeEditComponent extends BaseEditComponent implements OnInit {
       removedAffectation: this.removedAffectation
     };
 
-    Object.keys(data).forEach((key) => this.formData.set(key, data[key]));
+    Object.keys(data).forEach((key) => this.formData.append(key, JSON.stringify(data[key])));
   }
 
   editWithUser(form: FormData): void {
@@ -172,17 +172,24 @@ export class EmployeEditComponent extends BaseEditComponent implements OnInit {
   // TODO: Faire fonctionner la fonction update
   edit() {
     if (this.form.valid) {
-      this.loading = true;
-      const data = {
-        ...this.form.value,
-        poste: this.form.controls.poste.value[0]?.id,
-        fonction: this.form.controls.fonction.value[0]?.id,
-      };
-      this.employeService.update(this.single.id, data).subscribe(() => {
-        this.loading = false;
-        this.helper.notification.toastSuccess();
-        this.edited.emit();
-      });
+
+    this.fillForm();
+    this.employeService.update(this.single.id, this.formData).subscribe(() => {
+      this.loading = false;
+      this.helper.notification.toastSuccess();
+      this.edited.emit();
+    });
+      // this.loading = true;
+      // const data = {
+      //   ...this.form.value,
+      //   poste: this.form.controls.poste.value[0]?.id,
+      //   fonction: this.form.controls.fonction.value[0]?.id,
+      // };
+      // this.employeService.update(this.single.id, data).subscribe(() => {
+      //   this.loading = false;
+      //   this.helper.notification.toastSuccess();
+      //   this.edited.emit();
+      // });
     }
   }
 

@@ -65,7 +65,7 @@
     <div class="d-flex justify-content-center"
          *ngIf="!ref.hasChildNodes()">
       <!-- Afficher les details -->
-      <a [routerLink]="['/', 'organisation', 'structures', 'show', structure.id]"
+      <a [routerLink]="['/', 'administration', 'composante', 'service','show', structure.id]"
       container="body"
          [ngbTooltip]="'Afficher les details'"
          class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">

@@ -1,69 +1,77 @@
-<div class="row"
-     *ngIf="single">
+<ng-container *ngIf="single">
+  <div class="row">
 
-  <div class="col-12 ">
-    <div class="d-flex users-icon mb-2 clickable w-100 align-items-center justify-content-center ">
-      <span class="icone m-0">
-        
-        <img  *ngIf="single.user?.photo" [src]="single.user?.photo"
-             [alt]="single.user?.nom_complet">
-             <span *ngIf="!single.user?.photo">
-              <i class="fad fa-user-circle"
-                 style="font-size: 200px;"></i>
-            </span>
+    <div class="col-12 ">
+      <div class="d-flex users-icon mb-2 clickable w-100 align-items-center justify-content-center ">
+        <span class="icone m-0">
 
-      </span>
+          <img *ngIf="single.photo" [src]="single.photo" [alt]="single.nom_complet">
+          <span *ngIf="!single.photo">
+            <i class="fad fa-user-circle" style="font-size: 200px;"></i>
+          </span>
 
+        </span>
+
+      </div>
+    </div>
+
+    <div class="col-12">
+      <h5 class="text-center tx-facebook">{{ single.nom_complet }}</h5>
+    </div>
+
+
+  </div>
+
+  <div class="row d-flex justify-content-between mt-3">
+    <!-- Point de vente -->
+    <div class="col-4">
+      <p class="font-weight-bolder mb-0 tx-facebook">Sexe</p>
+      <p class="tx-light">{{ single.sexe }}</p>
+    </div>
+
+    <!-- Fonction -->
+    <div class="col-4">
+      <p class="font-weight-bolder mb-0 tx-facebook">Identifiant</p>
+      <p class="tx-light">{{ single.identifiant }}</p>
+    </div>
+
+    <!-- Superieur -->
+    <div class="col-4">
+      <p class="font-weight-bolder mb-0 tx-facebook">Email</p>
+      <p class="tx-light">{{ single.email }}</p>
     </div>
   </div>
 
-  <div class="col-12">
-    <h5 class="text-center tx-facebook">{{ single.user?.nom_complet }}</h5>
-  </div>
+  <article class="invoice_preview" [class.mb-3]="!last" *ngFor="let affectation_structure of single.affectation_structures; let last = last;">
+    <div class="inv_notes">
+      <span class="badge badge-primary">
+        <i class="fas fa-chair-office"></i> {{ affectation_structure.structure?.libelle }}
+      </span>
+      <div class="row d-flex justify-content-between mt-3">
+        <!-- COntrat -->
+        <div class="col-4">
+          <p class="font-weight-bolder mb-0 tx-facebook">Role</p>
+          <p class="tx-light">{{ affectation_structure.role?.libelle }}</p>
+        </div>
 
 
-</div>
-
-<div class="row d-flex justify-content-between mt-3"
-     *ngIf="single">
-  <!-- Point de vente -->
-  <div class="col-4">
-    <p class="font-weight-bolder mb-0 tx-facebook">Sexe</p>
-    <p class="tx-light">{{ single.user?.sexe }}</p>
-  </div>
-
-  <!-- Fonction -->
-  <div class="col-4">
-    <p class="font-weight-bolder mb-0 tx-facebook">Identifiant</p>
-    <p class="tx-light">{{ single.user?.identifiant }}</p>
-  </div>
-
-  <!-- Superieur -->
-  <div class="col-4">
-    <p class="font-weight-bolder mb-0 tx-facebook">Email</p>
-    <p class="tx-light">{{ single.user?.email }}</p>
-  </div>
-
-  <!-- COntrat -->
-  <div class="col-4">
-    <p class="font-weight-bolder mb-0 tx-facebook">Structure</p>
-    <p class="tx-light">{{ single.structure?.libelle }}</p>
-  </div>
+        <!-- debut -->
+        <div class="col-4" *ngIf=" affectation_structure.fonctions?.length">
+          <p class="font-weight-bolder mb-0 tx-facebook">Fonction</p>
+          <p class="tx-light">
+            <ng-container *ngFor="let fonction of affectation_structure.fonctions; let last = last;">
+              {{ fonction?.libelle }}{{(!last) ? ', ' : ' '}}
+            </ng-container>
+          </p>
+        </div>
 
 
-  <!-- debut -->
-  <div class="col-4">
-    <p class="font-weight-bolder mb-0 tx-facebook">Fonction</p>
-    <p class="tx-light">{{ single.fonction?.libelle }}</p>
-  </div>
-
-
-  <!-- fin -->
-  <div class="col-4">
-    <p class="font-weight-bolder mb-0 tx-facebook">Poste</p>
-    <p class="tx-light">{{ single.poste?.libelle }}</p>
-  </div>
-
-
-
-</div>
+        <!-- fin -->
+        <div class="col-4">
+          <p class="font-weight-bolder mb-0 tx-facebook">Poste</p>
+          <p class="tx-light">{{ affectation_structure.poste?.libelle }}</p>
+        </div>
+      </div>
+    </div>
+  </article>
+</ng-container>

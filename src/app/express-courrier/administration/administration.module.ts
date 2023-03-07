@@ -126,11 +126,15 @@ const routes: Routes = [
         children: [
           {
             path: '',
+            redirectTo: 'liste',
+            pathMatch: 'full'
+          },
+          {
+            path: 'liste',
             loadChildren: () =>
             import('./utilisateur/employe/employe.module').then(
               (module) => module.EmployeModule
-            ),
-            pathMatch: 'full'
+            )
           },
           {
             path: 'role',

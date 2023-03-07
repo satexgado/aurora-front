@@ -8,7 +8,7 @@
 
     <div class="d-flex justify-content-center structure-details__cta">
         <!-- voir -->
-        <a [routerLink]="['/organisation/structures/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" class="btn d-flex align-items-center  mr-2 rounded-circle btn-primary">
+        <a [routerLink]="['administration/composante/service/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" class="btn d-flex align-items-center  mr-2 rounded-circle btn-primary">
             <i class="far fa-eye"></i>
         </a>
 
@@ -51,7 +51,7 @@
             <p>Description:</p>
             <p class="structure-details__details-element--description">
                 {{ helper.text.strcut(single.description, 150) }}
-                <a [routerLink]="['/organisation/structures/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" *ngIf="single.description.length > 150" class="structure-details__details-element--voir-plus">Voir plus</a>
+                <a [routerLink]="['administration/composante/service/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" *ngIf="single.description.length > 150" class="structure-details__details-element--voir-plus">Voir plus</a>
             </p>
         </div>
 
@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <a [routerLink]="['/organisation/structures/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" class="btn btn-block btn-primary mt-5 rounded-pill col-6 offset-3">
+    <a [routerLink]="['administration/composante/service/show', single.id]" (click)="helper.modal.hide('structure-preview-modal')" class="btn btn-block btn-primary mt-5 rounded-pill col-6 offset-3">
     Voir tous les details
   </a>
 </div>

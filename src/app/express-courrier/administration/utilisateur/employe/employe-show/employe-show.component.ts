@@ -33,6 +33,7 @@ export class EmployeShowComponent
     this.userService.show(id, true).subscribe(() => {
       this.helper.modal.show('employe-show-modal');
       this.loading = false;
+      console.log(this.single);
     });
   }
 }
