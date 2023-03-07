@@ -67,7 +67,7 @@
 
 
         <!-- fin -->
-        <div class="col-4">
+        <div class="col-4" *ngIf="ffectation_structure.poste">
           <p class="font-weight-bolder mb-0 tx-facebook">Poste</p>
           <p class="tx-light">{{ affectation_structure.poste?.libelle }}</p>
         </div>
