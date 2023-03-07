@@ -45,13 +45,13 @@
   <article class="invoice_preview" [class.mb-3]="!last" *ngFor="let affectation_structure of single.affectation_structures; let last = last;">
     <div class="inv_notes">
       <span class="badge badge-primary">
-        <i class="fas fa-chair-office"></i> {{ affectation_structure.structure?.libelle }}
+        <i class="fas fa-user-tag"></i> {{ affectation_structure.role?.libelle }}
       </span>
       <div class="row d-flex justify-content-between mt-3">
         <!-- COntrat -->
-        <div class="col-4">
-          <p class="font-weight-bolder mb-0 tx-facebook">Role</p>
-          <p class="tx-light">{{ affectation_structure.role?.libelle }}</p>
+        <div class="col-4" *ngIf="affectation_structure.structure">
+          <p class="font-weight-bolder mb-0 tx-facebook">Structure</p>
+          <p class="tx-light">{{ affectation_structure.structure?.libelle }}</p>
         </div>
 
 
