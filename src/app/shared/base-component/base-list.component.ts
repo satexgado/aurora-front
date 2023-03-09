@@ -39,22 +39,22 @@ export abstract class BaseListComponent<T = any>
       this.paginationInfo = paginationInfo;
     });
 
-    this.route.queryParams.subscribe((params) => {
-      if (
-        (!params.page || !params.per_page) &&
-        this.route.children.length == 0
-      ) {
-        this.router.navigate(['./'], {
-          queryParams: {
-            page: this.paginationInfo.currentPage ? this.paginationInfo.currentPage : 1,
-            per_page: +this.itemsPerPage,
-          },
+    // this.route.queryParams.subscribe((params) => {
+    //   if (
+    //     (!params.page || !params.per_page) &&
+    //     this.route.children.length == 0
+    //   ) {
+    //     this.router.navigate(['./'], {
+    //       queryParams: {
+    //         page: this.paginationInfo.currentPage ? this.paginationInfo.currentPage : 1,
+    //         per_page: +this.itemsPerPage,
+    //       },
 
-          queryParamsHandling: 'merge',
-          relativeTo: this.route,
-        });
-      }
-    });
+    //       queryParamsHandling: 'merge',
+    //       relativeTo: this.route,
+    //     });
+    //   }
+    // });
   }
 
   changePage(pageNumber: number): void {

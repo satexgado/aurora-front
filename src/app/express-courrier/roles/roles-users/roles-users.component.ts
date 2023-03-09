@@ -10,6 +10,7 @@ import { UsersService } from './../../users/users.service';
   styleUrls: ['./roles-users.component.scss'],
 })
 export class RolesUsersComponent extends BaseListComponent implements OnInit {
+  roleId = null;
   constructor(
     public usersService: UsersService,
     public route: ActivatedRoute,
@@ -22,16 +23,19 @@ export class RolesUsersComponent extends BaseListComponent implements OnInit {
     super.ngOnInit();
     this.subscriptions['role'] = this.roleService.singleData$.subscribe(
       (role) => {
-        this.route.queryParams.subscribe((params) => {
-          if (params.page && params.per_page) {
-            this.getData(role.id, params);
-          }
-        });
+        this.roleId = role.id ?? null;
+        console.log(this.roleId);
+        this.getData(role.id);
+        // this.route.queryParams.subscribe((params) => {
+        //   if (params.page && params.per_page) {
+        //     return this.getData(role.id, params);
+        //   }
+        // });
       }
     );
   }
 
-  getData(role: number, params: Params): void {
+  getData(role: number): void {
     this.loading = true;
     this.usersService.getByRole(role).subscribe({
       next: () => {

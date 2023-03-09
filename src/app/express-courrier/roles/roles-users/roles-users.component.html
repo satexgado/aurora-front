@@ -1,6 +1,6 @@
 <div class="row m-0 p-0" *ngIf="usersService.data.length && !loading">
 
-    <div class="col-xl-4 col-sm-6 mb-3" *ngFor="let user of usersService.data | paginate: {itemsPerPage: itemsPerPage, id: element, currentPage: currentPage, totalItems: totalItems}">
+    <div class="col-xl-4 col-sm-6 mb-3" *ngFor="let user of (usersService.data | sortBy:'asc':'nom_complet')">
         <div class="p-2 border shadow-1 scaleUpOnHover" style="border-radius: 10px;">
             <div class="d-flex justify-content-center">
                 <img class="rounded-circle " *ngIf="user.photo" [src]="user.photo" style="object-fit: cover;" alt="avatar" width="70" height="70">
@@ -19,20 +19,31 @@
                 </span>
 
                 <!-- Poste - fonction -->
-                <p class="mb-0 text-center">
-                    <small *ngIf="user.affectation_structure">
-                      <!-- poste -->
-                      <b>{{ user?.affectation_structure?.fonction?.libelle }}</b> à <span class="tx-primary">{{
-                        user.affectation_structure?.structure?.libelle
-                        }}</span>
-                    </small>
-                </p>
+                <ng-container *ngIf="user.affectation_structures && user.affectation_structures.length">
+                  <div class="row m-0 p-0 col-12">
+                    <div class="col-12 d-flex flex-wrap  justify-content-center">
+                      <ng-container *ngFor="let item of user.affectation_structures">
+                        <span class="badge card-2  badge-pill  badge-info m-2 tx-12" *ngIf="item.role.id == roleId"><i class="fad fa-chair-office"></i> {{item?.structure?.cigle | uppercase}}</span>
+                      </ng-container>
+                    </div>
+                  </div>
+                </ng-container>
+
             </div>
 
+            <!-- <div class="row m-0 p-0 col-12" *ngIf="expression">
+              <div class="col-12 d-flex mb-2 justify-content-between">
+                  <span class="badge flex-1 card-2 badge-pill  badge-info mx-1 tx-12"><i class="fad fa-calendar-alt"></i> {{formation.programme_semaine | titlecase}}</span>
+                  <span class="badge flex-1 card-2 badge-pill  badge-info mx-1 tx-12"><i class="fad fa-user"></i> {{formation.organisation  | titlecase}}</span>
+              </div>
+              <div class="col-12 d-flex mb-2 justify-content-between">
+                  <span class="badge flex-1  card-2 badge-pill  badge-info mx-1" style="font-size: 12px; white-space: break-spaces;"><i class="fad fa-sun"></i> {{formation.temporalite}}</span>
+              </div>
+          </div> -->
 
             <div class="pb-3 pt-1 d-flex justify-content-center">
                 <!-- Voir -->
-                <a [routerLink]="[user.employe ? 'employes/' + user.employe?.id : 'livreurs/' + user.livreur?.id]" class="mr-3 tx-facebook" routerLinkActive="active">
+                <a [routerLink]="[user.employe ? 'employes/' + user.employe?.id : 'utilisateur/' + user.livreur?.id]" class="mr-3 tx-facebook" routerLinkActive="active">
                     <i class="far  fa-info-circle"></i>
                 </a>
 
@@ -78,11 +89,4 @@
 
 <div *ngIf="!loading && !usersService.data.length">
     <app-missing-data></app-missing-data>
-</div>
-
-
-<!-- Pagination -->
-<div class="col-12 mt-1 d-flex justify-content-center" *ngIf="usersService.data.length">
-    <pagination-controls [id]="element" (pageChange)="changePage($event)" autoHide="true" previousLabel="{{ 'PRECEDENT' }}" nextLabel="{{ 'SUIVANT' }}">
-    </pagination-controls>
 </div>

@@ -1,3 +1,4 @@
+import { EmployeModule } from './../administration/utilisateur/employe/employe.module';
 import { AutorisationsShowComponent } from './autorisations/autorisations-show/autorisations-show.component';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from './../shared/shared.module';
@@ -13,6 +14,7 @@ import { SlugifyPipe } from './../../shared/pipes/slugify.pipe';
 import { NgbNavModule, NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule as SharedModule2 } from 'src/app/shared/shared.module';
 import { RolesEditComponent } from './roles-edit/roles-edit.component';
+import { EmployeShowComponent } from '../administration/utilisateur/employe/employe-show/employe-show.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,7 @@ const routes: Routes = [
       {
         path: ':id',
         component: RolesShowComponent,
+
       },
     ],
   },
