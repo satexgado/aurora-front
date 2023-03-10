@@ -12,7 +12,16 @@ import { CrCoordonneeFactory } from 'src/app/core/services/gestion-courrier/cr-c
 export class EditComponent extends BaseEditComponent  {
   heading = 'coordonnee';
   @Input() item: CrCoordonnee = new CrCoordonnee();
-
+  tagList = [
+    {
+      id: 'fournisseur',
+      libelle: 'fournisseur'
+    },
+    {
+      id: 'partenaire',
+      libelle: 'partenaire'
+    }
+  ]
   constructor(
     cdRef:ChangeDetectorRef,
     activeModal: NgbActiveModal)
@@ -22,6 +31,7 @@ export class EditComponent extends BaseEditComponent  {
 
   createFormGroup(item: ICrCoordonnee) {
     return this.formBuilder.group({
+      'tag': [item.tag],
       'email': [item.email, Validators.required],
       'telephone': [item.telephone, Validators.required],
       'adresse': [item.adresse, Validators.required],

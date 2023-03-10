@@ -28,6 +28,7 @@
                     <div *ngIf="shouldShowRequiredError('telephone')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
             </div>
+
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <label class="control-label" for="salle">Adresse</label>
@@ -35,6 +36,17 @@
                     <div *ngIf="shouldShowRequiredError('adresse')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
             </div>
+
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="tag">Tag<small>optionnel</small></label>
+                    <div class="d-flex justify-content-start flex-wrap">
+                        <app-custom-checkbox [formControlName]="'tag'" [items]="tagList"></app-custom-checkbox>
+                    </div>
+                    <div *ngIf="shouldShowRequiredError('tag')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <label class="control-label" for="condition_suivi">Condition de suivi <small>optionnel</small></label>
@@ -42,6 +54,7 @@
                     <div *ngIf="shouldShowRequiredError('condition_suivi')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
             </div>
+
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <label class="control-label" for="commentaire">Commentaire<small>optionnel</small></label>
@@ -49,6 +62,7 @@
                     <div *ngIf="shouldShowRequiredError('commentaire')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
             </div>
+
         </form>
     </div>
 </ng-container>

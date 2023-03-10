@@ -178,6 +178,20 @@ export class ResourceScrollableHelper {
       this._data$.next(data);
     }
 
+    findItemByColumn(val: number, column: string = 'id') {
+        let data = this._data$.value ? this._data$.value : [] ;
+        return data.find(
+            (item) => (item[column]) == val
+        );
+    }
+
+    findIndexItemByColumn(val: number, column: string = 'id') {
+        let data = this._data$.value ? this._data$.value : [] ;
+        return data.findIndex((element) => {
+            return (element[column]) == val;
+        });
+    }
+
     updateItem(item: IBase) {
         let data = this._data$.value ? this._data$.value : [] ;
         data = data.map(element => {

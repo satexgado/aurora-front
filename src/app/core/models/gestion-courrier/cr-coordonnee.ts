@@ -6,6 +6,7 @@ export interface ICrCoordonnee extends IBase {
   adresse: string;
   condition_suivi: string;
   commentaire: string;
+  tag: string;
 }
 
 export class CrCoordonnee implements ICrCoordonnee {
@@ -16,4 +17,5 @@ export class CrCoordonnee implements ICrCoordonnee {
     adresse = '';
     condition_suivi = '';
     commentaire = '';
+    tag: string = '';
 }

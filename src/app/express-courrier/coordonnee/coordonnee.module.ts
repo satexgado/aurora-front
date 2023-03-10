@@ -18,6 +18,7 @@ import { CoodCourrierSortantComponent } from './details/sortant/cood-csortant.co
 import { CoodMarchePublicComponent } from './details/marche-public/cood-marche-public.component';
 import { ZenDocumentModule } from 'src/app/modules/gestion-document/zen-document.module';
 import { CoordonneeActionComponent } from './coordonnee-action.component'
+import { CustomInputModule } from 'src/app/shared/components/custom-input/custom-input.module';
 @NgModule({
     declarations: [
         CoordonneeComponent,
@@ -40,7 +41,8 @@ import { CoordonneeActionComponent } from './coordonnee-action.component'
         InlineEditorModule,
         InfiniteScrollModule,
         AngularMultiSelectModule,
-        ZenDocumentModule
+        ZenDocumentModule,
+        CustomInputModule
     ],
     entryComponents: [EditComponent, CoordonneeActionComponent],
 })
