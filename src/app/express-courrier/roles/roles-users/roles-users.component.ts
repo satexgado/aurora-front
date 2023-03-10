@@ -3,6 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/shared/base-component/base-list.component';
 import { UsersService } from './../../users/users.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-roles-users',
@@ -23,8 +24,9 @@ export class RolesUsersComponent extends BaseListComponent implements OnInit {
     super.ngOnInit();
     this.subscriptions['role'] = this.roleService.singleData$.subscribe(
       (role) => {
+        this.loading = true;
+        this.usersService.data = [];
         this.roleId = role.id ?? null;
-        console.log(this.roleId);
         this.getData(role.id);
         // this.route.queryParams.subscribe((params) => {
         //   if (params.page && params.per_page) {
@@ -37,11 +39,9 @@ export class RolesUsersComponent extends BaseListComponent implements OnInit {
 
   getData(role: number): void {
     this.loading = true;
-    this.usersService.getByRole(role).subscribe({
-      next: () => {
-        this.loading = false;
-      },
-    });
+    this.usersService.getByRole(role).pipe(
+      tap(()=>this.loading = false)
+    ).subscribe();
   }
 
   enleverRole(user: any) {}

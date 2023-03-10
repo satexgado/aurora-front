@@ -38,7 +38,7 @@
                                 <span>
                   {{ scopeName ? (scopeName | capitalizeFirst) : 'Liste'}}
                   <i class="fas ml-1 "
-                     [ngClass]="{ 'fa-angle-up': isExpanded(scopeName), 'fa-angle-down': !isExpanded(scopeName)}"></i>
+                     [ngClass]="{ 'fa-angle-up': panel?.isExpanded(scopeName), 'fa-angle-down': !panel?.isExpanded(scopeName)}"></i>
                 </span>
                             </ng-template>
 
