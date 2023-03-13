@@ -10,7 +10,7 @@ import { AuthService } from './auth/auth.service';
 import { NotificationsService } from './notifications/notifications.service';
 import { InboxService } from './inbox/inbox.service';
 import { PresenceService } from './presence/presence.service';
-import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Event, IsActiveMatchOptions, NavigationCancel, NavigationEnd, NavigationError, Router, RouterOutlet } from '@angular/router';
 import { distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -50,6 +50,13 @@ export class ExpressCourrierComponent implements OnInit {
   notificationSubscription: Subscription;
   // inboxSubscription: Subscription;
   currentTopBar = 'default';
+
+  public linkActiveOptions: IsActiveMatchOptions = {
+    matrixParams: 'exact',
+    queryParams: 'exact',
+    paths: 'exact',
+    fragment: 'exact',
+  };
 
   constructor(
     public authService: AuthService,

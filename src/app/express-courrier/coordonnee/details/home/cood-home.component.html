@@ -11,6 +11,27 @@
     </p>
 </div>
 
+<div class="p-3 bg-white">
+    <h5 class="tx-yeto2"><i class="fal fa-users text-info mx-2"></i> Groupes </h5>
+    <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4 bg-light bd-t">
+        <a class="col-lg-4 p-2" [routerLink]="['/groupe-contact', groupe.id]" *ngFor="let groupe of coordonnee.groupes;  let even = even">
+            <div class="mycard4" style="border-radius: 0% 10% 10% 10%;">
+                <div class="text-center bd-b bg-white p-3"> <i class=" fa-object-group  tx-50" [ngClass]="even ? ' fas tx-echos' : 'fal tx-echos1'"></i></div>
+                <div class=" text-center p-2">
+                    <h6 class="tx-echos1 tx-bold"> {{groupe.libelle | titlecase}} </h6>
+    
+                    <p class="p-0 tx-14">
+                        <span class="bg-light  tx-echos1  tx-bolder mr-2">Eléments</span>
+                        <span class="bg-light tx-danger  tx-bolder">{{groupe.nb_coordonnees}}</span>
+                    </p>
+                </div>
+    
+            </div>
+        </a>
+    </div>    
+</div>
+
+
 <ng-template #dontExist>
     <br>
     <section class="bg-white">

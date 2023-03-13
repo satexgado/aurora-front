@@ -1,6 +1,10 @@
 <div class="row  justify-content-between mg-0 pd-0 bg-light bd-b pt-2 pb-2">
     <div class="col-lg-3">
-        <h5 class="tx-echos1"><i class="fas fa-address-card  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Annuaire de contacs</h5>
+        <ng-container [ngSwitch]="route.fragment | async">
+            <h5 class="tx-echos1" *ngSwitchDefault><i class="fas fa-address-card  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Annuaire de contacs</h5>
+            <h5 class="tx-echos1" *ngSwitchCase="'fournisseur'"><i class="fas fa-people-carry  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Gérer des fournisseurs</h5>
+            <h5 class="tx-echos1" *ngSwitchCase="'partenaire'"><i class="fas fa-handshake-alt  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Gérer les partenaires</h5>
+        </ng-container>
     </div>
     <div class="col-lg-4 ">
         <div class="input-group ">
@@ -46,6 +50,7 @@
                 <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'" *ngFor="let coordonnee of items;trackBy: dataHelper.trackByFn">
                     <div class="mycard4 card-profile-1 mb-3">
                         <a class="card-body tx-center p-0" [routerLink]="['./',coordonnee.id]">
+                            
                             <div class="mx-auto my-2 avatar-md">
                                 <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
                             </div>
@@ -53,15 +58,9 @@
                             </h6>
                             <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{coordonnee.telephone}} </p>
                             <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{coordonnee.email}} </p>
-                            <p class="tx-10 mg-t-0 mg-b-5 tx-gray ">
-                              <span class="badge badge-info mr-2 mb-2" *ngFor="let tag of coordonnee.tag.split(',') | slice:0:1"> {{tag}} </span>
-                              <ng-container *ngIf="coordonnee.tag?.split(',').length > 1">
-                                  <span class="badge badge-info mr-2 mb-2" [ngbPopover]="orientationPop" triggers="mouseenter:mouseleave"> {{coordonnee.tag?.split(',').length - 1}}+ </span>
-                                  <ng-template #orientationPop>
-                                      <span class="badge badge-info mr-2" *ngFor="let tag of coordonnee.tag.split(',') | slice:1"> {{tag}} </span>
-                                  </ng-template>
-                              </ng-container>
-                          </p>
+                            <div class="p-2 tx-echos tx-center bg-soft-primary">
+                                <span class="badge badge-primary mx-1 card-2" *ngFor="let tag of coordonnee.tag.split(',')"> {{tag | titlecase}} </span>
+                            </div>
                         </a>
                         <div class="pt-2 bg-light ">
                             <ul class="nav float-center list-inline justify-content-center">
@@ -200,6 +199,12 @@
                 <div class="tx-yeto2"><i class="fal fa-map-marked-alt text-info mx-2"></i> Adresse </div>
                 <div class="">
                     {{modalData.adresse}}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-tag text-info mx-2"></i> Tag </div>
+                <div class="">
+                    {{modalData.tag}}
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="modalData.condition_suivi">

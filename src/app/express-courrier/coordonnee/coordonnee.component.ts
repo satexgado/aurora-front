@@ -14,9 +14,10 @@ import { EditableListComponent, NotificationService } from 'src/app/shared';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
 import { interval, of } from 'rxjs';
-import { ICrCoordonnee } from 'src/app/core/models/gestion-courrier/cr-coordonnee';
+import { CrCoordonnee, ICrCoordonnee } from 'src/app/core/models/gestion-courrier/cr-coordonnee';
 import { startWith } from 'rxjs/operators';
 import { CoordonneeActionComponent } from './coordonnee-action.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-coordonnee',
@@ -111,6 +112,7 @@ export class CoordonneeComponent extends EditableListComponent implements OnInit
 
   editModal = EditComponent;
   modalData: ICrCoordonnee;
+  fragment: string = '';
   parentData: {relationName: string,relationId: number} = null;
   view: 'card' | 'list' =  localStorage.getItem("coordonneeViewType") ? <'card' | 'list'>localStorage.getItem("coordonneeViewType"):  'card';
   onGroupeCoordonnee;
@@ -123,6 +125,7 @@ export class CoordonneeComponent extends EditableListComponent implements OnInit
     protected cacheService: CacheService,
     protected titleservice: AppTitleService,
     protected notificationService: NotificationService,
+    public route: ActivatedRoute,
     protected modalService: NgbModal) {
     super(new ResourceScrollableHelper(new CrCoordonneeFactory()));
     this.titleservice.setTitle('mes Coordonnees')
@@ -136,30 +139,43 @@ export class CoordonneeComponent extends EditableListComponent implements OnInit
   }
 
   ngOnInit() {
-    this.cacheService.get('affectation-parent').subscribe(
-      (data: {relationName: string,relationId: number})=>{
-        const queryOptions = new QueryOptions(
-          [
-              {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]}
-          ],
-          [],
-          8,
-          1,
-          [new Sort('libelle','Asc')]
-        );
-        this.parentData = data;
-        this.dataHelper = new ResourceScrollableHelper(new CrCoordonneeFactory(), queryOptions);
-        super.ngOnInit();
-      },
-      ()=>{
-        super.ngOnInit();
-        this.dataHelper.sortColumn = 'libelle';
-        this.dataHelper.sortDirection = 'Asc';
+    
+    super.ngOnInit();
+    this.dataHelper.sortColumn = 'libelle';
+    this.dataHelper.sortDirection = 'Asc';
+
+    this.route.fragment.subscribe(
+      (fragment)=> {
+
+        this.fragment = fragment ?? '';
+
+        switch (fragment) {
+          case 'fournisseur':
+            this.dataHelper.query = [
+              {or: false, filters:[new Filter('has_tag', 'fournisseur', 'eq')]},
+            ];
+            break;
+    
+          case 'partenaire':
+            this.dataHelper.query = [
+              {or: false, filters:[new Filter('has_tag', 'partenaire', 'eq')]},
+            ];
+            break;
+        
+          default:
+            this.dataHelper.query = [];
+            break;
+        }
+        
+        this.dataHelper.loadData(1);
       }
     )
+
   }
 
   onShowCreateForm(item?, modal = this.editModal) {
+    item = new CrCoordonnee();
+    item.tag = this.fragment;
     super.onShowCreateForm(item).subscribe(
        (data:ICrCoordonnee)=>{
          if(!this.parentData)  {return;}

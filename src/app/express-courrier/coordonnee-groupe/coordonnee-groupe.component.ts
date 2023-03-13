@@ -139,8 +139,10 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
     this.coordonneeHelper.data$.subscribe(
       (data)=>{
         let group = this.dataHelper.findItemByColumn(this.selectedGroupe.id) as ICrCoordonneeGroupe;
-        group.nb_coordonnees = data.length;
-        this.dataHelper.updateItem(group);
+        if(group) {
+          group.nb_coordonnees = data.length;
+          this.dataHelper.updateItem(group);
+        }
       }
     )
   }

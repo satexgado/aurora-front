@@ -31,7 +31,7 @@ export class EditComponent extends BaseEditComponent  {
 
   createFormGroup(item: ICrCoordonnee) {
     return this.formBuilder.group({
-      'tag': [item.tag],
+      'tag': [item.tag, Validators.required],
       'email': [item.email, Validators.required],
       'telephone': [item.telephone, Validators.required],
       'adresse': [item.adresse, Validators.required],

@@ -120,7 +120,7 @@
                             <!-- <p class=" tx-white tx-12 p-0 mb-0 pl-2">Messages</p> -->
                         </a>
                     </li>
-                    <li class="nav-item tx-center  pt-4 ">
+                    <li class="nav-item tx-center  mt-4 ">
                         <a class="nav-link active" data-toggle="pill" href="#aurora_courrier">
                             <i class="fas fa-mailbox tx-facebook  tx-20 pl-2"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Courriers</p> -->
@@ -148,7 +148,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item tx-center   pt-4 ">
+                    <li class="nav-item tx-center   mt-4 ">
                         <a class="nav-link " data-toggle="pill" href="#">
                             <i class="fas fa-tasks-alt tx-facebook  tx-20 pl-2"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
@@ -167,7 +167,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item tx-center pt-4 ">
+                    <li class="nav-item tx-center mt-4 ">
                         <a class="nav-link " data-toggle="pill" href="#aurora_messenger">
                             <i class="fas fa-comment-alt-lines tx-facebook  tx-20 pl-2"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Messenger</p> -->
@@ -222,18 +222,18 @@
                             </a>
                         </li>
 
-                        <li class="nav-item tx-center pt-4 ">
+                        <li class="nav-item tx-center mt-4 ">
                             <a class="nav-link3 py-1   " data-toggle="tab" href="#utilisateur_page">
                                 <i class="fas fa-user  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center  ">
-                            <a class="nav-link3 py-1   " data-toggle="tab" href="#utilisateurs_partenaires">
+                            <a class="nav-link3 py-1   " [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'partenaire'" routerLinkActive="active">
                                 <i class="fas fa-handshake-alt  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center">
-                            <a class="nav-link3 py-1   " data-toggle="tab" href="#utilisateur_fournisseurs">
+                            <a class="nav-link3 py-1   " [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'fournisseur'" routerLinkActive="active">
                                 <i class="fas fa-people-carry  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
                             </a>
                         </li>
@@ -243,7 +243,7 @@
                             </a>
                         </li>
                         <li class="nav-item tx-center ">
-                            <a class="nav-link3 py-1" [routerLink]="['annuaire']" routerLinkActive="active">
+                            <a class="nav-link3 py-1" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
                                 <i class="fas fa-address-card tx-echos  tx-18" style="padding:6px; border-radius:50%"></i>
                             </a>
                         </li>
@@ -253,21 +253,21 @@
 
 
             <div class="   p-0 pt-6 pr-1 tx-center">
-                <a class="nav-link3  pt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
+                <a class="nav-link3  mt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
                     <img class="rounded-circle" src="assets/images/xs/avatar13.jpg" alt="avatar" width="30">
                 </a>
-                <a class="nav-link3  pt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
+                <a class="nav-link3  mt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
                     <img class="rounded-circle" src="assets/images/xs/avatar9.jpg" alt="avatar" width="30">
                 </a>
-                <a class="nav-link3  pt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
+                <a class="nav-link3  mt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
                     <img class="rounded-circle" src="assets/images/xs/avatar2.jpg" alt="avatar" width="30">
                 </a>
 
-                <a class="nav-link3  pt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
+                <a class="nav-link3  mt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
                     <img class="rounded-circle" src="assets/images/xs/avatar4.jpg" alt="avatar" width="30">
                 </a>
 
-                <a class="nav-link3  pt-2 pb-2 ml-3 " data-toggle="tab" href="#dashboard_memoire">
+                <a class="nav-link3  mt-2 pb-2 ml-3 " data-toggle="tab" href="#dashboard_memoire">
                     <div class="avatar "><span class="avatar-initial rounded-circle bg-primary ">+</span></div>
                 </a>
 

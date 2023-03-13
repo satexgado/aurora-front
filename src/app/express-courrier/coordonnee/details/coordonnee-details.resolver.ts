@@ -19,7 +19,7 @@ export class CoordonneeDetailsResolver implements Resolve<Observable<ICrCoordonn
         {or: false, filters: [
             new Filter('id', route.paramMap.get('id') , 'eq')
         ]},
-    ],[]);
+    ],['cr_coordonnee_groupes']);
 
     return this.service.list(queryOptions).pipe(
         map(data => {

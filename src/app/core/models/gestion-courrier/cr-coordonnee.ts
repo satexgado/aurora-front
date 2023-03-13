@@ -1,4 +1,6 @@
 import { IBase } from 'src/app/core/models/base.interface';
+import { hasManyMap } from 'src/app/shared/decorator/adapter/relation-map';
+import { CrCoordonneeGroupe, ICrCoordonneeGroupe } from './cr-coordonnee-groupe';
 
 export interface ICrCoordonnee extends IBase {
   email: string;
@@ -7,6 +9,7 @@ export interface ICrCoordonnee extends IBase {
   condition_suivi: string;
   commentaire: string;
   tag: string;
+  groupes: ICrCoordonneeGroupe[];
 }
 
 export class CrCoordonnee implements ICrCoordonnee {
@@ -18,4 +21,7 @@ export class CrCoordonnee implements ICrCoordonnee {
     condition_suivi = '';
     commentaire = '';
     tag: string = '';
+
+    @hasManyMap({field: 'cr_coordonnee_groupes', class: CrCoordonneeGroupe})
+    groupes: ICrCoordonneeGroupe[] = null;
 }

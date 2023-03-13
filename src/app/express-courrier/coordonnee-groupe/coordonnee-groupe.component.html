@@ -53,8 +53,8 @@
                 <ng-container *ngIf="items.length; else noItem">
                     <div class=" p-2 col-12" [@flyInOut]="'in'" *ngFor="let groupe of items;trackBy: dataHelper.trackByFn" [class.accent-facebook-left]="selectedGroupe && groupe.id == selectedGroupe.id" [routerLink]="['./',groupe.id]">
                       <h6 class="tx-echos tx-14 cursor-pointer"><i class="fas fa-object-group tx-18 tx-echos"></i> {{groupe.libelle | titlecase}}</h6>
-                      <span class=" mr-1 tx-14 mg-b-5 tx-echos1 pl-2 ">Sous groupes</span>
-                      <span class=" mr-1  mg-b-5 tx-warning ">58</span>
+                      <!-- <span class=" mr-1 tx-14 mg-b-5 tx-echos1 pl-2 ">Sous groupes</span>
+                      <span class=" mr-1  mg-b-5 tx-warning ">58</span> -->
                       <span class=" mr-1 tx-14 mg-b-5 tx-echos1 ">Eléments</span>
                       <span class=" mr-1 mg-b-5 tx-danger ">{{groupe.nb_coordonnees}} </span>
                       <a class=" cursor-pointer float-right mx-2 tx-bold" container="body" ngbTooltip="Supprimer" (click)="$event.stopPropagation();onDelete(groupe) "> <i class="fas fa-times-square tx-echos"></i></a>
@@ -127,6 +127,9 @@
                                 </h6>
                                 <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{coordonnee.telephone}} </p>
                                 <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{coordonnee.email}} </p>
+                                <div class="p-2 tx-echos tx-center bg-soft-primary">
+                                    <span class="badge badge-primary mx-1 card-2" *ngFor="let tag of coordonnee.tag.split(',')"> {{tag | titlecase}} </span>
+                                </div>
                             </a>
                             <div class="pt-2 bg-light ">
                                 <ul class="nav float-center list-inline justify-content-center">
@@ -138,7 +141,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link3" container="body" ngbTooltip="Supprimer" (click)="onRemoveCoordonnee(coordonnee)">
+                                        <a class="nav-link3" container="body" ngbTooltip="Supprimer du groupe" (click)="onRemoveCoordonnee(coordonnee)">
                                             <span class="tx-echos">
                                               <i class="fas fa-times-square tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
                                             </span>
@@ -225,6 +228,12 @@
                     {{modalData.adresse}}
                 </div>
             </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-tag text-info mx-2"></i> Tag </div>
+                <div class="">
+                    {{modalData.tag | titlecase}}
+                </div>
+            </li>
             <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="modalData.condition_suivi">
                 <div class="tx-yeto2"><i class="fal fa-clipboard-check text-info mx-2"></i> Condition de suivi </div>
                 <div class="">
@@ -264,8 +273,8 @@
                               </a>
                           </td>
                           <td>
-                              <a class="table-action cursor-pointer float-right mx-2" (click)="onRemoveCoordonnee(coordonnee) "><i class="fal fa-times-square tx-second "></i></a>
-                              <a class="table-action cursor-pointer float-right mx-2" (click)="openModal(content, coordonnee)"><i class="fal fa-address-card tx-second "></i></a>
+                              <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Supprimer du groupe" (click)="onRemoveCoordonnee(coordonnee) "><i class="fal fa-times-square tx-second "></i></a>
+                              <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Details" (click)="openModal(content, coordonnee)"><i class="fal fa-address-card tx-second "></i></a>
                           </td>
                       </tr>
                   </tbody>
