@@ -206,7 +206,7 @@ export class ProcedureHierarchieEditComponent {
         this.newProcedureEmitter.emit(data);
         const converted = this.converData({
           'name': 'type_procedures',
-          'value': [type_procedure]
+          'value': [data]
         }) as TreeviewItem[];
         if(!this.parentUpdate.children) {
           this.parentUpdate.children = [...converted];

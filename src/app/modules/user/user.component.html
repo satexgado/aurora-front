@@ -1,0 +1,389 @@
+<div class="row  justify-content-between mg-0 pd-0 bg-light bd-b pt-2 pb-2">
+    <div class="col-lg-3">
+        <h5 class="tx-echos1"><i class="fas fa-user  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Gérer les utilisateurs</h5>
+    </div>
+    <div class="col-lg-4 ">
+        <div class="input-group ">
+            <input type="text" class="form-control  border-0 bg-white" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <ul class="nav float-right list-inline h-100  justify-content-end">
+            <li class="nav-item">
+                <button class="btn btn-link" (click)="onChangeView('card')">
+                <span class="tx-echos">
+                    <i class="fad fa-th card-1  tx-16"
+                        [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                        style="padding:6px; border-radius:50%"></i>
+                </span>
+            </button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link" (click)="onChangeView('list')">
+                <span class="tx-echos">
+                    <i class="fad fa-list card-1 tx-16 "
+                        [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
+                        style="padding:6px; border-radius:50%"></i>
+                </span>
+            </button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();">
+                <span class="tx-echos">
+                    <i class="fal fa-plus-circle bg-yeto tx-16 tx-white card-1"
+                        style="padding:6px; border-radius:50%"></i>
+                </span>
+            </button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="card-body" *ngIf="view == 'card'; else listView ">
+    <div [scrollWindow]="false" infiniteScroll  (scrolled)="checkData()" class="d-flex scrollable-y-75 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+        <ng-container *ngIf="dataHelper.data$ | async as items">
+            <ng-container *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loading)">
+                <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'" *ngFor="let user of items;trackBy: dataHelper.trackByFn">
+                    <div class="mycard4 card-profile-1 mb-3">
+                        <a class="card-body tx-center p-0" [routerLink]="['./',user.id]">
+                            <div class="mx-auto my-2 avatar-md" *ngIf="!user.avatar">
+                                <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="image_outer_container {{user.online_statut}}" *ngIf="user.avatar">
+                                    <div class="icon_statut" ></div>
+                                    <div class="image_inner_container">
+                                        <img [src]="user.avatar">
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="m-0 tx-primary">{{user.libelle}}
+                            </h6>
+                            <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{user.telephone}} </p>
+                            <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{user.email}} </p>
+                            <div class="p-2 tx-echos tx-center bg-soft-primary">
+                                <ng-container *ngFor="let tag of user.affectation_structures">
+                                    <span class="badge badge-primary mx-1 card-2"  container="body" *ngIf="tag.structure" [ngbTooltip]="tag?.structure?.libelle"> {{tag.structure?.cigle}}{{tag.poste ? ' - '+tag.poste?.libelle : ''}}</span>
+                                </ng-container>
+                            </div>
+                        </a>
+                        <div class="pt-2 bg-light ">
+                            <ul class="nav float-center list-inline justify-content-center">
+                                <li class="nav-item">
+                                    <a class="nav-link3" container="body" ngbTooltip="Details" (click)="openModal(content, user)">
+                                        <span class="tx-echos">
+                                          <i class="fas fa-address-card tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                                      <span class="tx-echos">
+                                        <i class="fas fa-comment-alt-lines tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                      </span>
+                                  </a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                                    <span class="tx-echos">
+                                      <i class="fas fa-at tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                                    <span class="tx-echos">
+                                      <i class="fas fa-sitemap tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                                    <span class="tx-echos">
+                                      <i class="fas fa-envelope tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                                    <span class="tx-echos">
+                                      <i class="fas fa-chair-office tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- <div class="card">
+                        <div class="card-body">
+                            <div class="float-right no-caret" container="body" ngbDropdown>
+                                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2" ngbDropdownToggle role="button"><i class="fal fa-comment-alt-dots fa-lg rounded-circle"></i></button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button (click)="onShowUpdateForm(user)" ngbDropdownItem><i class="fal fa-edit tx-second"></i> Modifier</button>
+                                    <button (click)="onShowCreateForm(user)" ngbDropdownItem><i class="fal fa-clone tx-second"></i> Dupliquer</button>
+                                    <button (click)="onDelete(user)" ngbDropdownItem><i class="fal fa-times-square tx-second"></i> Supprimer</button>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-md">
+                                    <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
+                                </div>
+                                <div class="flex-1 ms-3">
+                                    <h5 class="tx-16 mb-1"><a href="#" class="text-dark">{{user.libelle}}</a></h5>
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-1">
+                                <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{user.telephone}} </p>
+                                <p class="text-muted mb-0 mt-2"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{user.email}} </p>
+                                <p class="text-muted mb-0 mt-2"><i class="fas fa-map-marked-alt tx-15 align-middle pe-2 text-primary"></i> {{user.adresse}} </p>
+                            </div>
+                            <div class="d-flex gap-2 pt-4">
+                                <button (click)="openModal(content, user)" type="button" class="btn btn-soft-primary btn-sm w-50"><i class="bx bx-user me-1"></i> Details</button>
+                                <a type="button" class="btn btn-primary btn-sm w-50" [routerLink]="['./',user.id]"><i class="bx bx-message-square-dots me-1"></i> Voir plus</a>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <ng-container *ngIf="dataHelper.loading$ | async">
+                    <ng-container *ngTemplateOutlet="loading"></ng-container>
+                </ng-container>
+                <ng-container *ngTemplateOutlet="loadMore"></ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+<ng-template #listView>
+    <div class="card px-0 card-2 card-accent-primary col-12 info" >
+        <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-75 scroll-11">
+            <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+                <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loadingLine)">
+                    <thead class="tx-10 tx-uppercase">
+                        <tr>
+                            <th></th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Email</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of items;trackBy: dataHelper.trackByFn">
+                            <td [routerLink]="['./',user.id]">
+                                <div *ngIf="user.avatar" class="profiles avatar avatar-xs">
+                                    <img class="rounded-circle avatar-xs" container="body" [ngbTooltip]="user.libelle" [src]="user.avatar" alt="avatar">
+                                </div>
+                                <i *ngIf="!user.avatar" container="body" [ngbTooltip]="user.libelle" class="fad fa-user-circle fa-2x"></i>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-link" [routerLink]="['./',user.id]">
+                                  {{user.libelle}}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-link" [routerLink]="['./',user.id]">
+                                  {{user.email}}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Supprimer"><i class="fal fa-chair-office tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Supprimer"><i class="fal fa-envelope tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Dupliquer"><i class="fal fa-sitemap tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Modifier"><i class="fal fa-at tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Groupes"><i class="fal fa-comment-alt-lines tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body" ngbTooltip="Details" (click)="openModal(content, user)"><i class="fal fa-address-card tx-second "></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-container *ngIf="dataHelper.loading$ | async">
+                    <ng-container *ngTemplateOutlet="loadingLine"></ng-container>
+                </ng-container>
+                <ng-container *ngTemplateOutlet="loadMore"></ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #loadMore>
+    <div class="col-12 d-flex justify-content-center" *ngIf="dataHelper.hasMoreData && !(dataHelper.loading$ | async)">
+        <button class="btn btn-outline-primary btn-oblong" (click)="checkData()"> 
+           Voir plus
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header ">
+        <h5  class="modal-title">
+            <i  class="fa-users-crown fad"></i> Details de l'utilisateur </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss( 'Cross click') ">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex flex-wrap">
+
+            <div class="col-12 ">
+              <div class="d-flex users-icon mb-2 clickable w-100 align-items-center justify-content-center ">
+                <span class="icone m-0">
+        
+                  <img *ngIf="modalData.avatar" [src]="modalData.avatar" [alt]="modalData.libelle">
+                  <span *ngIf="!modalData.avatar">
+                    <i class="fad fa-user-circle" style="font-size: 200px;"></i>
+                  </span>
+        
+                </span>
+        
+              </div>
+            </div>
+          </div>
+        
+        <div class="d-flex justify-content-around mb-2">
+            <div class="mr-4 col">
+                <!-- Prenom -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-user"></i>
+                        </span> Prenom:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.prenom}}</span>
+                </div>
+
+                <!-- Sexe -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-credit-card"></i>
+                        </span> Sexe:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.sexe | lowercase}}</span>
+                </div>
+
+                <!-- Telephone -->
+                <div class="my-3" style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-phone-alt"></i>
+                        </span> Telephone:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.telephone}}</span>
+                </div>
+
+
+                <!-- Email  -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-at"></i>
+                        </span> Email:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.email}}</span>
+                </div>
+
+            </div>
+
+            <div class="col">
+                <!-- NOm -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-user-tie"></i>
+                        </span> Nom:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.nom}}</span>
+                </div>
+
+
+                <!-- Date de naissance -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-venus-mars"></i>
+                        </span> Date de naissance:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.date_naissance | date:'mediumDate' : undefined :
+                        'fr'}}</span>
+                </div>
+
+                <!-- Lieu de naissance -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-map-marked-alt"></i>
+                        </span> Lieu de naissance:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.lieu_naissance}}</span>
+                </div>
+
+            </div>
+        </div>
+        <article class="invoice_preview" [class.mb-3]="!last" *ngFor="let affectation_structure of modalData.affectation_structures; let last = last;">
+            <div class="inv_notes">
+              <span class="badge badge-primary">
+                <i class="fas fa-user-tag"></i> {{ affectation_structure.role?.libelle }}
+              </span>
+              <div class="row d-flex justify-content-between mt-3">
+                <!-- COntrat -->
+                <div class="col-4" *ngIf="affectation_structure.structure">
+                  <p class="font-weight-bolder mb-0 tx-facebook">Structure</p>
+                  <p class="tx-light">{{ affectation_structure.structure?.libelle }}</p>
+                </div>
+        
+        
+                <!-- debut -->
+                <div class="col-4" *ngIf=" affectation_structure.fonctions?.length">
+                  <p class="font-weight-bolder mb-0 tx-facebook">Fonction</p>
+                  <p class="tx-light">
+                    <ng-container *ngFor="let fonction of affectation_structure.fonctions; let last = last;">
+                      {{ fonction?.libelle }}{{(!last) ? ', ' : ' '}}
+                    </ng-container>
+                  </p>
+                </div>
+        
+        
+                <!-- fin -->
+                <div class="col-4" *ngIf="affectation_structure.poste">
+                  <p class="font-weight-bolder mb-0 tx-facebook">Poste</p>
+                  <p class="tx-light">{{ affectation_structure.poste?.libelle }}</p>
+                </div>
+              </div>
+            </div>
+        </article>
+    </div>
+    <div class="modal-footer ">
+        <button [routerLink]="['./',modalData.id]" (click)="modal.close( 'Close click')" class="btn btn-sm btn-primary mx-2 "> Voir plus</button>
+        <button type="button " class="btn btn-sm btn-outline-primary " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div class="col-xl-3 col-sm-6 mg-b-20"  *ngFor="let e of [].constructor(20);">
+        <div class="loading-card card h-100 w-100">
+            <div class="image loading-placeholder">
+            </div>
+            <div class="bars">
+                <div class="bar bar1 loading-placeholder"></div>
+                <div class="bar bar2 loading-placeholder"></div>
+            </div>
+        </div>
+    </div>   
+</ng-template>
+
+<ng-template #loadingLine>
+    <div *ngFor="let e of [].constructor(20);"  class="w-100 rounded-0">
+        <div  class="loading-card  w-100  rounded-0">
+            <div  class="bars d-flex h-100  p-2">
+                <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>
+                <div class="col-2"></div>
+                <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>
+            </div>
+        </div>
+    </div>
+</ng-template>

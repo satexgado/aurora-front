@@ -84,8 +84,8 @@ export class HomeComponent implements OnInit {
     );
 
     this.subscribeToConnectedChannel();
-    console.log(this.helper.authorisation.getAll());
-    console.log(this.helper.authorisation.checkIfUserIsAdmin());
+    // console.log(this.helper.authorisation.getAll());
+    // console.log(this.helper.authorisation.checkIfUserIsAdmin());
   }
 
   subscribeToConnectedChannel() {

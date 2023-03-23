@@ -6,3 +6,4 @@ export { HomeGuard } from './home-guard.service';
 export { VideoProcessingService } from './video-processing.service';
 export { AppTitleService } from './app-title.service';
 export { CacheService } from './cache.service';
+export { CacheOnlineUsers } from './cache-online-users.service';

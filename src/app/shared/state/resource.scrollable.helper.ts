@@ -100,6 +100,7 @@ export class ResourceScrollableHelper {
         this._searchTerm = searchTerm;
         if ((!searchTerm.length) || /\S/.test(searchTerm)) {
             this.page = 1;
+            this.clearData();
             this._search$.next();
         }
     }
@@ -120,6 +121,7 @@ export class ResourceScrollableHelper {
     set sortColumn(sortColumn: string) {
         this._queryOptions.sort[0].key = sortColumn;
         this.page = 1;
+        this.clearData();
     }
 
     set sortDirection(sortDirection: SortDirection) {
@@ -129,6 +131,7 @@ export class ResourceScrollableHelper {
             this._queryOptions.sort[0].key = 'updated_at';
         }
         this.page = 1;
+        this.clearData();
     }
 
     trackByFn(index, item) {
@@ -209,6 +212,11 @@ export class ResourceScrollableHelper {
         data.splice(index, 1);
         this._data$.next(data);
         return index;
+    }
+
+    clearData(loading = true) {
+        this._data$.next([]);
+        this._loading$.next(loading);
     }
 
     private handleError(error: Response | any) {

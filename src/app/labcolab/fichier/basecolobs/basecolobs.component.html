@@ -17,7 +17,7 @@
                 <tr class="bd-b bd-2 bg-white"  *ngFor="let items of filterparticip[0]?.value; let i=index;" >
                   <ng-container *ngIf="!vue">
                     <td>
-                        <button container="body" ngbTooltip="Supprimer"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="showdelete(items?.id)">
+                        <button container="body" ngbTooltip="Supprimer"  class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2" (click)="showdelete(items?.id)">
                             <i class="fal fa-times tx-14 rounded-circle tx-danger bg-light" style="padding:6px; border-radius: 50%; "></i>
                         </button>
                     </td> 
@@ -55,7 +55,7 @@
                 <tr class="bd-b bd-2 bg-white"  *ngFor="let items of filterparticip[1]?.value; let i=index;" >
                     <ng-container *ngIf="!vue" >
                       <td>
-                        <button container="body" ngbTooltip="Supprimer"  class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" (click)="showdelete(items?.id)">
+                        <button container="body" ngbTooltip="Supprimer"  class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2" (click)="showdelete(items?.id)">
                             <i class="fal fa-times tx-14 rounded-circle tx-danger bg-light" style="padding:6px; border-radius: 50%; "></i>
                         </button>
                       </td> 

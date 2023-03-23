@@ -1,149 +1,218 @@
-<div class="row mt-5 " *ngIf="single">
-
-    <!-- Information personnel -->
-    <div class="col-10 offset-1 mt-3 card">
-        <!-- Image -->
-        <span class="d-flex justify-content-center">
-          <img class="profile rounded-circle"
-            *ngIf="single.photo"
-             style="height: 100px; width: 100px; object-fit: cover;"
-             [src]="single.photo"
-             [alt]="'user'">
-             <span *ngIf="!single.photo">
-              <i class="fad fa-user-circle profile"
-                 style="font-size: 100px; margin-top:-450px"></i>
+<ul ngbNav #nav="ngbNav" [destroyOnHide]="false" [activeId]="route.fragment | async" class="nav-borders nav-fill">
+  <li [ngbNavItem]="'profile'">
+    <a class="tx-24" ngbNavLink routerLink="." [fragment]="'profile'">
+      Profile
+    </a>
+    <ng-template ngbNavContent>
+      <div class="row mt-5" *ngIf="single">
+        <!-- Information personnel -->
+        <div class="col-10 offset-1 mt-3 card">
+          <!-- Image -->
+          <span class="d-flex justify-content-center">
+            <img class="profile rounded-circle" *ngIf="single.photo"
+              style="height: 100px; width: 100px; object-fit: cover;" [src]="single.photo" [alt]="'user'">
+            <span *ngIf="!single.photo">
+              <i class="fad fa-user-circle profile" style="font-size: 100px; margin-top:-450px"></i>
             </span>
-        </span>
-        <h3 class="tx-rubik tx-dark tx-center">
+          </span>
+          <h3 class="tx-rubik tx-dark tx-center">
             {{ authService.user.id == single.id ? 'Votre profil' : single.nom_complet }}
-            <span class="clickable ml-2 tx-primary" (click)="edit()" container="body" *ngIf="single.id == authService.user.id" [ngbTooltip]="'Modifier vos informations'">
-        <i class="far fa-edit"></i>
-      </span>
-        </h3>
+            <span class="clickable ml-2 tx-primary" (click)="edit()" container="body"
+              *ngIf="single.id == authService.user.id" [ngbTooltip]="'Modifier vos informations'">
+              <i class="far fa-edit"></i>
+            </span>
+          </h3>
 
-        <div class="d-flex justify-content-around">
+          <div class="d-flex justify-content-around mb-2">
             <div>
-                <!-- Prenom -->
-                <div class="my-3  " style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-user"></i>
-            </span> Prenom:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{single.prenom}}</span>
-                </div>
+              <!-- Prenom -->
+              <div class="my-3  " style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-user"></i>
+                  </span> Prenom:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.prenom}}</span>
+              </div>
+
+              <!-- Lieu de naissance -->
+              <div class="my-3  " style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-map-marked-alt"></i>
+                  </span> Lieu de naissance:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.lieu_naissance}}</span>
+              </div>
 
 
-                <!-- Sexe -->
-                <div class="my-3  " style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-credit-card"></i>
-            </span> Sexe:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{single.sexe}}</span>
-                </div>
+              <!-- Sexe -->
+              <div class="my-3  " style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-credit-card"></i>
+                  </span> Sexe:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.sexe | lowercase}}</span>
+              </div>
 
 
-                <!-- Email  -->
-                <div class="my-3 " style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-at"></i>
-            </span> Email:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{single.email}}</span>
-                </div>
+              <!-- Email  -->
+              <div class="my-3 " style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-at"></i>
+                  </span> Email:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.email}}</span>
+              </div>
 
 
-                <!-- Poste -->
-                <div class="my-3 " *ngIf="single.affectation_structure" style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-chair-office"></i>
-            </span> Poste:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{single.affectation_structure?.poste?.libelle}}</span>
-                </div>
+              <!-- Poste -->
+              <div class="my-3 " *ngIf="single.affectation_structure" style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-chair-office"></i>
+                  </span> Poste:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.affectation_structure?.poste?.libelle}}</span>
+              </div>
 
 
-                <!-- Poste -->
-                <div class="my-3 " *ngIf="single.affectation_structure" style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-school"></i>
-            </span> Structure:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{single.affectation_structure?.structure?.libelle}}</span>
-                </div>
+              <!-- Poste -->
+              <div class="my-3 " *ngIf="single.affectation_structure" style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-school"></i>
+                  </span> Structure:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.affectation_structure?.structure?.libelle}}</span>
+              </div>
 
             </div>
 
             <div>
-                <!-- NOm -->
-                <div class="my-3 " style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-user-tie"></i>
-            </span> Nom:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{single.nom}}</span>
-                </div>
+              <!-- NOm -->
+              <div class="my-3 " style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-user-tie"></i>
+                  </span> Nom:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.nom}}</span>
+              </div>
 
 
-                <!-- Date de naissance -->
-                <div class="my-3 " style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-venus-mars"></i>
-            </span> Date de naissance:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{single.date_naissance | date:'mediumDate' : undefined : 'fr'}}</span>
-                </div>
+              <!-- Date de naissance -->
+              <div class="my-3 " style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-venus-mars"></i>
+                  </span> Date de naissance:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.date_naissance | date:'mediumDate' : undefined : 'fr'}}</span>
+              </div>
 
 
-                <!-- Telephone -->
-                <div class="my-3" style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-phone-alt"></i>
-            </span> Telephone:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{single.telephone}}</span>
-                </div>
+              <!-- Telephone -->
+              <div class="my-3" style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-phone-alt"></i>
+                  </span> Telephone:
+                </span>
+                <span class="tx-rubik tx-dark">{{single.telephone}}</span>
+              </div>
 
 
-                <!-- Fonction -->
-                <div class="my-3" *ngIf="single.affectation_structure" style="font-size: 16px;">
-                    <span class="mr-2">
-            <span clas="">
-              <i class="fad tx-primary fa-user-md"></i>
-            </span> Fonction:
-                    </span>
-                    <span class="tx-rubik tx-dark">{{ single.affectation_structure?.fonction?.libelle }}</span>
+              <!-- Fonction -->
+              <div class="my-3" *ngIf="single.affectation_structure" style="font-size: 16px;">
+                <span class="mr-2">
+                  <span clas="">
+                    <i class="fad tx-primary fa-user-md"></i>
+                  </span> Fonction:
+                </span>
+                <span class="tx-rubik tx-dark">{{ single.affectation_structure?.fonction?.libelle }}</span>
 
 
-                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="'securite'" *ngIf="single.id == authService.user.id">
+    <a class="tx-24" ngbNavLink routerLink="." [fragment]="'securite'">
+      Securite
+    </a>
+    <ng-template ngbNavContent>
+      <div class="row mt-5" *ngIf="single">
+        <!-- Changer mot de passe -->
+        <div class="col-10 offset-1 card my-3 py-4">
+          <h3 class="tx-rubik tx-dark tx-center">Modifier votre mot de passe</h3>
+          <app-user-password-edit></app-user-password-edit>
+        </div>
+      </div>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="'role'">
+    <a class="tx-24" ngbNavLink routerLink="." [fragment]="'role'">
+      Role
+    </a>
+    <ng-template ngbNavContent>
+      <div class="row mt-5" *ngIf="single">
+        <div class="col-10 offset-1 card my-3 py-4">
+          <h3 class="tx-rubik tx-dark tx-center">Rôle</h3>
+          <div class="offset-1 col-10">
+            <article class="invoice_preview" [class.mb-3]="!last"
+              *ngFor="let affectation_structure of single.affectation_structures; let last = last;">
+              <div class="inv_notes">
+                <span class="badge badge-primary">
+                  <i class="fas fa-user-tag"></i> {{ affectation_structure.role?.libelle }}
+                </span>
+                <div class="row d-flex justify-content-between mt-3">
+                  <!-- COntrat -->
+                  <div class="col-4" *ngIf="affectation_structure.structure">
+                    <p class="font-weight-bolder mb-0 tx-facebook">Structure</p>
+                    <p class="tx-light">{{ affectation_structure.structure?.libelle }}</p>
+                  </div>
 
 
-    </div>
+                  <!-- debut -->
+                  <div class="col-4" *ngIf=" affectation_structure.fonctions?.length">
+                    <p class="font-weight-bolder mb-0 tx-facebook">Fonction</p>
+                    <p class="tx-light">
+                      <ng-container *ngFor="let fonction of affectation_structure.fonctions; let last = last;">
+                        {{ fonction?.libelle }}{{(!last) ? ', ' : ' '}}
+                      </ng-container>
+                    </p>
+                  </div>
 
 
-    <!-- Changer mot de passe -->
-    <div class="col-10 offset-1 card my-3 py-4" *ngIf="single.id == authService.user.id">
-        <h3 class="tx-rubik tx-dark tx-center">Modifier votre mot de passe</h3>
-        <app-user-password-edit></app-user-password-edit>
-    </div>
-</div>
+                  <!-- fin -->
+                  <div class="col-4" *ngIf="affectation_structure.poste">
+                    <p class="font-weight-bolder mb-0 tx-facebook">Poste</p>
+                    <p class="tx-light">{{ affectation_structure.poste?.libelle }}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
 
-
+        </div>
+      </div>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav"></div>
 
 <app-loading *ngIf="loading"></app-loading>
 
 
 
-<app-modal [configuration]="{ name: 'user-edit-modal', titre: 'Modifier vos informations', icone:'user-tie' }" (closed)="helper.navigation.deleteFragmentFromUrl()">
-    <app-users-edit *ngIf="editing"></app-users-edit>
+<app-modal [configuration]="{ name: 'user-edit-modal', titre: 'Modifier vos informations', icone:'user-tie' }"
+  (closed)="helper.navigation.deleteFragmentFromUrl()">
+  <app-users-edit *ngIf="editing"></app-users-edit>
 </app-modal>

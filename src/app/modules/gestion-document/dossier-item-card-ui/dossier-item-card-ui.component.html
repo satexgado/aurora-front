@@ -2,7 +2,7 @@
     <div class="app-file-icon bg-light">
         <i class="fad fa-folder-open" [style.color]="dossier.couleur"></i>
         <div class=" position-absolute mr-3 " style="top: 0;right:0;">
-            <button *ngIf="dossier.ged_element.bloquer && !dossier.is_user; else button"  ngbTooltip="Débloquez" (click)="onCheckPasswordDossier()" class="btn btn-oblong btn-outline-dark bd-0 btn-icon m-2">
+            <button *ngIf="dossier.ged_element.bloquer && !dossier.is_user; else button"  ngbTooltip="Débloquez" (click)="onCheckPasswordDossier()" class="btn btn-oblong btn-outline-primary bd-0 btn-icon m-2">
                 <i class="fas tx-14 rounded-circle fa-lock-alt"></i>
             </button>
         </div>
@@ -20,7 +20,7 @@
 </div>
 <ng-template #button>
     <div ngbDropdown [container]="'body'" class="d-inline-block no-caret" *ngIf="!noAction">
-        <button class="btn btn-oblong bd-0 btn-outline-dark"  ngbTooltip="Voir les commentaires" ngbDropdownToggle>
+        <button class="btn btn-oblong bd-0 btn-outline-primary"  ngbTooltip="Voir les commentaires" ngbDropdownToggle>
           <i class="fal fa-comment-alt-dots tx-14 rounded-circle" ></i>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">

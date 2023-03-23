@@ -1,0 +1,530 @@
+<div class="modal-header p-1">
+    <h5 class="modal-title title">{{name | titlecase}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<div class="modal-body p-0 scroll-11">
+  <div>
+    <div [ngSwitch]="typeCourrier">
+      <div *ngSwitchCase="'entrant'">
+        <div class="col-lg-12 d-flex align-items-center justify-content-between">
+          <button class="btn btn-link  mr-3" *ngIf="!hideCrTypeSelector"  (click)="onChangeTypeCourrier(null)">
+            <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
+          </button>
+          <h5 class="text-dark"><i class="fal fa-envelope" style="padding: 6px; border-radius: 50%;"></i> Courriers Entrants </h5>
+        </div>
+        <div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+
+          <div class="col-lg-7">
+              <div class="input-group ">
+                  <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="courrierEntrantHelper.searchTerm">
+              </div>
+          </div>
+
+          <div class="col-lg-5 ">
+              <ul class="nav float-right list-inline justify-content-end">
+                  <li class="nav-item ">
+                      <button class="btn btn-link" container="body" [ngbTooltip]="'Vue carte'" (click)="onChangeView('card')">
+                          <span class="tx-echos">
+                           <i class="fad fa-th card-1  tx-16" [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'" style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                  </li>
+                  <li class="nav-item ">
+                      <button class="btn btn-link" container="body" [ngbTooltip]="'Vue liste'" (click)="onChangeView('list')">
+                          <span class="tx-echos">
+                              <i class="fad fa-list card-1 tx-16 " [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' " style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                  </li>
+              </ul>
+          </div>
+
+        </div>
+        <div class="card-body" *ngIf="view == 'card'; else listViewEntrant ">
+          <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataEntrant()" class="d-flex scrollable-y-65 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+              <ng-container *ngIf="courrierEntrantHelper.data$ | async as items">
+                  <ng-container *ngIf="items.length; else ((!(courrierEntrantHelper.loading$ | async)) && true ? noItem : loading)">
+                      <div class="col-sm-6   mg-b-20" [@flyInOut]="'in'" *ngFor="let courrier of items;trackBy: courrierEntrantHelper.trackByFn">
+                          <div class="card h-100 card-1" (click)="toggleSelectedItem(courrier.courrier)" [ngClass]="{'success card-accent-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'danger card-accent-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}">
+                              <div class="card-header justify-content-between">
+                                  <span> <i class="fal fa-inbox-in bg-light tx-yeto" style="padding:6px; border-radius:50%"></i> {{courrier.courrier?.type?.libelle}}</span>
+                                  <span> <i class="fal fa-globe bg-warning tx-white" style="padding:6px; border-radius:50%"></i> {{courrier.provenance?.libelle}}</span>
+                              </div>
+                              <div class="card-body d-flex align-items-center" [class.info]="hasSelectedItemCode(courrier.courrier.libelle)">
+                                  <div class="m-auto">
+                                      <div class=" text-center ">
+                                          <span class=" tx-bold mb-0 "> {{courrier.courrier?.objet}} </span>
+                                          <p class="  mb-0 tx-warning">
+                                              <span class=""> {{courrier.courrier?.libelle}} </span><span class=""> || </span><span class=""> {{courrier.courrier?.nature?.libelle}} </span> <span class=""> || </span><span class=""> {{courrier.date_arrive | date: 'dd/MM/yyyy'}} </span>
+                                          </p>
+                                      </div>
+                                      <div class=" text-center">
+                                          <span class=" tx-bold  "> {{courrier.expediteur?.libelle}} </span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="card-footer justify-content-between py-0">
+                                  <div class=" justify-content-between p-0">
+                                      <p class="mg-0 d-flex">
+                                          <span class=" bd bd-5 pl-2 avatar rounded-circle avatar-xs" container="body" [ngbTooltip]="courrier.courrier?.urgence?.libelle" [style.background-color]="courrier.courrier.urgence.couleur"></span>
+                                          <span class=" pl-2 my-auto" *ngIf="courrier.courrier?.date_limit && !courrier.courrier?.cloture" [ngClass]="getDateStyle(courrier.courrier.date_limit)"> {{courrier.courrier.date_limit | date:'mediumDate' : undefined : 'fr'}}</span>
+                                          <span class="pl-2 my-auto" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
+                                            {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                                          </span>
+                                      </p>
+                                  </div>
+                                  <a class="nav-link  ml-4 " *ngIf="courrier.courrier?.suivi_par_user">
+                                      <div class="d-flex flex-row">
+                                          <div class="profiles">
+                                              <img *ngIf="courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="rounded-circle avatar-xs" [src]="courrier.courrier?.suivi_par_user?.avatar" alt="avatar">
+                                              <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="fad fa-user-circle fa-2x"></i>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                      <ng-container *ngIf="courrierEntrantHelper.loading$ | async">
+                        <ng-container *ngTemplateOutlet="loading"></ng-container>
+                      </ng-container>
+                      <div class="col-12 d-flex justify-content-center" *ngIf="courrierEntrantHelper.hasMoreData && !(courrierEntrantHelper.loading$ | async)">
+                        <button class="btn btn-outline-primary btn-oblong" (click)="checkDataEntrant()"> 
+                           Voir plus
+                        </button>
+                    </div>
+                  </ng-container>
+              </ng-container>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="'sortant'">
+        <div class="col-lg-12 d-flex align-items-center justify-content-between">
+            <button class="btn btn-link  mr-3" *ngIf="!hideCrTypeSelector"  (click)="onChangeTypeCourrier(null)">
+              <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
+            </button>
+            <h5 class="text-dark"><i class="fal fa-envelope-open-text" style="padding: 6px; border-radius: 50%;"></i> Courriers Sortants </h5>
+        </div>
+        <div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+
+          <div class="col-lg-7">
+              <div class="input-group ">
+                  <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="courrierSortantHelper.searchTerm">
+              </div>
+          </div>
+
+          <div class="col-lg-5 ">
+              <ul class="nav float-right list-inline justify-content-end">
+                  <li class="nav-item ">
+                      <button class="btn btn-link" container="body" [ngbTooltip]="'Vue carte'" (click)="onChangeView('card')">
+                          <span class="tx-echos">
+                           <i class="fad fa-th card-1  tx-16" [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'" style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                  </li>
+                  <li class="nav-item ">
+                      <button class="btn btn-link" container="body" [ngbTooltip]="'Vue liste'" (click)="onChangeView('list')">
+                          <span class="tx-echos">
+                              <i class="fad fa-list card-1 tx-16 " [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' " style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                  </li>
+              </ul>
+          </div>
+
+      </div>
+        <div class="card-body" *ngIf="view == 'card'; else listViewSortant ">
+          <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataSortant()" class="d-flex scrollable-y-65 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+              <ng-container *ngIf="courrierSortantHelper.data$ | async as items">
+                  <ng-container *ngIf="items.length; else ((!(courrierSortantHelper.loading$ | async)) && true ? noItem : loading)">
+                      <div class="col-sm-6   mg-b-20" [@flyInOut]="'in'" *ngFor="let courrier of items;trackBy: courrierSortantHelper.trackByFn">
+                          <div class="card h-100 card-1" (click)="toggleSelectedItem(courrier.courrier)" [ngClass]="{'success card-accent-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'danger card-accent-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}">
+                              <div class="card-header justify-content-between">
+                                  <span> <i class="fal fa-inbox-out bg-light tx-yeto" style="padding:6px; border-radius:50%"></i> {{courrier.courrier?.type?.libelle}}</span>
+                              </div>
+                              <div class="card-body d-flex align-items-center" [class.info]="hasSelectedItemCode(courrier.courrier.libelle)">
+                                  <div class="m-auto">
+                                      <div class=" text-center ">
+                                          <span class=" tx-bold mb-0 "> {{courrier.courrier?.objet}} </span>
+                                          <p class="  mb-0 tx-warning">
+                                              <span class=""> {{courrier.courrier?.libelle}} </span><span class=""> || </span><span class=""> {{courrier.courrier?.nature?.libelle}} </span> <span class=""> || </span><span class=""> {{courrier.date_envoie | date: 'dd/MM/yyyy'}} </span>
+                                          </p>
+                                      </div>
+                                      <div class=" text-center">
+                                          <span class=" tx-bold  "> {{courrier.expediteur?.libelle}} </span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="card-footer justify-content-between py-0">
+                                  <div class=" justify-content-between p-0">
+                                      <p class="mg-0 d-flex">
+                                          <span class=" bd bd-5 pl-2 avatar rounded-circle avatar-xs" container="body" [ngbTooltip]="courrier.courrier?.urgence?.libelle" [style.background-color]="courrier.courrier.urgence.couleur"></span>
+                                          <span class=" pl-2 my-auto" *ngIf="courrier.courrier?.date_limit && !courrier.courrier?.cloture" [ngClass]="getDateStyle(courrier.courrier.date_limit)"> {{courrier.courrier.date_limit | date:'mediumDate' : undefined : 'fr'}}</span>
+                                          <span class="pl-2 my-auto" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
+                                            {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                                          </span>
+                                      </p>
+                                  </div>
+
+
+                                  <a class="nav-link  ml-4 " *ngIf="courrier.courrier?.suivi_par_user">
+                                      <div class="d-flex flex-row">
+                                          <div class="profiles">
+                                              <img *ngIf="courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="rounded-circle avatar-xs" [src]="courrier.courrier?.suivi_par_user?.avatar" alt="avatar">
+                                              <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="fad fa-user-circle fa-2x"></i>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </ng-container>
+                  <ng-container *ngIf="courrierSortantHelper.loading$ | async">
+                    <ng-container *ngTemplateOutlet="loading"></ng-container>
+                  </ng-container>
+                  <div class="col-12 d-flex justify-content-center" *ngIf="courrierSortantHelper.hasMoreData && !(courrierSortantHelper.loading$ | async)">
+                    <button class="btn btn-outline-primary btn-oblong" (click)="checkDataSortant()"> 
+                       Voir plus
+                    </button>
+                </div>
+              </ng-container>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="'interne'">
+        <div class="col-lg-12 d-flex align-items-center justify-content-between">
+          <button class="btn btn-link  mr-3" *ngIf="!hideCrTypeSelector"  (click)="onChangeTypeCourrier(null)">
+            <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
+          </button>
+          <h5 class="text-dark"><i class="fal fa-envelope-open-text" style="padding: 6px; border-radius: 50%;"></i> Courriers Internes </h5>
+        </div>
+        <div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+
+          <div class="col-lg-7">
+              <div class="input-group ">
+                  <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="courrierInterneHelper.searchTerm">
+              </div>
+          </div>
+
+          <div class="col-lg-5 ">
+              <ul class="nav float-right list-inline justify-content-end">
+                  <li class="nav-item ">
+                      <button class="btn btn-link" container="body" [ngbTooltip]="'Vue carte'" (click)="onChangeView('card')">
+                          <span class="tx-echos">
+                           <i class="fad fa-th card-1  tx-16" [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'" style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                  </li>
+                  <li class="nav-item ">
+                      <button class="btn btn-link" container="body" [ngbTooltip]="'Vue liste'" (click)="onChangeView('list')">
+                          <span class="tx-echos">
+                              <i class="fad fa-list card-1 tx-16 " [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' " style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                  </li>
+              </ul>
+          </div>
+
+        </div>
+        <div class="card-body" *ngIf="view == 'card'; else listViewInterne " [class.loading]="courrierInterneHelper.loading$ | async">
+          <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataInterne()" class="d-flex scrollable-y-65 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+              <ng-container *ngIf="courrierInterneHelper.data$ | async as items">
+                  <ng-container *ngIf="items.length; else ((!(courrierInterneHelper.loading$ | async)) && true ? noItem : loading)">
+                      <div class="col-sm-6   mg-b-20" [@flyInOut]="'in'" *ngFor="let courrier of items;trackBy: courrierInterneHelper.trackByFn">
+                          <div class="card h-100 card-1" (click)="toggleSelectedItem(courrier.courrier)" [ngClass]="{'success card-accent-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'danger card-accent-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}">
+                              <div class="card-header justify-content-between">
+                                  <span> <i class="fal fa-inbox-in bg-light tx-yeto" style="padding:6px; border-radius:50%"></i> {{courrier.courrier?.type?.libelle}}</span>
+                                  <span> <i class="fal fa-globe bg-warning tx-white" style="padding:6px; border-radius:50%"></i> {{courrier.provenance?.libelle}}</span>
+                              </div>
+                              <div class="card-body d-flex align-items-center" [class.info]="hasSelectedItemCode(courrier.courrier.libelle)">
+                                  <div class="m-auto">
+                                      <div class=" text-center ">
+                                          <span class=" tx-bold mb-0 "> {{courrier.courrier?.objet}} </span>
+                                          <p class="  mb-0 tx-warning">
+                                              <span class=""> {{courrier.courrier?.libelle}} </span><span class=""> || </span><span class=""> {{courrier.courrier?.nature?.libelle}} </span> <span class=""> || </span><span class=""> {{courrier.date_arrive | date: 'dd/MM/yyyy'}} </span>
+                                          </p>
+                                      </div>
+                                      <div class=" text-center">
+                                          <span class=" tx-bold  "> {{courrier.expediteur?.libelle}} </span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="card-footer justify-content-between py-0">
+                                  <div class=" justify-content-between p-0">
+                                      <p class="mg-0 d-flex">
+                                          <span class=" bd bd-5 pl-2 avatar rounded-circle avatar-xs" container="body" [ngbTooltip]="courrier.courrier?.urgence?.libelle" [style.background-color]="courrier.courrier.urgence.couleur"></span>
+                                          <span class=" pl-2 my-auto" *ngIf="courrier.courrier?.date_limit && !courrier.courrier?.cloture" [ngClass]="getDateStyle(courrier.courrier.date_limit)"> {{courrier.courrier.date_limit | date:'mediumDate' : undefined : 'fr'}}</span>
+                                          <span class="pl-2 my-auto" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
+                                            {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
+                                          </span>
+                                      </p>
+                                  </div>
+
+
+                                  <a class="nav-link  ml-4 " *ngIf="courrier.courrier?.suivi_par_user">
+                                      <div class="d-flex flex-row">
+                                          <div class="profiles">
+                                              <img *ngIf="courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="rounded-circle avatar-xs" [src]="courrier.courrier?.suivi_par_user?.avatar" alt="avatar">
+                                              <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="fad fa-user-circle fa-2x"></i>
+                                          </div>
+                                      </div>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </ng-container>
+                  <ng-container *ngIf="courrierInterneHelper.loading$ | async">
+                    <ng-container *ngTemplateOutlet="loading"></ng-container>
+                  </ng-container>
+                  <div class="col-12 d-flex justify-content-center" *ngIf="courrierInterneHelper.hasMoreData && !(courrierInterneHelper.loading$ | async)">
+                    <button class="btn btn-outline-primary btn-oblong" (click)="checkDataInterne()"> 
+                       Voir plus
+                    </button>
+                </div>
+              </ng-container>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchDefault>
+        <div class="d-flex flex-wrap my-2">
+          <div class="col-lg-4  col-md-6 text-center" *ngIf="
+          helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+          ">
+              <a (click)="onChangeTypeCourrier('entrant')" class="card card-1 text-primary bg-white border-light m-3">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-sm-12"><i class="fa fa-envelope fa-5x"></i></div>
+                          <div class="col-sm-12 card-text">
+                              <div class="huge">Courrier Entrant</div>
+                          </div>
+                      </div>
+                  </div>
+              </a>
+          </div>
+          <div class="col-lg-4  col-md-6 text-center" *ngIf="
+          helper.authorisation.check('courrier sortant', 'LECTURE', undefined)
+          ">
+              <a (click)="onChangeTypeCourrier('sortant')" class="card card-1 text-primary bg-white border-light m-3">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-sm-12"><i class="fa fa-envelope-open fa-5x"></i></div>
+                          <div class="col-sm-12 card-text">
+                              <div class="huge">Courrier Sortant</div>
+                          </div>
+                      </div>
+                  </div>
+              </a>
+          </div>
+            <div class="col-lg-4  col-md-6 text-center" *ngIf="
+            helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+            ">
+                <a (click)="onChangeTypeCourrier('interne')" class="card card-1 text-primary bg-white border-light m-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12"><i class="fa fa-envelope-open-text fa-5x"></i></div>
+                            <div class="col-sm-12 card-text">
+                                <div class="huge">Courrier Interne</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 d-flex flex-row flex-nowrap  pb-4 scroll-11" style="overflow-x: auto;" *ngIf="selectedItem && selectedItem.length">
+    <button class="btn btn-oblong btn-sm card-1 btn-outline-primary m-2" *ngFor="let item of selectedItem" (click)="toggleSelectedItem(item)">
+        {{item.libelle}} - {{item.objet | titlecase | shorten}}
+        <i class="fal fa-times"></i>
+    </button>
+  </div>
+</div>
+<div class="modal-footer p-0">
+    <button type="button" class="btn btn-sm btn-outline-primary" *ngIf="createModal" (click)="onShowCreateForm()">Ajouter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="activeModal.close('Close click')">Fermer</button>
+</div>
+
+
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #loading>
+    <div class="col-sm-6 mg-b-20"  *ngFor="let e of [].constructor(20);">
+        <div class="loading-card card h-100 w-100">
+            <div class="image loading-placeholder">
+            </div>
+            <div class="bars">
+                <div class="bar bar1 loading-placeholder"></div>
+                <div class="bar bar2 loading-placeholder"></div>
+            </div>
+        </div>
+    </div>   
+</ng-template>
+
+<ng-template #loadingLine>
+    <div class="row">
+        <div *ngFor="let e of [].constructor(20);"  class="col-12 rounded-0">
+            <div  class="loading-card card h-100 w-100  rounded-0">
+                <div  class="bars h-100  p-2">
+                    <div  class="bar bar2 w-100 loading-placeholder  m-0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #emptyTemplate>
+  <div class="row mx-0 h-75 text-center">
+      <div class="col-sm-12 my-auto">
+          <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+          <br> Vide
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #listViewEntrant>
+  <div class="card card-2 card-accent-primary px-0 col-12 mt-2">
+      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataEntrant()" class="card-body p-0 scrollable-y-65 scroll-5" #scrollContainer>
+          <div class="table-responsive" *ngIf="courrierEntrantHelper.data$ | async as items">
+              <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(courrierEntrantHelper.loading$ | async)) && true ? noItem : loadingLine)">
+                  <tbody>
+                      <tr class="bd-b bd-2" [class.info]="hasSelectedItemCode(courrier.courrier.libelle)" [@flyInOut]="'in'" [ngClass]="{'tx-deco-line': courrier.courrier?.cloture,'text-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'text-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}"
+                          *ngFor="let courrier of items;trackBy: courrierEntrantHelper.trackByFn; let i = index;">
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              <i class="fal fa-dot-circle" container="body" [ngbTooltip]="courrier.courrier?.urgence?.libelle" [style.color]="courrier.courrier?.urgence?.couleur"></i>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              {{courrier.libelle}}
+                          </td>
+                          <td class="col" (click)="toggleSelectedItem(courrier.courrier)" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                              {{courrier.courrier?.objet | shorten:50}}
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)" class="p-0">
+                              <div *ngIf="courrier.courrier?.suivi_par_user?.avatar" class="profiles avatar avatar-xs">
+                                  <img class="rounded-circle avatar-xs" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" [src]="courrier.courrier?.suivi_par_user?.avatar" alt="avatar">
+                              </div>
+                              <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="fad fa-user-circle fa-2x"></i>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              <span *ngIf="courrier.courrier?.date_limit && !courrier.courrier.cloture" [ngClass]="getDateStyle(courrier.courrier.date_limit)"> {{courrier.courrier.date_limit | date:'mediumDate' : undefined : 'fr'}}</span>
+                              <span *ngIf="courrier.courrier.cloture">{{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}</span>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              {{courrier.courrier?.type?.libelle}}
+                          </td>
+
+
+                      </tr>
+                  </tbody>
+              </table>
+              <ng-container *ngIf="courrierEntrantHelper.loading$ | async">
+                <ng-container *ngTemplateOutlet="loadingLine"></ng-container>
+              </ng-container>
+              <div class="col-12 d-flex justify-content-center" *ngIf="courrierEntrantHelper.hasMoreData && !(courrierEntrantHelper.loading$ | async)">
+                <button class="btn btn-outline-primary btn-oblong" (click)="checkDataEntrant()"> 
+                   Voir plus
+                </button>
+            </div>
+          </div>
+      </div>
+  </div>
+</ng-template>
+
+
+<ng-template #listViewSortant>
+  <div class="card card-2 card-accent-primary px-0 col-12 mt-2">
+      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataSortant()" class="card-body p-0 scrollable-y-65 scroll-5" #scrollContainer>
+          <div class="table-responsive" *ngIf="courrierSortantHelper.data$ | async as items">
+              <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(courrierSortantHelper.loading$ | async)) && true ? noItem : loadingLine)">
+                  <tbody>
+                      <tr class="bd-b bd-2" [@flyInOut]="'in'" [class.info]="hasSelectedItemCode(courrier.courrier.libelle)" [ngClass]="{'tx-deco-line': courrier.courrier?.cloture,'text-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'text-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}"
+                          *ngFor="let courrier of items;trackBy: courrierSortantHelper.trackByFn; let i = index;">
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              <i class="fal fa-dot-circle" container="body" [ngbTooltip]="courrier.courrier?.urgence?.libelle" [style.color]="courrier.courrier.urgence.couleur"></i>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              {{courrier.libelle}}
+                          </td>
+                          <td class="col" (click)="toggleSelectedItem(courrier.courrier)" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                              {{courrier.courrier?.objet | shorten:50}}
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)" class="p-0">
+                              <div *ngIf="courrier.courrier?.suivi_par_user?.avatar" class="profiles avatar avatar-xs">
+                                  <img class="rounded-circle avatar-xs" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" [src]="courrier.courrier?.suivi_par_user?.avatar" alt="avatar">
+                              </div>
+                              <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="fad fa-user-circle fa-2x"></i>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              <span *ngIf="courrier.courrier?.date_limit && !courrier.courrier.cloture" [ngClass]="getDateStyle(courrier.courrier.date_limit)"> {{courrier.courrier.date_limit | date:'mediumDate' : undefined : 'fr'}}</span>
+                              <span *ngIf="courrier.courrier.cloture">{{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}</span>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              {{courrier.courrier?.type?.libelle}}
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+              <ng-container *ngIf="courrierSortantHelper.loading$ | async">
+                <ng-container *ngTemplateOutlet="loadingLine"></ng-container>
+              </ng-container>
+              <div class="col-12 d-flex justify-content-center" *ngIf="courrierSortantHelper.hasMoreData && !(courrierSortantHelper.loading$ | async)">
+                <button class="btn btn-outline-primary btn-oblong" (click)="checkDataSortant()"> 
+                   Voir plus
+                </button>
+            </div>
+          </div>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #listViewInterne>
+  <div class="card card-2 card-accent-primary px-0 col-12 mt-2">
+      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataInterne()" class="card-body p-0 scrollable-y-65 scroll-5" #scrollContainer>
+          <div class="table-responsive" *ngIf="courrierInterneHelper.data$ | async as items">
+              <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(courrierInterneHelper.loading$ | async)) && true ? noItem : loadingLine)">
+                  <tbody>
+                      <tr class="bd-b bd-2" [class.info]="hasSelectedItemCode(courrier.courrier.libelle)" [@flyInOut]="'in'" [ngClass]="{'tx-deco-line': courrier.courrier?.cloture,'text-success': courrier.courrier?.cloture && courrier.courrier?.cloture.valider, 'text-danger': courrier.courrier?.cloture && !courrier.courrier?.cloture.valider}"
+                          *ngFor="let courrier of items;trackBy: courrierInterneHelper.trackByFn; let i = index;">
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              <i class="fal fa-dot-circle" container="body" [ngbTooltip]="courrier.courrier?.urgence?.libelle" [style.color]="courrier.courrier?.urgence?.couleur"></i>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              {{courrier.libelle}}
+                          </td>
+                          <td class="col" (click)="toggleSelectedItem(courrier.courrier)" [ngbTooltip]="courrier.courrier?.objet" [container]="'body'">
+                              {{courrier.courrier?.objet | shorten:50}}
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)" class="p-0">
+                              <div *ngIf="courrier.courrier?.suivi_par_user?.avatar" class="profiles avatar avatar-xs">
+                                  <img class="rounded-circle avatar-xs" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" [src]="courrier.courrier?.suivi_par_user?.avatar" alt="avatar">
+                              </div>
+                              <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar" container="body" [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle" class="fad fa-user-circle fa-2x"></i>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              <span *ngIf="courrier.courrier?.date_limit && !courrier.courrier.cloture" [ngClass]="getDateStyle(courrier.courrier.date_limit)"> {{courrier.courrier.date_limit | date:'mediumDate' : undefined : 'fr'}}</span>
+                              <span *ngIf="courrier.courrier.cloture">{{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}</span>
+                          </td>
+                          <td (click)="toggleSelectedItem(courrier.courrier)">
+                              {{courrier.courrier?.type?.libelle}}
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+              <ng-container *ngIf="courrierInterneHelper.loading$ | async">
+                <ng-container *ngTemplateOutlet="loadingLine"></ng-container>
+              </ng-container>
+              <div class="col-12 d-flex justify-content-center" *ngIf="courrierInterneHelper.hasMoreData && !(courrierInterneHelper.loading$ | async)">
+                <button class="btn btn-outline-primary btn-oblong" (click)="checkDataInterne()"> 
+                   Voir plus
+                </button>
+            </div>
+          </div>
+      </div>
+  </div>
+</ng-template>

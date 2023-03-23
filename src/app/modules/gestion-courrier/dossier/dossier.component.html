@@ -191,7 +191,7 @@
                                                         <span class="text-info mb-0" *ngIf="!courrier.courrier?.cloture">{{courrier.courrier?.statut?.libelle | titlecase}}</span>
                                                         <span class="mb-0" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
                                                         {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
-                                                        <button (click)="onShowClotureCourrierForm(courrier)" class="border-0 btn-transition btn btn-sm btn-oblong btn-dark btn-outline-dark">
+                                                        <button (click)="onShowClotureCourrierForm(courrier)" class="border-0 btn-transition btn btn-sm btn-oblong btn-dark btn-outline-primary">
                                                           <i class="fal fa-edit fa-lg"></i>
                                                         </button>
                                                     </span>
@@ -497,6 +497,6 @@
     </div>
     <div class="modal-footer ">
         <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button>
-        <button type="button " class="btn btn-sm btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+        <button type="button " class="btn btn-sm btn-outline-primary " (click)="modal.close( 'Close click') ">Fermer</button>
     </div>
 </ng-template>

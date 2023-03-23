@@ -1,8 +1,10 @@
 <ng-container *ngIf="coordonnee">
-    <div class="structure__header bd-b mt-3">
+    <div class="structure__header bd-b mx-0 mt-3">
         <div class="structure__header-banniere">
             <div class="structure__header-banniere-designation">
-                <h3 class="tx-ether">{{ coordonnee.libelle}} <button class="btn btn-outline-primary" (click)="onShowUpdateCoordonneeForm()"><i class="fal fa-edit"></i></button></h3>
+                <h3 class="tx-ether">{{ coordonnee.libelle}} 
+                    <button class="btn btn-outline-primary" (click)="onShowUpdateCoordonneeForm()"><i class="fal fa-edit"></i></button>
+                </h3>
                 <h6 class="text-info ">
                   <i class="fal fa-phone"></i>  {{coordonnee.telephone}}
                 </h6>
@@ -12,6 +14,10 @@
                 <h6 class="text-info">
                     <i class="fal fa-map-marked-alt"></i>
                     {{coordonnee.adresse}}
+                </h6>
+                <h6 class="text-info">
+                    <i class="fal fa-tag"></i>
+                    {{coordonnee.tag}}
                 </h6>
             </div>
         </div>

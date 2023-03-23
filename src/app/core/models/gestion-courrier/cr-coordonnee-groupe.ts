@@ -5,9 +5,10 @@ export interface ICrCoordonneeGroupe extends IBase {
   groupe_id: number;
   cr_coordonnees: IBase[];
   nb_coordonnees: number;
+  nb_coordonnee_groupes: number;
   groupe: ICrCoordonneeGroupe;
   groupes: ICrCoordonneeGroupe[];
-
+  children: {name:string, value: ICrCoordonneeGroupe[]};
 }
 
 export class CrCoordonneeGroupe implements ICrCoordonneeGroupe {
@@ -16,6 +17,7 @@ export class CrCoordonneeGroupe implements ICrCoordonneeGroupe {
     groupe_id: number = null;
     cr_coordonnees: IBase[] = null;
     nb_coordonnees: number = 0;
+    nb_coordonnee_groupes: number = 0;
 
     @hasOneMap({field: 'cr_coordonnee_groupe', class: CrCoordonneeGroupe})
     groupe: ICrCoordonneeGroupe = null;

@@ -33,6 +33,8 @@ import {
 } from '@angular/animations';
 import { ICrCoordonnee } from 'src/app/core/models/gestion-courrier/cr-coordonnee';
 import { CourrierUiService } from '../courrier-ui.service';
+import { CrReaffectationFactory } from 'src/app/core/services/gestion-courrier/cr-reaffectation';
+import { ICrReaffectation } from 'src/app/core/models/gestion-courrier/cr-reaffectation';
 
 
 @Component({
@@ -63,6 +65,7 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
   );
 
   lastSortant$;
+  reaffectation$;
 
   @ViewChild('scrollContainer')
   scrollContainer: ElementRef;
@@ -115,6 +118,7 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
   }
 
   doFilter() {
+    this.dataHelper.clearData();
     this.is_advance_filter = false;
     let filters = { or: false, filters: [] };
 
@@ -146,6 +150,7 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
   }
 
   onDoCloseOpenFilter() {
+    this.dataHelper.clearData();
     if (this.showClose && this.showOpen) {
       this.dataHelper.query = [
         { or: false, filters: [new Filter('IsIns2', 1, 'eq')] },
@@ -222,9 +227,20 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
             {or: false, filters:[new Filter('IsIns2', 1, 'eq')]},
           ],
           [],
-          3,
+          6,
           1,
-          [new Sort('created_at','DESC')])
+          [new Sort('updated_at','DESC')])
+      ).pipe(map(data=>data.data)))
+    );
+
+    const crReaffectationService = new CrReaffectationFactory();
+    this.reaffectation$ = this.autoRefresh$.pipe(
+      switchMap(() => crReaffectationService.list(
+        new QueryOptions(
+          [
+            {or: false, filters:[new Filter('IsForIns', 1, 'eq'), new Filter('HasSortant', 1, 'eq')]},
+          ],
+        ).setSort([new Sort('created_at','DESC')])
       ).pipe(map(data=>data.data)))
     );
 
@@ -561,5 +577,24 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
       callback();
     }
     animateScroll();
+  }
+
+  onValidateReaffectation( reaffectation: ICrReaffectation, confirmation = true ) {
+    if(confirmation)  {
+      reaffectation.confirmation = 1;
+      reaffectation.annulation = 0;
+    } else {
+      reaffectation.confirmation = 0;
+      reaffectation.annulation = 1;
+    }
+
+    const service = new CrReaffectationFactory();
+    service.update(reaffectation).subscribe(
+      (data)=> {
+        reaffectation = data;
+      }
+    );
+    
+
   }
 }

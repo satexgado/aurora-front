@@ -17,11 +17,13 @@ export interface ICrReaffectation extends IBase {
   confirmation: number;
   annulation: number;
   is_user: number;
+  link: string;
 }
 
 export class CrReaffectation implements ICrReaffectation {
     id: number = 0;
     libelle: string = '';
+    link: string = '';
     courrier_id: number = 0;
     structure_id: number = 0;
     suivi_par: number = 0;

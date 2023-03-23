@@ -1,0 +1,123 @@
+<ng-container *ngIf="user">
+    <div class="structure__header bd-b mx-0 mt-3">
+        <div class="structure__header-banniere flex-wrap">
+            <div class="structure__header-banniere-image mx-auto">
+                <img [src]="user.photo" [alt]="user.nom_complet" class="border">
+            </div>
+            <div class="structure__header-banniere-designation col">
+                <div class="d-flex justify-content-around mb-2">
+                    <div class="mr-4 col">
+                        <!-- Prenom -->
+                        <div class="my-3  " style="font-size: 16px;">
+                            <span class="mr-2">
+                                <span clas="">
+                                    <i class="fad tx-primary fa-user"></i>
+                                </span> Prenom:
+                            </span>
+                            <span class="tx-rubik tx-dark">{{user.prenom}}</span>
+                        </div>
+
+                        <!-- Sexe -->
+                        <div class="my-3  " style="font-size: 16px;">
+                            <span class="mr-2">
+                                <span clas="">
+                                    <i class="fad tx-primary fa-credit-card"></i>
+                                </span> Sexe:
+                            </span>
+                            <span class="tx-rubik tx-dark">{{user.sexe | lowercase}}</span>
+                        </div>
+
+                        <!-- Telephone -->
+                        <div class="my-3" style="font-size: 16px;">
+                            <span class="mr-2">
+                                <span clas="">
+                                    <i class="fad tx-primary fa-phone-alt"></i>
+                                </span> Telephone:
+                            </span>
+                            <span class="tx-rubik tx-dark">{{user.telephone}}</span>
+                        </div>
+
+
+                        <!-- Email  -->
+                        <div class="my-3 " style="font-size: 16px;">
+                            <span class="mr-2">
+                                <span clas="">
+                                    <i class="fad tx-primary fa-at"></i>
+                                </span> Email:
+                            </span>
+                            <span class="tx-rubik tx-dark">{{user.email}}</span>
+                        </div>
+
+                    </div>
+
+                    <div class="col">
+                        <!-- NOm -->
+                        <div class="my-3 " style="font-size: 16px;">
+                            <span class="mr-2">
+                                <span clas="">
+                                    <i class="fad tx-primary fa-user-tie"></i>
+                                </span> Nom:
+                            </span>
+                            <span class="tx-rubik tx-dark">{{user.nom}}</span>
+                        </div>
+
+
+                        <!-- Date de naissance -->
+                        <div class="my-3 " style="font-size: 16px;">
+                            <span class="mr-2">
+                                <span clas="">
+                                    <i class="fad tx-primary fa-venus-mars"></i>
+                                </span> Date de naissance:
+                            </span>
+                            <span class="tx-rubik tx-dark">{{user.date_naissance | date:'mediumDate' : undefined :
+                                'fr'}}</span>
+                        </div>
+
+                        <!-- Lieu de naissance -->
+                        <div class="my-3  " style="font-size: 16px;">
+                            <span class="mr-2">
+                                <span clas="">
+                                    <i class="fad tx-primary fa-map-marked-alt"></i>
+                                </span> Lieu de naissance:
+                            </span>
+                            <span class="tx-rubik tx-dark">{{user.lieu_naissance}}</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="structure__header-tab">
+            <ul class="nav justify-content-center">
+                <!-- Details -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./home']" [routerLinkActive]="'active'">
+                        <i class="fal fa-info"></i> Rôles
+                    </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./courrier-entrant']" [routerLinkActive]="'active'">
+                        <i class="fal fa-envelope"></i> Entrants
+                    </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./courrier-sortant']" [routerLinkActive]="'active'">
+                        <i class="fal fa-envelope-open"></i> Sortants
+                    </a>
+                </li>
+
+                <!-- Structures -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['./marche-public']" [routerLinkActive]="'active'">
+                        <i class="fal fa-file-signature"></i> Marche Public
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</ng-container>

@@ -25,6 +25,7 @@ import { NatureModule } from '../nature/nature.module';
 import { UrgenceModule } from '../urgence/urgence.module';
 import { StatutModule } from '../statut/statut.module';
 import { TypeModule } from '../type/type.module';
+import { ReaffectationUiComponent } from './reaffectation-ui/reaffectation-ui.component'
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { TypeModule } from '../type/type.module';
       CourrierUiHomeComponent,
       CourrierUiProprieteComponent,
       AnalyseCourrierUiComponent,
-      CourrierDossierUiComponent
+      CourrierDossierUiComponent,
+      ReaffectationUiComponent
     ],
     imports: [
         CommonModule,

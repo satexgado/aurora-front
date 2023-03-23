@@ -24,7 +24,7 @@ export class CrDossier implements ICrDossier {
     id: number = 0;
     libelle: string = '';
     objet = '';
-    structure_id: number = 0;
+    structure_id: number = null;
     responsable_id: number = 0;
     inscription_id: number = 0;
     structure: any = null;

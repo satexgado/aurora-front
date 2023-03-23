@@ -1,7 +1,7 @@
 <div class="bg-white mt-2 p-2">
     <div class="pd-t-5 pd-b-5">
         <h1 class="pd-0 mg-0 tx-20">{{dossier ? (dossier.libelle | titlecase) : title}}
-            <button class="btn btn-oblong bd-0 btn-outline-dark" (click)="fichierService.showFolderDetails.next(dossier)" *ngIf="this.dossier"><i
+            <button class="btn btn-oblong bd-0 btn-outline-primary" (click)="fichierService.showFolderDetails.next(dossier)" *ngIf="this.dossier"><i
                     class="fal fa-info-circle rounded-circle"></i></button>
         </h1>
     </div>
@@ -191,6 +191,6 @@
         </app-dossier-hierarchie-edit>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click'); onloadContent()">Fermer</button>
+        <button type="button" class="btn btn-outline-primary" (click)="modal.close('Close click'); onloadContent()">Fermer</button>
     </div>
 </ng-template>

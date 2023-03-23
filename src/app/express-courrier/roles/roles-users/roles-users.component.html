@@ -22,7 +22,7 @@
                   <div class="row m-0 p-0 col-12">
                     <div class="col-12 d-flex flex-wrap  justify-content-center">
                       <ng-container *ngFor="let item of user.affectation_structures">
-                        <span class="badge card-2  badge-pill  badge-info m-2 tx-12" container="body" [ngbTooltip]="item?.structure?.libelle" *ngIf="item.role.id == roleId"><i class="fad fa-chair-office"></i> {{item?.structure?.cigle | uppercase}}</span>
+                        <span class="badge card-2  badge-pill  badge-info m-2 tx-12" container="body" [ngbTooltip]="item?.structure?.libelle" *ngIf="(item.role.id == roleId) && item.structure"><i class="fad fa-chair-office"></i> {{item?.structure?.cigle | uppercase}}</span>
                       </ng-container>
                     </div>
                   </div>
@@ -42,15 +42,15 @@
 
             <div class="pb-3 pt-1 d-flex justify-content-center">
                 <!-- Voir -->
-                <a [routerLink]="[user.employe ? 'employes/' + user.employe?.id : 'utilisateur/' + user.livreur?.id]" class="mr-3 tx-facebook" routerLinkActive="active">
+                <!-- <a [routerLink]="[user.employe ? 'employes/' + user.employe?.id : 'utilisateur/' + user.livreur?.id]" class="mr-3 tx-facebook" routerLinkActive="active">
                     <i class="far  fa-info-circle"></i>
-                </a>
+                </a> -->
 
 
                 <!-- Supprimer -->
-                <a [routerLink]="['./']" class="tx-facebook" container="body" [ngbTooltip]="'Enlever role'" [queryParamsHandling]="'preserve'" (click)="enleverRole(user)">
+                <!-- <a [routerLink]="['./']" class="tx-facebook" container="body" [ngbTooltip]="'Enlever role'" [queryParamsHandling]="'preserve'" (click)="enleverRole(user)">
                     <i class="far mr-3 fa-times"></i>
-                </a>
+                </a> -->
 
 
 

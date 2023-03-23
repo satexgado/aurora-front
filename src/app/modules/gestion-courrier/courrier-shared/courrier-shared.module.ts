@@ -1,5 +1,6 @@
 import { CourrierSelectComponent } from './courrier-select/courrier-select.component';
 import { CourrierChooseItem2Component } from './choose/courrier-choose-item2.component';
+import { CourrierChooseMultiItem2Component } from './choose-multi/courrier-choose-multi-item2.component';
 import { AffectationEditComponent } from './affectation/affectation.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,7 +12,8 @@ import { CustomInputModule } from 'src/app/shared/components/custom-input/custom
     declarations: [
       AffectationEditComponent,
       CourrierSelectComponent,
-      CourrierChooseItem2Component
+      CourrierChooseItem2Component,
+      CourrierChooseMultiItem2Component
     ],
     imports: [
         CommonModule,
@@ -23,7 +25,7 @@ import { CustomInputModule } from 'src/app/shared/components/custom-input/custom
       CourrierSelectComponent,
       CourrierChooseItem2Component
     ],
-    entryComponents: [AffectationEditComponent, CourrierChooseItem2Component],
+    entryComponents: [AffectationEditComponent, CourrierChooseItem2Component, CourrierChooseMultiItem2Component],
 })
 export class CourrierSharedModule {
 

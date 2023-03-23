@@ -7,7 +7,7 @@
                 <p class="text-warning mb-0" *ngIf="!courrier.courrier?.cloture">{{courrier.courrier?.statut?.libelle | titlecase}}</p>
                 <p class="mb-0" [ngClass]="courrier.courrier?.cloture.valider ? 'text-success' : 'text-danger'" *ngIf="courrier.courrier?.cloture">
                     {{courrier.courrier?.cloture.libelle | titlecase}}, le {{courrier.courrier?.date_cloture | date:'mediumDate' : undefined : 'fr'}}
-                    <button (click)="onShowClotureCourrierForm()" class="border-0 btn-transition btn btn-sm btn-oblong btn-dark btn-outline-dark">
+                    <button (click)="onShowClotureCourrierForm()" class="border-0 btn-transition btn btn-sm btn-oblong btn-dark btn-outline-primary">
                       <i class="fal fa-edit fa-lg"></i>
                     </button>
                 </p>

@@ -127,7 +127,7 @@ export class CourrierEntrantDetailsCommentComponent implements OnDestroy {
       const service = new CrCommentaireFactory();
       service.create(message).subscribe(
         (data)=> {
-          service.attachAffectation(data.id, 'cr_commentaires', data.id).subscribe(
+          service.attachAffectation(data.id, 'cr_courriers', this.courrier.id).subscribe(
             ()=> {
             }
           );

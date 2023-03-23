@@ -43,10 +43,10 @@
         </ul>
     </div>
 </div>
-<div class="card-body" *ngIf="view == 'card'; else listView " [class.loading]="dataHelper.loading$ | async">
+<div class="card-body" *ngIf="view == 'card'; else listView ">
     <div [scrollWindow]="false" infiniteScroll  (scrolled)="checkData()" class="d-flex scrollable-y-75 justify-content-center flex-wrap  mg-l-0 mg-r-0">
         <ng-container *ngIf="dataHelper.data$ | async as items">
-            <ng-container *ngIf="items.length; else noItem">
+            <ng-container *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loading)">
                 <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'" *ngFor="let coordonnee of items;trackBy: dataHelper.trackByFn">
                     <div class="mycard4 card-profile-1 mb-3">
                         <a class="card-body tx-center p-0" [routerLink]="['./',coordonnee.id]">
@@ -105,7 +105,7 @@
                     <!-- <div class="card">
                         <div class="card-body">
                             <div class="float-right no-caret" container="body" ngbDropdown>
-                                <button class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" ngbDropdownToggle role="button"><i class="fal fa-comment-alt-dots fa-lg rounded-circle"></i></button>
+                                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2" ngbDropdownToggle role="button"><i class="fal fa-comment-alt-dots fa-lg rounded-circle"></i></button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                                     <button (click)="onShowUpdateForm(coordonnee)" ngbDropdownItem><i class="fal fa-edit tx-second"></i> Modifier</button>
                                     <button (click)="onShowCreateForm(coordonnee)" ngbDropdownItem><i class="fal fa-clone tx-second"></i> Dupliquer</button>
@@ -132,18 +132,23 @@
                         </div>
                     </div> -->
                 </div>
+                <ng-container *ngIf="dataHelper.loading$ | async">
+                    <ng-container *ngTemplateOutlet="loading"></ng-container>
+                </ng-container>
+                <ng-container *ngTemplateOutlet="loadMore"></ng-container>
             </ng-container>
         </ng-container>
     </div>
 </div>
 <ng-template #listView>
-    <div class="card px-0 card-2 card-accent-primary col-12 info" [class.loading]="dataHelper.loading$ | async">
+    <div class="card px-0 card-2 card-accent-primary col-12 info" >
         <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-75 scroll-11">
             <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
-                <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loadingLine)">
                     <thead class="tx-10 tx-uppercase">
                         <tr>
                             <th scope="col">Nom</th>
+                            <th scope="col">Email</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -152,6 +157,11 @@
                             <td>
                                 <a class="btn btn-sm btn-link" [routerLink]="['./',coordonnee.id]">
                                   {{coordonnee.libelle}}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-link" [routerLink]="['./',coordonnee.id]">
+                                  {{coordonnee.email}}
                                 </a>
                             </td>
                             <td>
@@ -164,16 +174,27 @@
                         </tr>
                     </tbody>
                 </table>
+                <ng-container *ngIf="dataHelper.loading$ | async">
+                    <ng-container *ngTemplateOutlet="loadingLine"></ng-container>
+                </ng-container>
+                <ng-container *ngTemplateOutlet="loadMore"></ng-container>
             </div>
         </div>
     </div>
-
 </ng-template>
 
 <ng-template #noItem>
     <h4 class="text-center title m-2 p-5 ">
         {{ 'Aucun Element' }}
     </h4>
+</ng-template>
+
+<ng-template #loadMore>
+    <div class="col-12 d-flex justify-content-center" *ngIf="dataHelper.hasMoreData && !(dataHelper.loading$ | async)">
+        <button class="btn btn-outline-primary btn-oblong" (click)="checkData()"> 
+           Voir plus
+        </button>
+    </div>
 </ng-template>
 
 <ng-template #content let-modal>
@@ -219,11 +240,58 @@
                     {{modalData.commentaire}}
                 </div>
             </li>
+            <li class="list-group-item  tx-16 flex-wrap" *ngIf="modalData.commentaire">
+                <div class="tx-yeto2 mb-2"><i class="fal fa-users text-info mx-2"></i> Groupes </div>
+                <div class="row row-xs mg-0 pd-0 clearfix py-2 bg-light bd-t">
+                    <a class="col-lg-6 p-2" (click)="modal.close( 'Close click')" [routerLink]="['/groupe-contact', groupe.id]" *ngFor="let groupe of modalData.groupes;">
+                        <div class="mycard4" style="border-radius: 0% 10% 10% 10%;">
+                            <div class="text-center bd-b bg-white p-3"> <i class=" fa-object-group  tx-50" [ngClass]="groupe.groupe_id ? 'fal tx-echos1' : ' fas tx-echos' "></i></div>
+                            <div class=" text-center p-2">
+                                <h6 class="tx-echos1 tx-bold"> {{groupe.libelle | titlecase}} </h6>
+                
+                                <p class="p-0 tx-14">
+                                    <span class=" mr-1 tx-14 mg-b-5 tx-echos1 pl-2 ">Sous groupes</span>
+                                    <span class=" mr-1  mg-b-5 tx-warning ">{{groupe.nb_coordonnee_groupes}}</span>
+                                    <span class=" mr-1 tx-14 mg-b-5 tx-echos1 ">Eléments</span>
+                                    <span class=" mr-1 mg-b-5 tx-danger ">{{groupe.nb_coordonnees}} </span>
+                                </p>
+            
+                            </div>
+                
+                        </div>
+                    </a>
+                </div>   
+            </li>
         </ul>
     </div>
     <div class="modal-footer ">
         <button [routerLink]="['./',modalData.id]" (click)="modal.close( 'Close click')" class="btn btn-sm btn-primary mx-2 "> Voir plus</button>
         <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button>
-        <button type="button " class="btn btn-sm btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+        <button type="button " class="btn btn-sm btn-outline-primary " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div class="col-xl-3 col-sm-6 mg-b-20"  *ngFor="let e of [].constructor(20);">
+        <div class="loading-card card h-100 w-100">
+            <div class="image loading-placeholder">
+            </div>
+            <div class="bars">
+                <div class="bar bar1 loading-placeholder"></div>
+                <div class="bar bar2 loading-placeholder"></div>
+            </div>
+        </div>
+    </div>   
+</ng-template>
+
+<ng-template #loadingLine>
+    <div *ngFor="let e of [].constructor(20);"  class="w-100 rounded-0">
+        <div  class="loading-card  w-100  rounded-0">
+            <div  class="bars d-flex h-100  p-2">
+                <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>
+                <div class="col-2"></div>
+                <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>
+            </div>
+        </div>
     </div>
 </ng-template>

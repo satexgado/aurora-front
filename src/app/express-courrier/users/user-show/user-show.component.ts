@@ -15,6 +15,7 @@ export class UserShowComponent
   implements OnInit
 {
   editing = false;
+  fragment = 'profile';
   constructor(
     public authService: AuthService,
     public userService: UsersService,
@@ -31,6 +32,13 @@ export class UserShowComponent
       } else {
         this.loading = true;
         this.getUserById(+params.id);
+      }
+    });
+    const detailsView = 'profile,securite,role';
+    this.route.fragment.subscribe(fragment => {
+      this.fragment = fragment;
+      if(!detailsView.includes(fragment)) {
+        this.fragment = 'profile';
       }
     });
   }

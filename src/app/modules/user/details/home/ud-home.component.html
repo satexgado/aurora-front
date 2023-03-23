@@ -1,0 +1,31 @@
+
+<div class="p-3 bg-white" *ngIf="user.affectation_structures && user.affectation_structures.length">
+    <h5 class="tx-yeto2"><i class="fal fa-users text-info mx-2"></i> Rôles </h5>
+    <div class="row row-xs mg-0 pd-0 clearfix mt-3 py-2 bg-light bd-t">
+        <a class="col-lg-4 p-2" *ngFor="let affectation_structure of user.affectation_structures">
+            <div class="mycard4" style="border-radius: 0% 10% 10% 10%;">
+                <div class="text-center bd-b bg-white p-3"> <i class=" fa-user-tag   tx-50" [ngClass]="affectation_structure.groupe_id ?  'fal tx-echos1' : ' fas tx-echos'"></i></div>
+                <div class=" text-center p-2">
+                    <h6 class="tx-echos1 tx-bold"> {{affectation_structure.role?.libelle | titlecase}} </h6>
+    
+                    <p class="p-0 tx-14">
+                        <ng-container *ngIf="affectation_structure.structure">
+                            <span class=" mr-1 tx-14 mg-b-5 tx-echos1 pl-2 ">Structures</span>
+                            <span class=" mr-1  mg-b-5 tx-warning ">{{affectation_structure.structure?.libelle}}</span>
+                        </ng-container>
+
+                        <ng-container *ngIf="affectation_structure.poste">
+                            <span class=" mr-1 tx-14 mg-b-5 tx-echos1 ">Poste</span>
+                            <span class=" mr-1 mg-b-5 tx-danger ">{{affectation_structure.poste?.libelle}} </span>
+                        </ng-container>
+                    </p>
+
+                    <div class="p-2 tx-echos tx-center bg-soft-primary" *ngIf="affectation_structure.fonctions?.length">
+                        <span class="badge badge-primary mx-1 card-2" *ngFor="let tag of affectation_structure.fonctions"> {{tag.libelle | titlecase}} </span>
+                    </div>
+                </div>
+    
+            </div>
+        </a>
+    </div>    
+</div>

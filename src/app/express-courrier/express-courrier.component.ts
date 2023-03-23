@@ -1,7 +1,7 @@
 import { fader, slider, stepper, transformer } from './route-animation';
 import { UserPresent } from './presence/user-present.model';
 import { User } from 'src/app/express-courrier/users/user.model';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, interval, Subscription } from 'rxjs';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { echo } from 'src/config/laravel-echo-config';
 import { Helper } from '../helpers/helper/helper';
@@ -11,7 +11,11 @@ import { NotificationsService } from './notifications/notifications.service';
 import { InboxService } from './inbox/inbox.service';
 import { PresenceService } from './presence/presence.service';
 import { ActivatedRoute, Event, IsActiveMatchOptions, NavigationCancel, NavigationEnd, NavigationError, Router, RouterOutlet } from '@angular/router';
-import { distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, startWith, switchMap, throttleTime } from 'rxjs/operators';
+import { CrReaffectationFactory } from '../core/services/gestion-courrier/cr-reaffectation';
+import { Filter, QueryOptions, Sort } from '../shared/models/query-options';
+import { UserFactory } from '../core/services/user.factory';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-express-courrier',
@@ -51,6 +55,15 @@ export class ExpressCourrierComponent implements OnInit {
   // inboxSubscription: Subscription;
   currentTopBar = 'default';
 
+  TASK_REFRESH_INTERVAL_MS = 30000;
+  private readonly autoRefresh$ = interval(this.TASK_REFRESH_INTERVAL_MS).pipe(
+    startWith(0)
+  );
+  private readonly refreshToken$ = new BehaviorSubject(undefined);
+  reaffectation$;
+  onlineUsers$;
+
+
   public linkActiveOptions: IsActiveMatchOptions = {
     matrixParams: 'exact',
     queryParams: 'exact',
@@ -66,7 +79,8 @@ export class ExpressCourrierComponent implements OnInit {
     public inboxService: InboxService,
     public presenceService: PresenceService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    protected modalService: NgbModal
   ) {
     this.router.events.subscribe((event: Event) => {
       switch (true) {
@@ -107,6 +121,27 @@ export class ExpressCourrierComponent implements OnInit {
     // );
 
     this.subscribeToConnectedChannel();
+
+    
+    const crReaffectationService = new CrReaffectationFactory();
+    this.reaffectation$ = this.autoRefresh$.pipe(
+      switchMap(() => (crReaffectationService.list(
+        new QueryOptions(
+          [
+            {or: false, filters:[new Filter('IsForIns', 1, 'eq')]},
+          ],
+        ).setSort([new Sort('created_at','DESC')])
+      ).pipe(map(data=>data.data)))),
+      distinctUntilChanged()
+    );
+
+    const userFact = new UserFactory();
+    this.onlineUsers$ = combineLatest(this.autoRefresh$, this.refreshToken$).pipe(
+      switchMap(() =>  userFact.onlineUsers()),
+      distinctUntilChanged()
+    );
+
+    this.refreshToken$.next(undefined);
   }
 
   subscribeToConnectedChannel() {
@@ -131,4 +166,13 @@ export class ExpressCourrierComponent implements OnInit {
       this.helper.navigation.navigate(['authentification']);
     });
   }
+
+  
+ open(content) {
+  this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', modalDialogClass: 'modal-right modal-right-100vh', }).result.then((result) => {
+
+  }, (reason) => {
+
+  });
+}
 }

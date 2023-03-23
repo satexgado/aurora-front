@@ -33,6 +33,11 @@ const routes: Routes = [
     component: AdministrationComponent,
     children: [
       {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'compte'
+      },
+      {
         path:'compte',
         component: CompteComponent,
         children: [

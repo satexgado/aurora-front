@@ -28,9 +28,9 @@ const routes: Routes = [
   },
   {
     path: '',
-    // canActivate: [AuthGuard],
-    // canLoad: [AuthGuard],
-    // canActivateChild: [AuthGuard], 
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
+    canActivateChild: [AuthGuard], 
     loadChildren: () =>
       import('./express-courrier/express-courrier.module').then(
         (module) => module.ExpressCourrierModule

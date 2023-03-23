@@ -18,6 +18,7 @@ import { MysidefichierComponent } from './fichier/mysidefichier/mysidefichier.co
 const appRoute: Routes = [
   {path:'',component:SidelabcolabComponent,
    children:[
+    {path: '', redirectTo: 'fichier', pathMatch: 'full'},
     {path:'xfile',component:MysidefichierComponent,
         children:[
           {path:'',component:SidefichierComponent},

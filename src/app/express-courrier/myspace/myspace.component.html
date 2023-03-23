@@ -49,7 +49,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="float-right no-caret" container="body" ngbDropdown>
-                                <button class="btn btn-oblong btn-outline-dark bd-0 btn-icon mx-2" ngbDropdownToggle role="button"><i class="fal fa-comment-alt-dots fa-lg rounded-circle"></i></button>
+                                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2" ngbDropdownToggle role="button"><i class="fal fa-comment-alt-dots fa-lg rounded-circle"></i></button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                                     <button (click)="onShowUpdateForm(coordonnee)" ngbDropdownItem><i class="fal fa-edit tx-second"></i> Modifier</button>
                                     <button (click)="onShowCreateForm(coordonnee)" ngbDropdownItem><i class="fal fa-clone tx-second"></i> Dupliquer</button>
@@ -161,6 +161,6 @@
     <div class="modal-footer ">
         <button [routerLink]="['./',modalData.id]" (click)="modal.close( 'Close click')" class="btn btn-sm btn-primary mx-2 "> Voir plus</button>
         <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button>
-        <button type="button " class="btn btn-sm btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+        <button type="button " class="btn btn-sm btn-outline-primary " (click)="modal.close( 'Close click') ">Fermer</button>
     </div>
 </ng-template>

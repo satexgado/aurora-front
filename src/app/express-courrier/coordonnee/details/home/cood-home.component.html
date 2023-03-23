@@ -1,29 +1,32 @@
 
-<div class="p-3 bg-white">
+<div class="p-3 bg-white" *ngIf="coordonnee.commentaire">
     <h5 class="tx-yeto2"><i class="fal fa-comments text-info mx-2"></i> Commentaire </h5>
     <p [innerHTML]="coordonnee.commentaire">
     </p>
 </div>
 
-<div class="p-3 bg-white">
+<div class="p-3 bg-white" *ngIf="coordonnee.condition_suivi">
     <h5 class="tx-yeto2"><i class="fal fa-clipboard-check text-info mx-2"></i> Condition de suivi </h5>
     <p [innerHTML]="coordonnee.condition_suivi">
     </p>
 </div>
 
-<div class="p-3 bg-white">
+<div class="p-3 bg-white" *ngIf="coordonnee.groupes && coordonnee.groupes.length">
     <h5 class="tx-yeto2"><i class="fal fa-users text-info mx-2"></i> Groupes </h5>
-    <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4 bg-light bd-t">
-        <a class="col-lg-4 p-2" [routerLink]="['/groupe-contact', groupe.id]" *ngFor="let groupe of coordonnee.groupes;  let even = even">
+    <div class="row row-xs mg-0 pd-0 clearfix mt-3 py-2 bg-light bd-t">
+        <a class="col-lg-4 p-2" [routerLink]="['/groupe-contact', groupe.id]" *ngFor="let groupe of coordonnee.groupes">
             <div class="mycard4" style="border-radius: 0% 10% 10% 10%;">
-                <div class="text-center bd-b bg-white p-3"> <i class=" fa-object-group  tx-50" [ngClass]="even ? ' fas tx-echos' : 'fal tx-echos1'"></i></div>
+                <div class="text-center bd-b bg-white p-3"> <i class=" fa-object-group  tx-50" [ngClass]="groupe.groupe_id ?  'fal tx-echos1' : ' fas tx-echos'"></i></div>
                 <div class=" text-center p-2">
                     <h6 class="tx-echos1 tx-bold"> {{groupe.libelle | titlecase}} </h6>
     
                     <p class="p-0 tx-14">
-                        <span class="bg-light  tx-echos1  tx-bolder mr-2">Eléments</span>
-                        <span class="bg-light tx-danger  tx-bolder">{{groupe.nb_coordonnees}}</span>
+                        <span class=" mr-1 tx-14 mg-b-5 tx-echos1 pl-2 ">Sous groupes</span>
+                        <span class=" mr-1  mg-b-5 tx-warning ">{{groupe.nb_coordonnee_groupes}}</span>
+                        <span class=" mr-1 tx-14 mg-b-5 tx-echos1 ">Eléments</span>
+                        <span class=" mr-1 mg-b-5 tx-danger ">{{groupe.nb_coordonnees}} </span>
                     </p>
+
                 </div>
     
             </div>

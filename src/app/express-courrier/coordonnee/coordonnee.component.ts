@@ -143,11 +143,12 @@ export class CoordonneeComponent extends EditableListComponent implements OnInit
     super.ngOnInit();
     this.dataHelper.sortColumn = 'libelle';
     this.dataHelper.sortDirection = 'Asc';
-
+    this.dataHelper.relations = ['cr_coordonnee_groupes'];
     this.route.fragment.subscribe(
       (fragment)=> {
 
         this.fragment = fragment ?? '';
+        this.dataHelper.clearData(true);
 
         switch (fragment) {
           case 'fournisseur':

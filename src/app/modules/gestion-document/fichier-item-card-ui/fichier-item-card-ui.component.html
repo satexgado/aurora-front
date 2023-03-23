@@ -8,7 +8,7 @@
     <div class="card app-file-list w-100" [ngClass]="{'card-3 bd bd-info info': selected}">
         <div class="app-file-icon bg-light">
             <i [class]="fichier.type?.icon"></i>
-            <button *ngIf="fichier.ged_element?.bloquer && !fichier.is_user; else button" (click)="onCheckPasswordFichier()" class="btn btn-oblong btn-outline-dark bd-0 btn-icon m-2 position-absolute mr-3" style="top: 0;right:0;">
+            <button *ngIf="fichier.ged_element?.bloquer && !fichier.is_user; else button" (click)="onCheckPasswordFichier()" class="btn btn-oblong btn-outline-primary bd-0 btn-icon m-2 position-absolute mr-3" style="top: 0;right:0;">
               <i class="fas tx-14 rounded-circle fa-lock-alt"></i>
           </button>
         </div>
@@ -27,12 +27,12 @@
     </div>
 </ng-template>
 <ng-template #button>
-    <button (click)="onSelect()" *ngIf="canSelect" class="btn btn-oblong btn-outline-dark bd-0 btn-icon m-2 position-absolute" style="top: 0;left: 0;">
+    <button (click)="onSelect()" *ngIf="canSelect" class="btn btn-oblong btn-outline-primary bd-0 btn-icon m-2 position-absolute" style="top: 0;left: 0;">
       <i class="fal tx-14 rounded-circle" [ngClass]="{'fa-check-square text-primary': selected}"
           [class.fa-square]="!selected"></i>
   </button>
     <div ngbDropdown [container]="'body'" class="no-caret position-absolute" style="top: 0;right: 0;" *ngIf="!noAction">
-        <button class="btn btn-oblong bd-0 btn-outline-dark m-2" ngbDropdownToggle>
+        <button class="btn btn-oblong bd-0 btn-outline-primary m-2" ngbDropdownToggle>
           <i class="fal fa-comment-alt-dots tx-14 rounded-circle"></i>
 
       </button>

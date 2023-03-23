@@ -1,0 +1,80 @@
+
+<div class="card-body p-2 pb-2 tx-gray-600 tx-14 bg-light active">
+# Demande d'affectations
+</div>
+<div class="flex-fill" [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" #scrollContainer>
+<div class="accordion  custom-accordion"  *ngIf="reaffectationHelper.data$ | async as items">
+    <ul class="list-group list-group-flush tx-13 " *ngIf="items.length; else ((!(reaffectationHelper.loading$ | async)) && true ? noItem : loadingLine)">
+        <li class="list-group-item card-1 pd-sm-x-10 bd-b bg-white" style="background: #f0f4f7 " *ngFor="let reaffectation of items">
+            <a  class="cursor-pointer" [ngbTooltip]="reaffectation.courrier?.objet" [container]="'body'">
+                <div class="todo-indicator {{reaffectation.statut_bgcolor}}"></div>
+                <div class="widget-content p-0">
+                    <a class="widget-content-wrapper" [routerLink]="[reaffectation.link]">
+                        <div class="widget-content-left">
+                            <div class="widget-heading tx-12 tx-dark">
+                                <h6>Reaffectation <span class="text-right">{{reaffectation.courrier?.libelle}}</span></h6>
+                                <span>{{reaffectation.created_at | date:'short' : undefined : 'fr'}}</span> 
+                                <br>
+                                <span>{{reaffectation?.affecter_par?.libelle}}</span> >
+                                <span>{{reaffectation.structure.libelle}}</span> >
+                                <span>{{reaffectation.suivi_par_user?.libelle}}</span>
+                                <p>{{reaffectation.libelle}}</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="widget-content-right">
+                    <ng-container *ngIf="reaffectation.is_user && (!reaffectation.confirmation) && !reaffectation.annulation">
+                        <button class="border-0 m-2 btn-transition btn btn-sm btn-oblong btn-outline-success" (click)="onValidateReaffectation(reaffectation)">
+                        <i class="fal fa-check fa-2x"></i>
+                        </button>
+                        <button class="border-0 m-2 btn-transition btn btn-sm btn-oblong btn-outline-danger" (click)="onValidateReaffectation(reaffectation, false)">
+                        <i class="fal fa-times fa-2x"></i>
+                        </button>
+                    </ng-container>
+                    <span class="badge badge-success badge-outlined" *ngIf="reaffectation.confirmation">valider</span>
+                    <span class="badge badge-danger badge-outlined" *ngIf="reaffectation.annulation">annuler</span>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </ul>
+    <section *ngIf="reaffectationHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="reaffectationHelper.loadData() ">
+    </section>
+    <ng-container *ngIf="reaffectationHelper.loading$ | async">
+        <ng-container *ngTemplateOutlet="loadingLine"></ng-container>
+      </ng-container>
+    <ng-container *ngTemplateOutlet="loadMore"></ng-container>
+</div>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #loadMore>
+    <div class="col-12 d-flex justify-content-center my-2" *ngIf="reaffectationHelper.hasMoreData && !(reaffectationHelper.loading$ | async)">
+        <button class="btn btn-outline-primary btn-oblong" (click)="checkData()"> 
+           Voir plus
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #loadingLine>
+    <div class="row">
+        <div *ngFor="let e of [].constructor(20);"  class="col-12 rounded-0">
+            <div  class="loading-card card h-100 w-100  rounded-0">
+                <div  class="bars h-100  p-2">
+                    <div  class="bar bar2 w-25 loading-placeholder  m-0"></div>
+                </div>
+                <div  class="bars h-100  p-2">
+                    <div  class="bar bar2 w-50 loading-placeholder  m-0"></div>
+                </div>
+                <div  class="bars h-100  p-2">
+                    <div  class="bar bar2 w-25 loading-placeholder  m-0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

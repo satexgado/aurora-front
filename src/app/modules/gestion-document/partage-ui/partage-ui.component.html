@@ -10,7 +10,7 @@
             <div class="pl-2 pb-4">
                 <div class="pd-t-5 pd-b-5">
                     <h1 class="pd-0 mg-0 tx-20">{{modalData ? (modalData.libelle | titlecase) : 'Acceuil'}}
-                        <button class="btn btn-oblong bd-0 btn-outline-dark" (click)="fichierService.showFolderDetails.next(modalData)" *ngIf="this.modalData"><i class="fal fa-info-circle rounded-circle"></i></button>
+                        <button class="btn btn-oblong bd-0 btn-outline-primary" (click)="fichierService.showFolderDetails.next(modalData)" *ngIf="this.modalData"><i class="fal fa-info-circle rounded-circle"></i></button>
                     </h1>
                 </div>
                 <div class="breadcrumb pd-0 mg-0">

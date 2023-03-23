@@ -17,7 +17,7 @@
                     <button class="btn btn-sm  btn-outline-secondary" (click)="updateDate = false"><i class="fal fa-times"></i></button>
                 </div>
             </div>
-            <button *ngSwitchDefault class="btn btn-sm btn-outline-dark " (click)="onUpdateDate()">
+            <button *ngSwitchDefault class="btn btn-sm btn-outline-primary " (click)="onUpdateDate()">
                 {{dateDebut | date:'dd-MM-yyyy'}}  /  {{dateFin | date:'dd-MM-yyyy'}} 
                 <i class="fal fa-edit"></i>
             </button>

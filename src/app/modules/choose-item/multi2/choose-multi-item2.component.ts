@@ -41,9 +41,9 @@ export class ChooseMultiItem2Component extends ItemSelectHelper implements OnIni
     this.addSelectedItem(data);
   }
 
-  constructor(protected activeModal: NgbActiveModal,
-    protected cdRef: ChangeDetectorRef,
-    protected modalService: NgbModal) {
+  constructor(public activeModal: NgbActiveModal,
+    public cdRef: ChangeDetectorRef,
+    public modalService: NgbModal) {
     super();
   }
 

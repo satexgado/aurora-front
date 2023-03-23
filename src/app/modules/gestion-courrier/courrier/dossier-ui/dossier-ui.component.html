@@ -6,7 +6,7 @@
         <ul class="nav float-right list-inline justify-content-end">
 
             <li class="nav-item ">
-                <a class="nav-link3 " data-toggle="tab" href="#"><span
+                <a class="nav-link3 " (click)="onChooseCourrier()"><span
                           class="tx-echos">
                           <i class="fas fa-question bg-light tx-16 tx-echos1"
                               style="padding:6px; border-radius:50%"></i> </span></a>
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="card-body p-0 ">
+        <div class="card-body p-0 " [class.loading]="loading_structure">
             <div class="d-flex align-items-center flex-wrap bd-b" *ngIf="allUserStructures && allUserStructures.length;">
 
                 <div class="p-2 cursor-pointer" *ngFor="let structure of allUserStructures" [class.accent-facebook-left]="selectedStructure && structure.id == selectedStructure.id" (click)="onSetSelected(structure)">
@@ -47,9 +47,6 @@
                     <span class=" mr-1  mg-b-5 tx-echos1">{{structure.nb_courrier_internes}} </span>
                 </div>
             </div>
-
-
-
         </div>
     </div>
 
@@ -58,10 +55,10 @@
             <div class="sidebar" [class.sidebar_small]="modalData">
               <div class="col-12  mg-0 pd-0 clearfix   bd-b" *ngIf="selectedStructure">
                 <div class="d-flex ">
-                  <button class="btn btn-sm btn-link" (click)="onSetSelected(selectedStructure)">
+                  <button class="btn btn-sm btn-link py-2" (click)="onSetSelected(selectedStructure)">
                     <i class="fal fa-2x fa-arrow-circle-left"></i>
                   </button>
-                    <h6 class="tx-echos"><i class="fas fa-folder" style="padding:6px; border-radius: 50%; "></i> Dossiers : {{selectedStructure.libelle}}</h6>
+                    <h6 class="tx-echos my-2"><i class="fas fa-folder" style="padding:6px; border-radius: 50%; "></i> Dossiers : {{selectedStructure.libelle}}</h6>
                 </div>
               </div>
                 <div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
@@ -83,43 +80,47 @@
                     </div>
 
                 </div>
-                <ng-container *ngIf="dataHelper.data$ | async | baseColumnIdFilter:[{column: 'structure', filterBase: selectedStructure ? [selectedStructure] : [] }] as items">
-                    <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4 bg-light bd-t" *ngIf="items.length; else noItem">
-                        <div class="col-lg-4 p-2" *ngFor="let dossier of items; trackBy: dataHelper.trackByFn">
-                            <div class="mycard4" style="border-radius: 0% 10% 10% 10%;">
-                                <div class="text-center bd-b bg-white p-3"> <i class="fas fa-folder tx-echos tx-50"></i></div>
-                                <div class=" text-center p-2">
-                                    <span class="tx-echos1 tx-bold"  [routerLink]="['./',dossier.id]"> {{ dossier.libelle | uppercase }} </span>
-                                    <p class="p-0" [routerLink]="['./',dossier.id]">
-                                        <span class="tx-echos tx-bold"> {{dossier.structure?.cigle}} </span>
-                                    </p>
-                                    <p class="p-0 tx-14">
-                                        <span class=" mr-1 bg-light tx-success  tx-bolder">{{dossier.nb_courrier_entrants}}</span>
-                                        <span class=" mr-1 bg-light  tx-echos1  tx-bolder">||</span>
-                                        <span class=" mr-1 bg-light tx-warning  tx-bolder">{{dossier.nb_courrier_sortants}}</span>
-                                        <span class=" mr-1 bg-light  tx-echos1  tx-bolder">||</span>
-                                        <span class=" mr-1 bg-light tx-echos1  tx-bolder">{{dossier.nb_courrier_internes}}</span>
-                                    </p>
-                                    <p class="">
-                                        <span class=" mx-2 tx-bold" container="body" ngbTooltip="Modifier" (click)="onShowUpdateForm(dossier) "> <i class="fas fa-edit tx-echos"></i> </span>
-                                        <span class=" mx-2 tx-bold" container="body" ngbTooltip="Dupliquer" (click)="onShowCreateForm(dossier) "> <i class="fas fa-clone tx-echos"></i> </span>
-                                        <span class=" mx-2 tx-bold" container="body" ngbTooltip="Supprimer" (click)="onDelete(dossier) "> <i class="fas fa-times-square tx-echos"></i> </span>
-                                    </p>
+                <div [class.loading]="dataHelper.loading$ | async">
+                    <ng-container *ngIf="dataHelper.data$ | async | baseColumnIdFilter:[{column: 'structure', filterBase: selectedStructure ? [selectedStructure] : [] }] as items">
+                        <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4 bg-light bd-t" *ngIf="items.length; else noItem">
+                            <div class="col-lg-4 p-2" *ngFor="let dossier of items; trackBy: dataHelper.trackByFn">
+                                <div class="mycard4 cursor-pointer" (click)="onNavigate(dossier.id)" style="border-radius: 0% 10% 10% 10%;">
+                                    <div class="text-center bd-b bg-white p-3"> <i class="fas fa-folder tx-echos tx-50"></i></div>
+                                    <div class="text-center p-2">
+                                        <span class="tx-echos1 tx-bold"> {{ dossier.libelle | uppercase }} </span>
+                                        <p class="p-0" >
+                                            <span class="tx-echos tx-bold"> {{dossier.structure?.cigle}} </span>
+                                        </p>
+                                        <p class="p-0 tx-14">
+                                            <span class=" mr-1 bg-light tx-success  tx-bolder">{{dossier.nb_courrier_entrants}}</span>
+                                            <span class=" mr-1 bg-light  tx-echos1  tx-bolder">||</span>
+                                            <span class=" mr-1 bg-light tx-warning  tx-bolder">{{dossier.nb_courrier_sortants}}</span>
+                                            <span class=" mr-1 bg-light  tx-echos1  tx-bolder">||</span>
+                                            <span class=" mr-1 bg-light tx-echos1  tx-bolder">{{dossier.nb_courrier_internes}}</span>
+                                        </p>
+                                        <p class="">
+                                            <span class=" mx-2 tx-bold" container="body" ngbTooltip="Modifier" (click)="$event.stopPropagation();onShowUpdateForm(dossier) "> <i class="fas fa-edit tx-echos"></i> </span>
+                                            <span class=" mx-2 tx-bold" container="body" ngbTooltip="Dupliquer" (click)="$event.stopPropagation();onShowCreateForm(dossier) "> <i class="fas fa-clone tx-echos"></i> </span>
+                                            <span class=" mx-2 tx-bold" container="body" ngbTooltip="Supprimer" (click)="$event.stopPropagation();onDelete(dossier) "> <i class="fas fa-times-square tx-echos"></i> </span>
+                                        </p>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
-                    </div>
-                </ng-container>
+                    </ng-container>
+                </div>
             </div>
             <div class="main-content scroll-11 " [class.main-content_large]="modalData">
               <ng-container *ngIf="modalData">
                 <div class="col-12  mg-0 pd-0 clearfix   bd-b">
-                  <div class="d-flex ">
-                    <button class="btn btn-sm btn-link" [routerLink]="['./']">
-                      <i class="fal fa-2x fa-arrow-circle-left"></i>
-                    </button>
-                      <h6 class="tx-echos"><i class="fas fa-folders" style="padding:6px; border-radius: 50%; "></i> Sous dossiers : {{modalData.libelle}}</h6>
+                  <div class="d-flex justify-content-between">
+                    <span class="d-flex">
+                        <button class="btn btn-sm btn-link py-0" [routerLink]="['./']">
+                            <i class="fal fa-2x fa-arrow-circle-left"></i>
+                        </button>
+                        <h6 class="tx-echos my-2"><i class="fas fa-folders" style="padding:6px; border-radius: 50%; "></i> Sous dossiers : {{modalData.libelle}}</h6>
+                    </span>
+                    <button class="btn btn-primary m-2" [disabled]="(entrantHelper.loading$ | async) && (sortantHelper.loading$ | async) && (interneHelper.loading$ | async)" (click)="onUpdateDossierCourriers(modalData)">Modifier</button>
                   </div>
                 </div>
                 <ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill" [destroyOnHide]="false">
@@ -151,7 +152,7 @@
                                   </a>
                                   <div #collapse="ngbCollapse" [(ngbCollapse)]="!courrier.isCollapsed">
                                       <div class="d-flex  justify-content-between flex-wrap border-top border-bottom  py-2 bd-b">
-                                          <h5 class="tx-echos"><i class="fal fa-circle  bg-white" style="padding:6px; border-radius: 50%; "></i> Détails du Courrier </h5>
+                                          <h5 class="tx-echos m-0"><i class="fal fa-circle  bg-white" style="padding:6px; border-radius: 50%; "></i> Détails du Courrier </h5>
                                           <button (click)="onSelectCourrierEntrant(courrier)" class="btn btn-sm tx-13 my-auto btn-outline-primary">
                                             Voir plus
                                           </button>
@@ -306,9 +307,7 @@
                           </ul>
                           </ng-container>
                         </div>
-
-
-                        </ng-template>
+                     </ng-template>
                   </li>
                   <li [ngbNavItem]="'sortant'">
                     <a ngbNavLink class="">
@@ -338,7 +337,7 @@
                                 </a>
                                 <div #collapse="ngbCollapse" [(ngbCollapse)]="!courrier.isCollapsed">
                                     <div class="d-flex  justify-content-between flex-wrap border-top border-bottom  py-2 bd-b">
-                                        <h5 class="tx-echos"><i class="fal fa-circle  bg-white" style="padding:6px; border-radius: 50%; "></i> Détails du Courrier </h5>
+                                        <h5 class="tx-echos m-0"><i class="fal fa-circle  bg-white" style="padding:6px; border-radius: 50%; "></i> Détails du Courrier </h5>
                                         <button (click)="onSelectCourrierSortant(courrier)" class="btn btn-sm tx-13 my-auto btn-outline-primary">
                                           Voir plus
                                         </button>
@@ -552,7 +551,7 @@
                               </a>
                               <div #collapse="ngbCollapse" [(ngbCollapse)]="!courrier.isCollapsed">
                                   <div class="d-flex  justify-content-between flex-wrap border-top border-bottom  py-2 bd-b">
-                                      <h5 class="tx-echos"><i class="fal fa-circle  bg-white" style="padding:6px; border-radius: 50%; "></i> Détails du Courrier </h5>
+                                      <h5 class="tx-echos m-0"><i class="fal fa-circle  bg-white" style="padding:6px; border-radius: 50%; "></i> Détails du Courrier </h5>
                                       <button (click)="onSelectCourrierInterne(courrier)" class="btn btn-sm tx-13 my-auto btn-outline-primary">
                                         Voir plus
                                       </button>

@@ -17,7 +17,7 @@ export class UserFactory extends Factory<User> {
 
   zenContact(id: number): Observable<User[]> {
     return this.authAccess
-      .get(`${this.url}/${this.endpoint}/zen-contact/${id}`)
+      .get(`${this.url}${this.endpoint}/zen-contact/${id}`)
       .pipe(
         retryWhen(errors => errors.pipe(delay(5000), take(10))),
         map((data: User[]) => {
@@ -30,6 +30,20 @@ export class UserFactory extends Factory<User> {
               return adap;
             }
           ) as User[];
+        })
+      );
+  }
+
+  onlineUsers(): Observable<any[]> {
+    return this.authAccess
+      .get(`${this.url}${this.endpoint}/online`)
+      .pipe(
+        retryWhen(errors => errors.pipe(delay(5000), take(10))),
+        map((data: any[]) => {
+         return data.map(item=> {
+            item.last_activity_at = new Date(item.last_activity_at);
+            return item;
+          })
         })
       );
   }

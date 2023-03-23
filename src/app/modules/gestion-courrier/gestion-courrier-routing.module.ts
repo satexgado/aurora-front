@@ -15,6 +15,7 @@ import { CourrierEntrantUiResolver } from './courrier/entrant-ui/entrant-ui.reso
 import { CourrierSortantUiResolver } from './courrier/sortant-ui/sortant-ui.resolver';
 import { AuthorisationGuardService } from 'src/app/shared/guard/authorisation.guard';
 import { DossierUiResolver } from './courrier/dossier-ui/dossier-ui.resolver';
+import { ReaffectationUiComponent } from './courrier/reaffectation-ui/reaffectation-ui.component';
 
 const routes: Routes = [
     { path: '', component: CourrierUiComponent,
@@ -58,6 +59,7 @@ const routes: Routes = [
           ),
       },
       {path:'acceuil', component: CourrierUiHomeComponent},
+      {path:'affectation', component: ReaffectationUiComponent},
       {
         path:'entrant',
         component: CourrierEntrantUiComponent,

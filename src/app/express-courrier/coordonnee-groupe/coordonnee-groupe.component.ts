@@ -1,6 +1,6 @@
 import { ICrCoordonnee } from './../../core/models/gestion-courrier/cr-coordonnee';
 import { CrCoordonneeGroupeFactory } from 'src/app/core/services/gestion-courrier/cr-coordonnee-groupe';
-import { Component, OnDestroy, OnInit} from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditComponent } from './edit/edit.component';
 import {
@@ -21,6 +21,8 @@ import { AffectationCoordonneeGroupeEditComponent } from './affectation/affectat
 import { CoordonneeActionComponent } from '../coordonnee/coordonnee-action.component';
 import { CoordonneeGroupeActionComponent } from './coordonnee-action.component';
 import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, Router } from '@angular/router';
+import { CoordonneeGroupeHierarchieEditComponent } from './coordonnee-groupe-hierarchie-edit/coordonnee-groupe-hierarchie-edit.component';
+import { TreeviewItem } from 'ngx-treeview';
 
 @Component({
   selector: 'app-coordonnee-groupe',
@@ -106,16 +108,16 @@ a {
     ])
   ]
 })
-export class CoordonneeGroupeComponent extends EditableListComponent implements OnInit, OnDestroy {
+export class CoordonneeGroupeComponent  implements OnInit, AfterViewInit, OnDestroy {
 
-  editModal = EditComponent;
-  modalData: ICrCoordonneeGroupe;
-  parentData: {relationName: string,relationId: number} = null;
+ 
   view: 'card' | 'list' =  localStorage.getItem("coordonnee-groupeViewType") ? <'card' | 'list'>localStorage.getItem("coordonnee-groupeViewType"):  'card';
   selectedGroupe: ICrCoordonneeGroupe = null;
   coordonneeHelper: ResourceScrollableHelper;
   onGroupeCoordonnee;
   subscription: Subscription = new Subscription();
+  modalData: ICrCoordonnee;
+  @ViewChild(CoordonneeGroupeHierarchieEditComponent) hierarchieComponent;
 
   onSetSelected(groupe: ICrCoordonneeGroupe) {
     if(!groupe) {
@@ -138,13 +140,16 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
     this.selectedGroupe = groupe;
     this.coordonneeHelper.data$.subscribe(
       (data)=>{
-        let group = this.dataHelper.findItemByColumn(this.selectedGroupe.id) as ICrCoordonneeGroupe;
-        if(group) {
-          group.nb_coordonnees = data.length;
-          this.dataHelper.updateItem(group);
+        if(!this.hierarchieComponent) {
+          return;
+        }
+
+        let treeItem = this.hierarchieComponent.findItemInList(this.selectedGroupe.id) ;
+        if(treeItem) {
+          treeItem.value.extends.nb_coordonnees = data.length;
         }
       }
-    )
+    )  
   }
 
   onChangeView(view : 'card' | 'list') {
@@ -159,7 +164,6 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
     private router: Router,
     public route: ActivatedRoute,
     protected modalService: NgbModal) {
-    super(new ResourceScrollableHelper(new CrCoordonneeGroupeFactory()));
     this.titleservice.setTitle('mes Coordonnees')
     this.modalService = modalService;
     let service = new CoordonneeGroupeActionComponent(notificationService, modalService);
@@ -173,32 +177,6 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
   }
 
   ngOnInit() {
-    this.subscription.add(
-      this.cacheService.get('affectation-parent').subscribe(
-        (data: {relationName: string,relationId: number})=>{
-          const queryOptions = new QueryOptions(
-            [
-                {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]}
-            ],
-            [],
-            8,
-            1,
-            [new Sort('libelle','Asc')]
-          );
-          this.parentData = data;
-          this.dataHelper.withoutPaginate = true;
-          this.dataHelper = new ResourceScrollableHelper(new CrCoordonneeGroupeFactory(), queryOptions);
-          super.ngOnInit()
-        },
-        ()=>{
-          super.ngOnInit();
-          this.dataHelper.sortColumn = 'libelle';
-          this.dataHelper.sortDirection = 'Asc';
-          this.dataHelper.withoutPaginate = true;
-        }
-      )
-    );
-
     this.subscription.add(
       this.router.events.subscribe((event: Event) => {
         switch (true) {
@@ -217,6 +195,29 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
     this.onLoadChild();
   }
 
+  ngAfterViewInit(): void {
+    if(this.selectedGroupe && !this.hierarchieComponent) {
+      return;
+    }
+    
+    const converted = this.hierarchieComponent.converData({
+      'name': 'groupes',
+      'value': [this.selectedGroupe]
+    }) as TreeviewItem[];
+
+    this.hierarchieComponent.selectedItem = converted[0] ?? null; 
+  }
+
+  onNavigate(groupe: ICrCoordonneeGroupe) {
+
+    this.router.navigate(['/groupe-contact', groupe.id]);
+  }
+
+  openModal(content, data: ICrCoordonnee) {
+    this.modalData = data;
+    this.modalService.open(content, { size: 'lg', centered: true,  backdrop: 'static' });
+  }
+
   onLoadChild() {
     if(this.route.firstChild) {
        return this.route.firstChild.data.subscribe(
@@ -225,8 +226,9 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
           if((!data.coordonneeGrp))
           {
             this.router.navigate(['/groupe-contact']);
+            return;
           }
-          this.titleservice.setTitle(data.coordonneeGrp.libelle);
+          this.titleservice.setTitle(data.coordonneeGrp.libelle?? 'groupe contact');
           this.onSetSelected(data.coordonneeGrp);
         }
       );
@@ -234,16 +236,6 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
     // this.onSetSelected(null);
   }
 
-  onShowCreateForm(item?, modal = this.editModal) {
-    super.onShowCreateForm(item).subscribe(
-       (data:ICrCoordonneeGroupe)=>{
-         if(!this.parentData)  {return;}
-         const service = new CrCoordonneeGroupeFactory();
-         service.attachAffectation(data.id, this.parentData.relationName+'s', this.parentData.relationId).subscribe();
-       }
-    )
-    return of(true);
- }
 
  onShowAffectationCoordonneeGroupeForm(item: ICrCoordonneeGroupe) {
   const modalRef = this.modalService.open(AffectationCoordonneeGroupeEditComponent, { size: 'lg', centered: true,  backdrop: 'static' });
@@ -265,10 +257,6 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
   );
 }
 
-  openModal(content, data: ICrCoordonneeGroupe) {
-    this.modalData = data;
-    this.modalService.open(content, { size: 'lg', centered: true,  backdrop: 'static' });
-  }
 
   onRemoveCoordonnee(coordonnee: ICrCoordonnee, groupe: ICrCoordonneeGroupe = this.selectedGroupe) {
     const service = new CrCoordonneeFactory();
@@ -311,6 +299,12 @@ export class CoordonneeGroupeComponent extends EditableListComponent implements 
     this.notificationService.bodyMaxLength = 80;
     this.notificationService.backdrop =  -1;
 
+  }
+
+  checkData() {
+    if(this.coordonneeHelper.hasMoreData) {
+      this.coordonneeHelper.loadData();
+    }
   }
 
   ngOnDestroy() {

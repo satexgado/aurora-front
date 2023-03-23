@@ -6,32 +6,40 @@ import {  remove, isNil  } from 'lodash';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { filterGrp } from 'src/app/shared/models/query-options/query-options.model';
-import { Sort } from 'src/app/shared/models/query-options';
+import { Filter, Sort } from 'src/app/shared/models/query-options';
 import { AuthService } from 'src/app/express-courrier/auth/auth.service';
-import { IMpProcedureType, MpProcedureType } from 'src/app/core/models/marche-public/type-procedure.model';
-import { MpProcedureTypeFactory } from 'src/app/core/services/marche-public/type-procedure.model';
-import { EditComponent as ProcedureEditComponent } from '../edit/edit.component'
+import { EditComponent as GroupeeEditComponent } from '../edit/edit.component'
+import { CrCoordonneeGroupe, ICrCoordonneeGroupe } from 'src/app/core/models/gestion-courrier/cr-coordonnee-groupe';
+import { CrCoordonneeGroupeFactory } from 'src/app/core/services/gestion-courrier/cr-coordonnee-groupe';
 
 @Component({
-  selector: 'app-procedure-hierarchie-edit',
-  templateUrl: './procedure-hierarchie-edit.component.html'
+  selector: 'app-coordonnee-groupe-hierarchie-edit',
+  templateUrl: './coordonnee-groupe-hierarchie-edit.component.html'
 })
-export class ProcedureHierarchieEditComponent {
+export class CoordonneeGroupeHierarchieEditComponent {
   @ViewChild(TreeviewComponent) treeviewComponent: TreeviewComponent;
 
   @Input('filter') set filterInit(filter: filterGrp[]) {
-    this.loadProcedure(filter);
+    this.loadGroupe(filter);
   }
   hierarchieItems: TreeviewItem[];
   selectedItem: TreeviewItem;
-  nomProcedure: string;
-  newProcedureLoading = false;
+  nomGroupe: string;
+  newGroupeLoading = false;
   parentUpdate;
-  @Output('onSelectItem') selectedItemEmitter = new EventEmitter<IMpProcedureType>();
+  @Output('onSelectItem') selectedItemEmitter = new EventEmitter<ICrCoordonneeGroupe>();
   @Input() hideUpdateDelete = false;
   @Input() hasRacine = false;
   @Input() exceptionId: number[];
-  @Output() newProcedureEmitter = new EventEmitter<IMpProcedureType>();
+  @Output() newGroupeEmitter = new EventEmitter<ICrCoordonneeGroupe>();
+
+  @Input() set updateDataNbCoordonnees(groupe: ICrCoordonneeGroupe) {
+    let item = this.findItemInList(groupe.id);
+    if(item && groupe) {
+      item.value.extends.nb_coordonnees = groupe.nb_coordonnees;
+      return;
+    }
+  } 
 
   config = TreeviewConfig.create({
     hasAllCheckBox: false,
@@ -49,24 +57,29 @@ export class ProcedureHierarchieEditComponent {
     private notificationService: NotificationService
   ) {}
 
-  loadProcedure(filter: filterGrp[]  = []) {
+  loadGroupe(filter: filterGrp[]  = []) {
     this.is_loading_tree = true;
-    const service = new MpProcedureTypeFactory();
+    filter = [...filter, ... [
+      {or: false, filters:[
+        new Filter('groupe_id', '', 'eq'),
+      ]},
+    ]] 
+    const service = new CrCoordonneeGroupeFactory();
     const queryOptions = new QueryOptions(
       filter,
-      ['mp_type_procedures.mp_type_procedure_etapes', 'mp_type_procedure_etapes'],
+      ['cr_coordonnee_groupes'],
     ).setSort([new Sort('libelle', 'ASC')]);
 
     service.list(queryOptions).subscribe(
       data => {
-        let type_procedures = data.data;
+        let groupes = data.data;
         if(this.hasRacine) {
-          let type_procedure = new MpProcedureType();
-          type_procedure.libelle = 'Acceuil';
-          type_procedure.type_procedures = type_procedures;
-          type_procedures = [type_procedure];
+          let groupe = new CrCoordonneeGroupe();
+          groupe.libelle = 'Listes des groupes';
+          groupe.groupes = groupes;
+          groupes = [groupe];
         }
-        this.hierarchieItems = this.converData({name: 'type_procedures', value: type_procedures}) as TreeviewItem[];
+        this.hierarchieItems = this.converData({name: 'groupes', value: groupes}) as TreeviewItem[];
         this.is_loading_tree = false;
       }
     )
@@ -79,13 +92,13 @@ export class ProcedureHierarchieEditComponent {
     if(items.value)
     {
       Object.values(items.value).forEach(
-        (data: IMpProcedureType) => {
+        (data: ICrCoordonneeGroupe) => {
           if(this.exceptionId && this.exceptionId.includes(data.id)) {
             return;
           };
           let child = [];
 
-          if( data.children  && data.children.value  &&data.children.value.length)
+          if( data.children  && data.children.value  && data.children.value.length)
           {
             child = this.converData(data.children);
           }
@@ -106,21 +119,21 @@ export class ProcedureHierarchieEditComponent {
     return tree;
   }
 
-  ajouterProcedure(parent = null)
+  ajouterGroupe(parent = null)
   {
-    const modalRef = this.modalService.open(ProcedureEditComponent,{ size: 'lg', centered: true,  backdrop: 'static' });
-    const instance = modalRef.componentInstance as ProcedureEditComponent;
-    instance.title = 'Ajouter un type de procedures';
+    const modalRef = this.modalService.open(GroupeeEditComponent,{ size: 'lg', centered: true,  backdrop: 'static' });
+    const instance = modalRef.componentInstance as GroupeeEditComponent;
+    instance.title = 'Ajouter un groupe';
     if(parent) {
-      instance.typeId = parent.value.id;
+      instance.groupeId = parent.value.id;
     }
     instance.newItem.subscribe(
       (data: any) => {
-        this.newProcedureEmitter.emit(data);
+        this.newGroupeEmitter.emit(data);
 
         if(parent) {
           const converted = this.converData({
-            'name': 'type_procedures',
+            'name': 'groupes',
             'value': [data]
           }) as TreeviewItem[];
           if(!parent.children) {
@@ -131,22 +144,23 @@ export class ProcedureHierarchieEditComponent {
           return;
         }
         const converted = this.converData({
-          'name': 'type_procedures',
+          'name': 'groupes',
           'value': [data]
         }) as TreeviewItem[];
         this.hierarchieItems = [...this.hierarchieItems, ...converted];
       }
     );
   }
+
   quickAdd(parent) {
-    let type_procedure = new MpProcedureType();
-    type_procedure.id = null;
-    type_procedure.type_id = parent.value.id;
+    let groupe = new CrCoordonneeGroupe();
+    groupe.id = null;
+    groupe.groupe_id = parent.value.id;
     this.parentUpdate = parent;
     if(parent) {
       const converted = this.converData({
-        'name': 'type_procedures',
-        'value': [type_procedure]
+        'name': 'groupes',
+        'value': [groupe]
       }) as TreeviewItem[];
       if(!parent.children) {
         parent.children = [...converted];
@@ -173,7 +187,7 @@ export class ProcedureHierarchieEditComponent {
     }
 
     // this.is_loading_tree = true;
-    const service = new MpProcedureTypeFactory();
+    const service = new CrCoordonneeGroupeFactory();
     service.update({
       id: item.value.id,
       libelle: libelle
@@ -195,18 +209,18 @@ export class ProcedureHierarchieEditComponent {
       return;
     }
     this.is_loading_tree = true;
-    let type_procedure = new MpProcedureType();
-    type_procedure.libelle = libelle;
-    type_procedure.type_id = item.value.extends.type_id;
-    const service = new MpProcedureTypeFactory();
-    service.create(type_procedure).subscribe(
+    let groupe = new CrCoordonneeGroupe();
+    groupe.libelle = libelle;
+    groupe.groupe_id = item.value.extends.groupe_id;
+    const service = new CrCoordonneeGroupeFactory();
+    service.create(groupe).subscribe(
       (data)=>{
         // this.parentUpdate.children.pop();
         item.libelle = '';
-        this.newProcedureEmitter.emit(data);
+        this.newGroupeEmitter.emit(data);
         const converted = this.converData({
-          'name': 'type_procedures',
-          'value': [type_procedure]
+          'name': 'groupes',
+          'value': [data]
         }) as TreeviewItem[];
         if(!this.parentUpdate.children) {
           this.parentUpdate.children = [...converted];
@@ -219,25 +233,25 @@ export class ProcedureHierarchieEditComponent {
   }
 
   quickCreation() {
-    if(!this.nomProcedure) {
+    if(!this.nomGroupe) {
       return;
     }
 
     this.is_loading_tree = true;
 
-    let type_procedure = new MpProcedureType();
-    type_procedure.libelle = this.nomProcedure;
-    const service = new MpProcedureTypeFactory();
-    service.create(type_procedure).subscribe(
+    let groupe = new CrCoordonneeGroupe();
+    groupe.libelle = this.nomGroupe;
+    const service = new CrCoordonneeGroupeFactory();
+    service.create(groupe).subscribe(
       (data)=>{
-        this.newProcedureEmitter.emit(data);
+        this.newGroupeEmitter.emit(data);
         const converted = this.converData({
-          'name': 'type_procedures',
+          'name': 'groupes',
           'value': [data]
         }) as TreeviewItem[];
         this.hierarchieItems = [...this.hierarchieItems, ...converted];
         this.is_loading_tree = false;
-        this.nomProcedure = '';
+        this.nomGroupe = '';
       }
     )
   }
@@ -251,7 +265,7 @@ export class ProcedureHierarchieEditComponent {
         this.is_loading_tree = false;
         this.removeItem(item);
       };
-      const service = new MpProcedureTypeFactory();
+      const service = new CrCoordonneeGroupeFactory();
       service.delete(item.value.id).subscribe(funct1);
     }
 
@@ -306,4 +320,41 @@ export class ProcedureHierarchieEditComponent {
     this.selectedItem = item;
     this.selectedItemEmitter.emit(item.value.extends);
   }
+
+  findItem(root: any, value: any): any {
+    if (isNil(root)) {
+      return undefined;
+    }
+
+    if (root.value.id == value) {
+      return root;
+    }
+
+    if (root.children) {
+      for (const child of root.children) {
+        const foundItem = this.findItem(child, value);
+        if (foundItem) {
+          return foundItem;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  findItemInList(value: any): any {
+    if (isNil(this.hierarchieItems)) {
+      return undefined;
+    }
+
+    for (const item of this.hierarchieItems) {
+      const foundItem = this.findItem(item, value);
+      if (foundItem) {
+        return foundItem;
+      }
+    }
+
+    return undefined;
+  }
+
 }

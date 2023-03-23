@@ -12,12 +12,14 @@ import { CoordonneeGroupeRoutingModule } from './coordonnee-groupe-routing.modul
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { ZenDocumentModule } from 'src/app/modules/gestion-document/zen-document.module';
 import { AffectationCoordonneeGroupeEditComponent } from './affectation/affectation.component';
+import { CoordonneeGroupeHierarchieEditComponent } from './coordonnee-groupe-hierarchie-edit/coordonnee-groupe-hierarchie-edit.component'
 
 @NgModule({
     declarations: [
         CoordonneeGroupeComponent,
         AffectationCoordonneeGroupeEditComponent,
         CoordonneeGroupeActionComponent,
+        CoordonneeGroupeHierarchieEditComponent,
         EditComponent
     ],
     imports: [

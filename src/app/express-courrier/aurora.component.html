@@ -1,9 +1,9 @@
 <div class="d-flex justify-content-between p-2 bd-b bd-2">
     <div class="">
         <a href="" class="d-flex flex-row pt-1 ml-2">
-            <i class="fas fa-alicorn tx-echos tx-28"></i>
+            <i class="fas fa-paperclip tx-echos tx-28 mr-2"></i>
             <span class="d-none d-sm-block tx-echos tx-24 " style="font-family: ''; text-align: center; ; vertical-align: middle; text-shadow: 0px 1px 0px #ffff;">
-            -- Aurora Plus --
+             Link Up 
           </span>
         </a>
     </div>
@@ -15,29 +15,11 @@
     </div>
 
     <div class="">
-        <div class="nav-tabs-top ">
-            <ul class="nav   bg-white float-right list-inline justify-content-end">
-                <li class="nav-item card-1-hoverable mg-0 pd-0 ">
-                    <a class="nav-link3" [routerLink]="['home']" routerLinkActive="active" style="padding: 5px 12px;">
-                        <i class="fas fa-home tx-18  tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i> <span class="tx-echos"> Accueil </span></a>
-                </li>
-                <li class="nav-item card-1-hoverable ">
-                    <a class="nav-link3" [routerLink]="['courrier']" routerLinkActive="active">
-                        <i class="fas fa-mailbox tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> Mes courriers</span></a>
-                </li>
-                <li class="nav-item card-1-hoverable ">
-                    <a class="nav-link3" [routerLink]="['labcolab']" routerLinkActive="active">
-                        <i class="fas fa-union tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> LAbColab</span></a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="">
         <div class="nav-tabs-top  ">
             <ul class="nav   bg-white float-right list-inline justify-content-end">
 
                 <li class="nav-item ">
-                    <a class="nav-link3 " data-toggle="tab" href="#propriete_courrier">
+                    <a class="nav-link3 " [routerLink]="['administration']" routerLinkActive="active">
                         <i class="fas fa-cog tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos">   </span></a>
                 </li>
                 <li class="nav-item dropdown">
@@ -108,79 +90,80 @@
 </div>
 <div class="page-container">
 
-    <div class="page-sidebar" style="width:74px ">
+    <div class="page-sidebar">
 
         <div class="page-sidebar-inner">
             <div class="page-sidebar-menu ">
 
                 <ul class="navbar nav  pb-2 " role="tablist">
-                    <li class="nav-item tx-center  ">
-                        <a class="nav-link " data-toggle="pill" href="#aurora_portail">
-                            <i class="fas fa-door-open tx-facebook  tx-20 pl-2 bg-light" style="padding:10px; border-radius:50%"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0 pl-2">Messages</p> -->
-                        </a>
-                    </li>
-                    <li class="nav-item tx-center  mt-4 ">
-                        <a class="nav-link active" data-toggle="pill" href="#aurora_courrier">
-                            <i class="fas fa-mailbox tx-facebook  tx-20 pl-2"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Courriers</p> -->
-                        </a>
-                    </li>
-                    <li class="nav-item tx-center  ">
-                        <a class="nav-link " data-toggle="pill" href="#">
-                            <i class="fas fa-file-alt tx-facebook  tx-20 pl-2"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
-                        </a>
-                    </li>
-
-                    <li class="nav-item tx-center    ">
-                        <a class="nav-link " data-toggle="pill" href="#">
-                            <i class="fas fa-balance-scale tx-facebook  tx-20 pl-2"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
-                        </a>
-                    </li>
-
-
-                    <li class="nav-item tx-center ">
-                        <a class="nav-link " data-toggle="pill" href="#aurora_dashboard">
-                            <i class="fas fa-chart-line tx-facebook tx-20 pl-2"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Dashboard</p> -->
-                        </a>
-                    </li>
-
-                    <li class="nav-item tx-center   mt-4 ">
-                        <a class="nav-link " data-toggle="pill" href="#">
-                            <i class="fas fa-tasks-alt tx-facebook  tx-20 pl-2"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
-                        </a>
-                    </li>
-                    <li class="nav-item tx-center    ">
-                        <a class="nav-link " data-toggle="pill" href="#">
-                            <i class="fas fa-clock tx-facebook  tx-20 pl-2"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
-                        </a>
-                    </li>
-                    <li class="nav-item tx-center    ">
-                        <a class="nav-link " data-toggle="pill" href="#">
-                            <i class="fas fa-history tx-facebook  tx-20 pl-2"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
-                        </a>
-                    </li>
-
-                    <li class="nav-item tx-center mt-4 ">
-                        <a class="nav-link " data-toggle="pill" href="#aurora_messenger">
-                            <i class="fas fa-comment-alt-lines tx-facebook  tx-20 pl-2"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Messenger</p> -->
-                        </a>
-                    </li>
-
-                    <li class="nav-item tx-center  ">
-                        <a class="nav-link " data-toggle="pill" href="#aurora_message">
-                            <i class="fas fa-at tx-facebook  tx-20 pl-2"></i>
+                    <li class="nav-item card-1-hoverable tx-center  ">
+                        <a class="nav-link3 " data-toggle="pill" href="#aurora_portail">
+                            <i class="fas fa-door-open tx-facebook  tx-16 bg-light" style="padding:10px; border-radius:50%"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0 pl-2">Messages</p> -->
                         </a>
                     </li>
 
+
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Courrier'">
+                        <a class="nav-link3 " [routerLink]="['courrier/dossier']" routerLinkActive="active">
+                            <i class="fas  fa-folder-open tx-facebook  tx-16"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Entrant'">
+                        <a class="nav-link3 " [routerLink]="['courrier/entrant']" routerLinkActive="active">
+                            <i class="fas  fa-envelope tx-facebook  tx-16"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Sortant'">
+                        <a class="nav-link3 " [routerLink]="['courrier/sortant']" routerLinkActive="active">
+                            <i class="fas  fa-envelope-open tx-facebook  tx-16"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Interne'">
+                        <a class="nav-link3 " [routerLink]="['courrier/interne']" routerLinkActive="active">
+                            <i class="fas  fa-envelope-open-text tx-facebook  tx-16"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item card-1-hoverable tx-center  mt-4  " container="body" [ngbTooltip]="'Labcolab'">
+                        <a class="nav-link3 " [routerLink]="['labcolab']" routerLinkActive="active">
+                            <i class="fas fa-union tx-facebook  tx-16"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+
+                    <li class="nav-item card-1-hoverable tx-center  mt-4" container="body" [ngbTooltip]="'Rapport'">
+                        <a class="nav-link3 " [routerLink]="['courrier/rapport']" routerLinkActive="active">
+                            <i class="fas  fa-clock tx-facebook  tx-16"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+                    <li class="nav-item card-1-hoverable tx-center    " container="body" [ngbTooltip]="'Suivi'">
+                        <a class="nav-link3 " [routerLink]="['courrier/suivi']" routerLinkActive="active">
+                            <i class="fas fa-history tx-facebook  tx-16"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+
+                     <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Analyse'">
+                        <a class="nav-link3 " [routerLink]="['courrier/analyse']" routerLinkActive="active">
+                            <i class="fas fa-analytics tx-facebook  tx-16"></i>
+                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
+                        </a>
+                    </li>
+
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Affectation'">
+                        <a class="nav-link3 " [routerLink]="['courrier/affectation']" routerLinkActive="active">
+                            <ng-container *ngIf="reaffectation$ | async as reaffectations">
+                                <ng-container *ngIf="reaffectations.length">
+                                    {{reaffectations.length > 99 ? '+99' : reaffectations.length}}                                
+                                </ng-container>
+                            </ng-container> <i class="fas fa-link tx-facebook  tx-16"></i>
+                        </a>
+                    </li>
 
                 </ul>
             </div>
@@ -192,7 +175,7 @@
         </div>
     </div>
 
-    <div class="page-sidebar page-sidebar-danger bd-l bg-light" style="width:74px; height:100vh">
+    <div class="page-sidebar page-sidebar-danger bd-l bg-light" style="height:100vh">
         <div class="page-sidebar-inner ">
             <div class="page-sidebar-menu">
                 <div class="p-0 pb-6">
@@ -200,53 +183,60 @@
 
 
 
-                        <li class="nav-item tx-center">
+                        <li class="nav-item tx-center w-100">
                             <a class="nav-link3 py-1   " data-toggle="tab" href="#services_aurora">
-                                <i class="fas fa-chair-office tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                                <i class="fas fa-chair-office tx-echos  tx-16" style="padding:6px; border-radius:50%"></i>
                             </a>
                         </li>
-                        <li class="nav-item tx-center">
+                        <li class="nav-item tx-center w-100">
                             <a class="nav-link3 py-1   " data-toggle="tab" href="#hierarchie_aurora">
-                                <i class="fas fa-sitemap tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                                <i class="fas fa-sitemap tx-echos  tx-16" style="padding:6px; border-radius:50%"></i>
                             </a>
                         </li>
-                        <li class="nav-item tx-center ">
+                        <li class="nav-item tx-center w-100 ">
                             <a class="nav-link3 py-1   " data-toggle="tab" href="#structure_aurora">
                                 <i class="fas fa-chart-network tx-echos  tx-18" style="padding:6px; border-radius:50%"></i>
                             </a>
                         </li>
 
-                        <li class="nav-item tx-center  ">
+                        <li class="nav-item tx-center w-100  ">
                             <a class="nav-link3 py-1   " data-toggle="tab" href="#groupes_aurora">
                                 <i class="fas fa-books  tx-echos tx-18" style="padding:6px; border-radius:50%"></i>
                             </a>
                         </li>
 
-                        <li class="nav-item tx-center mt-4 ">
-                            <a class="nav-link3 py-1   " data-toggle="tab" href="#utilisateur_page">
-                                <i class="fas fa-user  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                        <li class="nav-item tx-center w-100 mt-4 ">
+                            <a class="nav-link3 py-1   " [routerLink]="['utilisateur']" routerLinkActive="active">
+                                <i class="fas fa-user  tx-echos  tx-16" ></i>
                             </a>
                         </li>
-                        <li class="nav-item tx-center  ">
+                        <li class="nav-item tx-center w-100  ">
                             <a class="nav-link3 py-1   " [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'partenaire'" routerLinkActive="active">
-                                <i class="fas fa-handshake-alt  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                                <i class="fas fa-handshake-alt  tx-echos  tx-16" ></i>
                             </a>
                         </li>
-                        <li class="nav-item tx-center">
+                        <li class="nav-item tx-center w-100">
                             <a class="nav-link3 py-1   " [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'fournisseur'" routerLinkActive="active">
-                                <i class="fas fa-people-carry  tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                                <i class="fas fa-people-carry  tx-echos  tx-16" ></i>
                             </a>
                         </li>
-                        <li class="nav-item tx-center">
+                        <li class="nav-item tx-center w-100">
                             <a class="nav-link3 py-1  " [routerLink]="['groupe-contact']" routerLinkActive="active">
-                                <i class="fas fa-users tx-echos  tx-20" style="padding:6px; border-radius:50%"></i>
+                                <i class="fas fa-users tx-echos  tx-16" ></i>
                             </a>
                         </li>
-                        <li class="nav-item tx-center ">
+                        <li class="nav-item tx-center w-100 ">
                             <a class="nav-link3 py-1" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
-                                <i class="fas fa-address-card tx-echos  tx-18" style="padding:6px; border-radius:50%"></i>
+                                <i class="fas fa-address-card tx-echos  tx-16" ></i>
                             </a>
                         </li>
+
+                        <li class="nav-item tx-center w-100 mt-4">
+                            <a class="nav-link3 py-1" (click)="open(onlineUsers)">
+                                <i class="fas fa-user-circle tx-echos  tx-16" ></i>
+                            </a>
+                        </li>
+                        
                     </ul>
                 </div>
             </div>
@@ -254,10 +244,8 @@
 
             <div class="   p-0 pt-6 pr-1 tx-center">
                 <a class="nav-link3  mt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
-                    <img class="rounded-circle" src="assets/images/xs/avatar13.jpg" alt="avatar" width="30">
-                </a>
-                <a class="nav-link3  mt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
                     <img class="rounded-circle" src="assets/images/xs/avatar9.jpg" alt="avatar" width="30">
+                    <span class="green_icon"></span>
                 </a>
                 <a class="nav-link3  mt-2 pb-2 ml-2" data-toggle="tab" href="#dashboard_memoire">
                     <img class="rounded-circle" src="assets/images/xs/avatar2.jpg" alt="avatar" width="30">
@@ -270,7 +258,6 @@
                 <a class="nav-link3  mt-2 pb-2 ml-3 " data-toggle="tab" href="#dashboard_memoire">
                     <div class="avatar "><span class="avatar-initial rounded-circle bg-primary ">+</span></div>
                 </a>
-
 
             </div>
 
@@ -292,3 +279,45 @@
         © 2022 SIGECAM by Open Software Solution for the World
     </div>
 </div>
+
+<ng-template #onlineUsers let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">
+            <i class="fa-user-circle fad ng-star-inserted"></i> Utilisateurs en ligne
+        </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <i  class="ion-ios-close-empty"></i>
+        </button>
+    </div>
+    <div class="modal-body scroll-11" style="max-width: 460px; overflow: auto;">
+        <!-- <ng-container *ngIf="onlineUsers$ | async as users">
+            <ng-container *ngIf="users.length">
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6 mb-3" *ngFor="let user of users">
+                        <div class="image_outer_container d-flex" >
+                            <div class="icon" [ngClass]="user.away ? ' bg-warning' : ' bg-success' "></div>
+                            <div class="image_inner_container" [class.warning]="user.away">
+                                <img [src]="user.photo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container> -->
+        <div class="people-list">
+            <ul class="list-unstyled chat-list mt-2 mb-0">
+                <ng-container *ngIf="onlineUsers$ | async as users">
+                    <ng-container *ngIf="users.length">
+                        <li class="clearfix" *ngFor="let user of users">
+                            <img class="avatar" style="height: 45px;" [src]="user.photo" alt="avatar">
+                            <div class="about">
+                                <div class="name">{{user.prenom}} {{user.nom}}</div>
+                                <div class="status"> <i class="fa fa-circle" [ngClass]="user.away ? ' text-warning' : ' text-success' "></i> {{user.last_activity_at | dateagofr}} </div>                                            
+                            </div>
+                        </li>
+                    </ng-container>
+                </ng-container>
+            </ul>
+        </div>
+    </div>
+</ng-template>

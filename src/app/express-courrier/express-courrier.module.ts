@@ -13,6 +13,8 @@ import { TunelModule } from './messagerie/tunel/tunel.module';
 import { UserShowComponent } from './users/user-show/user-show.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthorisationGuardService } from 'src/app/shared/guard/authorisation.guard'
+import { ShortNumberPipe } from '../shared/pipes';
+import { SharedModule } from '../shared';
 
 const routes: Routes = [
   {
@@ -133,6 +135,13 @@ const routes: Routes = [
           )
       },
       {
+        path: 'utilisateur',
+        loadChildren: () =>
+          import('../modules/user/user.module').then(
+            (module) => module.UserModule
+          ),
+      },
+      {
         path: 'page-not-found',
         component: PageNotFoundComponent,
       },
@@ -210,7 +219,8 @@ const routes: Routes = [
     NotificationsModule,
     InboxModule,
     SidebarModule,
-    NgbModule
+    NgbModule,
+    SharedModule
   ],
   exports: [RouterModule],
 })

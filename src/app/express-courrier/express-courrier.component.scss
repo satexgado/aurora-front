@@ -1,10 +1,85 @@
-.green_icon {
-    background-color: #4cd137;
-    position: relative;
-    right: -25px;
-    bottom: -45px;
-    height: 15px;
-    width: 15px;
-    border: 2px solid white;
+.image_outer_container{
+    margin-top: auto;
+    margin-bottom: auto;
     border-radius: 50%;
+    position: relative;
+}
+
+.image_inner_container{
+    border-radius: 50%;
+    padding: 5px;
+    background-color: #f2cf07;
+    background-image: linear-gradient(315deg, #f2cf07 0%, #55d284 74%);
+}
+
+.image_inner_container.warning{
+    border-radius: 50%;
+    padding: 5px;
+    background-color: #ff4e00;
+    background-image: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%);
+}
+
+.image_inner_container img{
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+}
+
+.image_outer_container .icon{
+  background-color: #4cd137;
+  position: absolute;
+  right: 40px;
+  bottom: 10px;
+  height: 40px;
+  width: 40px;
+  border:5px solid white;
+  border-radius: 50%;
+}
+
+
+.people-list {
+    -moz-transition: .5s;
+    -o-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s
+}
+
+.people-list .chat-list li {
+    padding: 10px 15px;
+    list-style: none;
+    border-radius: 3px
+}
+
+.people-list .chat-list li:hover {
+    background: #efefef;
+    cursor: pointer
+}
+
+.people-list .chat-list li.active {
+    background: #efefef
+}
+
+.people-list .chat-list li .name {
+    font-size: 15px
+}
+
+.people-list .chat-list img {
+    width: 45px;
+    border-radius: 50%
+}
+
+.people-list img {
+    float: left;
+    border-radius: 50%
+}
+
+.people-list .about {
+    float: left;
+    padding-left: 8px
+}
+
+.people-list .status {
+    color: #999;
+    font-size: 13px
 }
