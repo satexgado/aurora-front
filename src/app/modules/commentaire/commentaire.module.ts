@@ -6,6 +6,7 @@ import { CommentaireDetailsComponent } from './details/commentaire-details.compo
 import { CommentaireListComponent } from './list/commentaire-list.component';
 import { CommentaireDetailsUiComponent } from './details/ui/commentaire-details-ui.component';
 import { CommentaireSectionUiComponent } from './section-ui/commentaire-section-ui.component';
+import { CommentaireSimplelistComponent } from './simplelist/commentaire-simplelist.component'
 
 @NgModule({
     declarations: [
@@ -13,7 +14,8 @@ import { CommentaireSectionUiComponent } from './section-ui/commentaire-section-
         CommentaireDetailsComponent,
         CommentaireDetailsUiComponent,
         CommentaireListComponent,
-        CommentaireSectionUiComponent
+        CommentaireSectionUiComponent,
+        CommentaireSimplelistComponent
     ],
     imports: [
         CommonModule,
@@ -24,7 +26,8 @@ import { CommentaireSectionUiComponent } from './section-ui/commentaire-section-
         CommentaireDetailsUiComponent,
         CommentaireDetailsComponent,
         CommentaireListComponent,
-        CommentaireSectionUiComponent
+        CommentaireSectionUiComponent,
+        CommentaireSimplelistComponent
     ]
 })
 export class CommentaireModule {

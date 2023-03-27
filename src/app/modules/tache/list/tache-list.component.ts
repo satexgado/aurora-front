@@ -26,6 +26,8 @@ export class GestionnaireTacheListComponent implements OnDestroy {
     @Output() tacheAffectationFormEmitter = new EventEmitter<ICrTache>();
     @Output() courrierAffectationFormEmitter = new EventEmitter<ICrTache>();
     @Output() tacheSoftUpdateEmitter = new EventEmitter<ICrTache>();
+    @Output() tacheCommentaireEmitter = new EventEmitter<ICrTache>();
+
     @Input('taches$') taches$: Observable<ICrTache[]>;
 
     is_loading_schema = false;
@@ -61,6 +63,10 @@ export class GestionnaireTacheListComponent implements OnDestroy {
 
     onShowAffectationCourrierForm(item: ICrTache) {
       this.courrierAffectationFormEmitter.emit(item);
+    }
+
+    onShowCommentairerTache(item: ICrTache) {
+      this.tacheCommentaireEmitter.emit(item);
     }
 
     onUpdateStatut(item: ICrTache, newStatut: CrTacheStatut) {

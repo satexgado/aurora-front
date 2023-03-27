@@ -72,7 +72,7 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
   editModal = EditComponent;
   selectedCourrier: ICrCourrierEntrant;
   parentData: {relationName: string,relationId: number} = null;
-  externe = true;
+  externe = 1;
   expediteur: ICrCoordonnee;
   subscription: Subscription = new Subscription();
 

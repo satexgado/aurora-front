@@ -101,13 +101,13 @@
                                     <div *ngIf="shouldShowRequiredError('structure_id')" class="invalid-feedback">veillez remplir ce champ.</div>
                                 </div>
                                 <div class="col-12 col-sm-6 mb-2">
-                                    <app-select-formgroup label="Suivi Par" formControlName="suivi_par" [selected]="editForm.get('suivi_par').value" [dataSource]="allUsers$"></app-select-formgroup>
+                                    <app-select-formgroup label="Suivi Par" formControlName="suivi_par" [libelleColumn]="'nom_complet'" [selected]="editForm.get('suivi_par').value" [dataSource]="allUsers$"></app-select-formgroup>
                                     <div *ngIf="shouldShowRequiredError('suivi_par')" class="invalid-feedback">veillez remplir ce champ.</div>
                                 </div>
                             </div>
                             <div class="formSep form-group  row justify-content-center pb-0 pt-3">
                                 <div class="col-12 col-sm-6 mb-2">
-                                    <app-select-formgroup label="Niveau d'Urgence" formControlName="urgence_id" [selected]="editForm.get('urgence_id').value" [dataSource]="allCrUrgences$" [createModal]="CrUrgenceEditComponent"></app-select-formgroup>
+                                    <app-select-formgroup label="Niveau d'Urgence" [libelleColumn]="'select_libelle'" formControlName="urgence_id" [selected]="editForm.get('urgence_id').value" [dataSource]="allCrUrgences$" [createModal]="CrUrgenceEditComponent"></app-select-formgroup>
                                     <div *ngIf="shouldShowRequiredError('urgence_id')" class="invalid-feedback">veillez remplir ce champ.</div>
                                 </div>
                                 <div class="col-12 col-sm-6 mb-2">

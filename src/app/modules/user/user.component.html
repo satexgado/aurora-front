@@ -49,8 +49,8 @@
                             <div class="mx-auto my-2 avatar-md" *ngIf="!user.avatar">
                                 <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
                             </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="image_outer_container {{user.online_statut}}" *ngIf="user.avatar">
+                            <div class="d-flex justify-content-center mt-2" *ngIf="user.avatar">
+                                <div class="image_outer_container {{user.online_statut}}" >
                                     <div class="icon_statut" ></div>
                                     <div class="image_inner_container">
                                         <img [src]="user.avatar">
@@ -154,7 +154,7 @@
     </div>
 </div>
 <ng-template #listView>
-    <div class="card px-0 card-2 card-accent-primary col-12 info" >
+    <div class="card px-0 card-2 card-accent-primary " >
         <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-75 scroll-11">
             <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
                 <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loadingLine)">
@@ -170,7 +170,7 @@
                         <tr *ngFor="let user of items;trackBy: dataHelper.trackByFn">
                             <td [routerLink]="['./',user.id]">
                                 <div *ngIf="user.avatar" class="profiles avatar avatar-xs">
-                                    <img class="rounded-circle avatar-xs" container="body" [ngbTooltip]="user.libelle" [src]="user.avatar" alt="avatar">
+                                    <img class="rounded-circle avatar-md" container="body" [ngbTooltip]="user.libelle" [src]="user.avatar" alt="avatar">
                                 </div>
                                 <i *ngIf="!user.avatar" container="body" [ngbTooltip]="user.libelle" class="fad fa-user-circle fa-2x"></i>
                             </td>

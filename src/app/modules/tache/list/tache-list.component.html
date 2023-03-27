@@ -23,6 +23,9 @@
                                         <p class="tx-12 mb-0" *ngIf="tache.date_limit">Echeance: <strong [ngClass]="isEcheanceExpired(tache.date_limit) ? 'text-danger' : 'text-dark'">{{tache?.date_limit | date:'mediumDate' : undefined : 'fr'}}</strong></p>
                                         <p class="tx-12">Creer par: <strong class="text-dark">{{tache?.inscription?.libelle}}</strong></p>
                                         <p class="tx-12 text-dark">{{tache.description}}</p>
+                                        <a class="cursor-pointer bg-light my-1 tx-12" [routerLink]="[tache.courriers[0].link]" *ngIf="tache.courriers && tache.courriers.length">
+                                         <i class="fa fa-mail-bulk"></i> <span> {{tache.courriers[0].libelle}}</span>
+                                        </a>
                                         <p class="tx-12 text-dark text-center" *ngIf="tache.affectations&&tache.affectations.length"><strong>Collaborateurs</strong></p>
                                         <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
                                             <li *ngFor="let structure of tache.affectations" class="mg-l--10">
@@ -36,7 +39,7 @@
                                     </div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <button class="border-0 btn-transition btn btn-sm btn-oblong btn-outline-primary" (click)="onSetSelected(tache)">
+                                    <button class="border-0 btn-transition btn btn-sm btn-oblong btn-outline-dark" (click)="onShowCommentairerTache(tache)">
                                       <i class="fal fa-comment fa-2x"></i>
                                       <span class="badge badge-pill mg-t-10 badge-info" *ngIf="tache.comments_count">{{tache.comments_count}}</span>
                                     </button>

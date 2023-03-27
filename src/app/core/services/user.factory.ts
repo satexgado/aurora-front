@@ -1,8 +1,11 @@
-import { Factory } from './factory';
+import { Factory, ListResult } from './factory';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Observable } from 'rxjs';
 import { delay, map, retryWhen, take } from 'rxjs/operators';
+import { QueryOptions } from 'src/app/shared/models/query-options';
+import { AdaptableMapper } from 'src/app/shared/decorator/adapter/adaptable-mapper';
+import { CrTache } from '../models/gestion-courrier/cr-tache';
 
 
 @Injectable({
@@ -13,6 +16,24 @@ export class UserFactory extends Factory<User> {
 
   constructor() {
     super(User)
+  }
+
+  
+  list(queryOptions?: QueryOptions): Observable<ListResult<User>> {
+    return super.list(queryOptions??null).pipe(
+        map((data: ListResult<User>) => {
+          let adapter = new AdaptableMapper(CrTache);
+          data.data = data.data.map(
+            (user)=> {
+              if(user.cr_taches) {
+                user.cr_taches = user.cr_taches.map(item => adapter.fromSource(item));
+              }
+              return user;
+            }
+          );
+          return data;
+        })
+      );
   }
 
   zenContact(id: number): Observable<User[]> {

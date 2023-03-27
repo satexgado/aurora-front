@@ -16,6 +16,7 @@ import { CrReaffectationFactory } from '../core/services/gestion-courrier/cr-rea
 import { Filter, QueryOptions, Sort } from '../shared/models/query-options';
 import { UserFactory } from '../core/services/user.factory';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ExpressCourrierService } from './express-courrier.service';
 
 @Component({
   selector: 'app-express-courrier',
@@ -55,15 +56,6 @@ export class ExpressCourrierComponent implements OnInit {
   // inboxSubscription: Subscription;
   currentTopBar = 'default';
 
-  TASK_REFRESH_INTERVAL_MS = 30000;
-  private readonly autoRefresh$ = interval(this.TASK_REFRESH_INTERVAL_MS).pipe(
-    startWith(0)
-  );
-  private readonly refreshToken$ = new BehaviorSubject(undefined);
-  reaffectation$;
-  onlineUsers$;
-
-
   public linkActiveOptions: IsActiveMatchOptions = {
     matrixParams: 'exact',
     queryParams: 'exact',
@@ -80,7 +72,8 @@ export class ExpressCourrierComponent implements OnInit {
     public presenceService: PresenceService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    public expressService: ExpressCourrierService
   ) {
     this.router.events.subscribe((event: Event) => {
       switch (true) {
@@ -120,28 +113,7 @@ export class ExpressCourrierComponent implements OnInit {
     //   }
     // );
 
-    this.subscribeToConnectedChannel();
-
-    
-    const crReaffectationService = new CrReaffectationFactory();
-    this.reaffectation$ = this.autoRefresh$.pipe(
-      switchMap(() => (crReaffectationService.list(
-        new QueryOptions(
-          [
-            {or: false, filters:[new Filter('IsForIns', 1, 'eq')]},
-          ],
-        ).setSort([new Sort('created_at','DESC')])
-      ).pipe(map(data=>data.data)))),
-      distinctUntilChanged()
-    );
-
-    const userFact = new UserFactory();
-    this.onlineUsers$ = combineLatest(this.autoRefresh$, this.refreshToken$).pipe(
-      switchMap(() =>  userFact.onlineUsers()),
-      distinctUntilChanged()
-    );
-
-    this.refreshToken$.next(undefined);
+    this.subscribeToConnectedChannel();   
   }
 
   subscribeToConnectedChannel() {
@@ -174,5 +146,9 @@ export class ExpressCourrierComponent implements OnInit {
   }, (reason) => {
 
   });
+}
+
+trackByFn(index, item) {
+  return item.id; // or index
 }
 }

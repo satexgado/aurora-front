@@ -16,4 +16,10 @@ export class RolesComponent extends BaseContainerComponent {
   ) {
     super(rolesService, router, route, 'roles');
   }
+
+  /* ONDESTROY */
+  ngOnDestroy(): void {
+    this.unsubscribe(this.subscriptions);
+    this.helper.modal.hide(`${this.element}-show-modal`);
+  }
 }

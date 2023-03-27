@@ -13,6 +13,7 @@ export class User extends Resource {
     lieu_naissance: string;
     telephone: string;
     affectation_structures: any;
+    cr_taches: any;
     online_statut: 'online'| 'offline'| 'away';
     last_activity_at: Date;
     

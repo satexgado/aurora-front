@@ -18,6 +18,7 @@ export interface IUser extends IBase {
     readonly nom_complet: string;
     online_statut: 'online'| 'offline'| 'away';
     last_activity_at: Date;
+    cr_taches: any;
 }
 
 export class User implements IUser {
@@ -38,6 +39,7 @@ export class User implements IUser {
     lieu_naissance: string = '';
     telephone: string = '';
     affectation_structures: any = null;
+    cr_taches: any = null;
 
     @adaptableMap('photo')
     avatar:string = "";
@@ -46,9 +48,8 @@ export class User implements IUser {
     last_activity_at: Date = null;
 
     get online_statut() {
-        if(!this.last_activity_at) return 'offline';
-        console.log(moment(new Date()).diff(moment(this.last_activity_at), 'minute'));
-        return moment(new Date()).diff(moment(this.last_activity_at), 'minute') > 3 ? 'away' : 'online';
+        if((!this.last_activity_at) ||  moment(new Date()).diff(moment(this.last_activity_at), 'minute') > 10) return 'offline';
+        return moment(new Date()).diff(moment(this.last_activity_at), 'minute') > 1 ? 'away' : 'online';
     }
 
     get libelle()

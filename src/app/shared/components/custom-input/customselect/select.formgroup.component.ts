@@ -25,6 +25,7 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
   @Input() small = false;
   @Input() selected: string | null = null;
   @Input() alreadySelected: any[] = [];
+  @Input() libelleColumn = 'libelle';
   items: any[] = [];
   @Input() label = 'Selectionnez';
   @Input('createModal') createModal;

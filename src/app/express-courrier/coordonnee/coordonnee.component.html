@@ -141,7 +141,7 @@
     </div>
 </div>
 <ng-template #listView>
-    <div class="card px-0 card-2 card-accent-primary col-12 info" >
+    <div class="card px-0 card-2 card-accent-primary " >
         <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-75 scroll-11">
             <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
                 <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loadingLine)">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 enum ValeurEnum {
   nbmarche = 'Nombre de marches',
@@ -77,6 +77,7 @@ export class DashboardCourrierEntrantComponent implements OnInit {
   charts = [];
   filter;
 
+  @Input() externe = 1;
   constructor() { }
 
   ngOnInit() {

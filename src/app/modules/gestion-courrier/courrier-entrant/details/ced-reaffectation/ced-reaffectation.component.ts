@@ -102,4 +102,49 @@ export class CourrierEntrantDetailsReaffectationComponent implements OnDestroy {
       );
 
     }
+
+    onDeleteReaffectation(item: ICrReaffectation) {
+
+      const libelle =  item.libelle;
+      const reaffectations = this.reaffectations ? this.reaffectations : [] ;
+      const index = reaffectations.findIndex(element => element.id === item.id);
+      const cancelDelete = () => {
+        const service = new CrReaffectationFactory();
+        service.restore(item.id).subscribe(
+            (data) => {
+              reaffectations.splice(index, 0, data);
+              this.reaffectations = reaffectations;
+              this.notificationService.onInfo("La suppression a été annuler");
+            }, () => {
+            }
+          );
+      };
+
+
+      this.notificationService.title = 'Suppréssion';
+      this.notificationService.body = 'Êtes-vous sûr(e) de vouloir supprimer?' + " l' affectation ";
+
+      const confirm = () => {
+        const service = new CrReaffectationFactory();
+        service.delete(item.id).subscribe(
+            () => {
+              this.notificationService.onCancel(cancelDelete, "L'élément '"+libelle+"' a été supprimé" ,'Suppression' , 'success', 'Annuler la suppresion');
+            }, () => {
+              this.notificationService.onInfo('l\'élément est utilisé');
+            }
+          );
+          reaffectations.splice(index,1);
+          this.reaffectations = reaffectations;
+      };
+
+      const cancel = () => {
+      };
+
+      this.notificationService.bodyMaxLength = 300;
+      this.notificationService.backdrop =  0;
+      this.notificationService.onConfirmation(confirm, cancel);
+
+      this.notificationService.bodyMaxLength = 80;
+      this.notificationService.backdrop =  -1;
+    }
 }

@@ -1,26 +1,30 @@
-<div class="col-10 my-3 mx-auto">
-    <div class="container">
-        <!-- <div class="col-lg-12">
-            <h6 class="tx-echos1"><i class="fal fa-analytics  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Analyse</h6>
-        </div> -->
-        <ul ngbNav #nav="ngbNav" [destroyOnHide]="false" [activeId]="route.fragment | async" class="nav-tabs nav-fill">
-            <li [ngbNavItem]="'entrant'">
-                <a ngbNavLink routerLink="." [fragment]="'entrant'">
-                    <i class="fal fa-envelope tx-facebook bold"></i> Courriers entrants
-                </a>
-                <ng-template ngbNavContent>
-                    <app-dashboard-courrier-entrant></app-dashboard-courrier-entrant>
-                </ng-template>
-            </li>
-            <li [ngbNavItem]="'sortant'">
-                <a ngbNavLink routerLink="." [fragment]="'sortant'">
-                    <i class="fal fa-envelope-open tx-facebook bold"></i> Courriers sortants
-                </a>
-                <ng-template ngbNavContent>
-                    <app-dashboard-courrier-sortant></app-dashboard-courrier-sortant>
-                </ng-template>
-            </li>
-        </ul>
-        <div [ngbNavOutlet]="nav"></div>
-    </div>
+<div class="col-lg-12">
+    <h5 class="tx-echos1"><i class="fal fa-analytics  bg-white tx-20" style="padding:6px; border-radius: 50%; "></i> Analyse</h5>
 </div>
+<ul ngbNav #nav="ngbNav" [destroyOnHide]="false" [activeId]="route.fragment | async" class="nav-tabs nav-fill">
+    <li [ngbNavItem]="'entrant'">
+        <a ngbNavLink routerLink="." [fragment]="'entrant'">
+            <i class="fal fa-envelope tx-facebook bold"></i> Courriers entrants
+        </a>
+        <ng-template ngbNavContent>
+            <app-dashboard-courrier-entrant [externe]="1"></app-dashboard-courrier-entrant>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="'sortant'">
+        <a ngbNavLink routerLink="." [fragment]="'sortant'">
+            <i class="fal fa-envelope-open tx-facebook bold"></i> Courriers sortants
+        </a>
+        <ng-template ngbNavContent>
+            <app-dashboard-courrier-sortant></app-dashboard-courrier-sortant>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="'interne'">
+        <a ngbNavLink routerLink="." [fragment]="'interne'">
+            <i class="fal fa-envelope-open-text tx-facebook bold"></i> Courriers internes
+        </a>
+        <ng-template ngbNavContent>
+            <app-dashboard-courrier-entrant [externe]="0"></app-dashboard-courrier-entrant>
+        </ng-template>
+    </li>
+</ul>
+<div [ngbNavOutlet]="nav"></div>

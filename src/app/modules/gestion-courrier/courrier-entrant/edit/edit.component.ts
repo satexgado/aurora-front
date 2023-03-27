@@ -119,7 +119,7 @@ export class EditComponent extends BaseEditComponent  {
 
   protected readonly allCrStructures$ = this.cacheService.get(
   'allCrStructures',
-  new StructureService().all(),
+  new StructureService().allWEmployee(),
   180000);
 
 
@@ -186,17 +186,32 @@ export class EditComponent extends BaseEditComponent  {
       }
     )
 
-    this.allCrStructures$.subscribe();
-    if(this.item.courrier?.structure_id) {
-      this.allUsers$ = new UserFactory().list(
-        new QueryOptions([
-          {or: true, filters:[new Filter('structure_id', this.item.courrier?.structure_id, 'eq')]},
-      ]).setSort([new Sort('prenom','ASC'), new Sort('nom','ASC')])
-      ).pipe(
-        shareReplay(1),
-        map(data => data.data)
-      )
-    }
+    this.allCrStructures$.subscribe(
+      (data)=> {
+        if(this.item.courrier?.structure_id) {
+          const filtered = data.filter(element=> element.id == this.item.courrier?.structure_id);
+
+          if(!filtered[0]._employes.length) {
+            this.allUsers$ = of([]);
+            return;
+         }
+
+         this.allUsers$ = of(
+          Array.from(filtered[0]._employes.reduce((m, t) => m.set(t.id, t), new Map()).values())
+         );
+        } 
+      }
+    );
+    // if(this.item.courrier?.structure_id) {
+    //   this.allUsers$ = new UserFactory().list(
+    //     new QueryOptions([
+    //       {or: true, filters:[new Filter('structure_id', this.item.courrier?.structure_id, 'eq')]},
+    //   ]).setSort([new Sort('prenom','ASC'), new Sort('nom','ASC')])
+    //   ).pipe(
+    //     shareReplay(1),
+    //     map(data => data.data)
+    //   )
+    // }
 
     this.allCrDossiers$.subscribe();
 
@@ -211,20 +226,29 @@ export class EditComponent extends BaseEditComponent  {
     super.ngOnInit();
     this.onChange();
     this.onImageChange();
+    if(!this.isUpdating) {
+      this.onUrgengeChange()
+    }
   }
 
   onChange() {
     const structureControl = this.editForm.get('structure_id') as FormControl;
     structureControl.valueChanges.subscribe(
       (value)=>{
-        this.allUsers$ = new UserFactory().list(
-          new QueryOptions([
-            {or: true, filters:[new Filter('structure_id', value, 'eq')]},
-        ]).setSort([new Sort('prenom','ASC'), new Sort('nom','ASC')])
-        ).pipe(
-          shareReplay(1),
-          map(data => data.data)
-        )
+        this.allCrStructures$.subscribe(
+          (data)=> {
+              const filtered = data.filter(element=> element.id == value);
+
+              if(!filtered[0]._employes.length) {
+                this.allUsers$ = of([]);
+                return;
+             }
+
+             this.allUsers$ = of(
+              Array.from(filtered[0]._employes.reduce((m, t) => m.set(t.id, t), new Map()).values())
+             );
+          }
+        );
       }
     )
 
@@ -292,6 +316,23 @@ export class EditComponent extends BaseEditComponent  {
     //   .subscribe(type => {
     //     control.markAsDirty();
     //   });
+  }
+
+  onUrgengeChange() {
+    const control = this.editForm.get('urgence_id');
+    const datecontrol = this.editForm.get('date_limit');
+    let sub = this.editForm.get('urgence_id').valueChanges
+      .subscribe(urgence_id => {
+        if(datecontrol.dirty) return;
+
+        this.allCrUrgences$.subscribe(
+          (urgences)=> {
+            const filtered = urgences.filter(element=> element.id == urgence_id);
+            let moyenne = new Date();
+            datecontrol.setValue( moyenne.setDate(moyenne.getDate()+filtered[0].delai));
+          }
+        )
+    });
   }
 
   createFormGroup(item: ICrCourrierEntrant) {

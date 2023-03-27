@@ -1,16 +1,17 @@
 import { AffectationTacheEditComponent } from 'src/app/modules/gestion-courrier/tache/affectation/affectation.component';
 import { CrTacheFactory } from 'src/app/core/services/gestion-courrier/cr-tache';
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
-import { Component, OnDestroy, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectorRef, OnChanges, SimpleChanges, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppTitleService, CacheService } from 'src/app/shared/services';
 import { NotificationService } from 'src/app/shared';
-import { ICrTache, CrTacheStatut } from 'src/app/core/models/gestion-courrier/cr-tache';
+import { ICrTache, CrTacheStatut, CrTache } from 'src/app/core/models/gestion-courrier/cr-tache';
 import { EditComponent } from 'src/app/modules/gestion-courrier/tache/edit/edit.component';
 import { ItemSelectHelper } from 'src/app/shared/state';
 import { AffectationTacheCourrierEditComponent } from '../gestion-courrier/tache/affectation-courrier/affectation-courrier.component';
+import { filterGrp } from '../../shared/models/query-options/query-options.model';
 
 @Component({
   selector: 'app-gestionnaire-tache',
@@ -30,9 +31,35 @@ export class GestionnaireTacheComponent implements OnDestroy {
     searchTerm: string;
     changeIndicator = 0;
     CrTacheStatut = CrTacheStatut;
+    @Input() selectedTache: ICrTache & {
+      commentData: {filters: filterGrp[], parent: {type: string, id: number}}
+    };
 
+    @Input() set init(filters: filterGrp[]) {
+      const service = new CrTacheFactory();
+      this.subscription.add(service.list(
+        new QueryOptions(
+          filters,
+          ['responsables', 'structures', 'inscription', 'courriers'],
+          undefined,
+          undefined,
+          [new Sort('created_at','ASC')]
+        )
+      ).subscribe(
+          (data)=> {
+            this.is_loading_schema = false;
+            this._taches$.next(data.data ?? []);
+            this.changeIndicator++;
+      }));
+    }
 
-    is_loading_schema = false;
+    @Input() set initTacheList(taches: ICrTache[]) {
+      this.is_loading_schema = false;
+      this._taches$.next(taches ?? []);
+      this.changeIndicator++;
+    }
+
+    is_loading_schema = true;
     _taches$: BehaviorSubject<ICrTache[]> = new BehaviorSubject([]);
 
     get taches$() {
@@ -50,29 +77,17 @@ export class GestionnaireTacheComponent implements OnDestroy {
     ) { }
 
     ngOnInit() {
-      this.is_loading_schema = true;
+
       this.filterStatutHelper.addSelectedItem(
         [CrTacheStatut.traitement, CrTacheStatut.attente, CrTacheStatut.valide, CrTacheStatut.nonvalide]
       )
-      const service = new CrTacheFactory();
-      this.subscription.add(service.list(
-        new QueryOptions(
-          [
-            {or: false, filters: [
-              new Filter('is_ins', 1, 'eq'),
-            ]}
-          ],
-          ['responsables', 'structures', 'inscription', 'courriers'],
-          undefined,
-          undefined,
-          [new Sort('created_at','ASC')]
-        )
-      ).subscribe(
-          (data)=> {
-            this.is_loading_schema = false;
-            this._taches$.next(data.data ?? []);
-            this.changeIndicator++;
-      }));
+
+      this.route.data.subscribe((data) => {
+        if(data.filters) {
+          this.init = data.filters;
+        }
+      });
+      
     }
 
     onShowCreateTacheForm() {
@@ -87,6 +102,19 @@ export class GestionnaireTacheComponent implements OnDestroy {
           this.changeIndicator++;
         }
       );
+    }
+
+    onShowComment(item: ICrTache = null) {
+
+      if(!item) return this.selectedTache = null;
+      this.selectedTache = {...item, ...{commentData: {
+        filters: [
+          {or: false, filters: [
+            new Filter('parent_tache_id', item.id, 'eq')
+          ]}
+        ],
+        parent: {type:'cr_taches', id: item.id}
+      }}};
     }
 
     onShowUpdateTacheForm(item: ICrTache) {

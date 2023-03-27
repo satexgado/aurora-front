@@ -1,8 +1,8 @@
-import { CommentaireFactory } from 'src/app/core/services/commentaire';
-import { Commentaire } from 'src/app/core/models/commentaire';
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit, Output, EventEmitter} from '@angular/core';
 import { checkOverflow } from 'src/app/shared/helperfonction';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import { CrCommentaire, ICrCommentaire } from 'src/app/core/models/gestion-courrier/cr-commentaire';
+import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
 
 @Component({
   selector: 'app-commentaire-details-ui',
@@ -10,9 +10,9 @@ import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 })
 export class CommentaireDetailsUiComponent implements  AfterViewInit{
   @Input() isAuthor: boolean;
-  commentaire: Commentaire;
-  @Output() loadResponse = new EventEmitter<Commentaire>();
-  @Output() reply = new EventEmitter<Commentaire>();
+  commentaire: ICrCommentaire;
+  @Output() loadResponse = new EventEmitter<ICrCommentaire>();
+  @Output() reply = new EventEmitter<ICrCommentaire>();
   editorData = '';
   Editor = DecoupledEditor;
   is_updating = false;
@@ -20,8 +20,8 @@ export class CommentaireDetailsUiComponent implements  AfterViewInit{
   isFullView = false;
   isOverflow = false;
   @Input() isTopLevelComment;
-  service = new CommentaireFactory();
-  @Input('commentaire') set initCommentaire(commentaire: Commentaire) {
+  service = new CrCommentaireFactory();
+  @Input('commentaire') set initCommentaire(commentaire: CrCommentaire) {
     this.commentaire = commentaire;
   }
   constructor(private cdRef:ChangeDetectorRef) {
@@ -72,11 +72,11 @@ export class CommentaireDetailsUiComponent implements  AfterViewInit{
     commentaire.libelle = this.editorData;
     this.service.update(commentaire).subscribe(
       (data)=>{
-        if(!this.commentaire.children)
+        if(!this.commentaire.commentaires)
         {
-          this.commentaire.children = [];
+          this.commentaire.commentaires = [];
         }
-        this.commentaire.children.unshift(data);
+        this.commentaire.commentaires.unshift(data);
         this.is_updating = false;
         this.show_update_form = false;
         this.commentaire = data;

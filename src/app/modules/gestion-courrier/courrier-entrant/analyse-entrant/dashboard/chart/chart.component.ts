@@ -3,7 +3,7 @@ import { ChartFormData } from './../../chart-interface';
 import { ChartType, QualiteEnum } from './../../chart-enumeration';
 import { DashboardService, QueryParameter } from './../dashboard.service';
 import { ChoosingComponent } from './choosing/choosing.component';
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, Input } from '@angular/core';
 import { BarComponent } from './bar/bar.component';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -35,7 +35,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
     query: []
   };
   sorting;
-
+  @Input() externe = 1;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -75,7 +75,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
   }
 
   getFilterDate()  {
-    let filter = [];
+    let filter = [new Filter('externe', this.externe, 'eq')];
     if(this.dateDebut) {
       filter.push(
         new Filter('date_arrive', this.dateDebut, 'gte')

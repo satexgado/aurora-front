@@ -1,8 +1,8 @@
-import { CommentaireFactory } from 'src/app/core/services/commentaire';
-import { Commentaire } from 'src/app/core/models/commentaire';
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angular/core';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { Observable, Subscription } from 'rxjs';
+import { CrCommentaire } from 'src/app/core/models/gestion-courrier/cr-commentaire';
+import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
 
 @Component({
   selector: 'app-commentaire-list',
@@ -18,11 +18,11 @@ export class CommentaireListComponent implements OnInit, OnDestroy{
     @Input() can_load_more;
     @Input() isFullView = true;
     @Input() parent: {type: string, id: number};
-    @Input('commentaires$') _commentaires$: Observable<Commentaire[]>;
-    _commentaires: Commentaire[] = [];
+    @Input('commentaires$') _commentaires$: Observable<CrCommentaire[]>;
+    _commentaires: CrCommentaire[] = [];
     @Output() doToggleView = new EventEmitter<Boolean>();
     @Output() doGetMoreComments = new EventEmitter<Boolean>();
-    service = new CommentaireFactory()
+    service = new CrCommentaireFactory();
     writeComment = false;
     constructor() {
     }
@@ -73,7 +73,7 @@ export class CommentaireListComponent implements OnInit, OnDestroy{
     onSubmit()
     {
       this.is_adding_commentaire = true;
-      let commentaire = new Commentaire()
+      let commentaire = new CrCommentaire()
       commentaire.libelle = this.editorData;
       let data = {parent: this.parent };
       data = Object.assign(data, commentaire);

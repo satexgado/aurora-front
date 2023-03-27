@@ -342,8 +342,9 @@
   </div>
 </div>
 <div class="modal-footer p-0">
-    <button type="button" class="btn btn-sm btn-outline-primary" *ngIf="createModal" (click)="onShowCreateForm()">Ajouter</button>
+    <button type="button" class="btn btn-sm btn-primary" (click)="onEmitChoosenItem();activeModal.close('Close click')">Valider</button>
     <button type="button" class="btn btn-sm btn-outline-primary" (click)="activeModal.close('Close click')">Fermer</button>
+    <button type="button" class="btn btn-sm btn-link" *ngIf="createModal" (click)="onShowCreateForm()">Ajouter</button>
 </div>
 
 

@@ -13,12 +13,13 @@ import { EditableListComponent, NotificationService } from 'src/app/shared';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
 import { interval, of } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { startWith, switchMap } from 'rxjs/operators';
 // import { UserActionComponent } from './user-action.component';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from 'src/app/core/models/user';
 import { UserFactory } from 'src/app/core/services/user.factory';
 import { User } from 'src/app/shared/state/user';
+import { ExpressCourrierService } from 'src/app/express-courrier/express-courrier.service';
 
 @Component({
   selector: 'app-user',
@@ -117,8 +118,8 @@ a {
 }
 
 .image_inner_container img{
-    height: 100px;
-    width: 100px;
+    height: 64px;
+    width: 64px;
     border-radius: 50%;
     border: 5px solid white;
 }
@@ -128,8 +129,8 @@ a {
   position: absolute;
   right: 0px;
   bottom: 5px;
-  height: 30px;
-  width: 30px;
+  height: 20px;
+  width: 20px;
   border:5px solid white;
   border-radius: 50%;
 }
@@ -181,6 +182,7 @@ export class UserComponent extends EditableListComponent implements OnInit {
     protected cacheService: CacheService,
     protected titleservice: AppTitleService,
     protected notificationService: NotificationService,
+    public expressService: ExpressCourrierService,
     public route: ActivatedRoute,
     protected modalService: NgbModal) {
     super(new ResourceScrollableHelper(new UserFactory()));
@@ -225,8 +227,22 @@ export class UserComponent extends EditableListComponent implements OnInit {
             this.dataHelper.query = [];
             break;
         }
-        
         this.dataHelper.loadData(1);
+      }
+    )
+
+    this.expressService.onlineUsers$.subscribe(
+      (data)=> {
+        data.forEach(
+          (user)=> {
+            let item = this.dataHelper.findItemByColumn(user.id) as IUser;
+            if(item) {
+              item.last_activity_at = user.last_activity_at;
+              this.dataHelper.updateItem(item);
+            }
+          }
+        )
+        
       }
     )
 

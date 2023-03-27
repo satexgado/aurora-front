@@ -1,7 +1,3 @@
-<span class="mt-4"></span>
-<div class="col-12 my-2">
-    <h5 class="text-dark"><i class="fal fa-address-card" style="padding: 6px; border-radius: 50%;"></i> Taches </h5>
-</div>
 <div class="row row-xs justify-content-between  mg-0 pd-0  pt-1" >
     <div class="col-lg-7">
         <div class="input-group ">
@@ -67,8 +63,35 @@
         </ul>
     </div>
 </div>
-
-<div [class.loading]="is_loading_schema">
-    <app-gestionnaire-tache-kanban *ngIf="view == 'kanban'" [filterStatut$]="filterStatutHelper.selectedItem$" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator" (tacheUpdateFormEmitter)="onShowUpdateTacheForm($event)" (tacheDeleteEmitter)="onDeleteTache($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (courrierAffectationFormEmitter)="onShowAffectationCourrierForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-kanban>
-    <app-gestionnaire-tache-list *ngIf="view == 'list'" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator | tacheStatutObs:filterStatutHelper.selectedItem" (courrierAffectationFormEmitter)="onShowAffectationCourrierForm($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-list>
+<div class="grid-container">
+    <div class="sidebar" [class.sidebar_small]="selectedTache">
+        <div [class.loading]="is_loading_schema">
+            <app-gestionnaire-tache-kanban *ngIf="view == 'kanban'" [filterStatut$]="filterStatutHelper.selectedItem$" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator" (tacheUpdateFormEmitter)="onShowUpdateTacheForm($event)" (tacheCommentaireEmitter)="onShowComment($event)" (tacheDeleteEmitter)="onDeleteTache($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (courrierAffectationFormEmitter)="onShowAffectationCourrierForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-kanban>
+            <app-gestionnaire-tache-list *ngIf="view == 'list'" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator | tacheStatutObs:filterStatutHelper.selectedItem" (courrierAffectationFormEmitter)="onShowAffectationCourrierForm($event)" (tacheCommentaireEmitter)="onShowComment($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-list>
+        </div>        
+    </div>
+    <div class="main-content scroll-11 " [class.main-content_large]="selectedTache">
+        <div *ngIf="selectedTache">
+            <ul class=" list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="todo-indicator {{selectedTache.statut_bgcolor}}"></div>
+                    <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                            <div class="widget-content-left">
+                                <div class="widget-heading tx-24 tx-dark">{{selectedTache.libelle}}
+                                </div>
+                            </div>
+                            <div class="widget-content-right">
+                                <button class="border-0 btn-transition btn btn-sm btn-oblong btn-dark" (click)="onShowComment()">
+                                <i class="fal fa-comment fa-2x"></i>
+                                <span class="badge badge-pill mg-t-10 badge-info" *ngIf="selectedTache.comments_count">{{selectedTache.comments_count}}</span>
+                              </button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <app-commentaire-simplelist [init]="selectedTache.commentData"></app-commentaire-simplelist>
+        </div>
+    </div>
 </div>

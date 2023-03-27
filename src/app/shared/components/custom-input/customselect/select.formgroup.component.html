@@ -9,7 +9,7 @@
         </button>
         <select [(ngModel)]="selected" [class.is-valid]="selected" (ngModelChange)="onChange(selected); onTouched(true);" class="custom-select" mySelectFirstOption [required]="required" name="pageSize">
           <ng-container *ngFor="let item of items">
-              <option *ngIf="!alreadySelected.includes(item.id)" [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+              <option *ngIf="!alreadySelected.includes(item.id)" [ngValue]="item.id">{{item[libelleColumn] | titlecase}}</option>
           </ng-container>
       </select>
     </div>

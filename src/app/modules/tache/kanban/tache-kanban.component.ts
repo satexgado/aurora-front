@@ -6,6 +6,7 @@ import { AppTitleService, CacheService } from 'src/app/shared/services';
 import { NotificationService } from 'src/app/shared';
 import { CrTacheStatut, ICrTache } from 'src/app/core/models/gestion-courrier/cr-tache';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { AuthService } from 'src/app/express-courrier/auth/auth.service';
 
 import * as moment from 'moment';
 
@@ -43,12 +44,14 @@ export class GestionnaireTacheKanbanComponent  {
     @Output() tacheAffectationFormEmitter = new EventEmitter<ICrTache>();
     @Output() courrierAffectationFormEmitter = new EventEmitter<ICrTache>();
     @Output() tacheSoftUpdateEmitter = new EventEmitter<ICrTache>();
+    @Output() tacheCommentaireEmitter = new EventEmitter<ICrTache>();
 
     constructor(
         protected cacheService: CacheService,
         protected titleservice: AppTitleService,
         protected notificationService: NotificationService,
         public router: Router,
+        public authService: AuthService,
         public route: ActivatedRoute,
         protected modalService: NgbModal,
         protected cdRef:ChangeDetectorRef,
@@ -65,6 +68,10 @@ export class GestionnaireTacheKanbanComponent  {
 
     onShowAffectationCourrierForm(item: ICrTache) {
       this.courrierAffectationFormEmitter.emit(item);
+    }
+
+    onShowCommentairerTache(item: ICrTache) {
+      this.tacheCommentaireEmitter.emit(item);
     }
 
     drop(event: CdkDragDrop<ICrTache[]>, statut: CrTacheStatut) {

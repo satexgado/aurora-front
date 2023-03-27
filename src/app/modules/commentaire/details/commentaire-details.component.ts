@@ -1,11 +1,12 @@
-import { CommentaireFactory } from 'src/app/core/services/commentaire';
-import { Commentaire } from 'src/app/core/models/commentaire';
+
 import { QueryOptions } from 'src/app/shared/models/query-options/query-options.model';
 import { ResourceScrollableHelper } from 'src/app/shared/state/resource.scrollable.helper';
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { Filter } from 'src/app/shared/models/query-options';
+import { CrCommentaire, ICrCommentaire } from 'src/app/core/models/gestion-courrier/cr-commentaire';
+import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
 
 @Component({
   selector: 'app-commentaire-details',
@@ -18,11 +19,11 @@ export class CommentaireDetailsComponent{
   is_loading_more = false;
   editorData = '';
   Editor = DecoupledEditor;
-  commentaire: Commentaire;
+  commentaire: ICrCommentaire;
   subscription: Subscription;
   comment_page = 1;
   commentaireDataHelper: ResourceScrollableHelper;
-  @Input('commentaire') set initCommentaire(commentaire: Commentaire) {
+  @Input('commentaire') set initCommentaire(commentaire: ICrCommentaire) {
     this.commentaire = commentaire;
     const query = new QueryOptions([
       {or: false, filters:[
@@ -30,7 +31,7 @@ export class CommentaireDetailsComponent{
       ]}
     ]);
     this.commentaireDataHelper = new ResourceScrollableHelper(
-      new CommentaireFactory(), query
+      new CrCommentaireFactory(), query
     );
     this.commentaireDataHelper.pageSize = 10;
   }
@@ -52,9 +53,9 @@ export class CommentaireDetailsComponent{
   onSubmit()
     {
       this.is_adding_commentaire = true;
-      let commentaire = new Commentaire()
+      let commentaire = new CrCommentaire()
       commentaire.libelle = this.editorData;
-      const service = new CommentaireFactory();
+      const service = new CrCommentaireFactory();
       let data = {commentaire: this.commentaire.id};
       data = Object.assign(data, commentaire);
       service.create(data).subscribe(

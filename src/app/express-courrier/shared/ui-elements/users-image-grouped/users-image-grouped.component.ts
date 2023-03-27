@@ -16,14 +16,14 @@ export class UsersImageGroupedComponent implements OnInit {
        this.users = [];
        return;
     }
-    let _selectedItems = new Set();
-    if(users instanceof Array ) {
-      users.forEach((element) =>{
-        _selectedItems.add(element);
-      });
-    } else {
-      _selectedItems.add(users)
-    }
+    // let _selectedItems = new Set();
+    // if(users instanceof Array ) {
+    //   users.forEach((element) =>{
+    //     _selectedItems.add(element);
+    //   });
+    // } else {
+    //   _selectedItems.add(users)
+    // }
     this.users = Array.from(users.reduce((m, t) => m.set(t.id, t), new Map()).values());
   }
   constructor() {}

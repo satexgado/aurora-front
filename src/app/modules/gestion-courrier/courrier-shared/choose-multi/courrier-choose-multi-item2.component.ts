@@ -169,4 +169,10 @@ export class CourrierChooseMultiItem2Component extends ChooseMultiItem2Component
       return "tx-success-100"
     }
 
+    ngOnDestroy() {
+    }
+
+    onEmitChoosenItem() {
+      this.multipleItemChoosen.emit(this.selectedItem);
+    }
 }

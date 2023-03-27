@@ -1,5 +1,5 @@
 <div [class.loading]="is_loading_schema">
-    <div class="col-12 p-2 d-flex justify-content-center" *ngIf="(courrier.suivi_par_user.id == authService.user.id) && helper.authorisation.check('courrier entrant', 'ECRITURE', undefined)">
+    <div class="col-12 p-2 d-flex justify-content-center" *ngIf="helper.authorisation.checkIfUserIsAdmin() || helper.authorisation.checkIfUserIsAdmin(courrier.structure.id) ||  ((courrier.created_by.id == authService.user.id) || (courrier.suivi_par_user.id == authService.user.id)) && helper.authorisation.check('courrier entrant', 'ECRITURE', undefined)">
         <button class="btn btn-primary" (click)="onShowAffectationForm()">Ajouter</button>
     </div>
     <ul class=" list-group list-group-flush" *ngIf="reaffectations && reaffectations.length; else emptyTemplate">
@@ -28,8 +28,11 @@
                             <i class="fal fa-times fa-2x"></i>
                           </button>
                         </ng-container>
-                        
-                        <span class="badge badge-info badge-outlined" *ngIf=" (!reaffectation.is_user) && (!reaffectation.confirmation) && !reaffectation.annulation">en cours</span>
+
+                        <ng-container *ngIf=" (!reaffectation.is_user) && (!reaffectation.confirmation) && !reaffectation.annulation">
+                          <span class="badge badge-info badge-outlined" >en cours</span>
+                          <button class="btn-sm btn-danger ml-2" (click)="onDeleteReaffectation(reaffectation)" *ngIf="helper.authorisation.checkIfUserIsAdmin() || helper.authorisation.checkIfUserIsAdmin(courrier.structure.id) ||  ((courrier.created_by.id == authService.user.id) || (courrier.suivi_par_user.id == authService.user.id)) && helper.authorisation.check('courrier entrant', 'ECRITURE', undefined)">Annuler</button>
+                        </ng-container>
                         <span class="badge badge-success badge-outlined" *ngIf="reaffectation.confirmation">valider</span>
                         <span class="badge badge-danger badge-outlined" *ngIf="reaffectation.annulation">annuler</span>
                     </div>

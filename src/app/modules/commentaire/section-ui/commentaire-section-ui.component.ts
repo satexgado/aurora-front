@@ -1,9 +1,9 @@
-import { ResourceScrollableHelper } from './../../../shared/state/resource.scrollable.helper';
-import { CommentaireFactory } from 'src/app/core/services/commentaire';
-import { Commentaire } from 'src/app/core/models/commentaire';
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angular/core';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { Subscription } from 'rxjs';
+import { CrCommentaire } from 'src/app/core/models/gestion-courrier/cr-commentaire';
+import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
+import { ResourceScrollableHelper } from 'src/app/shared/state';
 
 @Component({
   selector: 'app-commentaire-section-ui',
@@ -21,7 +21,7 @@ export class CommentaireSectionUiComponent implements OnInit, OnDestroy{
     @Input() parent: {type: string, id: number};
     @Input('commentaireHelper') commentaireDatahelper: ResourceScrollableHelper;
     @Output() doToggleView = new EventEmitter<Boolean>();
-    service = new CommentaireFactory();
+    service = new CrCommentaireFactory();
     writeComment = false;
     constructor() {
     }
@@ -64,7 +64,7 @@ export class CommentaireSectionUiComponent implements OnInit, OnDestroy{
     onSubmit()
     {
       this.is_adding_commentaire = true;
-      let commentaire = new Commentaire()
+      let commentaire = new CrCommentaire()
       commentaire.libelle = this.editorData;
       let data = {parent: this.parent };
       data = Object.assign(commentaire, data);

@@ -1,4 +1,4 @@
-<div class="card-deck" *ngIf="taches$ | async as taches">
+<div class="card-deck m-0" *ngIf="taches$ | async as taches">
     <div class="card mb-2 card-accent-primary" [class.d-none]="((filterStatut$ | async) && !(filterStatut$ | async).includes(CrTacheStatut.attente))">
         <div class="card-header">
             <h4 class="card-header-title">
@@ -22,15 +22,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <a class="bg-light my-1 cursor-pointer" [routerLink]="[item.courriers[0].link]" *ngIf="item.courriers && item.courriers.length">
+                              <i class="fa fa-mail-bulk"></i> <span> {{item.courriers[0].libelle}}</span>
+                            </a>
                             <div class="d-flex align-items-center justify-content-between bg-light">
-                                <div class="justify-content-between p-0">
-                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                <div class="justify-content-between p-0" *ngIf="item.inscription_id == authService.user.id">
+                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                       <i class="fa fa-share-square"></i>
                                     </button>
-                                    <button (click)="onShowAffectationCourrierForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                    <button (click)="onShowAffectationCourrierForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                       <i class="fa fa-link"></i>
                                     </button>
-                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                       <i class="fa fa-edit"></i>
                                     </button>
                                     <button (click)="onDeleteTache(item,taches_enattente, i)" class="border-0 btn-transition btn btn-outline-danger">
@@ -80,15 +83,18 @@
                                 </div>
 
                             </div>
+                            <a class="bg-light my-1 cursor-pointer" [routerLink]="[item.courriers[0].link]" *ngIf="item.courriers && item.courriers.length">
+                              <i class="fa fa-mail-bulk"></i> <span> {{item.courriers[0].libelle}}</span>
+                            </a>
                             <div class="d-flex align-items-center justify-content-between bg-light">
-                                <div class="justify-content-between p-0">
-                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                <div class="justify-content-between p-0" *ngIf="item.inscription_id == authService.user.id">
+                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-share-square"></i>
                                   </button>
-                                  <button (click)="onShowAffectationCourrierForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                  <button (click)="onShowAffectationCourrierForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-link"></i>
                                   </button>
-                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-edit"></i>
                                   </button>
                                     <button (click)="onDeleteTache(item,taches_traitement, i)" class="border-0 btn-transition btn btn-outline-danger">
@@ -137,15 +143,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <a class="bg-light my-1 cursor-pointer" [routerLink]="[item.courriers[0].link]" *ngIf="item.courriers && item.courriers.length">
+                              <i class="fa fa-mail-bulk"></i> <span> {{item.courriers[0].libelle}}</span>
+                            </a>
                             <div class="d-flex align-items-center justify-content-between bg-light">
-                                <div class="justify-content-between p-0">
-                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                <div class="justify-content-between p-0" *ngIf="item.inscription_id == authService.user.id">
+                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-share-square"></i>
                                   </button>
-                                  <button (click)="onShowAffectationCourrierForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                  <button (click)="onShowAffectationCourrierForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-link"></i>
                                   </button>
-                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-edit"></i>
                                   </button>
                                     <button (click)="onDeleteTache(item,taches_valider, i)" class="border-0 btn-transition btn btn-outline-danger">
@@ -194,15 +203,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <a class="bg-light my-1 cursor-pointer" [routerLink]="[item.courriers[0].link]" *ngIf="item.courriers && item.courriers.length">
+                              <i class="fa fa-mail-bulk"></i> <span> {{item.courriers[0].libelle}}</span>
+                            </a>
                             <div class="d-flex align-items-center justify-content-between bg-light">
-                                <div class="justify-content-between p-0">
-                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                <div class="justify-content-between p-0" *ngIf="item.inscription_id == authService.user.id">
+                                    <button (click)="onShowAffectationTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-share-square"></i>
                                   </button>
-                                  <button (click)="onShowAffectationCourrierForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                  <button (click)="onShowAffectationCourrierForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-link"></i>
                                   </button>
-                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-primary">
+                                    <button (click)="onShowUpdateTacheForm(item)" class="border-0 btn-transition btn btn-outline-dark">
                                     <i class="fa fa-edit"></i>
                                   </button>
                                     <button (click)="onDeleteTache(item,taches_non_valider, i)" class="border-0 btn-transition btn btn-outline-danger">

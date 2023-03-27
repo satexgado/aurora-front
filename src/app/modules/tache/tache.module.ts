@@ -14,10 +14,18 @@ import { TacheModule } from 'src/app/modules/gestion-courrier/tache/tache.module
 import { GestionnaireTacheKanbanComponent } from './kanban/tache-kanban.component'
 import { TacheStatutObsPipe, TacheStatutPipe } from './tache-statut.pipe'
 import { GestionnaireTacheListComponent } from './list/tache-list.component';
+import { TacheHomeComponent } from './home/tache-home.component';
+import { TacheCollabComponent } from './collab/tache-collab.component';
+import { TacheBatchComponent } from './batch/tache-batch.component';
+import { CommentaireModule } from '../commentaire';
+
 @NgModule({
     declarations: [
         TacheStatutPipe,
         TacheStatutObsPipe,
+        TacheHomeComponent,
+        TacheCollabComponent,
+        TacheBatchComponent,
         GestionnaireTacheComponent,
         GestionnaireTacheKanbanComponent,
         GestionnaireTacheListComponent,
@@ -33,7 +41,8 @@ import { GestionnaireTacheListComponent } from './list/tache-list.component';
         AngularMultiSelectModule,
         TacheModule,
         DragDropModule,
-        ZenDocumentModule
+        ZenDocumentModule,
+        CommentaireModule
     ],
     entryComponents: [EditComponent],
 })

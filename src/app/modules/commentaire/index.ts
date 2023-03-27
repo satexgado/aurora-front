@@ -4,3 +4,4 @@ export { CommentaireDetailsComponent } from './details/commentaire-details.compo
 export { CommentaireDetailsUiComponent } from './details/ui/commentaire-details-ui.component';
 export { CommentaireListComponent } from './list/commentaire-list.component';
 export { CommentaireSectionUiComponent } from './section-ui/commentaire-section-ui.component';
+export { CommentaireSimplelistComponent } from './simplelist/commentaire-simplelist.component'

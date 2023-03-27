@@ -1,7 +1,6 @@
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
 import { IFichier } from 'src/app/core/models/gestion-document/fichier.model';
 import { Component, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppTitleService, CacheService } from 'src/app/shared/services';
@@ -10,39 +9,37 @@ import { CrCourrierEntrantFactory } from 'src/app/core/services/gestion-courrier
 import { CrCommentaire, ICrCommentaire } from 'src/app/core/models/gestion-courrier/cr-commentaire';
 import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-import { ICrCourrier } from 'src/app/core/models/gestion-courrier/cr-courrier';
+import { filterGrp } from 'src/app/shared/models/query-options/query-options.model';
 
 @Component({
-  selector: 'app-courrier-details-comment',
-  templateUrl: './ced-comment.component.html',
+  selector: 'app-commentaire-simplelist',
+  templateUrl: './commentaire-simplelist.component.html',
 })
-export class CourrierEntrantDetailsCommentComponent implements OnDestroy {
+export class CommentaireSimplelistComponent implements OnDestroy {
 
     subscription: Subscription = new Subscription();
-    @Input()  set initCourrier(courrier: ICrCourrier) {
-        this.courrier = courrier;
+    @Input() parent: {type: string, id: number};
+
+    @Input()  set init(initData: {filters: filterGrp[], parent: {type: string, id: number}}) {
+        this.parent = initData.parent;
+
         const service = new CrCommentaireFactory();
         service.list(
-          new QueryOptions(
-            [
-              {or: false, filters: [
-                new Filter('parent_courrier_id', this.courrier.id, 'eq')
-              ]}
-            ],
-            [],
-            undefined,
-            undefined,
-            [new Sort('created_at','DESC')]
-          )
-        ).subscribe(
-            (data)=> {
-              this.commentaires = data.data;
-              this.cdRef.detectChanges();
-              this.is_loading_commentaire = false;
-            })
+            new QueryOptions(
+                initData.filters,
+                [],
+                undefined,
+                undefined,
+                [new Sort('created_at','DESC')]
+            )
+            ).subscribe(
+                (data)=> {
+                this.commentaires = data.data;
+                this.cdRef.detectChanges();
+                this.is_loading_commentaire = false;
+        });
     };
 
-    courrier: ICrCourrier;
     Editor = DecoupledEditor;
     editorData = '';
     is_adding_commentaire = false;
@@ -55,8 +52,6 @@ export class CourrierEntrantDetailsCommentComponent implements OnDestroy {
         protected titleservice: AppTitleService,
         protected service: CrCourrierEntrantFactory,
         protected notificationService: NotificationService,
-        private router: Router,
-        private route: ActivatedRoute,
         protected modalService: NgbModal,
         protected cdRef:ChangeDetectorRef,
     ) { }
@@ -64,7 +59,6 @@ export class CourrierEntrantDetailsCommentComponent implements OnDestroy {
     ngOnDestroy()
     {
         this.subscription.unsubscribe();
-        this.courrier = null;
     }
 
     public onReady( editor ) {
@@ -118,16 +112,18 @@ export class CourrierEntrantDetailsCommentComponent implements OnDestroy {
       let message = new CrCommentaire();
       message.libelle = `reponse`;
       message.contenu = this.editorData;
+
       if(this.fichiers && this.fichiers.length) {
         message['fichier_count'] = this.fichiers.length;
         for(let i = 0; i < this.fichiers.length; i++) {
           message[`fichier${i}`]=this.fichiers[i];
         }
       }
+
       const service = new CrCommentaireFactory();
       service.create(message).subscribe(
         (data)=> {
-          service.attachAffectation(data.id, 'cr_courriers', this.courrier.id).subscribe(
+          service.attachAffectation(data.id, this.parent.type, this.parent.id).subscribe(
             ()=> {
             }
           );

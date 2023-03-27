@@ -5,6 +5,7 @@ import { tap, map } from 'rxjs/operators';
 import { BaseService } from '../../../shared/services/base.service';
 import { Structure } from './structure.model';
 import { concat, isNil, pull } from 'lodash';
+import { ApiResponse } from 'src/app/shared/models/ApiResponse';
 @Injectable({
   providedIn: 'root',
 })
@@ -29,6 +30,23 @@ export class StructureService extends BaseService<Structure> {
 
   constructor() {
     super('structures');
+  }
+
+  allWEmployee(emit = true, params?: Params): Observable<any> {
+    return this.factory.get(`${this.endPoint}/allWEmployee`, { params }).pipe(
+      tap((response: ApiResponse<Structure>) => {
+        if (emit) {
+          this.data = response.data;
+        }
+
+        this.paginationInfo = {
+          total: response.total,
+          itemsPerPage: response.per_page,
+          currentPage: response.current_page,
+        };
+      }),
+      map((response: ApiResponse<Structure>) => response.data)
+    );
   }
 
   getStructure(): Observable<any> {
