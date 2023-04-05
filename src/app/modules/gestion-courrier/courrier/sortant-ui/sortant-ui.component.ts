@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { interval, of, Subscription } from 'rxjs';
+import { BehaviorSubject, interval, of, Subscription } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { ICrCourrierSortant } from 'src/app/core/models/gestion-courrier/cr-courrier-sortant';
 import { CrCoordonneeFactory } from 'src/app/core/services/gestion-courrier/cr-coordonnee';
@@ -596,5 +596,19 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
     );
     
 
+  }
+
+  onDelete(item) {
+    let _result$ = new BehaviorSubject<boolean>(false);
+    const result$ = _result$.asObservable();
+    super.onDelete(item).subscribe(
+      (result)=> {
+        _result$.next(result);
+        if(result) {
+          this.router.navigate(['./'], {relativeTo: this.route});
+        }
+      }
+    );
+    return result$;
   }
 }

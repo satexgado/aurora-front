@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectorRef} from '@angular/core';
 import { BaseEditComponent } from 'src/app/shared/components/edit/base-edit.component';
-import {  Validators } from '@angular/forms';
+import {  FormControl, Validators } from '@angular/forms';
 import { CrCourrierSortant, ICrCourrierSortant } from 'src/app/core/models/gestion-courrier/cr-courrier-sortant';
 import { CrCourrierSortantFactory } from 'src/app/core/services/gestion-courrier/cr-courrier-sortant';
 import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepicker.custom';
@@ -18,7 +18,7 @@ import { CacheService } from 'src/app/shared/services';
 import { CrUrgenceFactory } from 'src/app/core/services/gestion-courrier/cr-urgence';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ICrCoordonnee } from 'src/app/core/models/gestion-courrier/cr-coordonnee';
 import { CrTypeFactory } from 'src/app/core/services/gestion-courrier/cr-type';
 import { ICrEtape } from 'src/app/core/models/gestion-courrier/cr-etape';
@@ -119,9 +119,9 @@ export class EditComponent extends BaseEditComponent  {
 
 
   protected readonly allCrStructures$ = this.cacheService.get(
-  'allCrStructures',
-  new StructureService().all(),
-  1800000);
+    'allCrStructures',
+    new StructureService().allWEmployee(),
+    180000);
 
   protected readonly CrDossierEditComponent = CrDossierEditComponent;
   protected readonly allCrDossiers$ = new CrDossierFactory().list().pipe(
@@ -135,6 +135,8 @@ export class EditComponent extends BaseEditComponent  {
     })
   );
 
+  allUsers$ = of([]);
+
   constructor(
     cdRef:ChangeDetectorRef,
     protected cacheService: CacheService,
@@ -144,6 +146,62 @@ export class EditComponent extends BaseEditComponent  {
     super(new CrCourrierSortantFactory(),cdRef, activeModal);
   }
 
+  ngOnInit(): void {
+    this.allCrStructures$.subscribe(
+      (data)=> {
+        if(this.item.courrier?.structure_id) {
+          const filtered = data.filter(element=> element.id == this.item.courrier?.structure_id);
+
+          if(!filtered[0]._employes.length) {
+            this.allUsers$ = of([]);
+            return;
+         }
+
+         this.allUsers$ = of(
+          Array.from(filtered[0]._employes.reduce((m, t) => m.set(t.id, t), new Map()).values())
+         );
+        } 
+      }
+    );
+    super.ngOnInit();
+    this.onUrgengeChange();
+    this.onChangeCourrier();
+  }
+
+  onChangeCourrier() {
+    const courriereIdControl = this.editForm.get('courrier_lier_id') as FormControl;
+    const courriereControl = this.editForm.get('courrier_lier') as FormControl;
+    courriereControl.valueChanges.subscribe(
+      (value)=>{
+        if(value) {
+          courriereIdControl.setValue(value.id);
+        } else {
+          courriereIdControl.setValue('');
+        }
+        courriereIdControl.markAsDirty();
+        courriereIdControl.markAsTouched();
+      }
+    );
+  }
+
+  onUrgengeChange() {
+    const control = this.editForm.get('urgence_id');
+    const datecontrol = this.editForm.get('date_limit');
+    let sub = this.editForm.get('urgence_id').valueChanges
+      .subscribe(urgence_id => {
+        if(datecontrol.dirty) return;
+
+        this.allCrUrgences$.subscribe(
+          (urgences)=> {
+            const filtered = urgences.filter(element=> element.id == urgence_id);
+            let moyenne = new Date();
+            datecontrol.setValue( moyenne.setDate(moyenne.getDate()+filtered[0].delai));
+          }
+        )
+    });
+  }
+
+
   createFormGroup(item: ICrCourrierSortant) {
     const courrier = item.courrier ? item.courrier : new CrCourrier();
     return this.formBuilder.group({
@@ -152,6 +210,8 @@ export class EditComponent extends BaseEditComponent  {
       'courrier_id': [item.courrier_id],
       'action_depot': [item.action_depot],
       'courrier_entrant_id': [item.courrier_entrant_id],
+      'courrier_lier_id' : [courrier.courrier_lier_id??''],
+      'courrier_lier' : [courrier.courrier_lier ? courrier.courrier_lier : null],
       'dossier_id': [courrier.dossier_id],
       'objet': [courrier.objet, Validators.required],
       'date_envoie': [item.date_envoie, Validators.required],
@@ -163,6 +223,7 @@ export class EditComponent extends BaseEditComponent  {
       'type_id': [courrier.type_id, Validators.required],
       'urgence_id': [courrier.urgence_id, Validators.required],
       'structure_id': [courrier.structure_id, Validators.required],
+      'date_limit': [courrier.date_limit, Validators.required],
       'id': [item.id]
     });
   }

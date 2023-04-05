@@ -63,8 +63,8 @@ export class SiderapportComponent implements OnInit {
       const courriereControl = this.addticketrapForm.get('courrierDT') as FormControl;
       courriereControl.valueChanges.subscribe(
         (value)=>{
-          if(value && value.length) {
-            courriereIdControl.setValue(value[0].id);
+          if(value) {
+            courriereIdControl.setValue(value.id);
           } else {
             courriereIdControl.setValue(null);
           }

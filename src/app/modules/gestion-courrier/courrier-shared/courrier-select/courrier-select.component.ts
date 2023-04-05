@@ -1,6 +1,6 @@
 import { CourrierChooseItem2Component } from './../choose/courrier-choose-item2.component';
 import { ICrCourrier } from 'src/app/core/models/gestion-courrier/cr-courrier';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,6 +21,8 @@ export class CourrierSelectComponent implements ControlValueAccessor {
   onChange: (param: any) => void;
   onTouched: (param: any) => void;
   selected: ICrCourrier;
+  @Input() label = null;
+  @Input() defaultType: 'entrant' | 'sortant' | 'interne' | ('entrant' | 'sortant' | 'interne') [];
 
   get libelle() {
     return this.selected ? `${this.selected.libelle} - ${this.selected.objet}` :'';
@@ -55,6 +57,11 @@ export class CourrierSelectComponent implements ControlValueAccessor {
   {
     const modalRef = this.modalService.open(CourrierChooseItem2Component,{ size: 'lg', centered: true,  backdrop: 'static' });
     const instance = modalRef.componentInstance as CourrierChooseItem2Component;
+    
+    if(this.defaultType) {
+      instance.defaultType = this.defaultType;
+    }
+
     instance.itemChoosen.subscribe(
       (data)=>{
         this.onSetSelected(data);

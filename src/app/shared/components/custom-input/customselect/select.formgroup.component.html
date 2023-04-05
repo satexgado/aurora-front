@@ -4,13 +4,16 @@
       <button (click)="onShowCreateForm()" *ngIf="createModal"  class="btn float-right btn-sm btn-outline-primary mx-1"> ajouter <i class="fal fa-plus"></i></button>
     </label>
     <div class="input-group">
-        <button *ngIf="small  && createModal" (click)="onShowCreateForm()" class="btn btn-outline-primary btn-oblong mr-1" type="button">
-          <i class="fal fa-plus-circle"></i>
-        </button>
         <select [(ngModel)]="selected" [class.is-valid]="selected" (ngModelChange)="onChange(selected); onTouched(true);" class="custom-select" mySelectFirstOption [required]="required" name="pageSize">
           <ng-container *ngFor="let item of items">
               <option *ngIf="!alreadySelected.includes(item.id)" [ngValue]="item.id">{{item[libelleColumn] | titlecase}}</option>
           </ng-container>
       </select>
+      <span class="custom-span" *ngIf="small">{{label}} </span>
+      <div class="input-group-append" *ngIf="small  && createModal">
+        <button class="btn btn-outline-primary" (click)="onShowCreateForm()" type="button" id="button-addon2">
+          <i class="fa fa-plus-circle"></i>
+        </button>
+      </div>
     </div>
 </div>

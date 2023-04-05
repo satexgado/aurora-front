@@ -1,6 +1,7 @@
-<div>
+<div class="custom-placeholder">
   <div class="input-group">
-    <input class="form-control" (click)="onChooseCourrier()" type="text" [placeholder]="libelle" readonly>
+    <input class="form-control" container="body" [ngbTooltip]="selected ? selected.objet : ''" [class.is-valid]="selected" (click)="onChooseCourrier()" type="text" [placeholder]="libelle" readonly>
+    <span class="custom-span" *ngIf="label">{{label}}</span>
     <div class="input-group-append" *ngIf="libelle">
       <button class="btn btn-outline-secondary" (click)="onSetSelected()" type="button" id="button-addon2">
         <i class="fa fa-times-circle"></i>

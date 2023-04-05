@@ -9,8 +9,9 @@
         <form class="custom-placeholder" [formGroup]="editForm">
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-12 col-sm-10">
-                    <label class="control-label" for="salle">Dossier</label>
+                    <!-- <label class="control-label" for="salle">Dossier</label> -->
                     <input type="text" autofocus class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <span class="custom-span">Dossier</span>
                     <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
             </div>

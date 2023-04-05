@@ -18,7 +18,10 @@ export interface IUser extends IBase {
     readonly nom_complet: string;
     online_statut: 'online'| 'offline'| 'away';
     last_activity_at: Date;
-    cr_taches: any;
+    tache_linkeds: any;
+    statut_color: string;
+    statut_bgcolor: string;
+    statut_icon: string;
 }
 
 export class User implements IUser {
@@ -39,7 +42,7 @@ export class User implements IUser {
     lieu_naissance: string = '';
     telephone: string = '';
     affectation_structures: any = null;
-    cr_taches: any = null;
+    tache_linkeds: any = null;
 
     @adaptableMap('photo')
     avatar:string = "";
@@ -51,6 +54,33 @@ export class User implements IUser {
         if((!this.last_activity_at) ||  moment(new Date()).diff(moment(this.last_activity_at), 'minute') > 10) return 'offline';
         return moment(new Date()).diff(moment(this.last_activity_at), 'minute') > 1 ? 'away' : 'online';
     }
+
+    get statut_color() {
+        switch(this.online_statut) {
+          case 'away' : return 'text-warning';
+          case 'offline': return 'text-danger';
+          case 'online': return 'text-success';
+          default: return 'text-info';
+        }
+      }
+  
+      get statut_bgcolor() {
+        switch(this.online_statut) {
+          case 'away' : return 'bg-warning';
+          case 'offline': return 'bg-danger';
+          case 'online': return 'bg-success';
+          default: return 'bg-info';
+        }
+      }
+  
+      get statut_icon() {
+        switch(this.online_statut) {
+          case 'offline': return 'fal fa-exclamation-circle';
+          case 'away': return 'fal fa-ban';
+          case 'online': return 'fal fa-check-circle';
+          default: return 'fal fa-typewriter';
+        }
+      }
 
     get libelle()
     {

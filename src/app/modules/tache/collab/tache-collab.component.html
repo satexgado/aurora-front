@@ -1,11 +1,41 @@
 <div class="grid-container">
     <div class="sidebar" [class.sidebar_small]="selectedUser">
+        <div class="row  justify-content-between mg-0 pd-0 bg-light bd-b pt-2 pb-2">
+            <div class="col-lg-7 ">
+                <div class="input-group ">
+                    <input type="text" class="form-control  border-0 bg-white" placeholder="Recherches..." [(ngModel)]="userHelper.searchTerm">
+                </div>
+            </div>
+        
+            <div class="col-lg-5">
+                <ul class="nav float-right list-inline h-100  justify-content-end">
+                    <li class="nav-item">
+                        <button class="btn btn-link" (click)="onChangeView('card-columns')">
+                            <span class="tx-echos">
+                                <i class="fad fa-stream card-1  tx-16"
+                                    [ngClass]="view == 'card-columns' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                                    style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link" (click)="onChangeView('row m-0 row-cols-1 row-cols-md-3')">
+                            <span class="tx-echos">
+                                <i class="fad fa-bars card-1 tx-16 "
+                                    [ngClass]="view == 'row m-0 row-cols-1 row-cols-md-3' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
+                                    style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="p-4">
             <div [scrollWindow]="false" infiniteScroll  (scrolled)="userHelper.checkData()" class="d-flex scrollable-y-75 justify-content-center flex-wrap  mg-l-0 mg-r-0 scroll-11">
                 <ng-container *ngIf="userHelper.data$ | async as items">
                     <ng-container *ngIf="items.length; else ((!(userHelper.loading$ | async)) && true ? noItem : loading)">
-                        <div class="col-xl-4 col-md-6 mb-4" *ngFor="let user of items;trackBy: userHelper.trackByFn">
-                            <div class="card" (click)="onSetSelected(user)">
+                        <div [class]="view">
+                            <div class="card cursor-pointer" [class.mb-3]="view == 'row m-0 row-cols-1 row-cols-md-3'" *ngFor="let user of items;trackBy: userHelper.trackByFn" (click)="onSetSelected(user)">
                                 <div class="card-body">
                                     <div class="row align-items-center justify-content-center">
                                         <div class="col-auto">
@@ -25,10 +55,14 @@
                                         </div>
                                     </div>
                                     <ul class="task-list">
-                                        <li *ngFor="let tache of user.cr_taches">
-                                            <i class="task-icon bg-success"></i>
-                                            <h6>{{tache.inscription?.libelle}}<span class="float-right text-muted">{{tache.date_limit | date:'mediumDate' : undefined : 'fr'}}</span></h6>
-                                            <p class="text-muted">{{tache.libelle}}</p>
+                                        <li class="card-1-hoverable py-2 pr-3" (click)="onSetTache(tache)" *ngFor="let tache of user.tache_linkeds.slice(0, 3)">
+                                            <i class="task-icon bg-success {{tache.statut_bgcolor}}"></i>
+                                            <h6>{{tache.libelle}}<span class="float-right text-muted">{{tache.date_limit | date:'mediumDate' : undefined : 'fr'}}</span></h6>
+                                            <p class="text-muted m-0">
+                                                <span class=" text-primary mr-2" *ngIf="tache.comments_count">
+                                                  {{tache.comments_count}}  <i class="fal fa-comment-alt-dots"></i>
+                                                </span>
+                                            </p>
                                         </li>
                                     </ul>
                                 </div>
@@ -44,14 +78,26 @@
         </div>
     </div>
     <div class="main-content scroll-11 " [class.main-content_large]="selectedUser">
-        <div *ngIf="selectedUser">
-            <div class="d-flex align-items-center">
-                <button class="btn btn-link  mr-3" (click)="onSetSelected()">
+        <div>
+            <div class="d-flex align-items-center"  *ngIf="selectedUser">
+                <button class="btn btn-link" (click)="onSetSelected(); onClearComment()">
                     <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
                 </button>
-                <h5 class="mb-0">{{selectedUser.libelle}} </h5>
+                <div class="media pd-4 ">
+                    <div class="mr-2 mg-l-10 my-auto">
+                        <div class="avatar ">
+                            <img class="img-fluid wd-40 rounded-circle" [src]="selectedUser.avatar" alt="avatar">
+                        </div>
+                    </div>
+                    <div class=" d-flex justify-content-between mg-t-6 mg-b-5 wd-100p">
+                        <div class="d-inline-block">
+                            <h5 class="mb-0 tx-echos"> {{selectedUser.libelle}}</h5>
+                            <h6 class="mg-b-0 tx-yeto2"> {{selectedUser.email}} || <i class="fa fa-circle {{selectedUser.statut_color}}"></i> {{selectedUser.last_activity_at | dateagofr}}</h6>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <app-gestionnaire-tache [initTacheList]="selectedUser.cr_taches" *ngIf="selectedUser"></app-gestionnaire-tache>
+            <app-gestionnaire-tache [initTacheList]="selectedUser ? selectedUser.tache_linkeds : []" ></app-gestionnaire-tache>
         </div>
     </div>
 </div>
@@ -73,7 +119,7 @@
 </ng-template>
 
 <ng-template #loading>
-    <div class="col-xl-3 col-sm-6 mg-b-20"  *ngFor="let e of [].constructor(20);">
+    <div class="col-xl-4 col-sm-6 mg-b-20"  *ngFor="let e of [].constructor(5);">
         <div class="loading-card card h-100 w-100">
             <div class="image loading-placeholder">
             </div>
@@ -86,9 +132,11 @@
 </ng-template>
 
 <ng-template #loadingLine>
-    <div *ngFor="let e of [].constructor(20);"  class="w-100 rounded-0">
+    <div *ngFor="let e of [].constructor(5);"  class="w-100 rounded-0">
         <div  class="loading-card  w-100  rounded-0">
             <div  class="bars d-flex h-100  p-2">
+                <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>
+                <div class="col-2"></div>
                 <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>
                 <div class="col-2"></div>
                 <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>

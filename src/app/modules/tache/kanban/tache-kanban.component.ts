@@ -22,6 +22,8 @@ export class GestionnaireTacheKanbanComponent  {
     taches_enattente: ICrTache[] = [];
     taches_valider: ICrTache[] = [];
     taches_non_valider: ICrTache[] = [];
+    taches_archive: ICrTache[] = [];
+
     @Input('taches$') set initTaches(taches$: Observable<ICrTache[]>) {
       this.taches$ = taches$;
       this.taches$.subscribe(
@@ -45,6 +47,7 @@ export class GestionnaireTacheKanbanComponent  {
     @Output() courrierAffectationFormEmitter = new EventEmitter<ICrTache>();
     @Output() tacheSoftUpdateEmitter = new EventEmitter<ICrTache>();
     @Output() tacheCommentaireEmitter = new EventEmitter<ICrTache>();
+    @Output() tacheArchivateEmitter = new EventEmitter<ICrTache>();
 
     constructor(
         protected cacheService: CacheService,
@@ -70,6 +73,10 @@ export class GestionnaireTacheKanbanComponent  {
       this.courrierAffectationFormEmitter.emit(item);
     }
 
+    onShowArchivateCourrier(item: ICrTache) {
+      this.tacheArchivateEmitter.emit(item);
+    }
+
     onShowCommentairerTache(item: ICrTache) {
       this.tacheCommentaireEmitter.emit(item);
     }
@@ -88,6 +95,9 @@ export class GestionnaireTacheKanbanComponent  {
           break;
           case 'cdk_drop_valider':
             item.statut = CrTacheStatut.valide;
+          break;
+          case 'cdk_drop_archive':
+            // item.statut = CrTacheStatut.valide;
           break;
           default: item.statut = CrTacheStatut.nonvalide;
         }

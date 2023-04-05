@@ -4,12 +4,8 @@ import { BaseEditComponent } from 'src/app/shared/components/edit/base-edit.comp
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CrTache, ICrTache } from 'src/app/core/models/gestion-courrier/cr-tache';
 import { CrTacheFactory } from 'src/app/core/services/gestion-courrier/cr-tache';
-import { map, shareReplay } from 'rxjs/operators';
-import { UserFactory } from 'src/app/core/services/user.factory';
-import { IUser } from 'src/app/core/models/user';
 import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
 import { Helper } from 'src/app/helpers/helper/helper';
-import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
 
 @Component({
   selector: 'app-affectation-courrier-tache',

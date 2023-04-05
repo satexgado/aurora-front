@@ -24,7 +24,7 @@
         <a ngbNavLink>Type de marche</a>
         <ng-template ngbNavContent>
             <div class="card card-2 card-accent-primary px-0 col-12 mt-2" [class.loading]="loading">
-                <div class="card-body p-0 scrollable-y-65 scroll-5">
+                <div class="card-body p-0 scrollable-y-65 scroll-11">
                     <div class="table-responsive" *ngIf="data as items">
                         <table class="table table-hover text-nowrap mb-0" *ngIf="data.type && data.type.length; else noItem">
                             <thead>
@@ -62,7 +62,7 @@
         <a ngbNavLink>Procedure</a>
         <ng-template ngbNavContent>
             <div class="card card-2 card-accent-primary px-0 col-12 mt-2" [class.loading]="loading">
-                <div class="card-body p-0 scrollable-y-65 scroll-5">
+                <div class="card-body p-0 scrollable-y-65 scroll-11">
                     <div class="table-responsive" *ngIf="data as items">
                         <table class="table table-hover text-nowrap mb-0" *ngIf="data.procedure && data.procedure.length; else noItem">
                             <thead>

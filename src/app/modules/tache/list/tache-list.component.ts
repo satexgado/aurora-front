@@ -1,5 +1,5 @@
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
-import { Component, Input, OnDestroy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnDestroy, ChangeDetectorRef, Output, EventEmitter, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,13 +11,15 @@ import { CrCommentaire, ICrCommentaire } from 'src/app/core/models/gestion-courr
 import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
 import { IFichier } from 'src/app/core/models/gestion-document/fichier.model';
 import * as moment from 'moment';
+import { AuthService } from 'src/app/express-courrier/auth/auth.service';
+import { print } from 'src/app/shared/helperfonction';
 
 @Component({
   selector: 'app-gestionnaire-tache-list',
   templateUrl: './tache-list.component.html',
   styleUrls: ['./tache-list.component.css']
 })
-export class GestionnaireTacheListComponent implements OnDestroy {
+export class GestionnaireTacheListComponent implements OnInit, OnDestroy {
 
     subscription: Subscription = new Subscription();
 
@@ -27,6 +29,7 @@ export class GestionnaireTacheListComponent implements OnDestroy {
     @Output() courrierAffectationFormEmitter = new EventEmitter<ICrTache>();
     @Output() tacheSoftUpdateEmitter = new EventEmitter<ICrTache>();
     @Output() tacheCommentaireEmitter = new EventEmitter<ICrTache>();
+    @Output() tacheArchivateEmitter = new EventEmitter<ICrTache>();
 
     @Input('taches$') taches$: Observable<ICrTache[]>;
 
@@ -50,7 +53,11 @@ export class GestionnaireTacheListComponent implements OnDestroy {
         public route: ActivatedRoute,
         protected modalService: NgbModal,
         protected cdRef:ChangeDetectorRef,
+        public authService: AuthService,
     ) { }
+
+    ngOnInit(): void {
+    }
 
     ngOnDestroy()
     {
@@ -64,6 +71,11 @@ export class GestionnaireTacheListComponent implements OnDestroy {
     onShowAffectationCourrierForm(item: ICrTache) {
       this.courrierAffectationFormEmitter.emit(item);
     }
+
+    onShowArchivateCourrier(item: ICrTache) {
+      this.tacheArchivateEmitter.emit(item);
+    }
+
 
     onShowCommentairerTache(item: ICrTache) {
       this.tacheCommentaireEmitter.emit(item);
@@ -93,6 +105,10 @@ export class GestionnaireTacheListComponent implements OnDestroy {
 
     onRemoveFile(i) {
       this.fichiers.splice(i,1);
+    }
+
+    onDeleteTache(item: ICrTache) {
+      this.tacheDeleteEmitter.emit(item);
     }
 
     onGetIcon(item: IFichier): string {

@@ -9,6 +9,7 @@ export interface ICrTache extends IBase {
   inscription: IUser;
   responsables: IUser[];
   date_limit: Date;
+  archived_at: Date | '';
   courrier_id: number;
   inscription_id: number;
   courriers: ICrCourrier[];
@@ -66,6 +67,9 @@ export class CrTache implements ICrTache {
 
     @dateAdaptableMap('date_limit')
     date_limit: Date = new Date();
+
+    @dateAdaptableMap('archived_at')
+    archived_at: Date | '' = null;
 
     @hasManyMap({field:'responsables', class: User})
     responsables: IUser[] = null;

@@ -7,22 +7,23 @@
                         <div class="todo-indicator {{tache.statut_bgcolor}}"></div>
                         <div class="widget-content p-0">
                             <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
+                                <div class="widget-content-left" >
                                     <div class="widget-heading tx-16 tx-dark">{{tache.libelle}}
-                                        <div ngbDropdown class="d-inline-block">
+                                        <div ngbDropdown container="body" class="d-inline-block">
                                             <button type="button" class="btn btn-sm btn-link btn-default" ngbDropdownToggle><i class="{{tache.statut_icon}} fa-lg {{tache.statut_color}}"></i></button>
                                             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                                <button (click)="onUpdateStatut(tache,statut_list.attente)" ngbDropdownItem>En attente</button>
-                                                <button (click)="onUpdateStatut(tache,statut_list.traitement)" ngbDropdownItem>Traitement en cours</button>
-                                                <button (click)="onUpdateStatut(tache,statut_list.valide)" ngbDropdownItem>Valide</button>
-                                                <button (click)="onUpdateStatut(tache,statut_list.nonvalide)" ngbDropdownItem>Non valide</button>
+                                                <button (click)="onUpdateStatut(tache,statut_list.attente)" ngbDropdownItem> <i class="tx-second fal fa-exclamation-circle"></i>  En attente</button>
+                                                <button (click)="onUpdateStatut(tache,statut_list.traitement)" ngbDropdownItem><i class="tx-second fal fa-typewriter"></i> Traitement en cours</button>
+                                                <button (click)="onUpdateStatut(tache,statut_list.valide)" ngbDropdownItem> <i class="tx-second fal fa-check-circle"></i> Valide</button>
+                                                <button (click)="onUpdateStatut(tache,statut_list.nonvalide)" ngbDropdownItem> <i class="tx-second fal fa-ban"></i> Non valide</button>
                                             </div>
                                         </div>
+                                       
                                     </div>
                                     <div class="widget-subheading">
                                         <p class="tx-12 mb-0" *ngIf="tache.date_limit">Echeance: <strong [ngClass]="isEcheanceExpired(tache.date_limit) ? 'text-danger' : 'text-dark'">{{tache?.date_limit | date:'mediumDate' : undefined : 'fr'}}</strong></p>
                                         <p class="tx-12">Creer par: <strong class="text-dark">{{tache?.inscription?.libelle}}</strong></p>
-                                        <p class="tx-12 text-dark">{{tache.description}}</p>
+                                        <p class="tx-12 text-dark text-justify">{{tache.description}}</p>
                                         <a class="cursor-pointer bg-light my-1 tx-12" [routerLink]="[tache.courriers[0].link]" *ngIf="tache.courriers && tache.courriers.length">
                                          <i class="fa fa-mail-bulk"></i> <span> {{tache.courriers[0].libelle}}</span>
                                         </a>
@@ -39,9 +40,31 @@
                                     </div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <button class="border-0 btn-transition btn btn-sm btn-oblong btn-outline-dark" (click)="onShowCommentairerTache(tache)">
-                                      <i class="fal fa-comment fa-2x"></i>
-                                      <span class="badge badge-pill mg-t-10 badge-info" *ngIf="tache.comments_count">{{tache.comments_count}}</span>
+                                    <div class="no-caret" container="body" *ngIf="tache.inscription_id == authService.user.id" ngbDropdown>
+                                        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2" ngbDropdownToggle role="button"><i
+                                                class="fal fa-comment-alt-dots fa-lg rounded-circle"></i></button>
+                                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                            <button (click)="onShowAffectationTacheForm(tache)" ngbDropdownItem>
+                                                <i class="fa tx-second fa-share-square"></i> Affecter
+                                            </button>
+                                            <button (click)="onShowAffectationCourrierForm(tache)" ngbDropdownItem>
+                                                <i class="fa tx-second fa-link"></i> Lier courrier
+                                            </button>
+                                            <button (click)="onShowUpdateTacheForm(tache)" ngbDropdownItem>
+                                                <i class="fa tx-second fa-edit"></i> Modifier
+                                            </button>
+                                            <button (click)="onShowArchivateCourrier(tache)" ngbDropdownItem>
+                                                <i class="fa tx-second" [ngClass]="tache.archived_at ?  'fal fa-tasks': 'fal fa-archive'"></i> 
+                                                {{tache.archived_at ? 'Mettre dans  mes taches' : 'Archiver' }}
+                                            </button>
+                                            <button (click)="onDeleteTache(tache)" ngbDropdownItem>
+                                                <i class="fa tx-second fa-trash"></i> Supprimer
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button class="border-0 mx-2 btn-transition btn btn-oblong btn-outline-primary" (click)="onShowCommentairerTache(tache)">
+                                        <i class="fal fa-comment fa-lg"></i>
+                                        <span class="badge badge-pill mg-t-10 badge-info" *ngIf="tache.comments_count">{{tache.comments_count}}</span>
                                     </button>
                                 </div>
                             </div>

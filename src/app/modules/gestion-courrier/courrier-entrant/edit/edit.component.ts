@@ -226,9 +226,26 @@ export class EditComponent extends BaseEditComponent  {
     super.ngOnInit();
     this.onChange();
     this.onImageChange();
+    this.onChangeCourrier();
     if(!this.isUpdating) {
       this.onUrgengeChange()
     }
+  }
+
+  onChangeCourrier() {
+    const courriereIdControl = this.editForm.get('courrier_lier_id') as FormControl;
+    const courriereControl = this.editForm.get('courrier_lier') as FormControl;
+    courriereControl.valueChanges.subscribe(
+      (value)=>{
+        if(value) {
+          courriereIdControl.setValue(value.id);
+        } else {
+          courriereIdControl.setValue('');
+        }
+        courriereIdControl.markAsDirty();
+        courriereIdControl.markAsTouched();
+      }
+    );
   }
 
   onChange() {
@@ -355,6 +372,8 @@ export class EditComponent extends BaseEditComponent  {
       'valider': [1, Validators.required],
       'statut_id': [courrier.statut_id, Validators.required],
       'nature_id': [courrier.nature_id, Validators.required],
+      'courrier_lier_id' : [courrier.courrier_lier_id??''],
+      'courrier_lier' : [courrier.courrier_lier ? courrier.courrier_lier : null],
       'numero': [courrier.numero, Validators.required, CourrierValidator.alreadyUsedNumeroValidator(courrier.numero)],
       'type_id': [courrier.type_id, Validators.required],
       'urgence_id': [courrier.urgence_id, Validators.required],

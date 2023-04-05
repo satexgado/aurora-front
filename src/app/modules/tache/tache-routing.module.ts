@@ -14,20 +14,40 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'mes-taches'},
       {
-        path: 'mes-taches', component: GestionnaireTacheComponent,
+        path: 'tous', component: GestionnaireTacheComponent,
         data: {
           filters: [
             {or: false, filters: [
-              new Filter('is_ins', 1, 'eq'),
+              new Filter('parent_insc', 1, 'eq'),
             ]}
           ]
         }
       },
       {
-        path: 'collaboration', component: TacheCollabComponent
+        path: 'mes-taches', component: GestionnaireTacheComponent,
+        data: {
+          filters: [
+            {or: false, filters: [
+              new Filter('is_ins', 1, 'eq'),
+              new Filter('archived_at', '', 'eq')
+            ]}
+          ],
+          removeAfterArchive: true
+        }
       },
       {
-        path: 'batch', component: TacheBatchComponent
+        path: 'archive', component: GestionnaireTacheComponent,
+        data: {
+          filters: [
+            {or: false, filters: [
+              new Filter('archived_at', '', 'eq', true),
+            ]}
+          ],
+          removeAfterArchive: true
+        }
+      },
+      {
+        path: 'collaboration', component: TacheCollabComponent
       }
     ]
   },

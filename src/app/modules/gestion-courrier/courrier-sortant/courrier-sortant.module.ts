@@ -12,6 +12,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CustomInputModule } from 'src/app/shared/components/custom-input/custom-input.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { CourrierEntrantModule } from '../courrier-entrant/courrier-entrant.module';
+import { CourrierSharedModule } from '../courrier-shared/courrier-shared.module';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { CourrierEntrantModule } from '../courrier-entrant/courrier-entrant.modu
         DragDropModule,
         CustomInputModule,
         AngularMultiSelectModule,
-        CourrierEntrantModule
+        CourrierEntrantModule,
+        CourrierSharedModule
     ],
     entryComponents: [EditComponent],
 })

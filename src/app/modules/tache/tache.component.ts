@@ -12,6 +12,7 @@ import { EditComponent } from 'src/app/modules/gestion-courrier/tache/edit/edit.
 import { ItemSelectHelper } from 'src/app/shared/state';
 import { AffectationTacheCourrierEditComponent } from '../gestion-courrier/tache/affectation-courrier/affectation-courrier.component';
 import { filterGrp } from '../../shared/models/query-options/query-options.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-gestionnaire-tache',
@@ -31,9 +32,9 @@ export class GestionnaireTacheComponent implements OnDestroy {
     searchTerm: string;
     changeIndicator = 0;
     CrTacheStatut = CrTacheStatut;
-    @Input() selectedTache: ICrTache & {
-      commentData: {filters: filterGrp[], parent: {type: string, id: number}}
-    };
+    @Input() selectedTache: ICrTache;
+    commentData: {filters: filterGrp[], parent: {type: string, id: number}};
+    removeAfterArchive=false;
 
     @Input() set init(filters: filterGrp[]) {
       const service = new CrTacheFactory();
@@ -86,6 +87,10 @@ export class GestionnaireTacheComponent implements OnDestroy {
         if(data.filters) {
           this.init = data.filters;
         }
+
+        if(data.removeAfterArchive) {
+          this.removeAfterArchive = data.removeAfterArchive;
+        }
       });
       
     }
@@ -107,14 +112,16 @@ export class GestionnaireTacheComponent implements OnDestroy {
     onShowComment(item: ICrTache = null) {
 
       if(!item) return this.selectedTache = null;
-      this.selectedTache = {...item, ...{commentData: {
+      this.selectedTache = item;
+      this.selectedTache.comments_count = 0;
+      this.commentData = {
         filters: [
           {or: false, filters: [
             new Filter('parent_tache_id', item.id, 'eq')
           ]}
         ],
         parent: {type:'cr_taches', id: item.id}
-      }}};
+      };
     }
 
     onShowUpdateTacheForm(item: ICrTache) {
@@ -192,7 +199,6 @@ export class GestionnaireTacheComponent implements OnDestroy {
           });
           this._taches$.next(taches);
           this.changeIndicator++;
-
         }
       );
     }
@@ -239,15 +245,104 @@ export class GestionnaireTacheComponent implements OnDestroy {
       this.notificationService.bodyMaxLength = 300;
       this.notificationService.backdrop =  0;
       this.notificationService.onConfirmation(confirm, cancel);
+      this.notificationService.bodyMaxLength = 80;
+      this.notificationService.backdrop =  -1;
+    }
+
+    onAddToArchive(item: ICrTache) {
+      const libelle =  item.libelle;
+      const taches = this._taches$.value ? this._taches$.value : [] ;
+      const index = taches.findIndex(element => element.id === item.id);
+      const cancelDelete = () => {
+        const service = new CrTacheFactory();
+        item.archived_at = '';
+        service.update(item).subscribe(
+            (data) => {
+              if(this.removeAfterArchive) {
+                item.archived_at = null;
+                taches.splice(index, 0, item);
+                this._taches$.next(taches);
+                this.changeIndicator++;
+              }
+              this.notificationService.onInfo("L'archivage a été annuler");
+            }, () => {
+            }
+          );
+      };
+
+
+      this.notificationService.title = 'Archivage';
+      this.notificationService.body = 'Êtes-vous sûr(e) de vouloir archiver?' + ' ' + item.libelle;
+
+      const confirm = () => {
+        item.archived_at = new Date();
+
+        const service = new CrTacheFactory();
+        service.update(item).subscribe(
+          () => {
+            this.notificationService.onCancel(cancelDelete, "L'élément '"+libelle+"' a été archivé" ,'Archivage' , 'success', "Annuler l'archivage");
+          }, () => {
+            this.notificationService.onInfo('l\'élément est utilisé');
+          }
+        )
+        if(this.removeAfterArchive) {
+          taches.splice(index,1);
+          this._taches$.next(taches);
+          this.changeIndicator++;
+        }
+      };
+
+      const cancel = () => {
+      };
+
+      this.notificationService.bodyMaxLength = 300;
+      this.notificationService.backdrop =  0;
+      this.notificationService.onConfirmation(confirm, cancel);
 
       this.notificationService.bodyMaxLength = 80;
       this.notificationService.backdrop =  -1;
+    } 
+
+    onRemoveFromArchive(item) {
+      item.archived_at = '';
+      const service = new CrTacheFactory();
+      service.update(item).subscribe(
+        () => {
+          this.notificationService.onInfo("L'element a été deplacer dans vos tâches");
+
+          if(this.removeAfterArchive) {
+            const taches = this._taches$.value ? this._taches$.value : [] ;
+            const index = taches.findIndex(element => element.id === item.id);
+            taches.splice(index,1);
+            this._taches$.next(taches);
+            this.changeIndicator++;
+          }
+        }, () => {
+          this.notificationService.onInfo('l\'élément est utilisé');
+        }
+      )
+    }
+
+    onArchivateTache(item: ICrTache) {
+      if(item.archived_at) {
+       return this.onRemoveFromArchive(item);
+      }
+      this.onAddToArchive(item);
     }
 
 
     ngOnDestroy()
     {
         this.subscription.unsubscribe();
+    }
+
+    isEcheanceExpired(date: Date) {
+      // your date logic here, recommend moment.js;
+      return moment(date).isBefore(moment(new Date()));
+      // or without using moment.js:
+      // return product.experationDate.getTime() < currentdate.getTime();
+      // or using Date
+      // return new Date(product.experationDate).valueOf() < new Date(currentdate).valueOf();
     }
 
 }

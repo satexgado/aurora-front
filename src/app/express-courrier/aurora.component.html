@@ -204,53 +204,50 @@
             <div class="page-sidebar-menu">
                 <div class="p-0 pb-6">
                     <ul class="navbar nav justify-content-center " role="tablist">
-
-
-
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3   " data-toggle="tab" href="#services_aurora">
+                            <a class="nav-link3" container="body" ngbTooltip="Mes structures" [routerLinkActiveOptions]="linkActiveOptions" [routerLink]="['organisation']" routerLinkActive="active">
                                 <i class="fas fa-chair-office tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3   " data-toggle="tab" href="#hierarchie_aurora">
+                            <a class="nav-link3" container="body" ngbTooltip="Organigramme" [routerLink]="['organisation/structures/organigramme']" routerLinkActive="active">
                                 <i class="fas fa-sitemap tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100 ">
-                            <a class="nav-link3   " data-toggle="tab" href="#structure_aurora">
+                            <a class="nav-link3" container="body" ngbTooltip="Liste des structures" routerLinkActive="active" [routerLink]="['organisation/structures/all']">
                                 <i class="fas fa-chart-network tx-echos  tx-16"></i>
                             </a>
                         </li>
 
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3" [routerLink]="['tache']" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Taches" [routerLink]="['tache']" routerLinkActive="active">
                                 <i class="fas fa-tasks  tx-echos tx-16"></i>
                             </a>
                         </li>
 
                         <li class="nav-item tx-center w-100 mt-4 ">
-                            <a class="nav-link3   " [routerLink]="['utilisateur']" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Liste des Utilisateurs" [routerLink]="['utilisateur']" routerLinkActive="active">
                                 <i class="fas fa-user  tx-echos  tx-16" ></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100  ">
-                            <a class="nav-link3   " [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'partenaire'" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Partenaires" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'partenaire'" routerLinkActive="active">
                                 <i class="fas fa-handshake-alt  tx-echos  tx-16" ></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3   " [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'fournisseur'" routerLinkActive="active">
+                            <a class="nav-link3   " container="body" ngbTooltip="Fournisseurs" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'fournisseur'" routerLinkActive="active">
                                 <i class="fas fa-people-carry  tx-echos  tx-16" ></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3  " [routerLink]="['groupe-contact']" routerLinkActive="active">
+                            <a class="nav-link3  " container="body" ngbTooltip="Groupe de contact" [routerLink]="['groupe-contact']" routerLinkActive="active">
                                 <i class="fas fa-users tx-echos  tx-16" ></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100 ">
-                            <a class="nav-link3" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Annuaire" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
                                 <i class="fas fa-address-card tx-echos  tx-16" ></i>
                             </a>
                         </li>                        

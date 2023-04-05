@@ -57,7 +57,7 @@ export const DefaultQueryOptionWithSeachString = new QueryOptions(
         {or: true, filters:[new Filter('searchString', false, 'ct')]},
     ],
     [],
-    100,
+    25,
     1,
     [new Sort('updated_at','DESC')]
 );
@@ -65,7 +65,7 @@ export const DefaultQueryOptionWithSeachString = new QueryOptions(
 export const DefaultQueryOption = new QueryOptions(
   [],
   [],
-  100,
+  25,
   1,
   [new Sort('updated_at','DESC')]
 );
@@ -75,7 +75,7 @@ export const DefaultQueryOptionWithIns = new QueryOptions(
         {or: false, filters:[new Filter('isIns', true, 'eq')]},
     ],
     [],
-    100,
+    25,
     1,
     [new Sort('updated_at','DESC')]
 );
@@ -92,7 +92,7 @@ export const  DefaultQueryOptionWithInsAndSeachString = new QueryOptions(
         {or: true, filters:[new Filter('searchString', '', 'ct')]},
     ],
     [],
-    100,
+    25,
     1,
     [new Sort('updated_at','DESC')]
 );

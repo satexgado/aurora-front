@@ -39,6 +39,7 @@
                             "src/assets/css/app.min.css",
                             "src/assets/css/style.css",
                             "src/assets/css/vision.css",
+                            "src/assets/css/custom-placeholder.css",
                             "src/styles.scss",
                             "node_modules/@ctrl/ngx-emoji-mart/picker.css"
                         ],

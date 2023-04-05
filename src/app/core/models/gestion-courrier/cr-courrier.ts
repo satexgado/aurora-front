@@ -38,6 +38,8 @@ export interface ICrCourrier extends IBase {
   current_etape: ICrCourrierEtape;
   cloture_id: number;
   cloture: ICrCloture;
+  courrier_lier_id: number;
+  courrier_lier: ICrCourrier;
   date_cloture: Date;
   date_limit: Date;
   message_cloture: string;
@@ -47,6 +49,7 @@ export interface ICrCourrier extends IBase {
   dossier: ICrDossier;
   additional_field: string;
   additional_jsonFormData: JsonFormData;
+  link: string;
 }
 
 export class CrCourrier implements ICrCourrier {
@@ -55,6 +58,7 @@ export class CrCourrier implements ICrCourrier {
     objet: string = '';
     commentaire: string = '';
     numero: string = '';
+    link: string = '';
     valider: number = 0;
     message_cloture: string = '';
     type_id: number = 0;
@@ -66,6 +70,7 @@ export class CrCourrier implements ICrCourrier {
     current_etape_id: number = 0;
     cloture_id: number  = 0;
     dossier_id: number = null;
+    courrier_lier_id: number = null;
     structure_copie_traitements: any = null;
     structure_copie_informations: any = null;
     structure: any = null;
@@ -104,6 +109,9 @@ export class CrCourrier implements ICrCourrier {
 
     @hasOneMap({field:'cr_dossier', class: CrDossier})
     dossier: ICrDossier = null;
+
+    @hasOneMap({field:'cr_courrier_lier', class: CrCourrier})
+    courrier_lier: ICrCourrier = null;
 
     @hasOneMap({field:'suivi_par_inscription', class: User})
     suivi_par_user: IUser = null;

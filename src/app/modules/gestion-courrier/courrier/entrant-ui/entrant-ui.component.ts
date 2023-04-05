@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { interval, of, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, interval, of, Subject, Subscription } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { ICrCourrierEntrant } from 'src/app/core/models/gestion-courrier/cr-courrier-entrant';
 import { CrCoordonneeFactory } from 'src/app/core/services/gestion-courrier/cr-coordonnee';
@@ -667,5 +667,19 @@ isEcheanceExpired(date: Date) {
         callback();
     }
     animateScroll();
+  }
+
+  onDelete(item) {
+    let _result$ = new BehaviorSubject<boolean>(false);
+    const result$ = _result$.asObservable();
+    super.onDelete(item).subscribe(
+      (result)=> {
+        _result$.next(result);
+        if(result) {
+          this.router.navigate(['./'], {relativeTo: this.route});
+        }
+      }
+    );
+    return result$;
   }
 }

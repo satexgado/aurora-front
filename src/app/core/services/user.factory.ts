@@ -25,8 +25,8 @@ export class UserFactory extends Factory<User> {
           let adapter = new AdaptableMapper(CrTache);
           data.data = data.data.map(
             (user)=> {
-              if(user.cr_taches) {
-                user.cr_taches = user.cr_taches.map(item => adapter.fromSource(item));
+              if(user.tache_linkeds) {
+                user.tache_linkeds = user.tache_linkeds.map(item => adapter.fromSource(item));
               }
               return user;
             }

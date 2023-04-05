@@ -67,8 +67,8 @@ export class SidesuiviComponent implements OnInit {
       const courriereControl = this.addticketForm.get('courrierDT') as FormControl;
       courriereControl.valueChanges.subscribe(
         (value)=>{
-          if(value && value.length) {
-            courriereIdControl.setValue(value[0].id);
+          if(value) {
+            courriereIdControl.setValue(value.id);
           } else {
             courriereIdControl.setValue(null);
           }

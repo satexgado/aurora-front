@@ -9,7 +9,7 @@
     <div [ngSwitch]="typeCourrier">
       <div *ngSwitchCase="'entrant'">
         <div class="col-lg-12 d-flex align-items-center justify-content-between">
-          <button class="btn btn-link  mr-3"  (click)="onChangeTypeCourrier(null)">
+          <button class="btn btn-link  mr-3" *ngIf="!hideCrTypeSelector" (click)="onChangeTypeCourrier(null)">
             <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
           </button>
           <h5 class="text-dark"><i class="fal fa-envelope" style="padding: 6px; border-radius: 50%;"></i> Courriers Entrants </h5>
@@ -103,7 +103,7 @@
       </div>
       <div *ngSwitchCase="'sortant'">
         <div class="col-lg-12 d-flex align-items-center justify-content-between">
-            <button class="btn btn-link  mr-3"  (click)="onChangeTypeCourrier(null)">
+            <button class="btn btn-link  mr-3" *ngIf="!hideCrTypeSelector"  (click)="onChangeTypeCourrier(null)">
               <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
             </button>
             <h5 class="text-dark"><i class="fal fa-envelope-open-text" style="padding: 6px; border-radius: 50%;"></i> Courriers Sortants </h5>
@@ -196,7 +196,7 @@
       </div>
       <div *ngSwitchCase="'interne'">
         <div class="col-lg-12 d-flex align-items-center justify-content-between">
-          <button class="btn btn-link  mr-3"  (click)="onChangeTypeCourrier(null)">
+          <button class="btn btn-link  mr-3" *ngIf="!hideCrTypeSelector" (click)="onChangeTypeCourrier(null)">
             <i class="fad fa-arrow-alt-left bg-light tx-success card-1" style="padding:6px; border-radius:50%"></i>
           </button>
           <h5 class="text-dark"><i class="fal fa-envelope-open-text" style="padding: 6px; border-radius: 50%;"></i> Courriers Internes </h5>
@@ -293,6 +293,7 @@
         <div class="d-flex flex-wrap my-2">
           <div class="col-lg-4  col-md-6 text-center" *ngIf="
           helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+          && ((!onlyType) || onlyType.includes('entrant'))
           ">
               <a (click)="onChangeTypeCourrier('entrant')" class="card card-1 text-primary bg-white border-light m-3">
                   <div class="card-body">
@@ -307,6 +308,7 @@
           </div>
           <div class="col-lg-4  col-md-6 text-center" *ngIf="
           helper.authorisation.check('courrier sortant', 'LECTURE', undefined)
+          && ((!onlyType) || onlyType.includes('sortant'))
           ">
               <a (click)="onChangeTypeCourrier('sortant')" class="card card-1 text-primary bg-white border-light m-3">
                   <div class="card-body">
@@ -321,6 +323,7 @@
           </div>
             <div class="col-lg-4  col-md-6 text-center" *ngIf="
             helper.authorisation.check('courrier entrant', 'LECTURE', undefined)
+            && ((!onlyType) || onlyType.includes('interne'))
             ">
                 <a (click)="onChangeTypeCourrier('interne')" class="card card-1 text-primary bg-white border-light m-3">
                     <div class="card-body">
@@ -353,7 +356,7 @@
 </ng-template>
 
 <ng-template #loading>
-    <div class="col-sm-6 mg-b-20"  *ngFor="let e of [].constructor(20);">
+    <div class="col-sm-6 mg-b-20"  *ngFor="let e of [].constructor(5);">
         <div class="loading-card card h-100 w-100">
             <div class="image loading-placeholder">
             </div>
@@ -367,7 +370,7 @@
 
 <ng-template #loadingLine>
     <div class="row">
-        <div *ngFor="let e of [].constructor(20);"  class="col-12 rounded-0">
+        <div *ngFor="let e of [].constructor(5);"  class="col-12 rounded-0">
             <div  class="loading-card card h-100 w-100  rounded-0">
                 <div  class="bars h-100  p-2">
                     <div  class="bar bar2 w-100 loading-placeholder  m-0"></div>
@@ -387,8 +390,8 @@
 </ng-template>
 
 <ng-template #listViewEntrant>
-  <div class="card info card-2 card-accent-primary px-0 col-12 mt-2">
-      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataEntrant()" class="card-body p-0 scrollable-y-65 scroll-5" #scrollContainer>
+  <div class="card card-2 card-accent-primary px-0 col-12 mt-2">
+      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataEntrant()" class="card-body p-0 scrollable-y-65 scroll-11" #scrollContainer>
           <div class="table-responsive" *ngIf="courrierEntrantHelper.data$ | async as items">
               <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(courrierEntrantHelper.loading$ | async)) && true ? noItem : loadingLine)">
                   <tbody>
@@ -435,8 +438,8 @@
 
 
 <ng-template #listViewSortant>
-  <div class="card info card-2 card-accent-primary px-0 col-12 mt-2">
-      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataSortant()" class="card-body p-0 scrollable-y-65 scroll-5" #scrollContainer>
+  <div class="card card-2 card-accent-primary px-0 col-12 mt-2">
+      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataSortant()" class="card-body p-0 scrollable-y-65 scroll-11" #scrollContainer>
           <div class="table-responsive" *ngIf="courrierSortantHelper.data$ | async as items">
               <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(courrierSortantHelper.loading$ | async)) && true ? noItem : loadingLine)">
                   <tbody>
@@ -481,8 +484,8 @@
 </ng-template>
 
 <ng-template #listViewInterne>
-  <div class="card info card-2 card-accent-primary px-0 col-12 mt-2">
-      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataInterne()" class="card-body p-0 scrollable-y-65 scroll-5" #scrollContainer>
+  <div class="card card-2 card-accent-primary px-0 col-12 mt-2">
+      <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkDataInterne()" class="card-body p-0 scrollable-y-65 scroll-11" #scrollContainer>
           <div class="table-responsive" *ngIf="courrierInterneHelper.data$ | async as items">
               <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(courrierInterneHelper.loading$ | async)) && true ? noItem : loadingLine)">
                   <tbody>

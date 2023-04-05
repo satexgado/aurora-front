@@ -93,7 +93,7 @@ export class CoordonneeGroupeHierarchieEditComponent {
     {
       Object.values(items.value).forEach(
         (data: ICrCoordonneeGroupe) => {
-          if(this.exceptionId && this.exceptionId.includes(data.id)) {
+          if((!data) || (this.exceptionId && this.exceptionId.includes(data.id))) {
             return;
           };
           let child = [];

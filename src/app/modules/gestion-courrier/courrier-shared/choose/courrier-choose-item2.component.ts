@@ -5,7 +5,7 @@ import { CrCourrierEntrantFactory } from 'src/app/core/services/gestion-courrier
 import { ResourceScrollableHelper } from 'src/app/shared/state/resource.scrollable.helper';
 import { ChooseItem2Component } from 'src/app/modules/choose-item/single2/choose-item2.component';
 
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/shared';
 import { Helper } from 'src/app/helpers/helper/helper';
@@ -39,6 +39,23 @@ export class CourrierChooseItem2Component extends ChooseItem2Component {
 
   view: 'card' | 'list' =  localStorage.getItem("courrierViewType") ? <'card' | 'list'>localStorage.getItem("courrierViewType"):  'card';
   typeCourrier: 'entrant' | 'sortant' | 'interne' | null = null;
+  onlyType: ('entrant' | 'sortant' | 'interne') [];
+  hideCrTypeSelector = false;
+
+  @Input() set defaultType( defaultType: 'entrant' | 'sortant' | 'interne' | ('entrant' | 'sortant' | 'interne') [] ) {
+    
+    if(!Array.isArray(defaultType)) {
+      defaultType = [defaultType];
+    }
+
+    if(defaultType.length == 1) {
+      this.onChangeTypeCourrier(defaultType[0]);
+      this.hideCrTypeSelector = true;
+      return;
+    }
+
+    this.onlyType = defaultType;
+  }
 
   courrierEntrantHelper: ResourceScrollableHelper = new ResourceScrollableHelper(
     new CrCourrierEntrantFactory(),

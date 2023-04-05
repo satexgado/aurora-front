@@ -19,7 +19,7 @@
 
 </div>
 <div class="card px-0 card-2 card-accent-primary info  col-12" [class.loading]="dataHelper.loading$ | async">
-    <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-5">
+    <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-11">
         <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
             <table class="table table-hover text-nowrap table-striped mb-0" *ngIf="items.length; else noItem">
                 <thead class="tx-uppercase">

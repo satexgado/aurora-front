@@ -40,11 +40,23 @@ export class CourrierChooseMultiItem2Component extends ChooseMultiItem2Component
 
   view: 'card' | 'list' =  localStorage.getItem("courrierViewType") ? <'card' | 'list'>localStorage.getItem("courrierViewType"):  'card';
   typeCourrier: 'entrant' | 'sortant' | 'interne' | null = null;
+  onlyType: ('entrant' | 'sortant' | 'interne') [];
+  
   hideCrTypeSelector = false;
 
-  @Input() set defaultType( defaultType: 'entrant' | 'sortant' | 'interne' ) {
-    this.onChangeTypeCourrier(defaultType);
-    this.hideCrTypeSelector = true;
+  @Input() set defaultType( defaultType: 'entrant' | 'sortant' | 'interne' | ('entrant' | 'sortant' | 'interne') [] ) {
+    
+    if(!Array.isArray(defaultType)) {
+      defaultType = [defaultType];
+    }
+
+    if(defaultType.length == 1) {
+      this.onChangeTypeCourrier(defaultType[0]);
+      this.hideCrTypeSelector = true;
+      return;
+    }
+
+    this.onlyType = defaultType;
   }
 
   hasSelectedItemCode(item: string): boolean
