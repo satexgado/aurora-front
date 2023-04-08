@@ -11,9 +11,9 @@ import {
 import { AppTitleService, CacheService } from 'src/app/shared/services';
 import { EditableListComponent, NotificationService } from 'src/app/shared';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
-import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
+import { Filter } from 'src/app/shared/models/query-options';
 import { interval, of } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { startWith } from 'rxjs/operators';
 // import { UserActionComponent } from './user-action.component';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from 'src/app/core/models/user';

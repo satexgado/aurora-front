@@ -75,6 +75,7 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
   externe = 1;
   expediteur: ICrCoordonnee;
   subscription: Subscription = new Subscription();
+  filterTache = [];
 
   // last entrant
   TASK_REFRESH_INTERVAL_MS = 30000;
@@ -294,6 +295,13 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
           this.selectedCourrier = courrier;
           if(courrier) {
             this.selectedCourrier['showingTask'] = false;
+            this.filterTache = [
+              {or: false, filters: [
+                new Filter('courrier_id', this.selectedCourrier.courrier_id, 'eq'),
+                new Filter('is_ins', 1, 'eq'),
+                new Filter('archived_at', '', 'eq')
+              ]}
+            ];
           }
           if(courrier && courrier.provenance && (!courrier.provenance.externe))  {
             this.structureService.singleData = null;

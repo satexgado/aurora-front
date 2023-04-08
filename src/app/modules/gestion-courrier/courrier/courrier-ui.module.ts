@@ -26,6 +26,7 @@ import { UrgenceModule } from '../urgence/urgence.module';
 import { StatutModule } from '../statut/statut.module';
 import { TypeModule } from '../type/type.module';
 import { ReaffectationUiComponent } from './reaffectation-ui/reaffectation-ui.component'
+import { GestionnaireTacheModule } from 'src/app/modules/tache/tache.module';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { ReaffectationUiComponent } from './reaffectation-ui/reaffectation-ui.co
         TypeModule,
         EtapeModule,
         AnalyseCourrierEntrantModule,
-        AnalyseCourrierSortantModule
+        AnalyseCourrierSortantModule,
+        GestionnaireTacheModule
     ],
     entryComponents: [],
 })

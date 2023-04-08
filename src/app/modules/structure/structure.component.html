@@ -1,0 +1,553 @@
+<div class="row mg-0 pd-0 clearfix justify-content-between  pt-2 bd-b ">
+    <div class="col-lg-6">
+        <h6 class="tx-echos1"><i class="fas fa-chair-office  bg-white" style="padding:6px; border-radius: 50%; "></i>
+            Gestion de services</h6>
+    </div>
+    <div class="col-lg-6 ">
+        <ul class="nav float-right list-inline justify-content-end">
+
+            <li class="nav-item ">
+                <a class="nav-link3 " data-toggle="tab" href="#"><span class="tx-echos">
+                        <i class="fas fa-question bg-light tx-16 tx-echos1" style="padding:6px; border-radius:50%"></i>
+                    </span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="d-flex flex-xs justify-content-between bd-t">
+    <div class=" col-lg-4 bd-r bd-2 " style="background:#FFFF; height:100vh ">
+        <div class="row  justify-content-between  bg-light pt-2 bd-b">
+            <div class="col-lg-12">
+                <h6 class="tx-echos"><i class="fas fa-dot-circle" style="padding:6px; border-radius: 50%; "></i> Liste
+                    des services</h6>
+            </div>
+        </div>
+
+        <div class="card-body p-0 ">
+            <div class="row row-xs bd-b mg-0 pd-0 clearfix">
+
+                <div class="col-lg-8">
+                    <div class="input-group ">
+                        <input type="text" class="form-control  border-0 " placeholder="Recherches...">
+                    </div>
+                </div>
+
+                <div class="col-lg-4 ">
+                    <ul class="nav float-right list-inline justify-content-end">
+
+                        <li class="nav-item ">
+                            <a class="nav-link3 " data-toggle="tab" href="#"><span class="tx-echos">
+                                    <i class="fas fa-plus-circle bg-echos1 tx-16 tx-white"
+                                        style="padding:6px; border-radius:50%"></i> </span></a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="people-list">
+                <ul class="list-unstyled chat-list mt-2 mb-0">
+                    <ng-container *ngIf="structure_data$ | async as structures">
+                        <ng-container *ngIf="structures.length">
+                            <li class="clearfix" *ngFor="let structure of structures;">
+                                <a class="d-flex cursor-pointer" (click)="onSelectStructure(structure)">
+                                    <img class="avatar" style="height: 36px; width: 36px;" [src]="structure.image"
+                                        alt="avatar">
+                                    <div class="about">
+                                        <div class="name">{{structure.cigle}}: {{structure.libelle}}</div>
+                                        <div class="status">
+                                            <span class=" tx-14 mg-b-5 tx-echos1 pl-2 ">Sous services</span>
+                                            <span class="  mg-b-5 tx-warning ">58</span>
+                                            <span class=" tx-14 mg-b-5 tx-echos1 ">Membres</span>
+                                            <span class=" mg-b-5 tx-danger ">10 </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ng-container>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8 ">
+        <div class="grid-container">
+            <div class="sidebar" [class.sidebar_small]="selectedStructure">
+                <div class="col-md-12 text-center mt-4">
+                    <div class="col-lg-12">
+                        <div style="text-align: center">
+                            <img class="bg-white rounded-circle monimage2" [src]="'assets/images/taches_ether.svg'"
+                                width="" />
+                            <p class="tx-20 mb-0 tx-echos"> Veuillez selectionner une structure </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-content scroll-11 " [class.main-content_large]="selectedStructure">
+
+                <ng-container *ngIf="selectedStructure">
+                    <div class="d-flex clearfix  justify-content-between  bg-light pt-2 bd-b">
+                        <div class="col-lg-12">
+                            <h6 class="tx-echos">
+                                <i class="fas fa-object-group" style="padding:6px; border-radius: 50%; "></i>
+                                {{selectedStructure.cigle}}: {{selectedStructure.libelle}}
+                            </h6>
+                        </div>
+                    </div>
+                    <ul ngbNav #nav="ngbNav" [destroyOnHide]="false" [activeId]="route.fragment | async"
+                        class="nav-tabs nav-fill">
+                        <li [ngbNavItem]="'details'">
+                            <a ngbNavLink [routerLink]="['./', selectedStructure.id]" [fragment]="'details'">
+                                <i class="fal fa-info-circle tx-facebook bold"></i> Details
+                            </a>
+                            <ng-template ngbNavContent>
+                                <div class="d-flex mt-5">
+                                    <!-- Information personnel -->
+                                    <div class="col-12 mt-3 card">
+                                        <!-- Image -->
+                                        <span class="d-flex justify-content-center">
+                                            <img class="profile rounded-circle" *ngIf="selectedStructure.image"
+                                                style="height: 120px; width: 120px; object-fit: cover; border: 5px solid #1f618d!important"
+                                                [src]="selectedStructure.image" [alt]="'user'">
+                                            <span *ngIf="!selectedStructure.image">
+                                                <i class="fad fa-building profile"
+                                                    style="font-size: 120px;"></i>
+                                            </span>
+                                        </span>
+                                        <div class="d-flex justify-content-around mb-2">
+                                            <div class="mr-4 col">
+
+                                                <!-- Prenom -->
+                                                <div class="my-3  " style="font-size: 16px;">
+                                                    <span class="mr-2">
+                                                        <span clas="">
+                                                            <i class="fad tx-primary fa-building"></i>
+                                                        </span> Structure:
+                                                    </span>
+                                                    <span class="tx-rubik tx-dark">{{selectedStructure.libelle}}</span>
+                                                </div>
+        
+                                                <!-- Sexe -->
+                                                <div class="my-3  " style="font-size: 16px;">
+                                                    <span class="mr-2">
+                                                        <span clas="">
+                                                            <i class="fad tx-primary fa-text"></i>
+                                                        </span> Cigle:
+                                                    </span>
+                                                    <span class="tx-rubik tx-dark">{{selectedStructure.cigle}}</span>
+                                                </div>
+        
+                                            </div>
+        
+                                            <div class="col">
+                                                <!-- NOm -->
+                                                <div class="my-3 " style="font-size: 16px;">
+                                                    <span class="mr-2">
+                                                        <span clas="">
+                                                            <i class="fad tx-primary fa-wave-square"></i>
+                                                        </span> Type:
+                                                    </span>
+                                                    <span class="tx-rubik tx-dark">{{selectedStructure.type?.libelle}}</span>
+                                                </div>
+        
+        
+                                                <!-- Date de naissance -->
+                                                <div class="my-3 " style="font-size: 16px;" *ngIf="selectedStructure.structure_parent">
+                                                    <span class="mr-2">
+                                                        <span clas="">
+                                                            <i class="fad tx-primary fa-city"></i>
+                                                        </span> Structure parent:
+                                                    </span>
+                                                    <span
+                                                        class="tx-rubik tx-dark">{{selectedStructure.structure_parent?.libelle}}</span>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+
+                                        <div class="px-3 bg-white" *ngIf="selectedStructure.description">
+                                            <h6><i class="fad fa-comments text-primary"></i> Description
+                                            </h6>
+                                            <p class="tx-rubik tx-dark" [innerHTML]="selectedStructure.description">
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="'service'">
+                            <a ngbNavLink [routerLink]="['./', selectedStructure.id]" [fragment]="'service'">
+                                <i class="fal fa-sitemap tx-facebook bold"></i> Service
+                            </a>
+                            <ng-template ngbNavContent>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="'equipe'">
+                            <a ngbNavLink [routerLink]="['./', selectedStructure.id]" [fragment]="'equipe'">
+                                <i class="fal fa-users tx-facebook bold"></i> Equipe
+                            </a>
+                            <ng-template ngbNavContent>
+                                <div class="d-flex  justify-content-between mg-0 pd-0 bg-light bd-b pt-2 pb-2">
+                                    <div class="flex-1">
+                                        <div class="input-group ">
+                                            <input type="text" class="form-control  border-0 bg-white"
+                                                placeholder="Recherches..." [(ngModel)]="userHelper.searchTerm">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <ul class="nav float-right list-inline h-100  justify-content-end">
+                                            <li class="nav-item">
+                                                <button class="btn btn-link" (click)="onChangeView('card')">
+                                                    <span class="tx-echos">
+                                                        <i class="fad fa-th card-1  tx-16"
+                                                            [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                                                            style="padding:6px; border-radius:50%"></i>
+                                                    </span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="btn btn-link" (click)="onChangeView('list')">
+                                                    <span class="tx-echos">
+                                                        <i class="fad fa-list card-1 tx-16 "
+                                                            [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
+                                                            style="padding:6px; border-radius:50%"></i>
+                                                    </span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body" *ngIf="view == 'card'; else listView ">
+                                    <div [scrollWindow]="false" infiniteScroll (scrolled)="userHelper.checkData()"
+                                        class="d-flex scrollable-y-75 pt-2 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                                        <ng-container *ngIf="userHelper.data$ | async as items">
+                                            <ng-container
+                                                *ngIf="items.length; else ((!(userHelper.loading$ | async)) && true ? noItem : loading)">
+                                                <div class="col-xl-4 col-sm-6" [@flyInOut]="'in'"
+                                                    *ngFor="let user of items;trackBy: userHelper.trackByFn">
+                                                    <div class="mycard4 card-profile-1 mb-3">
+                                                        <a class="card-body tx-center p-0"
+                                                            [routerLink]="['/utilisateur',user.id]">
+                                                            <div class="mx-auto my-2 avatar-md" *ngIf="!user.avatar">
+                                                                <div
+                                                                    class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle">
+                                                                    <i class="fas fa-3x fa-user-circle"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex justify-content-center mt-2"
+                                                                *ngIf="user.avatar">
+                                                                <div
+                                                                    class="image_outer_container {{user.online_statut}}">
+                                                                    <div class="icon_statut"></div>
+                                                                    <div class="image_inner_container">
+                                                                        <img [src]="user.avatar">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <h6 class="m-0 tx-primary">{{user.libelle}}
+                                                            </h6>
+                                                            <p class="text-muted mb-0"><i
+                                                                    class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i>
+                                                                {{user.telephone}} </p>
+                                                            <p class="text-muted mb-0"><i
+                                                                    class="fas fa-at tx-15 align-middle pe-2 text-primary"></i>
+                                                                {{user.email}} </p>
+                                                            <div class="p-2 tx-echos tx-center bg-soft-primary">
+                                                                <ng-container
+                                                                    *ngFor="let tag of user.affectation_structures">
+                                                                    <span class="badge badge-primary mx-1 card-2"
+                                                                        container="body" *ngIf="tag.structure"
+                                                                        [ngbTooltip]="tag?.structure?.libelle">
+                                                                        {{tag.structure?.cigle}}{{tag.poste ? '
+                                                                        -'+tag.poste?.libelle : ''}}</span>
+                                                                </ng-container>
+                                                            </div>
+                                                        </a>
+                                                        <div class="pt-2 bg-light ">
+                                                            <ul
+                                                                class="nav float-center list-inline justify-content-center">
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link3" container="body"
+                                                                        ngbTooltip="Details"
+                                                                        (click)="openModal(content, user)">
+                                                                        <span class="tx-echos">
+                                                                            <i class="fas fa-address-card tx-echos tx-echos  bg-white"
+                                                                                style="padding:6px; border-radius:50%"></i>
+                                                                        </span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <ng-container *ngIf="userHelper.loading$ | async">
+                                                    <ng-container *ngTemplateOutlet="loading"></ng-container>
+                                                </ng-container>
+                                                <ng-container *ngTemplateOutlet="loadMore"></ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav"></div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #listView>
+    <div class="card px-0 card-2 card-accent-primary ">
+        <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50 "
+            (scrolled)="userHelper.checkData()" class="card-body p-0 scrollable-y-75 scroll-11">
+            <div class="table-responsive" *ngIf="userHelper.data$ | async as items">
+                <table class="table table-hover text-nowrap mb-0"
+                    *ngIf="items.length; else ((!(userHelper.loading$ | async)) && true ? noItem : loadingLine)">
+                    <thead class="tx-10 tx-uppercase">
+                        <tr>
+                            <th></th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Email</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of items;trackBy: userHelper.trackByFn">
+                            <td [routerLink]="['/utilisateur',user.id]">
+                                <div *ngIf="user.avatar" class="profiles avatar avatar-xs">
+                                    <img class="rounded-circle" container="body" [ngbTooltip]="user.libelle"
+                                        [src]="user.avatar" alt="avatar">
+                                </div>
+                                <i *ngIf="!user.avatar" container="body" [ngbTooltip]="user.libelle"
+                                    class="fad fa-user-circle fa-2x"></i>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-link" [routerLink]="['./',user.id]">
+                                    {{user.libelle}}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-link" [routerLink]="['./',user.id]">
+                                    {{user.email}}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    ngbTooltip="Supprimer"><i class="fal fa-chair-office tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    ngbTooltip="Supprimer"><i class="fal fa-envelope tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    ngbTooltip="Dupliquer"><i class="fal fa-sitemap tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    ngbTooltip="Modifier"><i class="fal fa-at tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    ngbTooltip="Groupes"><i class="fal fa-comment-alt-lines tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    ngbTooltip="Details" (click)="openModal(content, user)"><i
+                                        class="fal fa-address-card tx-second "></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-container *ngIf="userHelper.loading$ | async">
+                    <ng-container *ngTemplateOutlet="loadingLine"></ng-container>
+                </ng-container>
+                <ng-container *ngTemplateOutlet="loadMore"></ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #loadMore>
+    <div class="col-12 d-flex justify-content-center" *ngIf="userHelper.hasMoreData && !(userHelper.loading$ | async)">
+        <button class="btn btn-outline-primary btn-oblong" (click)="userHelper.checkData()">
+            Voir plus
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title">
+            <i class="fa-users-crown fad"></i> Details de l'utilisateur
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss( 'Cross click') ">
+            <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex flex-wrap">
+
+            <div class="col-12 ">
+                <div class="d-flex users-icon mb-2 clickable w-100 align-items-center justify-content-center ">
+                    <span class="icone m-0">
+
+                        <img *ngIf="modalData.avatar" [src]="modalData.avatar" [alt]="modalData.libelle">
+                        <span *ngIf="!modalData.avatar">
+                            <i class="fad fa-user-circle" style="font-size: 200px;"></i>
+                        </span>
+
+                    </span>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-around mb-2">
+            <div class="mr-4 col">
+                <!-- Prenom -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-user"></i>
+                        </span> Prenom:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.prenom}}</span>
+                </div>
+
+                <!-- Sexe -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-credit-card"></i>
+                        </span> Sexe:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.sexe | lowercase}}</span>
+                </div>
+
+                <!-- Telephone -->
+                <div class="my-3" style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-phone-alt"></i>
+                        </span> Telephone:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.telephone}}</span>
+                </div>
+
+
+                <!-- Email  -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-at"></i>
+                        </span> Email:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.email}}</span>
+                </div>
+
+            </div>
+
+            <div class="col">
+                <!-- NOm -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-user-tie"></i>
+                        </span> Nom:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.nom}}</span>
+                </div>
+
+
+                <!-- Date de naissance -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-venus-mars"></i>
+                        </span> Date de naissance:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.date_naissance | date:'mediumDate' : undefined :
+                        'fr'}}</span>
+                </div>
+
+                <!-- Lieu de naissance -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-map-marked-alt"></i>
+                        </span> Lieu de naissance:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.lieu_naissance}}</span>
+                </div>
+
+            </div>
+        </div>
+        <article class="invoice_preview" [class.mb-3]="!last"
+            *ngFor="let affectation_structure of modalData.affectation_structures; let last = last;">
+            <div class="inv_notes">
+                <span class="badge badge-primary">
+                    <i class="fas fa-user-tag"></i> {{ affectation_structure.role?.libelle }}
+                </span>
+                <div class="row d-flex justify-content-between mt-3">
+                    <!-- COntrat -->
+                    <div class="col-4" *ngIf="affectation_structure.structure">
+                        <p class="font-weight-bolder mb-0 tx-facebook">Structure</p>
+                        <p class="tx-light">{{ affectation_structure.structure?.libelle }}</p>
+                    </div>
+
+
+                    <!-- debut -->
+                    <div class="col-4" *ngIf=" affectation_structure.fonctions?.length">
+                        <p class="font-weight-bolder mb-0 tx-facebook">Fonction</p>
+                        <p class="tx-light">
+                            <ng-container *ngFor="let fonction of affectation_structure.fonctions; let last = last;">
+                                {{ fonction?.libelle }}{{(!last) ? ', ' : ' '}}
+                            </ng-container>
+                        </p>
+                    </div>
+
+
+                    <!-- fin -->
+                    <div class="col-4" *ngIf="affectation_structure.poste">
+                        <p class="font-weight-bolder mb-0 tx-facebook">Poste</p>
+                        <p class="tx-light">{{ affectation_structure.poste?.libelle }}</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="modal-footer ">
+        <button [routerLink]="['/utilisateur',modalData.id]" (click)="modal.close( 'Close click')"
+            class="btn btn-sm btn-primary mx-2 "> Voir plus</button>
+        <button type="button " class="btn btn-sm btn-outline-primary "
+            (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div class="col-xl-4 col-sm-6 mg-b-20" *ngFor="let e of [].constructor(5);">
+        <div class="loading-card card h-100 w-100">
+            <div class="image loading-placeholder">
+            </div>
+            <div class="bars">
+                <div class="bar bar1 loading-placeholder"></div>
+                <div class="bar bar2 loading-placeholder"></div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loadingLine>
+    <div *ngFor="let e of [].constructor(5);" class="w-100 rounded-0">
+        <div class="loading-card  w-100  rounded-0">
+            <div class="bars d-flex h-100  p-2">
+                <div class="bar bar2 col-2 loading-placeholder  m-0"></div>
+                <div class="col-2"></div>
+                <div class="bar bar2 col-2 loading-placeholder  m-0"></div>
+            </div>
+        </div>
+    </div>
+</ng-template>

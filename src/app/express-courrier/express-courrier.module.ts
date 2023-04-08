@@ -142,6 +142,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'structure',
+        loadChildren: () =>
+          import('../modules/structure/structure.module').then(
+            (module) => module.StructureModule
+          ),
+      },
+      {
         path: 'page-not-found',
         component: PageNotFoundComponent,
       },

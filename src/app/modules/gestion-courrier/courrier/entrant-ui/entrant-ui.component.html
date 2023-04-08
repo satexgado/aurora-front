@@ -339,8 +339,7 @@
                         </div>
                         <div class="card-body p-0">
                             <div class="p-2" *ngIf="selectedCourrier.showingTask">
-                                <app-courrier-details-tache
-                                    [initCourrier]="selectedCourrier.courrier"></app-courrier-details-tache>
+                                <app-gestionnaire-tache [init]="filterTache"></app-gestionnaire-tache>
                             </div>
 
                             <div *ngIf="!selectedCourrier.showingTask" class="row row-xs clearfix  mg-0 pd-0">

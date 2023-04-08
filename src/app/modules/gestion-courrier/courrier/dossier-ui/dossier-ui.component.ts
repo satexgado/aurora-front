@@ -318,18 +318,6 @@ onSetSelected(structure: IBase) {
   this.selectedStructure = structure;
 }
 
-onChooseCourrier()
-  {
-    const modalRef = this.modalService.open(CourrierChooseMultiItem2Component,{ size: 'lg', centered: true,  backdrop: 'static' });
-    const instance = modalRef.componentInstance as CourrierChooseMultiItem2Component;
-    instance.multipleItemChoosen.subscribe(
-      (data)=>{
-        console.log(data);
-        // this.onSetSelected(data);
-      }
-    )
-  }
-
   onUpdateDossierCourriers(dossier: CrDossier)
   {
     let _result$ = new Subject<Boolean>();

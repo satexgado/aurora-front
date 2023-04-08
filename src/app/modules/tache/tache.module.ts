@@ -44,6 +44,9 @@ import { CommentaireModule } from '../commentaire';
         ZenDocumentModule,
         CommentaireModule
     ],
+    exports: [
+        GestionnaireTacheComponent,
+    ],
     entryComponents: [EditComponent],
 })
 export class GestionnaireTacheModule {

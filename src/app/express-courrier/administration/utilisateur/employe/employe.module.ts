@@ -39,6 +39,9 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     UsersModule,
   ],
-  exports: [RouterModule],
+  exports: [
+    RouterModule,
+    EmployeComponent,
+  ],
 })
 export class EmployeModule {}

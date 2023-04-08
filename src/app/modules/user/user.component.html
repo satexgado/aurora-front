@@ -40,7 +40,7 @@
     </div>
 </div>
 <div class="card-body" *ngIf="view == 'card'; else listView ">
-    <div [scrollWindow]="false" infiniteScroll  (scrolled)="checkData()" class="d-flex scrollable-y-75 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+    <div [scrollWindow]="false" infiniteScroll  (scrolled)="dataHelper.checkData()" class="d-flex scrollable-y-75 justify-content-center flex-wrap  mg-l-0 mg-r-0">
         <ng-container *ngIf="dataHelper.data$ | async as items">
             <ng-container *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loading)">
                 <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'" *ngFor="let user of items;trackBy: dataHelper.trackByFn">
@@ -170,7 +170,7 @@
                         <tr *ngFor="let user of items;trackBy: dataHelper.trackByFn">
                             <td [routerLink]="['./',user.id]">
                                 <div *ngIf="user.avatar" class="profiles avatar avatar-xs">
-                                    <img class="rounded-circle avatar-md" container="body" [ngbTooltip]="user.libelle" [src]="user.avatar" alt="avatar">
+                                    <img class="rounded-circle" container="body" [ngbTooltip]="user.libelle" [src]="user.avatar" alt="avatar">
                                 </div>
                                 <i *ngIf="!user.avatar" container="body" [ngbTooltip]="user.libelle" class="fad fa-user-circle fa-2x"></i>
                             </td>
