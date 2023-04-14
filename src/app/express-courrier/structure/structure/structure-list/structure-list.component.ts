@@ -32,6 +32,20 @@ export class StructureListComponent
         this.data = data;
       }
     );
+
+    this.subscriptions['lastEdited-structures'] = this.service.lastItemEdited$.subscribe(
+      (lastItem) => {
+        console.log(lastItem);
+        let data = this.data ? this.data : [] ;
+        data = data.map(element => {
+            if (element.id === lastItem.id ) {
+                element = lastItem;
+            }
+            return element;
+        });
+        this.data = data;
+      }
+    );
   }
 
   // TODO: Revoir le comportement de la recheche

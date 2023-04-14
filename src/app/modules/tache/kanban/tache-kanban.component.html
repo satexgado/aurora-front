@@ -14,7 +14,7 @@
                 <ng-container *ngIf="taches_enattente && taches_enattente.length; else noItemHeaderOnly">
                     <ul class=" list-group list-group-flush">
                         <li class="list-group-item card card-1 m-0"
-                            *ngFor="let item of taches_enattente;  let i = index; trackBy: trackByFn" cdkDrag>
+                            *ngFor="let item of taches_enattente;  let i = index; trackBy: trackByFn" [cdkDragDisabled]="!(item.inscription_id == authService.user.id)" cdkDrag>
                             <ng-container *ngTemplateOutlet="tacheItem; context: {item: item}"></ng-container>
                         </li>
                     </ul>
@@ -37,7 +37,7 @@
                 <ng-container *ngIf="taches_traitement && taches_traitement.length; else noItemHeaderOnly">
                     <ul class=" list-group list-group-flush">
                         <li class="list-group-item card card-1 m-0"
-                            *ngFor="let item of taches_traitement;  let i = index; trackBy: trackByFn" cdkDrag>
+                            *ngFor="let item of taches_traitement;  let i = index; trackBy: trackByFn" [cdkDragDisabled]="!(item.inscription_id == authService.user.id)" cdkDrag>
                             <ng-container *ngTemplateOutlet="tacheItem; context: {item: item}"></ng-container>
                         </li>
                     </ul>
@@ -60,7 +60,7 @@
                 <ng-container *ngIf="taches_valider && taches_valider.length; else noItemHeaderOnly">
                     <ul class=" list-group list-group-flush">
                         <li class="list-group-item card card-1 m-0"
-                            *ngFor="let item of taches_valider;  let i = index; trackBy: trackByFn" cdkDrag>
+                            *ngFor="let item of taches_valider;  let i = index; trackBy: trackByFn" [cdkDragDisabled]="!(item.inscription_id == authService.user.id)" cdkDrag>
                             <ng-container *ngTemplateOutlet="tacheItem; context: {item: item}"></ng-container>
                         </li>
                     </ul>
@@ -83,7 +83,7 @@
                 <ng-container *ngIf="taches_non_valider && taches_non_valider.length; else noItemHeaderOnly">
                     <ul class=" list-group list-group-flush">
                         <li class="list-group-item card card-1 m-0"
-                            *ngFor="let item of taches_non_valider;  let i = index; trackBy: trackByFn" cdkDrag>
+                            *ngFor="let item of taches_non_valider;  let i = index; trackBy: trackByFn" [cdkDragDisabled]="!(item.inscription_id == authService.user.id)" cdkDrag>
                             <ng-container *ngTemplateOutlet="tacheItem; context: {item: item}"></ng-container>
                         </li>
                     </ul>

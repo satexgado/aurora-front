@@ -50,16 +50,16 @@
                 <ul class="list-unstyled chat-list mt-2 mb-0">
                     <ng-container *ngIf="structure_data$ | async as structures">
                         <ng-container *ngIf="structures.length">
-                            <li class="clearfix" *ngFor="let structure of structures;">
+                            <li class="clearfix" *ngFor="let structure of structures;" [class.bg-facebook]="selectedStructure && structure.id == selectedStructure.id">
                                 <a class="d-flex cursor-pointer" (click)="onSelectStructure(structure)">
                                     <img class="avatar" style="height: 36px; width: 36px;" [src]="structure.image"
                                         alt="avatar">
                                     <div class="about">
                                         <div class="name">{{structure.cigle}}: {{structure.libelle}}</div>
                                         <div class="status">
-                                            <span class=" tx-14 mg-b-5 tx-echos1 pl-2 ">Sous services</span>
+                                            <span class=" tx-14 mg-b-5 pl-2 ">Sous services</span>
                                             <span class="  mg-b-5 tx-warning ">58</span>
-                                            <span class=" tx-14 mg-b-5 tx-echos1 ">Membres</span>
+                                            <span class=" tx-14 mg-b-5 ">Membres</span>
                                             <span class=" mg-b-5 tx-danger ">10 </span>
                                         </div>
                                     </div>
@@ -183,6 +183,14 @@
                                 <i class="fal fa-sitemap tx-facebook bold"></i> Service
                             </a>
                             <ng-template ngbNavContent>
+                                <ng-container *ngIf="sousstructure_data$ | async as sousstructures">
+                                    <div class="d-flex flex-wrap py-3" *ngIf="sousstructures.length; else noItem">
+                                        <div class="col-xl-6 col-sm-6 mb-3"
+                                            *ngFor="let sousstructure of (sousstructures | sortBy:'asc':'libelle')">
+                                            <app-structure-solo [structure]="sousstructure" [isUserEmploye]="authService.structuresID.includes(sousstructure.id)" ></app-structure-solo>
+                                        </div>
+                                    </div>
+                                </ng-container>
                             </ng-template>
                         </li>
                         <li [ngbNavItem]="'equipe'">
@@ -300,6 +308,10 @@
         </div>
     </div>
 </div>
+
+<app-modal-sidebar-alt [configuration]="{ name: 'structure-preview-modal', position: 'right' }">
+    <app-structure-preview></app-structure-preview>
+</app-modal-sidebar-alt>
 
 <ng-template #listView>
     <div class="card px-0 card-2 card-accent-primary ">

@@ -32,7 +32,7 @@ export class CrTache implements ICrTache {
     id: number = 0;
     libelle: string = '';
     description = '';
-    courrier_id: number = 0;
+    courrier_id: number = null;
     inscription_id: number = 0;
     structures: any[] = null;
     statut: string = 'En attente';

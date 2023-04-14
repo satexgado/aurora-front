@@ -11,7 +11,6 @@ import { ApiResponse } from 'src/app/shared/models/ApiResponse';
 })
 export class StructureService extends BaseService<Structure> {
   structureToEdit$ = new ReplaySubject<any>(1);
-
   private _organigrammeData: any[] = [];
   public organigrammeData$ = new ReplaySubject<any[]>(1);
 

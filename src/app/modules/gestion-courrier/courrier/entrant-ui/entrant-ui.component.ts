@@ -298,7 +298,6 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
             this.filterTache = [
               {or: false, filters: [
                 new Filter('courrier_id', this.selectedCourrier.courrier_id, 'eq'),
-                new Filter('is_ins', 1, 'eq'),
                 new Filter('archived_at', '', 'eq')
               ]}
             ];
@@ -348,7 +347,7 @@ export class CourrierEntrantUiComponent extends EditableListComponent implements
       )
       )
 
-    const detailsView = 'details,copie,affectation,schema,tache,commentaire,fichier';
+    const detailsView = 'details,copie,affectation,schema,commentaire,fichier';
     this.subscription.add(
       this.route.fragment.subscribe(fragment => {
         this.fragment = fragment;

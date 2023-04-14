@@ -1,41 +1,57 @@
-<!-- header -->
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Recherche -->
-  <app-search-field></app-search-field>
+<div class="row mg-0 pd-0 clearfix justify-content-between  pt-2 bd-b ">
+  <div class="col-lg-6">
+    <h6 class="tx-echos1"><i class="fas fa-chair-office  bg-white" style="padding:6px; border-radius: 50%; "></i>
+      Gestion de services</h6>
+  </div>
+  <div class="col-lg-6 ">
+    <ul class="nav float-right list-inline justify-content-end">
 
-
-  <!-- CTA -->
-  <div class="cta d-flex">
-    <!-- ajouter -->
-    <div *ngIf="helper.authorisation.check()">
-      <a [routerLink]="['./']"
-         [queryParamsHandling]="'preserve'"
-         [fragment]="'add-structure'"
-         class="btn btn-large btn-custom-primary mr-3">
-        <i class="far fa-plus"></i> Ajouter
-      </a>
-    </div>
-
-    <!-- FIltre -->
-    <app-filter-button></app-filter-button>
+      <li class="nav-item ">
+        <a class="nav-link3 " data-toggle="tab" href="#"><span class="tx-echos">
+            <i class="fas fa-question bg-light tx-16 tx-echos1" style="padding:6px; border-radius:50%"></i>
+          </span></a>
+      </li>
+    </ul>
   </div>
 </div>
 
-<ng-container *ngIf="!loading">
-  <div class="row"
-       *ngIf="!loading && data.length">
-    <div class="col-xl-4 col-sm-6 mb-3"
-         *ngFor="let structure of data">
-      <app-structure-solo [structure]="structure">
-      </app-structure-solo>
+<div class="p-3">
+  <!-- header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <!-- Recherche -->
+    <app-search-field></app-search-field>
+
+
+    <!-- CTA -->
+    <div class="cta d-flex">
+      <!-- ajouter -->
+      <div *ngIf="helper.authorisation.check()">
+        <a [routerLink]="['./']" [queryParamsHandling]="'preserve'" [fragment]="'add-structure'"
+          class="btn btn-large btn-custom-primary mr-3">
+          <i class="far fa-plus"></i> Ajouter
+        </a>
+      </div>
+
+      <!-- FIltre -->
+      <app-filter-button></app-filter-button>
     </div>
   </div>
 
-  <app-missing-data *ngIf="!loading && !data.length"></app-missing-data>
-</ng-container>
+  <ng-container *ngIf="!loading">
+    <div class="row" *ngIf="!loading && data.length">
+      <div class="col-xl-4 col-sm-6 mb-3" *ngFor="let structure of data">
+        <app-structure-solo [structure]="structure">
+        </app-structure-solo>
+      </div>
+    </div>
+
+    <app-missing-data *ngIf="!loading && !data.length"></app-missing-data>
+  </ng-container>
+</div>
 
 
-<div class="my-5"
-     *ngIf="loading">
+
+
+<div class="my-5" *ngIf="loading">
   <app-loading></app-loading>
 </div>

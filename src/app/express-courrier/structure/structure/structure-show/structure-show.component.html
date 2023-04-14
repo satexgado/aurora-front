@@ -54,17 +54,6 @@
             <i class="fal fa-users"></i> Equipe
           </a>
         </li>
-
-
-        <!-- Configuration -->
-        <li class="nav-item"
-            *ngIf="helper.authorisation.check('structure', 'ECRITURE')">
-          <a class="nav-link"
-             [routerLink]="['configurations']"
-             [routerLinkActive]="'active'">
-            <i class="fal fa-cog"></i> Configurations
-          </a>
-        </li>
       </ul>
     </div>
   </div>

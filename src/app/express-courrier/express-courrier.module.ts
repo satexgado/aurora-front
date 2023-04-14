@@ -26,18 +26,6 @@ const routes: Routes = [
     component: ExpressCourrierComponent,
 
     children: [
-      // {
-      //   path: '',
-      //   component: SidebarCourrierComponent,
-      //   outlet: 'sidebar',
-      // },
-      // {
-      //   path: '',
-      //   loadChildren: () =>
-      //     import('../Dashboard/home/home.module').then(
-      //       (module) => module.HomeModule
-      //     ),
-      // },
       {
         path: 'administration',
         loadChildren: () =>
@@ -94,23 +82,13 @@ const routes: Routes = [
             (module) => module.GestionMailModule
           ),
       },
-      // {
-      //   path: 'dashboard',
-      //   loadChildren: () =>
-      //     import('../Dashboard/dashboard/dashboard.module').then(
-      //       (module) => module.DashboardModule
-      //     ),
-      // },
+      
       {
-        path: 'organisation',
-        redirectTo: 'organisation/structures',
-      },
-      {
-        path: 'organisation/structures',
+        path: 'service',
         loadChildren: () =>
-          import('./structure/structure/structure.module').then(
-            (module) => module.StructureModule
-          ),
+        import('./structure/structure/structure.module').then(
+          (module) => module.StructureModule
+        ),
       },
       {
         path: 'messagerie',
@@ -139,13 +117,6 @@ const routes: Routes = [
         loadChildren: () =>
           import('../modules/user/user.module').then(
             (module) => module.UserModule
-          ),
-      },
-      {
-        path: 'structure',
-        loadChildren: () =>
-          import('../modules/structure/structure.module').then(
-            (module) => module.StructureModule
           ),
       },
       {
@@ -209,10 +180,10 @@ const routes: Routes = [
         path: 'users/:id',
         component: UserShowComponent,
       },
-      // {
-      //   path: '**',
-      //   redirectTo: 'page-not-found',
-      // },
+      {
+        path: '**',
+        redirectTo: 'page-not-found',
+      },
     ],
   },
 ];

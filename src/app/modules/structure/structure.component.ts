@@ -10,6 +10,8 @@ import { IUser } from 'src/app/core/models/user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ExpressCourrierService } from 'src/app/express-courrier/express-courrier.service';
+import { AuthService } from 'src/app/express-courrier/auth/auth.service';
+import { map, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-structure',
@@ -32,6 +34,7 @@ import { ExpressCourrierService } from 'src/app/express-courrier/express-courrie
 export class StructureComponent implements OnInit, OnDestroy {
     loading = true;
     structure_data$;
+    sousstructure_data$;
     selectedStructure: any;
     userHelper: ResourceScrollableHelper;
     subscription: Subscription = new Subscription();
@@ -60,6 +63,10 @@ export class StructureComponent implements OnInit, OnDestroy {
       this.userHelper = new ResourceScrollableHelper(new UserFactory(), queryOptions);
       this.userHelper.loadData(1);
       this.selectedStructure = structure;
+
+      this.sousstructure_data$ = this.structureService.getAllSousStructures(structure.id, {}).pipe(
+        shareReplay(1)
+      );
     }
 
     constructor(
@@ -68,7 +75,8 @@ export class StructureComponent implements OnInit, OnDestroy {
         public route: ActivatedRoute,
         public expressService: ExpressCourrierService,
         private router: Router,
-        protected modalService: NgbModal
+        protected modalService: NgbModal,
+        public authService: AuthService
     ) { }
 
     ngOnInit() {

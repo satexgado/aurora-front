@@ -33,6 +33,7 @@ export class GestionnaireTacheComponent implements OnDestroy {
     changeIndicator = 0;
     CrTacheStatut = CrTacheStatut;
     @Input() selectedTache: ICrTache;
+    @Input() courrier_id = null;
     commentData: {filters: filterGrp[], parent: {type: string, id: number}};
     removeAfterArchive=false;
 
@@ -97,8 +98,12 @@ export class GestionnaireTacheComponent implements OnDestroy {
 
     onShowCreateTacheForm() {
       const modalRef = this.modalService.open(EditComponent, { size: 'lg', centered: true,  backdrop: 'static' });
-      modalRef.componentInstance.title = `Creer:`;
-      modalRef.componentInstance.newItem.subscribe(
+      const instance = modalRef.componentInstance as EditComponent;
+      instance.title = `Creer:`;
+      if(this.courrier_id) {
+        instance.courrier_id = this.courrier_id;
+      }
+      instance.newItem.subscribe(
         (data) => {
           data.statut = 'En attente';
           const taches = this._taches$.value ? this._taches$.value : [] ;

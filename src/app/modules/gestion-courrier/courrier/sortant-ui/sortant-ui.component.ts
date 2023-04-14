@@ -80,6 +80,7 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
   parentData: { relationName: string, relationId: number } = null;
   expediteur: ICrCoordonnee;
   subscription: Subscription = new Subscription();
+  filterTache = [];
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -248,6 +249,12 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
       this.uiService.courrierSortantData$.subscribe(
         (courrier) => {
           this.selectedCourrier = courrier;
+          this.filterTache = [
+            {or: false, filters: [
+              new Filter('courrier_id', this.selectedCourrier.courrier_id, 'eq'),
+              new Filter('archived_at', '', 'eq')
+            ]}
+          ];
         }
       )
     );

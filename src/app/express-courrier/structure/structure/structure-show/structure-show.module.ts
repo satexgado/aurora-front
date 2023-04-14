@@ -32,13 +32,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'configurations',
-        loadChildren: () =>
-          import('../../../configurations/configurations.module').then(
-            (module) => module.ConfigurationsModule
-          ),
-      },
-      {
         path: '**',
         redirectTo: 'details',
       },

@@ -205,17 +205,17 @@
                 <div class="p-0 pb-6">
                     <ul class="navbar nav justify-content-center " role="tablist">
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3" container="body" ngbTooltip="Mes structures" [routerLink]="['structure']" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Mes services" [routerLink]="['service']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
                                 <i class="fas fa-chair-office tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3" container="body" ngbTooltip="Organigramme" [routerLink]="['organisation/structures/organigramme']" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Organigramme" [routerLink]="['service/organigramme']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
                                 <i class="fas fa-sitemap tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100 ">
-                            <a class="nav-link3" container="body" ngbTooltip="Liste des structures" routerLinkActive="active" [routerLink]="['organisation/structures/all']">
+                            <a class="nav-link3" container="body" ngbTooltip="Liste des services" routerLinkActive="active" [routerLinkActiveOptions]="linkActiveOptions" [routerLink]="['service/all']">
                                 <i class="fas fa-chart-network tx-echos  tx-16"></i>
                             </a>
                         </li>

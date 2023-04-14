@@ -287,7 +287,7 @@
                                             </button>
                                           </li>
                                         <li class="nav-item ">
-                                            <button class="btn btn-link " container="body" [ngbTooltip]="'Mes taches'"
+                                            <button class="btn btn-link " container="body" [ngbTooltip]="'Taches'"
                                                 (click)="selectedCourrier.showingTask = !selectedCourrier.showingTask">
                                                 <span>
                                                     <i class="fad card-1 fa-tasks  tx-16"
@@ -322,8 +322,7 @@
                         </div>
                         <div class="card-body p-0">
                             <div class="p-2" *ngIf="selectedCourrier.showingTask">
-                                <app-courrier-details-tache
-                                    [initCourrier]="selectedCourrier.courrier"></app-courrier-details-tache>
+                                <app-gestionnaire-tache [courrier_id]="selectedCourrier.courrier_id" [init]="filterTache"></app-gestionnaire-tache>
                             </div>
                             <div *ngIf="!selectedCourrier.showingTask" class="row row-xs clearfix  mg-0 pd-0">
                                 <div class="col-lg-2 p-0 " style="background:#f4f8f9; height:100vh ">
@@ -345,12 +344,6 @@
                                             class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
                                             <a class="nav-link3 tx-echos"><i
                                                     class="fal fa-file-import	 tx-16  mg-r-10"></i> Ampiliation</a>
-                                        </a>
-                                        <a [routerLink]="['./', selectedCourrier.id]" [fragment]="'tache'"
-                                            [class.bg-white]="fragment == 'tache'"
-                                            class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                            <a class="nav-link3 tx-echos"><i
-                                                    class="fal fa-tasks-alt tx-16  mg-r-10"></i> Tâches</a>
                                         </a>
                                         <a [routerLink]="['./', selectedCourrier.id]" [fragment]="'commentaire'"
                                             [class.bg-white]="fragment == 'commentaire'"
@@ -431,10 +424,6 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div *ngSwitchCase="'tache'">
-                                            <app-courrier-details-my-task
-                                                [initCourrier]="selectedCourrier.courrier"></app-courrier-details-my-task>
                                         </div>
                                         <div *ngSwitchCase="'commentaire'">
                                             <app-courrier-details-comment

@@ -20,7 +20,7 @@ import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/n
 export class EditComponent extends BaseEditComponent  {
   heading = 'tache';
   @Input() item: CrTache = new CrTache();
-  @Input() courrier_id: number;
+  @Input() courrier_id: number = null;
 
   constructor(
     cdRef:ChangeDetectorRef,
@@ -37,7 +37,7 @@ export class EditComponent extends BaseEditComponent  {
     const date_limit = item.date_limit ? item.date_limit : new Date();
     return this.formBuilder.group({
       'date_limit': [date_limit, Validators.required],
-      // 'courrier_id': [courrier_id],
+      'courrier_id': [courrier_id],
       'description': [item.description],
       'libelle': [item.libelle, Validators.required],
       'id': [item.id]

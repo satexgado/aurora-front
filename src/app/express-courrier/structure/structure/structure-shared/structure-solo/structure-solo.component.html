@@ -65,7 +65,7 @@
     <div class="d-flex justify-content-center"
          *ngIf="!ref.hasChildNodes()">
       <!-- Afficher les details -->
-      <a [routerLink]="['/', 'administration', 'composante', 'service','show', structure.id]"
+      <a [routerLink]="['show', structure.id]"
       container="body"
          [ngbTooltip]="'Afficher les details'"
          class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">
@@ -92,15 +92,16 @@
       </a> -->
 
 
-      <ng-container *ngIf="structure.isUserAdmin">
+      <ng-container *ngIf="helper.authorisation.check('structure', 'ECRITURE', structure.id)">
         <!-- Modifier les details -->
-        <a [routerLink]="['./']"
+        <!-- <a [routerLink]='"."'
+           [fragment]="'edit-structure'"
            (click)="edit()"
            container="body"
            [ngbTooltip]="'Modifier les details'"
            class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">
           <i class="far fa-edit"></i>
-        </a>
+        </a> -->
 
 
         <!-- Supprimer  -->
@@ -121,6 +122,10 @@
         *ngIf="isUserEmploye"
         container="body"
         [ngbTooltip]="'Vous appartenez à cette structure'">
-    <i class="fas fa-star tx-light"></i>
+    <i class="fas fa-star"></i>
   </span>
 </div>
+
+
+<a #updateLink class="d-none" [routerLink]='"."'
+[fragment]="'edit-structure'">link</a>

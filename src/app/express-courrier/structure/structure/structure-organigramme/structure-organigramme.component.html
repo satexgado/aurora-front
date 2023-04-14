@@ -1,10 +1,8 @@
 <div>
 
   <drag-scroll class="structures scroll-11" [style]="{ 'height': 100 + 'vh' }">
-    <app-loading *ngIf="loading"></app-loading>
-
     <app-structure-tree [structures]="data" [style]="{ 'zoom': zoom + '%', 'height': 100 + 'vh' }"></app-structure-tree>
-
+    <app-loading *ngIf="loading"></app-loading>
   </drag-scroll>
 
 </div>

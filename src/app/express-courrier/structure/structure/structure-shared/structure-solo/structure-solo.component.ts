@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { TunelService } from 'src/app/express-courrier/messagerie/tunel/tunel.service';
 import { BaseComponent } from 'src/app/shared/base-component/base.component';
 import { StructureService } from '../../structure.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppInjector } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-structure-solo',
@@ -11,22 +13,33 @@ import { StructureService } from '../../structure.service';
 export class StructureSoloComponent extends BaseComponent implements OnInit {
   @Input() structure: any;
   @Input() isUserEmploye: boolean = false;
+  // @ViewChild('updateLink') updateLink: ElementRef;
+
   constructor(
     public structureService: StructureService,
-    public tunelService?: TunelService
+    public tunelService?: TunelService,
   ) {
     super(structureService);
+    const injector = AppInjector.getInjector();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+  }
 
   show() {
-    this.structureService.show(this.structure.id, true).subscribe();
+    this.structureService.singleData = this.structure;
+    this.structureService.show(this.structure.id, true).subscribe(
+      (data)=> {
+      }
+    );
   }
 
   edit(): void {
-    this.structureService.singleData = this.structure;
-    this.helper.modal.show('structure-edit-modal');
+    // this.structureService.singleData = this.structure;
+    // this.structureService.structureToEdit$.next(this.structure);
+    // this.helper.modal.toggle('structure-edit-modal');
+    // this.updateLink.nativeElement.click();
   }
 
   delete(): void {
