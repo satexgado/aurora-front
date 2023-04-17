@@ -249,12 +249,15 @@ export class CourrierSortantUiComponent extends EditableListComponent implements
       this.uiService.courrierSortantData$.subscribe(
         (courrier) => {
           this.selectedCourrier = courrier;
-          this.filterTache = [
-            {or: false, filters: [
-              new Filter('courrier_id', this.selectedCourrier.courrier_id, 'eq'),
-              new Filter('archived_at', '', 'eq')
-            ]}
-          ];
+          if(courrier) {
+            this.selectedCourrier['showingTask'] = false;
+            this.filterTache = [
+              {or: false, filters: [
+                new Filter('courrier_id', this.selectedCourrier.courrier_id, 'eq'),
+                new Filter('archived_at', '', 'eq')
+              ]}
+            ];
+          }
         }
       )
     );

@@ -846,7 +846,7 @@
                 </angular2-multiselect>
             </div>
         </div>
-        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="externe">
             <div class="col-12">
                 <!-- Label -->
                 <label class="control-label" for="coordonnees">
@@ -859,7 +859,7 @@
                 </angular2-multiselect>
             </div>
         </div>
-        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="!externe">
             <div class="col-12">
                 <!-- Label -->
                 <label class="control-label" for="structures">

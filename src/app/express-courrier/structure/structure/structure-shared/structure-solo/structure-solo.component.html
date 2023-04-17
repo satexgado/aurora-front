@@ -36,8 +36,8 @@
     <!-- Body -->
     <div class="text-center">
       <h6 class="tx-rubik card-structure__title">{{ structure.cigle }}</h6>
-      <a (click)="show()"
-         [routerLink]="['./']"
+      <a 
+        [routerLink]="['/service/show', structure.id]"
          [queryParamsHandling]="'preserve'"
          class="tx-light mb-2">{{ structure.libelle }}</a>
     </div>
@@ -65,7 +65,7 @@
     <div class="d-flex justify-content-center"
          *ngIf="!ref.hasChildNodes()">
       <!-- Afficher les details -->
-      <a [routerLink]="['show', structure.id]"
+      <a [routerLink]="['/service/show', structure.id]"
       container="body"
          [ngbTooltip]="'Afficher les details'"
          class="more-structure rounded-circle btn btn-sm btn-outline-primary border mr-2">

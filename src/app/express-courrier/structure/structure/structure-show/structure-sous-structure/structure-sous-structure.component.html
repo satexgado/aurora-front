@@ -2,12 +2,14 @@
   <div class="d-flex justify-content-between mb-3">
     <app-search-field></app-search-field>
 
-    <div class="cta">
-      <a [routerLink]="['./']"
-         [fragment]="'add-structure'"
-         *ngIf="structure?.isUserAdmin"
-         class="btn btn-large btn-custom-primary mr-3"><i class="far fa-plus"></i> Ajouter</a>
-
+    <div class="cta d-flex">
+      <span>
+        <a [routerLink]="['./']"
+        [fragment]="'add-structure'"
+        *ngIf="helper.authorisation.check('structure', 'ECRITURE', structure?.id)"
+        class="btn btn-large btn-custom-primary mr-3"><i class="far fa-plus"></i> Ajouter</a>
+      </span>
+      
 
 
       <app-filter-button></app-filter-button>
@@ -35,10 +37,10 @@
 
 
 
-<app-modal [configuration]="{ name: 'structure-edit-modal', titre: 'Modifier les informations de la structure', icone:'sitemap' }"
+<!-- <app-modal [configuration]="{ name: 'structure-edit-modal', titre: 'Modifier les informations de la structure', icone:'sitemap' }"
            (closed)="helper.navigation.deleteFragmentFromUrl()">
   <app-structure-edit *ngIf="edit"></app-structure-edit>
-</app-modal>
+</app-modal> -->
 
 
 <app-modal-sidebar [configuration]="{ name: 'structure-filter-modal', titre: 'Filtre', icone:'sitemap' }"

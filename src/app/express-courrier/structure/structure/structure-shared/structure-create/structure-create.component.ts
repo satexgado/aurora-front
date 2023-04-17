@@ -32,12 +32,19 @@ export class StructureCreateComponent
   }
 
   initForm(structure?: any): void {
+    let parent;
+    if(this.ancestor) {
+      parent = [this.ancestor];
+    } else {
+      parent = structure && structure.parent ? [structure.parent] : null;
+    }
+
     this.form = this.fb.group({
       libelle: [structure?.libelle, Validators.required],
       type: [structure ? [structure.type] : null, [Validators.required]],
       cigle: [structure?.cigle, Validators.required],
       description: [structure?.description, Validators.required],
-      parent: [structure && structure.parent ? [structure.parent] : null, Validators.required],
+      parent: [parent, Validators.required],
       // image: [structure?.libelle],
     });
   }
