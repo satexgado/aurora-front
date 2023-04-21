@@ -1,9 +1,15 @@
 import { ChartType, ValeurEnum } from './../../../chart-enumeration';
 import { DashboardService } from './../../dashboard.service';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { QualiteEnum } from '../../../chart-enumeration';
 import { ChartFormData } from '../../../chart-interface';
+import { BehaviorSubject } from 'rxjs';
+import { ChooseStateComponent } from 'src/app/modules/chart-shared/choose-state/choose-state.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SavedState } from 'src/app/core/models/saved-state.model';
+import { decycle } from 'src/app/shared/helperfonction';
+import { SavedStateFactory } from 'src/app/core/services/saved-state.factory';
 
 
 @Component({
@@ -75,8 +81,9 @@ export class ChoosingComponent implements OnInit {
   configForm: FormGroup;
   chartType = ChartType;
   @Output() chartSelect: EventEmitter<any> = new EventEmitter();
+  @Input() externe = 1;
 
-  constructor(private formbuilder: FormBuilder, private service: DashboardService) { }
+  constructor(private formbuilder: FormBuilder, private service: DashboardService,protected modalService: NgbModal) { }
 
   ngOnInit() {
     const formData = this.service.chartFormData;
@@ -192,4 +199,56 @@ export class ChoosingComponent implements OnInit {
     this.service.chartFormData  = JSON.parse(JSON.stringify(this.configForm.value));
     this.chartSelect.emit(this.configForm.value);
   }
+
+  onOpenStateModal()
+  {
+    const modalRef = this.modalService.open(ChooseStateComponent,{ size: 'lg', centered: true,  backdrop: 'static' });
+    const instance = modalRef.componentInstance as ChooseStateComponent;
+    instance.canAddItem = true;
+
+    instance.dataSource$ = this.externe ? this.service.allSavedStateEntrants$ : this.service.allSavedStateInternes$;
+    instance.formLibelle = '';
+    instance.title = 'Sauvegarder les parametres';
+    instance.itemCreated.subscribe(
+      (data: {libelle: string})=> {
+        let savedState = new SavedState();
+        savedState.libelle = data.libelle;
+        savedState.module = 'courrier entrant';
+        savedState.state = JSON.stringify(decycle(this.configForm.value, undefined));
+        const savedStateService = new SavedStateFactory();
+        savedStateService.create(savedState).subscribe(
+          (newState)=> {
+            if(this.externe) {
+              this.service.addSavedStateEntrant(newState);
+            } else {
+              this.service.addSavedStateInterne(newState);
+            }
+          }
+        );
+
+        instance.onCloseModal('saved');
+    });
+
+    instance.itemChoosen.subscribe(
+      (data: SavedState)=> {
+        this.service.chartFormData  = data.retroState;
+        this.ngOnInit();
+      }
+    );
+
+    instance.itemRemove.subscribe(
+      (data: SavedState)=> {
+        const savedStateService = new SavedStateFactory();
+        savedStateService.delete(data.id).subscribe(
+          ()=> {
+            if(this.externe)  {
+              this.service.removeSavedStateEntrant(data.id);
+            } else {
+              this.service.removeSavedStateInterne(data.id);
+            }
+          }
+        );
+      }
+    )
+  };
 }

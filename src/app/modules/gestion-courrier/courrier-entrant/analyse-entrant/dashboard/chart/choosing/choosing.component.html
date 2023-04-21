@@ -70,6 +70,8 @@
                                                             <select class="custom-select" formControlName="type" (change)="reset(dataset, filterIndex)">
                                                                 <option value="annees">Annee</option>
                                                                 <option value="dossiers_id">Dossier</option>
+                                                                <option value="expediteur_externes_id" *ngIf="externe">Expediteur Externe</option>
+                                                                <option value="expediteur_internes_id"  *ngIf="!externe">Expediteur Interne</option>
                                                                 <option value="multiple_mois">Mois</option>
                                                                 <option value="natures_id">Nature</option>
                                                                 <option value="structures_id">Structure</option>
@@ -94,28 +96,36 @@
                                                                       <angular2-multiselect [data]="monthSelectItems" formControlName="value" [settings]="multiParameter2" class="p-0 ">
                                                                       </angular2-multiselect>
                                                                 </div>
+                                                                <div [class.loading]="!(service.allCoordonnees$ | async)" *ngSwitchCase="'expediteur_externes_id'">
+                                                                    <angular2-multiselect [data]="(service.allCoordonnees$ | async) ? (service.allCoordonnees$ | async) : []" formControlName="value" [settings]="multiParameter2" class="p-0 ">
+                                                                    </angular2-multiselect>
+                                                                </div>
+                                                                <div [class.loading]="!(service.allServices$ | async)" *ngSwitchCase="'expediteur_internes_id'">
+                                                                    <angular2-multiselect [data]="(service.allServices$ | async) ? (service.allServices$ | async) : []" formControlName="value" [settings]="multiParameter2" class="p-0 ">
+                                                                    </angular2-multiselect>
+                                                                </div>
                                                                 <div [class.loading]="!(service.allServices$ | async)" *ngSwitchCase="'structures_id'">
-                                                                    <angular2-multiselect [data]="(service.allServices$ | async)" formControlName="value" [settings]="multiParameter2" class="p-0 ">
+                                                                    <angular2-multiselect [data]="(service.allServices$ | async) ? (service.allServices$ | async) : []" formControlName="value" [settings]="multiParameter2" class="p-0 ">
                                                                     </angular2-multiselect>
                                                                 </div>
                                                                 <div [class.loading]="!(service.allDossiers$ | async)" *ngSwitchCase="'dossiers_id'">
-                                                                    <angular2-multiselect [data]="(service.allDossiers$ | async)" formControlName="value" [settings]="multiParameter2" class="p-0 ">
+                                                                    <angular2-multiselect [data]="(service.allDossiers$ | async) ? (service.allDossiers$ | async) : []" formControlName="value" [settings]="multiParameter2" class="p-0 ">
                                                                     </angular2-multiselect>
                                                                 </div>
                                                                 <div [class.loading]="!(service.allTypes$ | async)" *ngSwitchCase="'types_id'">
-                                                                    <angular2-multiselect [data]="(service.allTypes$ | async)" formControlName="value" [settings]="multiParameter2" class="p-0 ">
+                                                                    <angular2-multiselect [data]="(service.allTypes$ | async) ? (service.allTypes$ | async) : []" formControlName="value" [settings]="multiParameter2" class="p-0 ">
                                                                     </angular2-multiselect>
                                                                 </div>
                                                                 <div [class.loading]="!(service.allNatures$ | async)" *ngSwitchCase="'natures_id'">
-                                                                    <angular2-multiselect [data]="(service.allNatures$ | async)" formControlName="value" [settings]="multiParameter2" class="p-0 ">
+                                                                    <angular2-multiselect [data]="(service.allNatures$ | async) ? (service.allNatures$ | async) : [] " formControlName="value" [settings]="multiParameter2" class="p-0 ">
                                                                     </angular2-multiselect>
                                                                 </div>
                                                                 <div [class.loading]="!(service.allUrgences$ | async)" *ngSwitchCase="'urgences_id'">
-                                                                    <angular2-multiselect [data]="(service.allUrgences$ | async)" formControlName="value" [settings]="multiParameter2" class="p-0 ">
+                                                                    <angular2-multiselect [data]="(service.allUrgences$ | async) ? (service.allUrgences$ | async) : []" formControlName="value" [settings]="multiParameter2" class="p-0 ">
                                                                     </angular2-multiselect>
                                                                 </div>
                                                                 <div [class.loading]="!(service.allUsers$ | async)" *ngSwitchDefault>
-                                                                    <angular2-multiselect [data]="(service.allUsers$ | async)" formControlName="value" [settings]="multiParameter2" class="p-0 ">
+                                                                    <angular2-multiselect [data]="(service.allUsers$ | async) ? (service.allUsers$ | async) : []" formControlName="value" [settings]="multiParameter2" class="p-0 ">
                                                                         <c-badge>
                                                                             <ng-template let-item="item">
                                                                                 {{item.prenom}} {{item.nom}}
@@ -158,7 +168,12 @@
             </div>
         </div>
     </div>
-    <button [disabled]="shouldDisableSubmit()" type="button" class="btn btn-primary" (click)="onChartSelected()">Valider</button>
+    <div class="col-12 d-flex justify-content-end">
+        <button type="button" class="btn btn-outline-primary mr-2" (click)="onOpenStateModal()">
+            Sauvegarde <i class="fad fa-save"></i>
+        </button>
+        <button [disabled]="shouldDisableSubmit()" type="button" class="btn btn-primary" (click)="onChartSelected()">Valider</button>    
+    </div>
     <!-- dashboard element -->
 </section>
 

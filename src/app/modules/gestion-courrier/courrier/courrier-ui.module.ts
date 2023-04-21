@@ -27,6 +27,8 @@ import { StatutModule } from '../statut/statut.module';
 import { TypeModule } from '../type/type.module';
 import { ReaffectationUiComponent } from './reaffectation-ui/reaffectation-ui.component'
 import { GestionnaireTacheModule } from 'src/app/modules/tache/tache.module';
+import { ZenDocumentModule } from '../../gestion-document/zen-document.module';
+import { ZenFichierModule } from '../../gestion-document/fichier/fichier.module';
 
 @NgModule({
     declarations: [
@@ -59,7 +61,9 @@ import { GestionnaireTacheModule } from 'src/app/modules/tache/tache.module';
         EtapeModule,
         AnalyseCourrierEntrantModule,
         AnalyseCourrierSortantModule,
-        GestionnaireTacheModule
+        GestionnaireTacheModule,
+        ZenDocumentModule,
+        ZenFichierModule,
     ],
     entryComponents: [],
 })

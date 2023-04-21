@@ -4,15 +4,17 @@ import { CrNatureFactory } from 'src/app/core/services/gestion-courrier/cr-natur
 import { CrStatutFactory } from 'src/app/core/services/gestion-courrier/cr-statut';
 import { CrTypeFactory } from 'src/app/core/services/gestion-courrier/cr-type';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
+import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options';
 import { ChartFormData } from '../chart-interface';
 import { CrCoordonneeFactory } from 'src/app/core/services/gestion-courrier/cr-coordonnee';
 import { UserFactory } from 'src/app/core/services/user.factory';
 import { Factory as AuthAccess} from 'src/app/helpers/factory/factory'
 import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
+import { ISavedState } from 'src/app/core/models/saved-state.model';
+import { SavedStateFactory } from 'src/app/core/services/saved-state.factory';
 
 export interface ListResult {
   current_page: number; data: any; from: number; last_page: number; per_page: number; total: number;
@@ -42,6 +44,7 @@ export class DashboardService {
   private _cacheServices$: Observable<any>;
   private _cacheCoordonnees$: Observable<any>;
   private _cacheDossiers$: Observable<any>;
+  private _cacheSavedStates$: Observable<any>;
 
   chartFormData: ChartFormData;
 
@@ -157,5 +160,73 @@ get allServices$()  {
     }
     return this._cacheCoordonnees$;
   }
+
+  get allSavedStates$() {
+    const queryOptions = new QueryOptions([
+      {
+        or: false, filters: [
+          new Filter('is_ins', false, 'ct'),
+          new Filter('module', 'courrier sortant', 'eq'),
+        ]
+      },
+    ]);
+    queryOptions.sort = [new Sort('updated_at', 'desc')];
+    if (!this._cacheSavedStates$) {
+      this._loading$.next(true);
+      this._cacheSavedStates$ = new SavedStateFactory().list(queryOptions).pipe(
+        shareReplay(1),
+        map(data => data.data)
+      );
+    }
+    return this._cacheSavedStates$;
+  }
+
+  addSavedState(item: ISavedState) {
+    this._cacheSavedStates$.subscribe(
+      (savedStates) => {
+        let data = savedStates ? savedStates : [];
+        data.unshift(item);
+        this._cacheSavedStates$ = of(data);
+      }
+    );
+}
+
+  addSavedStateTo(item: ISavedState, index = 0) {
+    this._cacheSavedStates$.subscribe(
+      (savedStates) => {
+        let data = savedStates ? savedStates : [];
+        data.splice( index, 0, item);
+        this._cacheSavedStates$ = of(data);
+      }
+    );
+  }
+
+  updateSavedState(item: ISavedState) {
+    this._cacheSavedStates$.subscribe(
+      (savedStates) => {
+        let data = savedStates ? savedStates : [];
+        data = data.map(element => {
+          if (element.id === item.id) {
+            element = item;
+          }
+          return element;
+        });
+        this._cacheSavedStates$ = of(data);
+      }
+    );
+  }
+
+  removeSavedState(id: number) {
+    this._cacheSavedStates$.subscribe(
+      (savedStates) => {
+        const data = savedStates ? savedStates : [];
+        const index = data.findIndex(element => element.id === id);
+        data.splice(index, 1);
+        this._cacheSavedStates$ = of(data);
+      }
+    );
+    
+  }
+
 
 }

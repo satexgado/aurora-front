@@ -86,12 +86,12 @@ export class BarComponent extends ChartConfigurationComponent implements AfterVi
           },
           options: {
             scales: {
-                yAxes: [{
+                // yAxes: [{
 
-                  ticks: {
-                    min:0
-                  }
-                }],
+                //   ticks: {
+                //     min:0
+                //   }
+                // }],
               }
           }
         });

@@ -1,6 +1,6 @@
 import { GedPartageFactory } from './../../../core/services/gestion-document/ged-partage.model';
 import { map } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, Renderer2 } from '@angular/core';
 import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options';
 import { SharedBaseComponent } from '../zen-document-share/shared.base.component';
 import { ZenFichierUploadService } from '../fichier/fichier-upload.service';
@@ -12,6 +12,7 @@ import { CrCommentaire, ICrCommentaire } from 'src/app/core/models/gestion-courr
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
 import { NotificationService } from 'src/app/shared';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-fichier-item-card-ui',
@@ -54,7 +55,9 @@ export class FichierItemCardUiComponent implements OnInit {
   constructor(
     public fichierService: ZenFichierUploadService,
     protected modalService: NgbModal,
-    protected notificationService: NotificationService
+    protected notificationService: NotificationService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2
   ) {
     const fichierSharedBaseComponent = new SharedBaseComponent();
     fichierSharedBaseComponent.service = new FichierFactory();
@@ -238,6 +241,12 @@ export class FichierItemCardUiComponent implements OnInit {
     this.showCommentaire = !this.showCommentaire;
     if(this.showCommentaire && this.commentaires == null) {
       this.onLoadCommentaires();
+    }
+
+    if(this.showCommentaire) {
+      this.renderer.addClass(this.document.body, 'main-wrapper');
+    } else {
+      this.renderer.removeClass(this.document.body, 'main-wrapper');
     }
   }
 

@@ -1,1 +1,81 @@
 <router-outlet></router-outlet>
+
+
+<div class="card card-expand w-100">
+    <div class="card-header">
+        <h4 class="card-header-title">
+            courrier
+        </h4>
+        <div class="card-header-btn">
+            <a href="javascript:void(0)"  class="btn"><i class="fal fa-times-circle"></i></a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row" style="height: 100%;">
+            <div class="col-3 d-flex justify-content-center p-5">
+                <i class="fa fa-edit fa-4x"></i>
+            </div>
+            <div class="col-6">
+                <div class="h-100" *ngIf="fichiers">
+                    <div class="d-flex border-bottom sticky-top bg-white">
+                        <div ngbDropdown class="d-inline-block flex-1">
+                            <button type="button" class="btn btn-link" ngbDropdownToggle>
+                              {{filePreview && viewFile == 'preview' ? filePreview.libelle : 'liste des fichiers'}}
+                              </button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                <div class="over">
+                                    <button (click)="onSelectFile(fichier)" *ngFor="let fichier of fichiers; " ngbDropdownItem>{{fichier.libelle}}</button>
+                                    <button (click)="onToggleFileView()" ngbDropdownItem> liste des fichiers
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button (click)="onToggleFileView()" class="btn btn-sm  btn-primary card-1 bd-0 btn-icon mx-2 mg-t-5 mg-b-5">
+                            {{ viewFile == 'preview' ? 'liste' : 'vue'}} <i class="fal"
+                                [ngClass]="viewFile == 'preview' ? 'fa-list' : 'fa-file'"></i>
+                        </button>
+                    </div>
+                    <ng-container [ngSwitch]="viewFile">
+                        <ng-container *ngSwitchCase="'preview'">
+                            <ng-container *ngIf="filePreview">
+                                <ngx-doc-viewer *ngIf="[ 'pdf', 'image' ].includes(filePreview.type.libelle);" [url]="filePreview.fichier" viewer="url" style="width:100%;height:100%;"></ngx-doc-viewer>
+                                <div class="row mx-0 h-50 text-center" *ngIf="![ 'pdf', 'image' ].includes(filePreview.type.libelle); ">
+                                    <div class="col-sm-12 my-auto">
+                                        <i class="fal {{filePreview.type.icon}} fa-4x" style="color: #003d79"></i>
+                                        <br> Aucun Aperçu pour ce type de fichier
+                                        <br>
+                                        <a [href]="filePreview.fichier" target="_blank" class="btn btn-link bd-0 btn-icon mx-2">
+                                            {{filePreview.libelle}}
+                                        </a>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                        <div *ngSwitchDefault>
+                            <div class="card ">
+                                <button (click)="openFileModal() " class="btn btn-sm btn-outline-primary card-1 mx-1 ">
+                                      <i class="fad fa-file-alt "></i>
+                                      Nouveau Fichier
+                                    </button>
+                                <div class="scroll-11 scrollable-y-75 p-3 ">
+                                    <div class="w-100 ">
+                                        <ul class="list-group ">
+                                            <ng-container *ngIf="(fichiers && fichiers.length) else emptyTemplate ">
+                                                <li class="card-1 list-group-item p-2 mb-2 " *ngFor="let fichier of fichiers; ">
+                                                    <app-fichier-item-ui [fichier]="fichier" (fichierDeleteEmitter)="onDeleteFichier($event)" [selectOnly]="true" (fichierSelectEmitter)="onSelectFile($event)"></app-fichier-item-ui>
+                                                </li>
+                                            </ng-container>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col-3 d-flex justify-content-center p-5">
+                <i class="fa fa-paperclip fa-4x"></i>
+            </div>
+        </div>
+    </div>
+</div>

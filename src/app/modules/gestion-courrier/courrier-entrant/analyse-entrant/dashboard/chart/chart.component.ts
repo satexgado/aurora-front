@@ -133,6 +133,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
     const componentRef = this.itemViewContainer.createComponent(componentFactory);
     const comp = componentRef.instance;
     if(comp instanceof ChoosingComponent ) {
+      comp.externe = this.externe;
       comp.chartSelect.subscribe(
         (data: ChartFormData) => {
           this.chartConfig.chartFormData = data;

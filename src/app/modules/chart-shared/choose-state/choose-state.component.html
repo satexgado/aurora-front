@@ -1,0 +1,60 @@
+<div class="modal-header p-1">
+    <h5 class="modal-title title">{{title}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="onCloseModal('Cross click')">
+    <span aria-hidden="true"><i class="icon-close"></i></span>
+  </button>
+</div>
+<div class="modal-body p-0 " [class.loading]="isLoading">
+    <form class="d-flex justify-content-center p-2" *ngIf="canAddItem" [formGroup]="addForm">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" required [formControlName]="'libelle'" placeholder="nouvelle sauvegarde" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}">
+            <button class="btn btn-sm btn-primary" type="button" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Sauvegarder</button>
+        </div>
+    </form>
+    <div *ngIf="items && items.length; else noItem">
+        <div class="card-body p-0">
+            <table class="table table-sm">
+                <tbody>
+                    <tr class="card-1" *ngFor="let item of items;">
+                        <ng-container *ngIf="item.isUpdating; then  formView else dataView "></ng-container>
+                        <ng-template #formView>
+                            <td colspan="2">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" [(ngModel)]="item.text" autofocus (keyup.enter)="quickUpdate(item, item.text)" (focusout)="quickUpdate(item, item.text)" [placeholder]="item.libelle"
+                                        aria-label="Folder">
+                                </div>
+                            </td>
+                        </ng-template>
+                        <ng-template #dataView>
+                            <td class="choose-title" *ngIf="imageCol">
+                                <img style="width: 60px;" src="{{item[imageCol]}}" alt="image for item">
+                            </td>
+                            <td class="tx-16 text-primary align-middle">
+                                {{item.libelle | shorten:30}}
+                                <i *ngIf="!userCanSelect(item)" class="fal fa-check float-right"></i>
+                            </td>
+                            <td class="choose-title" *ngFor="let col of otherCols">
+                                {{col.value[1] ? item[col.value[0]][col.value[1]] : item[col.value[0]] }}
+                            </td>
+                            <td class="text-right">
+                                <a class="btn btn-sm btn-label-primary mx-1" (click)="onChooseItem(item)"><i class="fal fa-check   tx-16" ></i> </a>
+                                <a class="btn btn-sm btn-label-primary mx-1" (click)="item.isUpdating = true"><i class="fal fa-edit   tx-16" ></i> </a>
+                                <a class="btn btn-sm btn-label-danger mx-1" (click)="removeItem(item)"><i class="fal fa-times-octagon  tx-16" ></i> </a>
+                            </td>
+                        </ng-template>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer p-2">
+    <button type="button" class="btn btn-sm btn-outline-primary" *ngIf="createModal" (click)="onShowCreateForm()">Ajouter</button>
+    <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Fermer</button>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

@@ -4,6 +4,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { QualiteEnum } from '../../../chart-enumeration';
 import { ChartFormData } from '../../../chart-interface';
+import { SavedState } from 'src/app/core/models/saved-state.model';
+import { SavedStateFactory } from 'src/app/core/services/saved-state.factory';
+import { decycle } from 'src/app/shared/helperfonction';
+import { ChooseStateComponent } from 'src/app/modules/chart-shared/choose-state/choose-state.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -76,7 +81,7 @@ export class ChoosingComponent implements OnInit {
   chartType = ChartType;
   @Output() chartSelect: EventEmitter<any> = new EventEmitter();
 
-  constructor(private formbuilder: FormBuilder, private service: DashboardService) { }
+  constructor(private formbuilder: FormBuilder, private service: DashboardService, protected modalService: NgbModal) { }
 
   ngOnInit() {
     const formData = this.service.chartFormData;
@@ -192,4 +197,49 @@ export class ChoosingComponent implements OnInit {
     this.service.chartFormData  = this.configForm.value;
     this.chartSelect.emit(this.configForm.value);
   }
+
+  onOpenStateModal()
+  {
+    const modalRef = this.modalService.open(ChooseStateComponent,{ size: 'lg', centered: true,  backdrop: 'static' });
+    const instance = modalRef.componentInstance as ChooseStateComponent;
+    instance.canAddItem = true;
+
+    instance.dataSource$ =  this.service.allSavedStates$;
+    instance.formLibelle = '';
+    instance.title = 'Sauvegarder les parametres';
+    instance.itemCreated.subscribe(
+      (data: {libelle: string})=> {
+        let savedState = new SavedState();
+        savedState.libelle = data.libelle;
+        savedState.module = 'courrier sortant';
+        savedState.state = JSON.stringify(decycle(this.configForm.value, undefined));
+
+        const savedStateService = new SavedStateFactory();
+        savedStateService.create(savedState).subscribe(
+          (newState)=> {
+            this.service.addSavedState(newState);
+          }
+        );
+
+        instance.onCloseModal('saved');
+    });
+
+    instance.itemChoosen.subscribe(
+      (data: SavedState)=> {
+        this.service.chartFormData  = data.retroState;
+        this.ngOnInit();
+      }
+    );
+
+    instance.itemRemove.subscribe(
+      (data: SavedState)=> {
+        const savedStateService = new SavedStateFactory();
+        savedStateService.delete(data.id).subscribe(
+          ()=> {
+            this.service.removeSavedState(data.id);
+          }
+        );
+      }
+    )
+  };
 }

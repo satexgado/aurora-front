@@ -12,6 +12,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChartConfigurationComponent } from './dashboard/chart/chart-configuration/chart-configuration.component';
+import { ChartSharedModule } from 'src/app/modules/chart-shared/chart-shared.module';
+
 @NgModule({
     declarations: [
       DashboardCourrierEntrantComponent,
@@ -27,7 +29,8 @@ import { ChartConfigurationComponent } from './dashboard/chart/chart-configurati
       InlineEditorModule,
       InfiniteScrollModule,
       AngularMultiSelectModule,
-      DragDropModule
+      DragDropModule,
+      ChartSharedModule
     ],
     exports: [
       DashboardCourrierEntrantComponent

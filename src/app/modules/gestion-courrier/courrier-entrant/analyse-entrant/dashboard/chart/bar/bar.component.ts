@@ -85,14 +85,14 @@ export class BarComponent extends ChartConfigurationComponent implements AfterVi
               datasets: datasets
           },
           options: {
-            scales: {
-                yAxes: [{
+            // scales: {
+            //     yAxes: [{
 
-                  ticks: {
-                    min:0
-                  }
-                }],
-              }
+            //       ticks: {
+            //         min:0
+            //       }
+            //     }],
+            //   }
           }
         });
         this.loading = false;
