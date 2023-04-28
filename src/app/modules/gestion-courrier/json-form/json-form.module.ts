@@ -9,6 +9,7 @@ import { JsonFormComponent } from './json-form.component';
 import { JsonFormControlListComponent } from './list/json-form-list.component';
 import { EditComponent} from './list/edit/edit.component'
 import { EditGroupComponent } from './list/edit-group/edit-group.component';
+
 @NgModule({
     declarations: [
         JsonFormComponent,
@@ -22,7 +23,7 @@ import { EditGroupComponent } from './list/edit-group/edit-group.component';
         SharedModule,
         InlineEditorModule,
         InfiniteScrollModule,
-        DragNDropModule,
+        DragNDropModule
     ],
     exports: [
       JsonFormComponent,

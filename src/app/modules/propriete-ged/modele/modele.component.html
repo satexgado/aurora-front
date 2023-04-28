@@ -1,0 +1,82 @@
+<div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+
+    <div class="col-7">
+        <div class="input-group ">
+            <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
+        </div>
+    </div>
+
+    <div class="col-5 ">
+        <ul class="nav float-right list-inline h-100  justify-content-end">
+            <li class="nav-item my-auto">
+                <button class="btn btn-link btn-yeto btn-oblong card-1" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();">
+                    Ajouter
+                    <i class="fal fa-plus-circle tx-16" ></i>
+                </button>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div class="card px-0 card-2 card-accent-primary " [class.loading]="dataHelper.loading$ | async">
+    <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-11">
+        <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+            <table class="table table-hover text-nowrap table-striped mb-0" *ngIf="items.length; else noItem">
+                <thead class="tx-uppercase  ">
+                    <tr>
+                        <th scope="col">
+                            <strong>Nature</strong>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let nature of items;trackBy: dataHelper.trackByFn">
+                        <td>
+                            <button class="btn  btn-link" (click)="openModal(content, nature)">
+                              {{nature.libelle}}
+                            </button>
+                        </td>
+                        <td>
+                            <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(nature) "><i class="fal fa-times-square tx-second "></i></a>
+                            <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Dupliquer'" (click)="onShowCreateForm(nature) "><i class="fal fa-clone tx-second "></i></a>
+                            <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Modifier'" (click)="onShowUpdateForm(nature) "><i class="fal fa-edit tx-second "></i></a>
+                            <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Details'" (click)="openModal(content, nature)"><i class="fal fa-search tx-second "></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title ">
+            {{modalData.libelle}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss( 'Cross click') ">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+    </div>
+    <div class="modal-body p-0">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="modalData.description">
+                <div class="tx-yeto2"><i class="fal fa-info-square text-info mx-2"></i> Description </div>
+                <div class="">
+                    {{modalData.description}}
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button>
+        <button type="button " class="btn btn-sm btn-outline-primary " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>

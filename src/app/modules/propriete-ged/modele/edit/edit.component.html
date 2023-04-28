@@ -1,0 +1,103 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label for="">Image</label>
+                    <app-image-upload formControlName="image" [image]="editForm.get('image').value"></app-image-upload>
+                    <small class="form-text text-muted">Format autorisé PNG, GIF</small>
+                    <div class="invalid-feedback d-block">
+                        <ng-container *ngIf="hasError('image', 'required')">Veuillez choisir une image</ng-container>
+                        <ng-container *ngIf="hasError('image', 'requiredFileType')">Seulement PNG, Gif</ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="allowed_type">Type de fichier autorisé</label>
+                    <div class="d-flex justify-content-start flex-wrap">
+                        <app-custom-checkbox [formControlName]="'allowed_type'" [items]="allTypeFichiers"></app-custom-checkbox>
+                    </div>
+                    <div *ngIf="shouldShowRequiredError('allowed_type')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <article class="invoice_preview px-4 mb-4">
+                <div class="inv_notes">
+                    <span class="badge badge-info">Information</span>
+                    <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                        <div class="col-12">
+                            <label class="control-label" for="salle">Modele</label>
+                            <input type="text" autofocus class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                            <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
+                        </div>
+                    </div>
+                    <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                        <div class="col-12">
+                            <label class="control-label" for="description">Description<small></small></label>
+                            <textarea name="description" class="form-control  form-control-sm" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'description'), 'is-valid': isValid('description')}"></textarea>
+                            <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez remplir ce champ.</div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="invoice_preview">
+                <div class="inv_notes info">
+                    <span class="badge badge-info">Champ supplémentaire</span>
+                    <div class="table-responsive" formArrayName="form_field">
+                        <table class="table table-sm table-stripped table-hover text-nowrap" *ngIf="editForm.get('form_field').controls && editForm.get('form_field').controls.length">
+                            <thead>
+                                <tr>
+                                    <td>libelle</td>
+                                    <td>type</td>
+                                    <td>obligatoire</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr [@flyInOut]="'in'" *ngFor="let point_arret of editForm.get('form_field').controls; let y = index;" [formGroupName]="y">
+                                    <td>
+                                        <input type="text" [formControlName]="'name'" autofocus class="form-control form-control-sm">
+                                    </td>
+                                    <td>
+                                        <select mySelectFirstOption [formControlName]="'type'" class="custom-select no-radius">
+                                            <option disabled  value=""> Selectionner</option>
+                                            <option [value]="typeEnum.text">Texte</option>
+                                            <option [value]="typeEnum.email">Email</option>
+                                            <option [value]="typeEnum.number">Nombre</option>
+                                            <option [value]="typeEnum.textarea">Long Texte</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" [formControlName]="'required'" class="custom-control-input" id="customSwitch{{y}}">
+                                            <label class="custom-control-label" for="customSwitch{{y}}">obligatoire</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i (click)="removeFormField(y)" class="fal fa-minus-square fal fa-minus-square fa-2x m-2 text-danger cursor-pointer"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button (click)="addFormField()" class="btn btn-light m-2" style="font-size: 13px"> <i class="fal fa-layer-plus" style="color:   #99600b    "></i> Ajouter</button>
+                    </div>
+                </div>
+
+            </article>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+</div>
