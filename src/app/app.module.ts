@@ -20,17 +20,31 @@ import { TemplateWritomeComponent } from './template-writome/template.component'
 registerLocaleData(localeFr, 'fr');
 
 const routes: Routes = [
-  {
+    {
+      path: 'config',
+      loadChildren: () =>
+        import('./modules/propriete-ged/propriete-ged.module').then(
+          (module) => module.ProprieteGedModule
+        ),
+    },
+   {
     path: '',
+    component: TemplateWritomeComponent
+   },
+   {
+    path: 'document',
+    data: {
+      topbar: 'document',
+      guards: [{
+        scope: 'fichier',
+        access: 'LECTURE'
+      }]
+    },
     loadChildren: () =>
-      import('./modules/propriete-ged/propriete-ged.module').then(
-        (module) => module.ProprieteGedModule
+      import('./modules/gestion-document/zen-document.module').then(
+        (m) => m.ZenDocumentModule
       ),
-  },
-  //  {
-  //   path: '',
-  //   component: TemplateWritomeComponent
-  //  }
+    },
   // {
   //   path: 'authentification',
   //   loadChildren: () =>

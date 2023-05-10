@@ -1,53 +1,125 @@
-<div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+<div class=" row bg-white " style="z-index: auto !important;">
+    <div class="col-lg-9 pt-2 tx-echos1">
+        <h6 class=""><i class="fas fa-download tx-20" style="padding:6px; border-radius: 50%; "></i>Mon
+            Espace : Téléchargements
+        </h6>
+    </div>
+    <div class="col-lg-3    ">
 
-    <div class="col-7">
+    </div>
+</div>
+<div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4">
+
+    <div class="col-lg-5 bd-b">
         <div class="input-group ">
-            <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
+            <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
         </div>
     </div>
 
-    <div class="col-5 ">
-        <ul class="nav float-right list-inline h-100  justify-content-end">
-            <li class="nav-item my-auto">
-                <button class="btn btn-link btn-yeto btn-oblong card-1" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();">
-                    Ajouter
-                    <i class="fal fa-plus-circle tx-16" ></i>
-                </button>
+    <div class="col-lg-7 bd-b">
+        <ul class="nav float-right list-inline justify-content-end">
+            <li class="nav-item ">
+                <a class="nav-link3 " data-toggle="tab" href="#liste_entree">
+                    <span class="tx-echos1">
+                        <i class="fas fa-th tx-echos1  tx-16 bg-white"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#card_entree"><span class="tx-echos1">
+                        <i class="fas fa-list tx-echos1  tx-16 bg-white"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#groupe"><span class="tx-echos1">
+                        <i class="fas fa-send-back bg-white tx-16 tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#groupe"><span class="tx-echos1">
+                        <i class="fas fa-folder-open bg-white tx-16 tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#"><span class="tx-echos1">
+                        <i class="fas fa-calendar-alt bg-white tx-16 tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#"><span class="tx-echos1">
+                        <i class="fas fa-chair-office bg-light tx-16 tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#"><span class="tx-echos1">
+                        <i class="fas fa-user  tx-16 bg-white tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#filter"><span class="tx-echos1">
+                        <i class="fas fa-filter  tx-16 bg-white tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <button class="nav-link3 cursor-pointer btn btn-outline-primary" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();"><span class="tx-echos1">
+                        <i class="fas fa-plus-circle  tx-16 bg-white tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></button>
             </li>
         </ul>
     </div>
-
 </div>
-<div class="card px-0 card-2 card-accent-primary " [class.loading]="dataHelper.loading$ | async">
+<div  [class.loading]="dataHelper.loading$ | async">
     <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-11">
-        <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
-            <table class="table table-hover text-nowrap table-striped mb-0" *ngIf="items.length; else noItem">
-                <thead class="tx-uppercase  ">
-                    <tr>
-                        <th scope="col">
-                            <strong>Nature</strong>
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let nature of items;trackBy: dataHelper.trackByFn">
-                        <td>
-                            <button class="btn  btn-link" (click)="openModal(content, nature)">
-                              {{nature.libelle}}
-                            </button>
-                        </td>
-                        <td>
-                            <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(nature) "><i class="fal fa-times-square tx-second "></i></a>
-                            <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Dupliquer'" (click)="onShowCreateForm(nature) "><i class="fal fa-clone tx-second "></i></a>
-                            <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Modifier'" (click)="onShowUpdateForm(nature) "><i class="fal fa-edit tx-second "></i></a>
-                            <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Details'" (click)="openModal(content, nature)"><i class="fal fa-search tx-second "></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <ng-container  *ngIf="dataHelper.data$ | async as items">
+            <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4" *ngIf="items.length; else noItem" >
+                <div class="col-lg-3 p-2" *ngFor="let modele of items;trackBy: dataHelper.trackByFn">
+                    <div class="card-body text-center p-2 bg-white bd-b">
+                        <img [src]="modele.image" alt="" class="img-fluid avatarmodele">
+                    </div>
 
-        </div>
+                    <div class=" text-center p-3 bg-white">
+                        <span class="tx-echos1 tx-bold"> {{modele.libelle}}</span>
+
+                        <p class="">
+                            <span class=""> <i class="fas fa-dot-circle tx-echos1 bg-light"></i>
+                            </span>
+                            <span class=""> || </span>
+                            <span class="tx-bold"> <i class="fas fa-dot-circle tx-echos1 bg-light"
+                                    style="padding:6px; border-radius:50%"></i> </span>
+                        </p>
+                    </div>
+                    <div class="pt-2 bg-light ">
+                        <ul class="nav float-center list-inline justify-content-center">
+                            <li class="nav-item">
+                                <a class="nav-link3" container="body" ngbTooltip="Modifier" (click)="onShowUpdateForm(modele)">
+                                    <span class="tx-echos">
+                                      <i class="fas fa-edit tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link3" container="body" ngbTooltip="Dupliquer" (click)="onShowCreateForm(modele)">
+                                    <span class="tx-echos">
+                                      <i class="fas fa-clone tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link3" container="body" ngbTooltip="Supprimer" (click)="onDelete(modele)">
+                                    <span class="tx-echos">
+                                      <i class="fas fa-times-square tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+    
+            </div>
+        </ng-container>
+
     </div>
 </div>
 

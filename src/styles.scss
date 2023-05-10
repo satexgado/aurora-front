@@ -782,3 +782,44 @@ $color-text-message--reverse: #1f1f1f;
     transform: translateX(100%);
   }
 }
+
+.users-grouped {
+  &,
+  &--max {
+    display: flex;
+    img {
+      height: 35px;
+      width: 35px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      object-fit: cover;
+      &:not(:first-of-type) {
+        margin-left: -12px;
+      }
+    }
+
+    &__more {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background-color: #ccc;
+      border: 1px solid #ccc;
+      height: 35px;
+      width: 35px;
+      margin-left: -12px;
+    }
+  }
+
+  &--max {
+    img {
+      height: 45px;
+      width: 45px;
+    }
+  }
+
+  &--max &__more {
+    height: 45px;
+    width: 45px;
+  }
+}

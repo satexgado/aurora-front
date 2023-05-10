@@ -55,6 +55,7 @@ export class BasicStoreMultipleFileComponent implements AfterViewInit  {
     for(let i = 0; i < this.fichiers.length; i++) {
       let newFile = new Fichier();
       newFile.libelle = this.fichiers[i].name;
+      newFile.size = this.fichiers[i].size;
       newFile.upload$ = service.upload(
         {
           libelle: this.fichiers[i].name,

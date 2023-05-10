@@ -1,10 +1,10 @@
 import { Factory } from 'src/app/core/services/factory';
 import { GedElementFactory } from 'src/app/core/services/gestion-document/ged-element.factory';
-import { Component, Input, OnInit, ViewChildren } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChildren } from '@angular/core';
 import { CacheService } from 'src/app/shared/services';
 import { NotificationService } from 'src/app/shared';
 import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options';
-import { tap, map, shareReplay } from 'rxjs/operators';
+import { tap, map, shareReplay, share } from 'rxjs/operators';
 import { BehaviorSubject, forkJoin, ReplaySubject } from 'rxjs';
 import { EditComponent as DossierEditComponent} from '../dossier/edit/edit.component'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,7 @@ import { ZenFichierBaseComponent } from '../fichier/fichier-base.component';
 import { ItemSelectHelper } from 'src/app/shared/state';
 import { SharedBaseComponent } from '../zen-document-share/shared.base.component';
 import { ChangeDetectorRef } from '@angular/core';
-import { IFichier } from 'src/app/core/models/gestion-document/fichier.model';
+import { Fichier, IFichier } from 'src/app/core/models/gestion-document/fichier.model';
 import { Dossier, IDossier } from 'src/app/core/models/gestion-document/dossier.model';
 import { FichierFactory } from 'src/app/core/services/gestion-document/fichier.factory';
 import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.factory';
@@ -356,6 +356,46 @@ export class ZenDossierUiComponent implements OnInit {
         }
       )
     }
+  }
+
+  onFileDropped(fichiers) {
+    if(!this.dossier) {
+      this.notificationService.onInfo('choose a folder');
+      return ;
+    }
+    const files: any[] = fichiers;
+    const service = new FichierFactory();
+    for(let i = 0; i<files.length; i++) {
+      let newFile = new Fichier();
+      newFile.libelle = files[i].name;
+      newFile.size = files[i].size;
+      newFile.upload$ = service.upload(
+        {
+          libelle: files[i].name,
+          fichier: files[i],
+          relation_name: 'dossiers',
+          relation_id: this.dossier.id
+        }
+      ).pipe(
+        share()
+        ,tap(
+          (data)=> {
+            // this.notificationService.onSuccess('L\'enregistrement a été effectuer', this.fichiers[i].name);
+          }
+        )
+      );
+      this.fichierService.newFichier.next(newFile);
+      if(!this.fichiers) {
+        this.fichiers = [];
+      }
+      this.fichiers.unshift(newFile);
+      this.changeIndicator++;
+    }
+  }
+
+  // Dragover listener
+  @HostListener('dragenter', ['$event']) onDragOver(evt) {
+    this.openFileModal();
   }
 
   onUpdateDossier(dossier:IDossier) {

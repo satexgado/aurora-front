@@ -1,6 +1,21 @@
 <div class="d-flex" *ngIf="fichier">
-    <div *ngIf="fichier.upload && fichier.upload.state != 'Done'; else details" class="progress w-100">
-        <div class="progress-bar" [class.bg-danger]="!fichier.upload.state" [class.bg-success]="fichier.upload.state == 'DONE'" role="progressbar" style="width: {{fichier.upload.progress}}%;" [aria-valuenow]="fichier.upload.progress" aria-valuemin="0" aria-valuemax="100">{{fichier.upload.progress}}%</div>
+    <div class="w-100 card card-1 p-2" *ngIf="fichier.upload && fichier.upload.state != 'Done'; else details">
+        <div class="d-flex justify-content-between">
+            <h6 class="tx-uppercase tx-12 mg-b-0 tx-gray-500">{{fichier.size && fichier.upload.progress ? ( ((fichier.size*fichier.upload.progress)/100) | formatFileSize) : 0}}/{{ fichier.size | formatFileSize}}</h6>
+            <span class="tx-12 tx-gray-500">{{fichier.upload.progress}}%</span>
+         </div>
+         <div class="d-flex align-items-end justify-content-between mg-b-5">
+            <h5 class="mg-b-0 tx-dark tx-rubik tx-normal"><span class="counter">{{fichier.libelle}}</span></h5>
+            <div class="d-flex align-items-center tx-gray-600">
+              <button class="btn btn-link" *ngIf="fichier.upload.state == 'DONE'"> <i class="fa fa-check-circle text-success"></i></button>   
+              <button class="btn btn-link" *ngIf="!fichier.upload.state" (click)="this.fichier.retryRequest();"> <i class="fa fa-redo"></i></button>                    
+              <button class="btn btn-link" *ngIf="fichier.upload.state == 'IN_PROGRESS'"> <i class="fad fa-spinner-third fa-spin"></i></button>                    
+              <button class="btn btn-link btn-link-danger" *ngIf="fichier.upload.state == 'IN_PROGRESS'"(click)="this.fichier.cancelSubscription()"> <i class="fa fa-times"></i></button>                    
+            </div>
+         </div>
+         <div class="progress ht-3 mg-b-0 op-5">
+            <div class="progress-bar" [class.bg-danger]="!fichier.upload.state" [class.bg-success]="fichier.upload.state == 'DONE'" role="progressbar" [style.width]="fichier.upload.progress+'%'" aria-valuenow="26" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+         </div>
     </div>
 </div>
 
@@ -34,8 +49,7 @@
     <div ngbDropdown [container]="'body'" class="no-caret position-absolute" style="top: 0;right: 0;" *ngIf="!noAction">
         <button class="btn btn-oblong bd-0 btn-outline-primary m-2" ngbDropdownToggle>
           <i class="fal fa-comment-alt-dots tx-14 rounded-circle"></i>
-
-      </button>
+        </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
             <button (click)="fichierService.showFichierDetails.next(fichier)" ngbDropdownItem><i
                   class="fal fa-info"></i> Détails

@@ -1,4 +1,4 @@
-<div class="bg-white mt-2 p-2">
+<div class="bg-white p-2">
     <div class="pd-t-5 pd-b-5">
         <h1 class="pd-0 mg-0 tx-20">{{dossier ? (dossier.libelle | titlecase) : title}}
             <button class="btn btn-oblong bd-0 btn-outline-primary" (click)="fichierService.showFolderDetails.next(dossier)" *ngIf="this.dossier"><i
@@ -166,6 +166,9 @@
             </div>
         </ng-container>
     </ng-container>
+</div>
+<div>
+    
 </div>
 
 <ng-template #emptyTemplate>

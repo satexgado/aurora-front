@@ -1,6 +1,6 @@
 import { Fichier } from './../../../../core/models/gestion-document/fichier.model';
 import { ZenFichierUploadService } from './../fichier-upload.service';
-import { Component, ChangeDetectorRef, OnInit, EventEmitter, ElementRef, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, EventEmitter, ElementRef, ViewChild, AfterViewInit, Input, HostListener } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CacheService } from 'src/app/shared/services';
 import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options';
@@ -12,20 +12,20 @@ import { IDossier } from 'src/app/core/models/gestion-document/dossier.model';
 import { IFichier } from 'src/app/core/models/gestion-document/fichier.model';
 import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.factory';
 import { FichierFactory } from 'src/app/core/services/gestion-document/fichier.factory';
+import { DndDirective } from 'src/app/shared/directives';
 
 @Component({
   selector: 'app-store-multiple-file',
-  templateUrl: './edit.component.html'
+  templateUrl: './edit.component.html',
 })
-export class StoreMultipleFileComponent implements OnInit, AfterViewInit  {
-  fichiers: File[] = [];
+export class StoreMultipleFileComponent implements OnInit  {
   dossierId: number = null;
   noDossierSelect = false;
   dossiersRecent: IDossier[];
   allDossiers: IDossier[];
   is_loading_dossier = true;
   @Output() fichierEmitter = new EventEmitter<IFichier>();
-  @ViewChild('filebtn') filebtn: ElementRef;
+  fichierRecent: IFichier[] = [];
   dossierFilter = [
     {or: false, filters:[new Filter('isIns', true, 'eq')]},
   ];
@@ -53,12 +53,16 @@ export class StoreMultipleFileComponent implements OnInit, AfterViewInit  {
     public activeModal: NgbActiveModal)
   {}
 
-
-    ngAfterViewInit(): void {
-    this.filebtn.nativeElement.click();
-    }
-
   ngOnInit() {
+    this.fichierService.newFichier$.subscribe(
+      (data)=> {
+        this.fichierRecent.unshift(data);
+      }
+    )
+    if(this.noDossierSelect) {
+      this.is_loading_dossier = false;
+      return;
+    }
     this.is_loading_dossier = true;
     const service =  new DossierFactory();
     service.list(new QueryOptions(this.dossierFilter).setSort([new Sort('libelle','ASC')])
@@ -86,28 +90,16 @@ export class StoreMultipleFileComponent implements OnInit, AfterViewInit  {
   }
 
   onAddFile(event) {
-    const files = event.target.files;
-    if(!this.fichiers) {
-      this.fichiers = [];
-    }
+    const files: any[] = event.target ? event.target.files: event;
+    const service = new FichierFactory();
     for(let i = 0; i<files.length; i++) {
-      this.fichiers.push(files[i]);
-    }
-  }
-
-  onRemoveFile(i) {
-    this.fichiers.splice(i,1);
-  }
-
-  doCreateItem(closeModalAfter: boolean = true) {
-    const service = new FichierFactory()
-    for(let i = 0; i < this.fichiers.length; i++) {
       let newFile = new Fichier();
-      newFile.libelle = this.fichiers[i].name;
+      newFile.libelle = files[i].name;
+      newFile.size = files[i].size;
       newFile.upload$ = service.upload(
         {
-          libelle: this.fichiers[i].name,
-          fichier: this.fichiers[i],
+          libelle: files[i].name,
+          fichier: files[i],
           relation_name: 'dossiers',
           relation_id: this.dossierId
         }
@@ -121,23 +113,7 @@ export class StoreMultipleFileComponent implements OnInit, AfterViewInit  {
       );
       this.fichierEmitter.emit(newFile);
       this.fichierService.newFichier.next(newFile);
-      // this.fichierService.fichierUpload.push(
-      //   {
-      //     name: this.fichiers[i].name,
-      //     upload: service.upload(
-      //     {
-      //       libelle: this.fichiers[i].name,
-      //       fichier: this.fichiers[i],
-      //       relation_name: 'dossiers',
-      //       relation_id: this.dossierId
-      //     }
-      //   ).pipe(
-      //     share()
-      //   )}
-      // )
     }
-
-    this.activeModal.close('tond')
   }
 
   openDossierModal() {
@@ -153,5 +129,10 @@ export class StoreMultipleFileComponent implements OnInit, AfterViewInit  {
         this.dossierId = data.id;
       }
     )
+  }
+
+  fileOver: boolean;
+  onSetFileOver(status: boolean) {
+    this.fileOver = status;
   }
 }

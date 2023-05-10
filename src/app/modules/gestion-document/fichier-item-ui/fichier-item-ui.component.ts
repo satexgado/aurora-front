@@ -13,6 +13,7 @@ import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
 import { NotificationService } from 'src/app/shared';
 import { DOCUMENT } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-fichier-item-ui',
@@ -279,4 +280,5 @@ export class FichierItemUiComponent implements OnInit {
       }
     )
   }
+  
 }

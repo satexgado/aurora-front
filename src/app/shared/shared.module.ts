@@ -19,7 +19,8 @@ import {
   SelectFirstOptionDirective,
   NgbdSortableHeader,
   AutofocusDirective,
-  HighlightDirective
+  HighlightDirective,
+  DndDirective
 } from './directives';
 import {
   ShortenPipe,
@@ -49,6 +50,7 @@ import { AuthorizationInterceptor } from './interceptors/authorization.intercept
     SelectFirstOptionDirective,
     AutofocusDirective,
     HighlightDirective,
+    DndDirective,
     NgbdSortableHeader,
     ShortenPipe,
     CapitalizeFirstPipe,
@@ -106,6 +108,7 @@ import { AuthorizationInterceptor } from './interceptors/authorization.intercept
     SelectFirstOptionDirective,
     AutofocusDirective,
     HighlightDirective,
+    DndDirective,
     NgbdSortableHeader,
     NgbModule,
     NgxDocViewerModule,

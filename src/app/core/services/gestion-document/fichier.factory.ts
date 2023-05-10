@@ -37,7 +37,7 @@ export class FichierFactory extends Factory<Fichier> {
         observe: 'events',
       }).
       pipe(
-        retryWhen(errors => errors.pipe(delay(5000), take(10))),
+        // retryWhen(errors => errors.pipe(delay(5000), take(10))),
         upload(),
         map(
           (data)=> {

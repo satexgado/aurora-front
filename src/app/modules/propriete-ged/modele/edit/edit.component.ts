@@ -101,9 +101,9 @@ export class EditComponent extends BaseEditComponent  {
     return this.formBuilder.group({
       'removedFormField': [],
       'form_field': form_fields,
-      'image': [item.image, [Validators.required, requiredFileType(['png', 'gif', 'jpeg', 'jpg'])] ],
+      'image': [item.image, [Validators.required, requiredFileType(['png', 'gif', 'jpeg', 'jpg', 'svg'])] ],
       'allowed_type': [item.allowed_type, Validators.required],
-      'description': [item.description, Validators.required],
+      'description': [item.description],
       'libelle': [item.libelle, Validators.required],
       'id': [item.id]
     });

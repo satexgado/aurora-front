@@ -6,6 +6,6 @@ export { AutofocusDirective } from './auto-focus.directive';
 export {
   HighlightDirective
 } from './hightlight.directive';
-
+export { DndDirective } from './dnd.directive';
 
 

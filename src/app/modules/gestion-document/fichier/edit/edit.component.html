@@ -1,10 +1,10 @@
-<div class="modal-header">
+<div class="modal-header bd-0 bg-light">
     <h4 class="modal-title title">Ajouter des fichiers</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.close('Cross click')">
         <span aria-hidden="true"><i class="icon-close"></i></span>
     </button>
 </div>
-<div class="modal-body  tx-dark">
+<div class="modal-body bg-light  tx-dark">
     <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" [class.loading]="is_loading_dossier" *ngIf="!noDossierSelect">
         <div class="col-10">
             <label class="control-label" for="composante_id">Dossier</label>
@@ -24,28 +24,42 @@
             </div>
         </div>
     </div>
-    <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" [class.loading]="is_loading_dossier">
-        <div class="col-10 d-flex justify-content-center">
-            <div class="flexbox p-2">
-                <div class="gap-items mg-t-5">
-                    <button class="publisher-btn btn btn-primary file-group">
-                      <i class="fas fa-paperclip file-browser tx-16 tx-warning"></i>
-                      <input type="file" multiple (change)="onAddFile($event)" #filebtn>Ajouter des Fichiers
-                    </button>
-                </div>
+    <div class="formSep form-group  row pb-0 pt-3" *ngIf="dossierId">
+        <div class="col-12 d-flex justify-content-center">
+            <div (dragover)="onSetFileOver(true);" (dragleave)="onSetFileOver(false);" (drop)="onSetFileOver(false);" class="file-drop-area d-flex w-100 justify-content-center flex-wrap align-items-center">
+                <ng-container [ngSwitch]="fileOver">
+                    <ng-container *ngSwitchCase="true">
+                        <span class="tx-yeto fa-3x fa fa-folder-open"></span>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <span class="fake-btn"><span class="fa" [ngClass]="fileOver ? ' fa-folder-open' : ' fa-folder' "></span> Selectionnez les fichiers</span>
+                        <span class="file-msg">ou glisser et déposez vos fichiers ici</span>
+                    </ng-container>
+                </ng-container>
+                <input class="file-input" type="file" (change)="onAddFile($event)" multiple>
             </div>
-            <div class="flex-wrap scrollable-y-50 scroll-11" *ngIf="fichiers && fichiers.length">
-                <p class="col-12 card-2 p-2 d-flex justify-content-between border border-primary" *ngFor="let item of fichiers; let i = index">
-                    <span style="white-space: unset;">{{item.name}}</span>
-                    <button class="badge bg-soft-danger card-1" (click)="onRemoveFile(i)">
-                      <i class="fal fa-times fa-lg"></i>
-                    </button>
-                </p>
+        </div>
+        <div class="col-12 mt-2" *ngFor="let item of fichierRecent">
+            <div class="card">
+                <div class="card-body w-100">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="tx-uppercase tx-12 mg-b-0 tx-gray-500">{{item.size && item.upload.progress ? ( ((item.size*item.upload.progress)/100) | formatFileSize) : 0}}/{{ item.size | formatFileSize}}</h6>
+                        <span class="tx-12 tx-gray-500">{{item.upload.progress}}%</span>
+                     </div>
+                     <div class="d-flex align-items-end justify-content-between mg-b-5">
+                        <h5 class="mg-b-0 tx-dark tx-rubik tx-normal"><span class="counter">{{item.libelle}}</span></h5>
+                        <div class="d-flex align-items-center tx-gray-600">
+                          <button class="btn btn-link" *ngIf="item.upload.state == 'DONE'"> <i class="fa fa-check-circle text-success"></i></button>   
+                          <button class="btn btn-link" *ngIf="!item.upload.state" (click)="this.item.retryRequest();"> <i class="fa fa-redo"></i></button>                    
+                          <button class="btn btn-link" *ngIf="item.upload.state == 'IN_PROGRESS'"> <i class="fad fa-spinner-third fa-spin"></i></button>                    
+                          <button class="btn btn-link btn-link-danger" *ngIf="item.upload.state == 'IN_PROGRESS'"(click)="this.item.cancelSubscription()"> <i class="fa fa-times"></i></button>                    
+                        </div>
+                     </div>
+                     <div class="progress ht-3 mg-b-0 op-5">
+                        <div class="progress-bar" [class.bg-danger]="!item.upload.state" [class.bg-success]="item.upload.state == 'DONE'" role="progressbar" [style.width]="item.upload.progress+'%'" aria-valuenow="26" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                     </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="modal-footer">
-    <button type="button" (click)="doCreateItem()" [disabled]="!(dossierId && fichiers && fichiers.length)" class="btn btn-sm btn-primary mr-3">Enregistrer et Quitter</button>
 </div>
