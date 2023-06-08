@@ -13,6 +13,7 @@ import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-commentaire';
 import { NotificationService } from 'src/app/shared';
 import { DOCUMENT } from '@angular/common';
+import { GedPartage } from 'src/app/core/models/gestion-document/ged-partage.model';
 
 @Component({
   selector: 'app-fichier-item-card-ui',
@@ -137,8 +138,19 @@ export class FichierItemCardUiComponent implements OnInit {
       ],['personne_inscription']);
       const shared_users = service.list(
         queryOpt
-      ).pipe(map(data=> data.data))
-      fichierSharedBaseComponent.onShare(this.fichier.ged_element,shared_users);
+      ).pipe(map(data=> data.data));
+      fichierSharedBaseComponent.onShare(this.fichier.ged_element,shared_users).subscribe(
+        (data)=> {
+          this.fichier.ged_element.partages = data.map(item=> {
+            let partage = new GedPartage();
+            partage.personne = item;
+            partage.personne_id = item.id;
+            partage.element_id = this.fichier.ged_element.id;
+            return partage;
+          });
+          this.fichierUpdateEmitter.emit(this.fichier);
+        }
+      );
     }
 
   }

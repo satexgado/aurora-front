@@ -14,6 +14,7 @@ import { CrCommentaireFactory } from 'src/app/core/services/gestion-courrier/cr-
 import { NotificationService } from 'src/app/shared';
 import { DOCUMENT } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { GedPartage } from 'src/app/core/models/gestion-document/ged-partage.model';
 
 @Component({
   selector: 'app-fichier-item-ui',
@@ -140,7 +141,18 @@ export class FichierItemUiComponent implements OnInit {
       const shared_users = service.list(
         queryOpt
       ).pipe(map(data=> data.data))
-      fichierSharedBaseComponent.onShare(this.fichier.ged_element,shared_users);
+      fichierSharedBaseComponent.onShare(this.fichier.ged_element,shared_users).subscribe(
+        (data)=> {
+          this.fichier.ged_element.partages = data.map(item=> {
+            let partage = new GedPartage();
+            partage.personne = item;
+            partage.personne_id = item.id;
+            partage.element_id = this.fichier.ged_element.id;
+            return partage;
+          });
+          this.fichierUpdateEmitter.emit(this.fichier);
+        }
+      );    
     }
 
   }

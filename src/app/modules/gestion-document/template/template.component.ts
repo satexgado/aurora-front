@@ -1,5 +1,5 @@
 import { ZenFichierUploadService } from './../fichier/fichier-upload.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Upload } from 'src/app/shared';
 import { Observable } from 'rxjs';
 import { IFichierType } from 'src/app/core/models/gestion-document/fichier-type.model';
@@ -9,6 +9,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
 import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
 import { AuthService } from 'src/app/express-courrier/auth/auth.service';
+import { IFichier } from 'src/app/core/models/gestion-document/fichier.model';
 
 @Component({
   selector: 'app-zen-document-template',
@@ -16,7 +17,7 @@ import { AuthService } from 'src/app/express-courrier/auth/auth.service';
   styleUrls: ['./template.component.css']
 })
 
-export class ZenDocumentTemplateComponent  {
+export class ZenDocumentTemplateComponent implements OnInit {
   fichierUpload:{
     upload: Observable<Upload>,
     name: string
@@ -24,6 +25,9 @@ export class ZenDocumentTemplateComponent  {
 
   allTypeFichiers: IFichierType[] = [];
   allUserStructures: any[] = [];
+  isCollapsed  = true;
+  isHidden = false;
+  fichierRecent: IFichier[] = [];
 
   constructor(
     protected fichierService: ZenFichierUploadService,
@@ -52,41 +56,34 @@ export class ZenDocumentTemplateComponent  {
       }
     )
   }
-  time: number = 0;
-  display ;
-  interval;
 
- startTimer() {
-    console.log("=====>");
-    this.interval = setInterval(() => {
-      if (this.time === 0) {
-        this.time+=5;
-      } else if (this.time === 100){
-        this.time = 0;
-      } else {
-        this.time+=5;
+  ngOnInit(): void {
+    this.fichierService.newFichier$.subscribe(
+      (data)=> {
+        this.fichierRecent.unshift(data);
+        this.isHidden = false;
       }
-      this.display=this.transform(this.time)
-    }, 1000);
+    )
   }
 
-  transform(value: number): string {
-    const minutes: number = Math.floor(value / 60);
-    return minutes + ':' + (value - minutes * 60);
-}
-
-transform2(value: number): string {
-  var sec_num = value; 
-var hours   = Math.floor(sec_num / 3600);
-var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-if (hours   < 10) {hours   = 0;}
-if (minutes < 10) {minutes = 0;}
-if (seconds < 10) {seconds = 0;}
-return hours+':'+minutes+':'+seconds;
-}
-  pauseTimer() {
-    clearInterval(this.interval);
+  checkLength() {
+    return this.fichierRecent.length ? this.fichierRecent.filter(a=>a.upload.state == 'IN_PROGRESS').length : 0;
   }
+
+  checkCompletedLength() {
+    return this.fichierRecent.length ? this.fichierRecent.filter(a=>a.upload.state == 'DONE').length : 0;
+  }
+
+  checkProgress() {
+    return this.fichierRecent.length ? (this.fichierRecent.filter(a=>a.upload.state == 'IN_PROGRESS').map(a => a.upload.progress).reduce(function(a, b){return a + b;}) / this.fichierRecent.filter(a=>a.upload.state == 'IN_PROGRESS').length): 0;
+  }
+
+  checkSize() {
+    return this.fichierRecent.length ? this.fichierRecent.filter(a=>a.upload.state == 'IN_PROGRESS').map(a => a.size).reduce(function(a, b){return a + b;}) : 0;
+  }
+
+  onCloseDowloadPreview() {
+    this.isHidden = true;
+  }
+
 }

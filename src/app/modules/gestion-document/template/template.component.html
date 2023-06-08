@@ -17,7 +17,11 @@
                 </div>
                 <div class="d-flex align-items-center justify-content-between pb-1 pt-1">
                     <a [routerLink]="['mes-partages']" routerLinkActive="active" class="nav-link3 tx-echos1"><i
-                            class="fas fa-share-alt tx-20 pr-2"></i> Partager</a>
+                            class="fas fa-folder-upload tx-20 pr-2"></i> Partager</a>
+                </div>
+                <div class="d-flex align-items-center justify-content-between pb-1 pt-1">
+                    <a [routerLink]="['mes-partages']" routerLinkActive="active" class="nav-link3 tx-echos1"><i
+                            class="fas fa-folder-download tx-20 pr-2"></i> Partagés avec moi</a>
                 </div>
                 <div class="d-flex align-items-center justify-content-between pb-1 pt-1 ">
                     <a [routerLink]="['favoris']" routerLinkActive="active" class="nav-link3 tx-echos1"><i
@@ -61,177 +65,8 @@
 
             </nav>
         </div>
-
-
-
-
     </div>
     <div class="col-lg-10" style="background: #f5f5f4;">
-        <div class="bg-white d-flex justify-content-between p-2">
-            <div class="pageheader">
-                <div class="pd-t-5 pd-b-5">
-                    <h1 class="pd-0 mg-0 tx-20">Acceuil</h1>
-                </div>
-                <div class="breadcrumb pd-0 mg-0">
-                    <a class="breadcrumb-item" [routerLink]="['mon-espace']">
-                        <i class="icon ion-ios-home-outline"></i> Acceuil
-                    </a>
-                    <a class="breadcrumb-item" [routerLink]="['mon-espace']">
-                        Doc 1
-                    </a>
-                    <span class="breadcrumb-item active">
-                        last
-                    </span>
-                </div>
-            </div>
-            <ul class="nav float-right list-inline justify-content-end">
-                <li class="nav-item ">
-                    <button class="btn btn-link">
-                        <span class="tx-echos">
-                            <i class="fad fa-th card-1 bg-echos tx-white  tx-16"
-                                style="padding:6px; border-radius:50%"></i>
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item ">
-                    <button class="btn btn-link">
-                        <span class="tx-echos">
-                            <i class="fad fa-list card-1 tx-16 tx-echos bg-white"
-                                style="padding:6px; border-radius:50%"></i>
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item no-caret">
-                    <button class="btn btn-link">
-                        <span class="tx-echos">
-                            <i class="fal fa-filter bg-warning tx-16 tx-white card-1"
-                                style="padding:6px; border-radius:50%"></i>
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item ">
-                    <button class="btn btn-link"   ngbTooltip="Creer un fichier">
-                        <span class="tx-echos">
-                            <i class="fal fa-file-plus  bg-yeto tx-16 tx-white card-1"
-                                style="padding:6px; border-radius:50%"></i>
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item ">
-                    <button class="btn btn-link" ngbTooltip="Creer un dossier">
-                        <span class="tx-echos">
-                            <i class="fal fa-folder-plus  bg-yeto tx-16 tx-white card-1"
-                                style="padding:6px; border-radius:50%"></i>
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item ">
-                    <button class="btn btn-link"   ngbTooltip="Modifier la structure">
-                        <span class="tx-echos">
-                            <i class="fal fal fa-sitemap  bg-yeto tx-16 tx-white card-1"
-                                style="padding:6px; border-radius:50%"></i>
-                        </span>
-                    </button>
-                </li>
-            </ul>
-            
-            <div class="users-grouped align-items-center">
-                <img container="body" src="http://127.0.0.1:8000/storage/images/a8.jpg">
-                <img container="body" src="http://127.0.0.1:8000/storage/images/a10.jpg">
-                <img container="body" src="http://127.0.0.1:8000/storage/images/a9.jpg">
-                <img container="body" src="http://127.0.0.1:8000/storage/images/a2.jpg">
-                <button class="users-grouped__more"> +4 </button>
-            </div>
-        </div>
-        <div class="file-drop-area d-flex justify-content-center flex-wrap align-items-center">
-            <span class="fake-btn">Choississez un fichier</span>
-            <span class="file-msg">{{'ou glissez le fichier ici'}}</span>
-            <input class="file-input" type="file">
-        </div>
-        <div class="row mx-2">
-            <div class="col-sm-12 col-md-6 col-xl-12 mg-t-40 py-1 bg-white card-1" >
-               <div class="d-flex justify-content-between">
-                  <h6 class="tx-uppercase tx-12 mg-b-0 tx-gray-500">{{time ? (24000*time | formatFileSize) : 0}}/{{ 2400000 | formatFileSize}}</h6>
-                  <span class="tx-12 tx-gray-500">{{time}}%</span>
-               </div>
-               <div class="d-flex align-items-end justify-content-between mg-b-5">
-                  <h5 class="mg-b-0 tx-dark tx-rubik tx-normal"><span class="counter">Adama.pdf</span></h5>
-                  <div class="d-flex align-items-center tx-gray-600">
-                    <button class="btn btn-link" (click)="startTimer()"> <i class="fad fa-spinner-third fa-spin"></i></button>                    
-                    <button class="btn btn-link btn-link-danger" (click)="pauseTimer()"> <i class="fa fa-times"></i></button>                    
-                  </div>
-               </div>
-               <div class="progress ht-3 mg-b-0 op-5">
-                  <div class="progress-bar bg-teal" role="progressbar" [style.width]="time+'%'" aria-valuenow="26" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-               </div>
-            </div>
-            <div class="col-sm-12 col-md-6 col-xl-12 mg-t-40 py-1 bg-white card-1">
-               <div class="d-flex justify-content-between">
-                  <h6 class="tx-uppercase tx-12 mg-b-0 tx-gray-500">1.49 MB/2.7 MB</h6>
-                  <span class="tx-12 tx-gray-500">65%</span>
-               </div>
-               <div class="d-flex align-items-end justify-content-between mg-b-5">
-                  <h5 class="mg-b-0 tx-dark tx-rubik tx-normal"><span class="counter">Adama.pdf</span></h5>
-                  <div class="d-flex align-items-center tx-gray-600">
-                    <div class="d-flex align-items-center tx-gray-600">
-                        <button class="btn btn-link"> <i class="fa fa-redo"></i></button>                    
-                      </div>
-                  </div>
-               </div>
-               <div class="progress ht-3 mg-b-0 op-5">
-                  <div class="progress-bar bg-danger wd-80p" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-               </div>
-            </div>
-            <div class="col-sm-12 col-md-6 col-xl-12 mg-t-40 py-1 bg-white card-1">
-               <div class="d-flex justify-content-between">
-                  <h6 class="tx-uppercase tx-12 mg-b-0 tx-gray-500">2.29 MB/2.29 MB</h6>
-                  <span class="tx-12 tx-gray-500">100%</span>
-               </div>
-               <div class="d-flex align-items-end justify-content-between mg-b-5">
-                  <h5 class="mg-b-0 tx-dark tx-rubik tx-normal"><span class="counter">Adama.pdf</span></h5>
-                  <div class="d-flex align-items-center tx-gray-600">
-                    <button class="btn btn-link"> <i class="fa fa-check-circle text-success"></i></button>                    
-                  </div>
-                </div>
-               <div class="progress ht-3 mg-b-0 op-5">
-                  <div class="progress-bar bg-success wd-100p" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-               </div>
-            </div>
-         </div>
-
-        <div class="card mt-4" style="width: 26rem;">
-            <img src="http://localhost:8000/storage/document/2022/January/SVWY7Mmgeu462cIF4xoCfbDsRWXOtQX8R47HKchq.jpg"
-                class="card-img-top" alt="...">
-            <div class="card-body">
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-trash-alt tx-14 rounded-circle"></i>
-                </button>
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-download tx-14 rounded-circle"></i>
-                </button>
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-comment tx-14 rounded-circle"></i>
-                </button>
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-share-alt tx-14 rounded-circle"></i>
-                </button>
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-edit tx-14 rounded-circle"></i>
-                </button>
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-star tx-14 rounded-circle"></i>
-                </button>
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-eye-slash tx-14 rounded-circle"></i>
-                </button>
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-key tx-14 rounded-circle"></i>
-                </button>
-                <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
-                    <i class="fal fa-sort-alt tx-14 rounded-circle"></i>
-                </button>
-            </div>
-        </div>
         <router-outlet></router-outlet>
     </div>
     <div class="col-lg-3">
@@ -241,9 +76,109 @@
     </div>
 </div>
 
-
+<div class="card mt-4" style="width: 26rem;">
+    <img src="http://localhost:8000/storage/document/2022/January/SVWY7Mmgeu462cIF4xoCfbDsRWXOtQX8R47HKchq.jpg"
+        class="card-img-top" alt="...">
+    <div class="card-body">
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-trash-alt tx-14 rounded-circle"></i>
+        </button>
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-download tx-14 rounded-circle"></i>
+        </button>
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-comment tx-14 rounded-circle"></i>
+        </button>
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-share-alt tx-14 rounded-circle"></i>
+        </button>
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-edit tx-14 rounded-circle"></i>
+        </button>
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-star tx-14 rounded-circle"></i>
+        </button>
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-eye-slash tx-14 rounded-circle"></i>
+        </button>
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-key tx-14 rounded-circle"></i>
+        </button>
+        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-1">
+            <i class="fal fa-sort-alt tx-14 rounded-circle"></i>
+        </button>
+    </div>
+</div>
 <ng-template #structureServiceLink>
     <a [routerLink]="['structure']" class="list-group-item  d-flex align-items-center pt-2 pb-2">
         <i class="fal  fa-chart-network tx-indigo mr-4 list-group-icon "></i> Structures et services
     </a>
 </ng-template>
+
+<div style="position: fixed;
+width: -webkit-fill-available;
+width: -moz-available;
+bottom: 0;
+right: 0;" *ngIf="fichierRecent.length && !isHidden">
+    <div class="d-flex justify-content-end scrollable lower-modal">
+        <div [ngClass]="isCollapsed  ? 'col-12 col-md-6 col-lg-4 col-xl-4 d-flex' : 'col-12 col-md-6'">
+            <div class="card w-100 card-shadow-3">
+                <div class="card-header bg-soft-primary w-100 h-100" [class.align-self-end]="checkLength()">
+                    <ng-container *ngIf="!checkLength()">
+                        <h6 class="card-header-title">
+                            {{checkCompletedLength()}} chargement complet
+                        </h6>
+                        <div class="card-header-btn">
+                            <a  (click)="collapse.toggle()" class="btn card-expand mx-2"  title=""><i class="ion-android-expand"></i></a>
+                            <a (click)="onCloseDowloadPreview()"  class="btn card-remove mx-2"><i class="ion-android-close text-danger"></i></a>
+                        </div>
+                    </ng-container>
+                    
+                    <div class="w-100" *ngIf="checkLength()" (click)="collapse.toggle()">
+                        <div class="d-flex justify-content-between" *ngIf="fichierRecent.length">
+                            <h6 class="tx-uppercase tx-12 mg-b-0 tx-gray-500">{{checkSize() && checkProgress() ? ( ((checkSize()*checkProgress())/100) | formatFileSize) : 0}} / {{checkSize() | formatFileSize}}</h6>
+                            <span class="tx-12 tx-gray-500">
+                                {{checkProgress()}}%
+                            </span>
+                         </div>
+                         <div class="d-flex align-items-end justify-content-between mg-b-5">
+                            <h5 class="mg-b-0 tx-dark tx-rubik tx-normal"><span class="counter">{{checkLength()}} fichiers en chargement</span></h5>
+                            <div class="d-flex align-items-center tx-gray-600">
+                              <button class="btn btn-link" 
+                              [attr.aria-expanded]="!isCollapsed"> <i class="fa fa-minus-square"></i></button>                                      
+                            </div>
+                         </div>
+                         <div class="progress ht-3 mg-b-0 op-5">
+                            <div class="progress-bar" role="progressbar" [style.width]="checkProgress()+'%'" aria-valuenow="26" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                         </div>
+                    </div>
+                </div>
+                <div class="card-body bg-light py-0 scrollable-y-65 scroll-11" #collapse="ngbCollapse" autofocus
+                        [(ngbCollapse)]="isCollapsed" style="position: relative; height: 400px">
+                        <div class="col-12 mt-2" *ngFor="let item of fichierRecent">
+                            <div class="card">
+                                <div class="card-body w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="tx-uppercase tx-12 mg-b-0 tx-gray-500">{{item.size && item.upload.progress ? ( ((item.size*item.upload.progress)/100) | formatFileSize) : 0}}/{{ item.size | formatFileSize}}</h6>
+                                        <span class="tx-12 tx-gray-500">{{item.upload.progress}}%</span>
+                                     </div>
+                                     <div class="d-flex align-items-end justify-content-between mg-b-5">
+                                        <h6 class="mg-b-0 tx-dark tx-rubik tx-normal"><span class="counter">{{item.libelle}}</span></h6>
+                                        <div class="d-flex align-items-center tx-gray-600">
+                                          <button class="btn btn-link py-0" *ngIf="item.upload.state == 'DONE'"> <i class="fa fa-check-circle text-success"></i></button>   
+                                          <button class="btn btn-link py-0" *ngIf="!item.upload.state" (click)="this.item.retryRequest();"> <i class="fa fa-redo"></i></button>                    
+                                          <button class="btn btn-link py-0" *ngIf="item.upload.state == 'IN_PROGRESS'"> <i class="fad fa-spinner-third fa-spin"></i></button>                    
+                                          <button class="btn btn-link py-0 btn-link-danger" *ngIf="item.upload.state == 'IN_PROGRESS'"(click)="this.item.cancelSubscription()"> <i class="fa fa-times"></i></button>                    
+                                        </div>
+                                     </div>
+                                     <div class="progress ht-3 mg-b-0 op-5">
+                                        <div class="progress-bar" [class.bg-danger]="!item.upload.state" [class.bg-success]="item.upload.state == 'DONE'" role="progressbar" [style.width]="item.upload.progress+'%'" aria-valuenow="26" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

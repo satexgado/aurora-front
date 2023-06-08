@@ -33,7 +33,7 @@ export class EditComponent extends BaseEditComponent  {
     const dossierid = this.dossierId ? this.dossierId : item.dossier_id;
     return this.formBuilder.group({
       'couleur': [item.couleur, Validators.required],
-      'description': [item.description, Validators.required],
+      'description': [item.description],
       'libelle': [item.libelle, Validators.required],
       'dossier_id': [dossierid],
       'id': [item.id]

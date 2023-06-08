@@ -96,7 +96,7 @@ export class CacheService {
   /**
    * Checks if the key exists and   has not expired.
    */
-  private hasValidCachedValue(key: string): boolean {
+  hasValidCachedValue(key: string): boolean {
     if (this.cache.has(key)) {
       if (this.cache.get(key).expiry < Date.now()) {
         this.cache.delete(key);

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Dossier, IDossier } from 'src/app/core/models/gestion-document/dossier.model';
 import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.factory';
 import { NotificationService } from 'src/app/shared';
+import { GedPartage } from 'src/app/core/models/gestion-document/ged-partage.model';
 
 @Component({
   selector: 'app-dossier-item-card-ui',
@@ -128,8 +129,19 @@ export class DossierItemCardUiComponent implements OnInit {
       ],['personne_inscription']);
       const shared_users = service.list(
         queryOpt
-      ).pipe(map(data=> data.data))
-      dossierSharedBaseComponent.onShare(this.dossier.ged_element,shared_users);
+      ).pipe(map(data=> data.data));
+      dossierSharedBaseComponent.onShare(this.dossier.ged_element,shared_users).subscribe(
+        (data)=> {
+          this.dossier.ged_element.partages = data.map(item=> {
+            let partage = new GedPartage();
+            partage.personne = item;
+            partage.personne_id = item.id;
+            partage.element_id = this.dossier.ged_element.id;
+            return partage;
+          });
+          this.dossierUpdateEmitter.emit(this.dossier);
+        }
+      );
     }
 
   }
@@ -155,10 +167,6 @@ export class DossierItemCardUiComponent implements OnInit {
   }
 
   onGotoDossier() {
-    if(this.dossier.ged_element.bloquer && !this.dossier.is_user) {
-      return  this.notificationService.onInfo('Dossier verrouiller');
-    }
-
     if(this.navigation) {
       return  this.router.navigate([this.url, this.dossier.id]);
     };

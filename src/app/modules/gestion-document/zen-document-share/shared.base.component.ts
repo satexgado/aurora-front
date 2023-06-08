@@ -211,6 +211,7 @@ export class SharedBaseComponent {
     instance.init = share_users;
     instance.item = item;
     instance.service = new GedElementFactory();
+    return instance.selectedUsersEmetter;
   }
 
   onDelete(item: IBase) {

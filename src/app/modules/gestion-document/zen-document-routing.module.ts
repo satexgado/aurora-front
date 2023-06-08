@@ -59,7 +59,7 @@ const routes: Routes = [
         data: {
           additionnal_filter:
           {or: false, filters: [
-            new Filter('isIns', true, 'eq')
+            new Filter('linkedToUser', true, 'eq')
           ]}
         },
         path:'mon-espace/:id', component: ZenDossierUiComponent,

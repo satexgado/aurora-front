@@ -20,7 +20,7 @@
 </div>
 
 <ng-template #details>
-    <div class="">
+    <div class="" >
         <i class="{{fichier.type?.icon}} mr-2 tx-30 pt-1"></i>
     </div>
     <div class="pd-sm-l-10">
@@ -35,6 +35,15 @@
         <span class=" text-primary mr-2" *ngIf="fichier.user_favoris"><i class="fas fa-star"></i></span>
         <span class=" tx-teal mr-2 " *ngIf="fichier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
     </div>
+    <div class="flex-1 justify-content-center users-grouped align-items-center">
+        <ng-container *ngIf="fichier.ged_element?.partages && fichier.ged_element?.partages.length">
+          <img container="body" *ngFor="let item of fichier.ged_element.partages | slice:0:3"
+            [title]="item.personne.libelle" [src]="item.personne.avatar">
+          <button *ngIf="fichier.ged_element.partages.length > 3" class="users-grouped__more">
+            +{{fichier.ged_element.partages.length-
+            3}} </button>
+        </ng-container>
+      </div>
     <div class="mg-l-auto text-right">
         <button *ngIf="fichier.ged_element?.bloquer && !fichier.is_user; else button" (click)="onCheckPasswordFichier()" class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2">
           <i class="fas tx-14 rounded-circle fa-lock-alt"></i>
@@ -53,7 +62,7 @@
         </ng-container>
         <ng-container *ngSwitchDefault>
             <button (click)="onSelect()" *ngIf="canSelect" class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2">
-                <i class="fal tx-14 rounded-circle" [ngClass]="{'fa-check-square text-primary': selected}" [class.fa-square]="!selected"></i>
+                <i class="fal tx-14 rounded-circle" [ngClass]="{'fa-check-square': selected}" [class.fa-square]="!selected"></i>
             </button>
 
             <button (click)="onToggleShowCommentaire()" ngbTooltip="Voir les commentaires"  container="body" class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2">

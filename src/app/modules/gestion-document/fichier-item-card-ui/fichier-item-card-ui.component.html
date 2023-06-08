@@ -21,29 +21,42 @@
 
 <ng-template #details>
     <div class="card app-file-list w-100" [ngClass]="{'card-3 bd bd-info info': selected}">
-        <div class="app-file-icon bg-light">
-            <i [class]="fichier.type?.icon"></i>
-            <button *ngIf="fichier.ged_element?.bloquer && !fichier.is_user; else button" (click)="onCheckPasswordFichier()" class="btn btn-oblong btn-outline-primary bd-0 btn-icon m-2 position-absolute mr-3" style="top: 0;right:0;">
-              <i class="fas tx-14 rounded-circle fa-lock-alt"></i>
-          </button>
+        <div class="card-body bg-light">
+            <div class="text-center p-4">
+                <i class="{{fichier.type?.icon}} fa-4x"></i>
+                <button *ngIf="fichier.ged_element?.bloquer && !fichier.is_user; else button" (click)="onCheckPasswordFichier()" class="btn btn-oblong btn-outline-primary bd-0 btn-icon m-2 position-absolute mr-3" style="top: 0;right:0;">
+                  <i class="fas tx-14 rounded-circle fa-lock-alt"></i>
+              </button>
+            </div>
         </div>
-        <div class="p-3 small">
-            <button *ngIf="fichier.ged_element?.bloquer && !fichier.is_user; else justTitle" (click)="unlockFirst()" class="d-block mb-1 btn btn-link p-0 tx-gray-700" style="word-break: break-all;white-space: break-spaces;text-align: inherit;">
-              {{ fichier.libelle}}
-          </button>
-            <div class="text-muted">
-                {{fichier.size > 0 ? (fichier.size | formatFileSize) : ''}}
-                <span class="text-dark mr-2" *ngIf="fichier.ged_element?.bloquer"><i class="fas fa-lock-alt"></i></span>
-                <span class=" text-primary mr-2" *ngIf="fichier.ged_element?.user_favoris"><i
-                      class="fas fa-star"></i></span>
-                <span class=" tx-teal mr-2 " *ngIf="fichier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
+        <div class="card-footer justify-content-between text-muted">
+            <div class="small">
+                <button *ngIf="fichier.ged_element?.bloquer && !fichier.is_user; else justTitle" (click)="unlockFirst()" class="d-block mb-1 btn btn-link p-0 tx-gray-700" style="word-break: break-all;white-space: break-spaces;text-align: inherit;">
+                  {{ fichier.libelle}}
+                </button>
+                <div class="text-muted">
+                    {{fichier.size > 0 ? (fichier.size | formatFileSize) : '0'}}
+                    <span class="text-dark mr-2" *ngIf="fichier.ged_element?.bloquer"><i class="fas fa-lock-alt"></i></span>
+                    <span class=" text-primary mr-2" *ngIf="fichier.ged_element?.user_favoris"><i
+                          class="fas fa-star"></i></span>
+                    <span class=" tx-teal mr-2 " *ngIf="fichier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
+                </div>
+            </div>
+            <div class="users-grouped align-items-center">
+                <ng-container *ngIf="fichier.ged_element?.partages && fichier.ged_element?.partages.length">
+                    <img container="body" *ngFor="let item of fichier.ged_element.partages | slice:0:3"
+                        [title]="item.personne.libelle" [src]="item.personne.avatar">
+                    <button *ngIf="fichier.ged_element.partages.length > 3" class="users-grouped__more">
+                        +{{fichier.ged_element.partages.length-
+                        3}} </button>
+                </ng-container>
             </div>
         </div>
     </div>
 </ng-template>
 <ng-template #button>
     <button (click)="onSelect()" *ngIf="canSelect" class="btn btn-oblong btn-outline-primary bd-0 btn-icon m-2 position-absolute" style="top: 0;left: 0;">
-      <i class="fal tx-14 rounded-circle" [ngClass]="{'fa-check-square text-primary': selected}"
+      <i class="fal tx-14 rounded-circle" [ngClass]="{'fa-check-square': selected}"
           [class.fa-square]="!selected"></i>
   </button>
     <div ngbDropdown [container]="'body'" class="no-caret position-absolute" style="top: 0;right: 0;" *ngIf="!noAction">

@@ -1,18 +1,16 @@
-import { Factory } from 'src/app/core/services/factory';
 import { GedElementFactory } from 'src/app/core/services/gestion-document/ged-element.factory';
-import { Component, HostListener, Input, OnInit, ViewChildren } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { CacheService } from 'src/app/shared/services';
 import { NotificationService } from 'src/app/shared';
 import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options';
-import { tap, map, shareReplay, share } from 'rxjs/operators';
-import { BehaviorSubject, forkJoin, ReplaySubject } from 'rxjs';
+import { tap, map, shareReplay, share, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { EditComponent as DossierEditComponent} from '../dossier/edit/edit.component'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StoreMultipleFileComponent } from '../fichier/edit/edit.component';
-import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ZenFichierUploadService } from '../fichier/fichier-upload.service';
 import { ZenFichierBaseComponent } from '../fichier/fichier-base.component';
-import { ItemSelectHelper } from 'src/app/shared/state';
+import { ItemSelectHelper, ResourceScrollableHelper } from 'src/app/shared/state';
 import { SharedBaseComponent } from '../zen-document-share/shared.base.component';
 import { ChangeDetectorRef } from '@angular/core';
 import { Fichier, IFichier } from 'src/app/core/models/gestion-document/fichier.model';
@@ -22,6 +20,8 @@ import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.f
 import { IBase } from 'src/app/core/models/base.interface';
 import { IFichierType } from 'src/app/core/models/gestion-document/fichier-type.model';
 import { FichierTypeFactory } from 'src/app/core/services/gestion-document/fichier-type.factory';
+import { Observable, Subscription } from 'rxjs';
+import { GedElement, IGedElement } from 'src/app/core/models/gestion-document/ged-element.model';
 
 @Component({
   selector: 'app-zen-dossier-ui',
@@ -35,6 +35,15 @@ export class ZenDossierUiComponent implements OnInit {
   fichierSelectHelper = new ItemSelectHelper();
   typeFilterSelectHelper = new ItemSelectHelper();
   showFolder = false;
+  subscription: Subscription = new Subscription();
+  lockedElement: IDossier;
+
+  owner: 'all' | 'mine' | 'shared' = 'all';
+
+  onChangeOwner(owner) {
+    this.owner = owner;
+    this.onloadContent();
+  }
 
   clearDropdownFilter() {
     this.typeFilterSelectHelper.clearSelection();
@@ -43,10 +52,21 @@ export class ZenDossierUiComponent implements OnInit {
 
   parentData: {relationName: string, relationId: number} = null;
   title = 'Acceuil';
-  fichiers: IFichier[];
-  dossier_enfant: IDossier[];
+
+  fichiersHelper: ResourceScrollableHelper;
+  dossiersHelper: ResourceScrollableHelper;
+
   searchTerm: string ='';
-  is_loading_content = true;
+
+  onSetSearchTerm() {
+    if(this.fichiersHelper) {
+      this.fichiersHelper.searchTerm = this.searchTerm;
+    }
+    if(this.dossiersHelper) {
+      this.dossiersHelper.searchTerm = this.searchTerm;
+    }
+  }
+
   dossier: IDossier;
   fichierAdditionalFilter = [];
   dossierAdditionalFilter = [];
@@ -66,11 +86,6 @@ export class ZenDossierUiComponent implements OnInit {
 
   @Input('dossier') set init(dossier: IDossier) {
     this.dossier = dossier;
-    if(!dossier) {
-      this.fichiers = [];
-      this.dossier_enfant = [];
-      return ;
-    }
   }
 
   //fichier Fonction
@@ -98,8 +113,7 @@ export class ZenDossierUiComponent implements OnInit {
           if(this.dossier && this.dossier.id != data) {
             fichiers.forEach(
               (fichier)=> {
-                const index = this.fichiers.findIndex(element => element.id === fichier.id);
-                this.fichiers.splice(index, 1);
+                this.fichiersHelper.removeItem(fichier.id);
               }
             )
             this.fichierSelectHelper.clearSelection();
@@ -111,56 +125,59 @@ export class ZenDossierUiComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data
-      .subscribe((data: { dossier: IDossier }) => {
-        this.dossier = data.dossier;
-        this.dossier_parent = [];
+    this.subscription.add(
+      this.route.data
+        .subscribe((data: { dossier: IDossier }) => {
+          this.dossier = data.dossier;
+          this.dossier_parent = [];
 
-        if(this.route.snapshot.paramMap.get('id') && !this.dossier) {
-          this.folderNotFound = true;
-          return;
-        }
+          if(this.route.snapshot.paramMap.get('id') && !this.dossier) {
+            this.folderNotFound = true;
+            return;
+          }
 
-        this.folderNotFound = false;
+          this.folderNotFound = false;
 
-        if(this.route.routeConfig?.data&&this.route.routeConfig?.data['folder_parent']) {
-          this.route.parent.data.subscribe(
-            (res)=> {
-              let parent = res.data.parent as IBase;
-              this.dossierAdditionalFilter = [{or: false, filters: [
-                new Filter(this.route.routeConfig.data['folder_parent'], parent.id, 'eq')
-              ]}];
-              this.parentData = {
-                relationId: +parent.id,
-                relationName: this.route.routeConfig.data['folder_parent']
-              };
-              this.title = parent.libelle;
-              this.dossierFilter = [
-                {or: false, filters:[
-                  new Filter(this.route.routeConfig.data['folder_parent'], parent.id, 'eq'),
-                  new Filter('noParent', true, 'eq'),
-                ]},
-              ];
-              this.url = res.data.url + '/dossier';
-              // this.noAction = true;
-              this.onloadContent();
-            }
-          )
-          return ;
-        }
+          if(this.route.routeConfig?.data&&this.route.routeConfig?.data['folder_parent']) {
+            this.route.parent.data.subscribe(
+              (res)=> {
+                let parent = res.data.parent as IBase;
+                this.dossierAdditionalFilter = [{or: false, filters: [
+                  new Filter(this.route.routeConfig.data['folder_parent'], parent.id, 'eq')
+                ]}];
+                this.parentData = {
+                  relationId: +parent.id,
+                  relationName: this.route.routeConfig.data['folder_parent']
+                };
+                this.title = parent.libelle;
+                this.dossierFilter = [
+                  {or: false, filters:[
+                    new Filter(this.route.routeConfig.data['folder_parent'], parent.id, 'eq'),
+                    new Filter('noParent', true, 'eq'),
+                  ]},
+                ];
+                this.url = res.data.url + '/dossier';
+                // this.noAction = true;
+                this.onloadContent();
+              }
+            )
+            return ;
+          }
 
-        this.dossierFilter = [
-          {or: false, filters:[
-            new Filter('isIns', true, 'eq'),
-            new Filter('noParent', true, 'eq'),
-          ]},
-        ];
-        this.dossierAdditionalFilter = [{or: false, filters: [
-          new Filter('isIns', true, 'eq'),
-        ]}];
-        this.url = '/document/mon-espace';
-        this.onloadContent();
-      });
+          this.dossierFilter = [
+            {or: false, filters:[
+              new Filter('isIns', true, 'eq'),
+              new Filter('noParent', true, 'eq'),
+            ]},
+          ];
+          // this.dossierAdditionalFilter = [{or: false, filters: [
+          //   new Filter('isIns', true, 'eq'),
+          // ]}];
+          this.url = '/document/mon-espace';
+          this.onloadContent();
+        })
+    );
+    this.subscription.add(
       this.cacheService.get(
         'allTypeFichiers',
         new FichierTypeFactory().list(new QueryOptions().setSort([new Sort('libelle','ASC')])).pipe(
@@ -168,7 +185,45 @@ export class ZenDossierUiComponent implements OnInit {
           map(data => data.data)
         ),
         1800000
-      ).subscribe((data)=>this.typeFichiersList=data);
+      ).subscribe((data)=>this.typeFichiersList=data)
+    );
+
+    this.subscription.add(
+      this.typeFilterSelectHelper.selectedItem$.subscribe(
+        (data: any[])=> {
+          if(this.fichiersHelper) {
+            let temp = '';
+            let i = 0;
+            this.fichiersHelper.clearData();
+            if(data && data.length) {
+              data.forEach((item)=> {
+                i++;
+                temp += item.id+',';
+              });
+            }
+           
+
+            if(i)
+            {
+              temp = temp.substring(0, temp.length - 1);
+            }else{
+              temp = null;
+            }
+
+            if(!temp) {
+              this.fichiersHelper.searchCustomFilterGroup = null;
+            } else {
+              this.fichiersHelper.searchCustomFilterGroup = {or: false, filters: [
+                new Filter('type_id', temp, 'eq')
+              ]};
+            }
+
+            this.fichiersHelper.loadData(1);
+            
+          }
+        }
+      )
+    );
   }
 
   onChangeView(view : 'card' | 'list') {
@@ -178,12 +233,46 @@ export class ZenDossierUiComponent implements OnInit {
 
   onloadContent() {
     if(this.dossier) {
-      this.fichierService.showFolderDetails.next(this.dossier)
+      this.dossier_parent = [];
+      this.lockedElement = null;
+      this.fichierService.showFolderDetails.next(this.dossier);
+      this.checkLockedFolderShit(this.dossier);
+      if(this.lockedElement) {
+        return this.onUnlockFolder();
+      }
       this.onInitFolderContent();
       this.onSetBreadCrum(this.dossier);
       return;
     }
     this.onInitHomeContent();
+  }
+
+  checkLockedFolderShit(dossier: IDossier) {
+    console.log(dossier);
+    if(dossier.ged_element.bloquer && !dossier.is_user) {
+      if(this.cacheService.hasValidCachedValue('unlocked_folder_'+dossier.id)) {
+        console.log('freesenegal');
+        return;
+      }
+      this.lockedElement = dossier;
+    }
+
+    if(dossier.dossier) {
+      this.checkLockedFolderShit(dossier.dossier);
+    }
+  }
+
+  onUnlockFolder() {
+    const dossierSharedBaseComponent = new SharedBaseComponent();
+    dossierSharedBaseComponent.service = new DossierFactory();
+    dossierSharedBaseComponent.onCheckPassword(this.lockedElement).subscribe(
+      (data: IDossier)=> {
+        if(!data.ged_element.bloquer)  {
+          this.cacheService.set('unlocked_folder_'+data.id,true,600000);
+          this.onloadContent();
+        }
+      }
+    );
   }
 
   onSetBreadCrum(dossier: IDossier) {
@@ -194,101 +283,83 @@ export class ZenDossierUiComponent implements OnInit {
   }
 
   onInitHomeContent() {
-    this.is_loading_content = true;
-    this.fichiers = [];
-    const dossierService = new DossierFactory();
-    let observable = [];
 
-    observable.push(
-      dossierService.list(
-        new QueryOptions(
-          [...[
-            {or: false, filters: [
-              new Filter('noParent', true, 'eq'),
-            ]}
-          ], ... this.dossierAdditionalFilter],
-          [
-            'inscription', 'ged_element'
-          ],
-          undefined,
-          undefined,
-          [new Sort('libelle','ASC')]
-        )
-      ).pipe(
-        (tap(
-          (data)=> {
-            this.dossier_enfant = data.data;
-          }
-        ))
-      )
-    )
-
-    forkJoin(observable).subscribe(
-      ()=> {
-        this.is_loading_content = false;
-      }
+    this.dossiersHelper = new ResourceScrollableHelper(
+      new DossierFactory(),  new QueryOptions(
+        [...[
+          {or: false, filters: [
+            new Filter('owner_'+this.owner+'_home', true, 'eq'),
+          ]}
+        ], ... this.dossierAdditionalFilter],
+        [
+          'inscription', 'ged_element'
+        ],
+        undefined,
+        undefined,
+        [new Sort('libelle','ASC')])
     );
+    this.dossiersHelper.withoutPaginate = true;
+    this.dossiersHelper.loadData();
+    
+    this.fichiersHelper = new ResourceScrollableHelper(
+      new FichierFactory(),  new QueryOptions(
+        [...[
+          {or: false, filters: [
+            new Filter('owner_'+this.owner+'_home', true, 'eq'),
+          ]}
+        ], ... this.fichierAdditionalFilter],
+        [
+          'fichier_type', 'inscription', 'ged_element'
+        ],
+        undefined,
+        undefined,
+        [new Sort('libelle','ASC')])
+    );
+
+    this.fichiersHelper.loadData();
+
+    
   }
 
   onInitFolderContent() {
-    this.is_loading_content = true;
-    const fichierService = new FichierFactory();
-    const dossierService = new DossierFactory();
-    let observable = [];
-    observable.push(
-      fichierService.list(
-        new QueryOptions(
-          [...[
-            {or: false, filters: [
-              new Filter('dossier_id', this.dossier.id, 'eq')
-            ]}
-          ], ... this.fichierAdditionalFilter],
-          [
-            'fichier_type', 'inscription', 'ged_element'
-          ],
-          undefined,
-          undefined,
-          [new Sort('libelle','ASC')]
-        )
-      ).pipe(
-        (tap(
-          (data)=> {
-            this.fichiers = data.data;
-            this.cdRef.detectChanges();
-          }
-        ))
+
+    this.dossiersHelper = new ResourceScrollableHelper(
+      new DossierFactory(),  new QueryOptions(
+        [...[
+          {or: false, filters: [
+            new Filter('owner_'+this.owner+'_folder', this.dossier.id, 'eq')
+          ]}
+        ], ... this.dossierAdditionalFilter],
+        [
+          'inscription', 'ged_element'
+        ],
+        undefined,
+        undefined,
+        [new Sort('libelle','ASC')]
+      )
+    );
+    this.dossiersHelper.withoutPaginate = true;
+    this.dossiersHelper.loadData();
+   
+    this.fichiersHelper = new ResourceScrollableHelper(
+      new FichierFactory(),  new QueryOptions(
+        [...[
+          {or: false, filters: [
+            new Filter('owner_'+this.owner+'_folder', this.dossier.id, 'eq')
+          ]}
+        ], ... this.fichierAdditionalFilter],
+        [
+          'fichier_type', 'inscription', 'ged_element'
+        ],
+        undefined,
+        undefined,
+        [new Sort('libelle','ASC')]
       )
     );
 
-    observable.push(
-      dossierService.list(
-        new QueryOptions(
-          [...[
-            {or: false, filters: [
-              new Filter('dossier_id', this.dossier.id, 'eq')
-            ]}
-          ], ...this.dossierAdditionalFilter],
-          [
-            'inscription', 'ged_element'
-          ],
-          undefined,
-          undefined,
-          [new Sort('libelle','ASC')]
-        )
-      ).pipe(
-        (tap(
-          (data)=> {
-            this.dossier_enfant = data.data;
-          }
-        ))
-      )
-    )
+    this.fichiersHelper.loadData();
 
-    forkJoin(observable).subscribe(
-      ()=> {
-        this.is_loading_content = false;
-      }
-    );
+    
   }
 
   onShowCreateFolderForm() {
@@ -303,10 +374,9 @@ export class ZenDossierUiComponent implements OnInit {
     }
     instance.newItem.subscribe(
       (data: IDossier) => {
-        if(!this.dossier_enfant) {
-          this.dossier_enfant = [];
+        if(this.dossiersHelper) {
+          this.dossiersHelper.addItem(data);
         }
-        this.dossier_enfant.unshift(data);
         this.changeIndicator++;
         if(!this.parentData) {return;}
         const service = new GedElementFactory();
@@ -348,10 +418,9 @@ export class ZenDossierUiComponent implements OnInit {
       instance.noDossierSelect = true;
       instance.fichierEmitter.subscribe(
         (data)=> {
-          if(!this.fichiers) {
-            this.fichiers = [];
+          if(this.fichiersHelper) {
+            this.fichiersHelper.addItem(data);
           }
-          this.fichiers.unshift(data);
           this.changeIndicator++;
         }
       )
@@ -385,10 +454,9 @@ export class ZenDossierUiComponent implements OnInit {
         )
       );
       this.fichierService.newFichier.next(newFile);
-      if(!this.fichiers) {
-        this.fichiers = [];
+      if(this.fichiersHelper) {
+        this.fichiersHelper.addItem(newFile);
       }
-      this.fichiers.unshift(newFile);
       this.changeIndicator++;
     }
   }
@@ -396,53 +464,52 @@ export class ZenDossierUiComponent implements OnInit {
   // Dragover listener
   @HostListener('dragenter', ['$event']) onDragOver(evt) {
     this.openFileModal();
+    
   }
 
   onUpdateDossier(dossier:IDossier) {
-   this.dossier_enfant = this.dossier_enfant.map(element => {
-      if (element.id === dossier.id ) {
-          element = dossier;
-      }
-      return element;
-    });
+    if(this.dossiersHelper) {
+      this.dossiersHelper.updateItem(dossier);
+    }
     this.changeIndicator++;
   }
 
   onDeleteDossier(dossier:IDossier) {
-    const index = this.dossier_enfant.findIndex(element => element.id === dossier.id);
-    this.dossier_enfant.splice(index, 1);
+    this.dossiersHelper.removeItem(dossier.id);
     this.changeIndicator++;
   }
 
   onTransfertDossier(transfert: {dossier:IDossier, dossierId:number}) {
     if((this.dossier && this.dossier.id != transfert.dossierId) || (transfert.dossierId&&!this.dossier)) {
-      const index = this.dossier_enfant.findIndex(element => element.id === transfert.dossier.id);
-      this.dossier_enfant.splice(index, 1);
+     this.dossiersHelper.removeItem(transfert.dossier.id);
     }
     this.changeIndicator++;
   }
 
   onUpdateFichier(fichier:IFichier) {
-   this.fichiers = this.fichiers.map(element => {
-      if (element.id === fichier.id ) {
-          element = fichier;
-      }
-      return element;
-    });
+   this.fichiersHelper.updateItem(fichier);
     this.changeIndicator++;
   }
 
   onDeleteFichier(fichier:IFichier) {
-    const index = this.fichiers.findIndex(element => element.id === fichier.id);
-    this.fichiers.splice(index, 1);
+    this.fichiersHelper.removeItem(fichier.id);
     this.changeIndicator++;
   }
 
   onTransfertSingleFichier(transfert: {fichier:IFichier, dossierId:number}) {
     if(this.dossier && this.dossier.id != transfert.dossierId) {
-      const index = this.fichiers.findIndex(element => element.id === transfert.fichier.id);
-      this.fichiers.splice(index, 1);
+      this.fichiersHelper.removeItem(transfert.fichier.id);
     }
     this.changeIndicator++;
+  }
+
+  checkData() {
+    if(this.fichiersHelper) {
+      this.fichiersHelper.checkData();
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

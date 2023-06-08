@@ -1,6 +1,6 @@
 import { Factory } from 'src/app/core/services/factory';
 import { CacheService } from 'src/app/shared/services';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl } from '@angular/forms';
 import { shareReplay, map, switchMap, retryWhen, delay, take } from 'rxjs/operators';
@@ -28,7 +28,8 @@ export class ShareMultiselect2Component   {
     shareReplay(1),
     map(data => data.data as IUser[])
   );
-  @Input() service: Factory<IBase>
+  @Input() service: Factory<IBase>;
+  @Output('selectedUsers') selectedUsersEmetter = new EventEmitter<IUser[]>();
   @Input() set init(share_users: Observable<{personne: IUser}[]>) {
     this.is_loading_user = true;
     share_users.pipe
@@ -77,6 +78,9 @@ export class ShareMultiselect2Component   {
     let preselectedId  = this.personneControl.value.map((element) => {
       return element.id;
     });
+    this.selectedUsersEmetter.emit(
+      this.personneControl.value
+    );
     this.service.setAffectations(
       this.item.id,
       {

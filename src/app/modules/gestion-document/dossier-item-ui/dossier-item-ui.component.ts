@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { Dossier, IDossier } from 'src/app/core/models/gestion-document/dossier.model';
 import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.factory';
+import { GedPartage } from 'src/app/core/models/gestion-document/ged-partage.model';
 
 @Component({
   selector: 'app-dossier-item-ui',
@@ -126,8 +127,19 @@ export class DossierItemUiComponent implements OnInit {
       ],['personne_inscription']);
       const shared_users = service.list(
         queryOpt
-      ).pipe(map(data=> data.data))
-      dossierSharedBaseComponent.onShare(this.dossier.ged_element,shared_users);
+      ).pipe(map(data=> data.data));
+      dossierSharedBaseComponent.onShare(this.dossier.ged_element,shared_users).subscribe(
+        (data)=> {
+          this.dossier.ged_element.partages = data.map(item=> {
+            let partage = new GedPartage();
+            partage.personne = item;
+            partage.personne_id = item.id;
+            partage.element_id = this.dossier.ged_element.id;
+            return partage;
+          });
+          this.dossierUpdateEmitter.emit(this.dossier);
+        }
+      );
     }
 
   }
