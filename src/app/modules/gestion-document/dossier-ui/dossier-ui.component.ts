@@ -22,7 +22,9 @@ import { IFichierType } from 'src/app/core/models/gestion-document/fichier-type.
 import { FichierTypeFactory } from 'src/app/core/services/gestion-document/fichier-type.factory';
 import { Observable, Subscription } from 'rxjs';
 import { GedElement, IGedElement } from 'src/app/core/models/gestion-document/ged-element.model';
-
+import * as JSZip from 'jszip';
+import * as JSZipUtils from 'jszip-utils';
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-zen-dossier-ui',
   templateUrl: 'dossier-ui.component.html',
@@ -108,9 +110,9 @@ export class ZenDossierUiComponent implements OnInit {
     fichierSharedBaseComponent.service = new FichierFactory();
 
     this.onTransfertFichier = (fichiers: IFichier[]) => {
-      fichierSharedBaseComponent.onTransfertFichier(fichiers, this.dossier, this.dossierAdditionalFilter).subscribe(
+      fichierSharedBaseComponent.onTransfertFichier(fichiers, this.dossier).subscribe(
         (data)=> {
-          if(this.dossier && this.dossier.id != data) {
+          if((this.dossier && this.dossier.id != data) || (data && !this.dossier)) {
             fichiers.forEach(
               (fichier)=> {
                 this.fichiersHelper.removeItem(fichier.id);
@@ -412,19 +414,21 @@ export class ZenDossierUiComponent implements OnInit {
   openFileModal() {
     const modalRef = this.modalService.open(StoreMultipleFileComponent, { size: 'lg', centered: true,  backdrop: 'static' });
     const instance = modalRef.componentInstance as StoreMultipleFileComponent;
-    instance.settingDossierFilter = this.dossierAdditionalFilter;
+    
     if(this.dossier) {
-      instance.dossierId = this.dossier.id;
-      instance.noDossierSelect = true;
-      instance.fichierEmitter.subscribe(
-        (data)=> {
-          if(this.fichiersHelper) {
-            this.fichiersHelper.addItem(data);
-          }
-          this.changeIndicator++;
-        }
-      )
+      instance.relation =  {
+        name:'dossiers', id: this.dossier.id
+      };
     }
+
+    instance.fichierEmitter.subscribe(
+      (data)=> {
+        if(this.fichiersHelper) {
+          this.fichiersHelper.addItem(data);
+        }
+        this.changeIndicator++;
+      }
+    )
   }
 
   onFileDropped(fichiers) {
@@ -507,6 +511,32 @@ export class ZenDossierUiComponent implements OnInit {
     if(this.fichiersHelper) {
       this.fichiersHelper.checkData();
     }
+  }
+
+  onDownloadMultipleFile() {
+    let zip: JSZip = new JSZip();
+    let count = 0;
+    let zipFilename = "zipFilename.zip";
+
+    // let urls = this.fichierSelectHelper.selectedItem.map(((item:IFichier)=>item.fichier));
+    let urls = ['http://localhost:4200/assets/images/dossiers/demande_annulation.svg', 'http://localhost:4200/assets/images/dossiers/demande_annulation.svg', 'http://localhost:4200/assets/images/dossiers/demande_annulation.svg'];
+     urls.forEach(function(url){
+      let filename = `demande_annulation${count}.svg`;
+     // loading a file and add it in a zip file
+     JSZipUtils.getBinaryContent(url, function (err, data) {
+       if(err) {
+          throw err; // or handle the error
+       }
+       zip.file(filename, data, {binary:true});
+       count++;
+       if (count == urls.length) {
+        zip.generateAsync({type:'blob'}).then(function(content) {
+           saveAs(content, zipFilename);
+        });
+     }
+    });
+  });
+    
   }
 
   ngOnDestroy() {

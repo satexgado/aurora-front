@@ -121,7 +121,7 @@ export class FichierItemCardUiComponent implements OnInit {
     };
 
     this.onTransfertFichier = () => {
-      fichierSharedBaseComponent.onTransfertFichier([this.fichier], null, this.dossierAdditionalFilter).subscribe(
+      fichierSharedBaseComponent.onTransfertFichier([this.fichier], null).subscribe(
         (data)=> {
          this.fichierTransfertEmitter.emit({
            fichier:this.fichier,

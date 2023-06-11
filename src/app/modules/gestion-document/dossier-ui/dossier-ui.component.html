@@ -19,88 +19,6 @@
             </ng-container>
         </div>
     </div>
-    <ul *ngIf="!lockedElement" class="nav float-right list-inline justify-content-end">
-        <li class="nav-item ">
-            <button class="btn btn-link" (click)="onChangeView('card')" container="body" ngbTooltip="Vue carte">
-                <span class="tx-echos">
-                    <i class="fad fa-th card-1  tx-16"
-                        [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
-                        style="padding:6px; border-radius:50%"></i>
-                </span>
-            </button>
-        </li>
-        <li class="nav-item ">
-            <button class="btn btn-link" (click)="onChangeView('list')" container="body" ngbTooltip="Vue liste">
-                <span class="tx-echos">
-                    <i class="fad fa-list card-1 tx-16 "
-                        [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
-                        style="padding:6px; border-radius:50%"></i>
-                </span>
-            </button>
-        </li>
-        <li class="nav-item no-caret" ngbDropdown [autoClose]="'outside'" container="body" ngbTooltip="Filtrer">
-            <button class="btn btn-link" ngbDropdownToggle>
-                <span class="tx-echos">
-                    <i class="fal fa-filter bg-warning tx-16 tx-white card-1"
-                        style="padding:6px; border-radius:50%"></i>
-                </span>
-            </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                <button ngbDropdownItem [ngClass]="showFolder ? 'btn-primary' : 'btn-outline-primary'"
-                    class="d-flex justify-content-between" (click)="showFolder = !showFolder;">
-                    <span> <i class="fad fa-folder tx-primary"></i> Dossier</span>
-                    <i class="my-auto" [ngClass]="showFolder ? 'fas fa-check-square' : 'fal fa-square'"></i>
-                </button>
-                <button *ngIf="typeFichiersList" ngbDropdownItem
-                    [ngClass]="typeFilterSelectHelper.isAllItemSelected(typeFichiersList.length) ? 'btn-primary' : 'btn-outline-primary'"
-                    class="d-flex justify-content-between"
-                    (click)="typeFilterSelectHelper.isAllItemSelected(typeFichiersList.length) ? typeFilterSelectHelper.clearSelection() : typeFilterSelectHelper.addSelectedItem(typeFichiersList);">
-                    <span> <i class="fad fa-file tx-primary"></i> Fichier</span>
-                    <i class="my-auto"
-                        [ngClass]="typeFilterSelectHelper.isAllItemSelected(typeFichiersList.length) ? 'fas fa-check-square' : 'fal fa-square'"></i>
-                </button>
-                <button ngbDropdownItem class="d-flex justify-content-between"
-                    *ngFor="let item of typeFichiersList; let i = index"
-                    (click)="typeFilterSelectHelper.toggleSelectedItem(item)"
-                    [ngClass]="typeFilterSelectHelper.hasSelectedItem(item) ? 'btn-primary' : 'btn-outline-primary'">
-                    <span> <i [class]="item.icon"></i> {{item.libelle | titlecase}}</span>
-                    <i class="my-auto"
-                        [ngClass]="typeFilterSelectHelper.hasSelectedItem(item) ? 'fas fa-check-square' : 'fal fa-square'"></i>
-                </button>
-                <ng-container *ngIf="typeFilterSelectHelper.selectedItemsNumber || showFolder">
-                    <div class="dropdown-divider"></div>
-                    <button ngbDropdownItem (click)="clearDropdownFilter()">
-                        <i class="fas fa-times-circle tx-danger" style="border-radius:50%"></i> Effacer le
-                        filtre
-                    </button>
-                </ng-container>
-            </div>
-        </li>
-        <li class="nav-item " *ngIf="!(dossier && !dossier.is_user)">
-            <button class="btn btn-link" (click)="openFileModal()" ngbTooltip="Creer un fichier">
-                <span class="tx-echos">
-                    <i class="fal fa-file-plus  bg-yeto tx-16 tx-white card-1"
-                        style="padding:6px; border-radius:50%"></i>
-                </span>
-            </button>
-        </li>
-        <li class="nav-item " *ngIf="!(dossier && !dossier.is_user)">
-            <button class="btn btn-link" (click)="onShowCreateFolderForm()" ngbTooltip="Creer un dossier">
-                <span class="tx-echos">
-                    <i class="fal fa-folder-plus  bg-yeto tx-16 tx-white card-1"
-                        style="padding:6px; border-radius:50%"></i>
-                </span>
-            </button>
-        </li>
-        <li class="nav-item" >
-            <button class="btn btn-link" (click)="openModal(newStructureModal)" ngbTooltip="Modifier la structure">
-                <span class="tx-echos">
-                    <i class="fal fal fa-sitemap  bg-yeto tx-16 tx-white card-1"
-                        style="padding:6px; border-radius:50%"></i>
-                </span>
-            </button>
-        </li>
-    </ul>
     <div class="users-grouped align-items-center">
         <ng-container *ngIf="dossier && dossier.ged_element?.partages && dossier.ged_element.partages.length">
             <img container="body" *ngFor="let item of dossier.ged_element.partages | slice:0:3"
@@ -114,7 +32,7 @@
 <ng-container *ngIf="lockedElement">
     <div class="w-100 text-center p-2" (click)="onUnlockFolder()">
         <h4>
-            L'accès a ce dossier a été bloquer par son proprietaire   
+            L'accès a ce dossier a été bloquer par son proprietaire
             <button class="btn btn-oblong btn-lg btn-outline-primary">
                 <i class="fa fa-unlock"> </i>
                 Entrez le mot de passe
@@ -124,21 +42,103 @@
     </div>
 </ng-container>
 <ng-container *ngIf="!lockedElement">
-    <div class="w-100 d-flex">
-        <div class="bg-white">
+    <div class="w-100 d-flex flex-wrap bg-white">
+        <div>
             <a class="btn m-2 p-2" (click)="onChangeOwner('all')" [class.bg-soft-primary]="owner == 'all'"> <i
                     class="fal fa-folders"></i><span class="hidden-sm hidden-xs"> Voir Tout</span></a>
             <a class="btn m-2 p-2" (click)="onChangeOwner('mine')" [class.bg-soft-primary]="owner == 'mine'"> <i
-                    class="fal fa-user-crown"></i><span class="hidden-sm hidden-xs"> Mes Fichiers</span></a>
+                    class="fal fa-user-crown"></i><span class="hidden-sm hidden-xs"> Mes Elements</span></a>
             <a class="btn m-2 p-2" (click)="onChangeOwner('shared')" [class.bg-soft-primary]="owner == 'shared'"> <i
-                    class="fal fa-users"></i> <span class="hidden-sm hidden-xs"> Fichiers Partagers</span></a>
+                    class="fal fa-users"></i> <span class="hidden-sm hidden-xs"> Elements Partagers</span></a>
         </div>
-        <div class=" align-items-center d-flex bg-white px-2 flex-1">
+        <div class=" align-items-center d-flex px-2 flex-1">
             <div class="input-group my-auto">
                 <input type="text" class="form-control  border-0 " [(ngModel)]="searchTerm"
                     (ngModelChange)="onSetSearchTerm()" style="background: #f5f5f4;" placeholder="Recherches...">
             </div>
         </div>
+        <ul class="nav align-items-center list-inline justify-content-end">
+            <li class="nav-item ">
+                <button class="btn btn-link" (click)="onChangeView('card')" container="body" ngbTooltip="Vue carte">
+                    <span class="tx-echos">
+                        <i class="fad fa-th card-1  tx-16"
+                            [ngClass]="view == 'card' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item ">
+                <button class="btn btn-link" (click)="onChangeView('list')" container="body" ngbTooltip="Vue liste">
+                    <span class="tx-echos">
+                        <i class="fad fa-list card-1 tx-16 "
+                            [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item no-caret" ngbDropdown [autoClose]="'outside'" container="body" ngbTooltip="Filtrer">
+                <button class="btn btn-link" ngbDropdownToggle>
+                    <span class="tx-echos">
+                        <i class="fal fa-filter bg-warning tx-16 tx-white card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem [ngClass]="showFolder ? 'btn-primary' : 'btn-outline-primary'"
+                        class="d-flex justify-content-between" (click)="showFolder = !showFolder;">
+                        <span> <i class="fad fa-folder tx-primary"></i> Dossier</span>
+                        <i class="my-auto" [ngClass]="showFolder ? 'fas fa-check-square' : 'fal fa-square'"></i>
+                    </button>
+                    <button *ngIf="typeFichiersList" ngbDropdownItem
+                        [ngClass]="typeFilterSelectHelper.isAllItemSelected(typeFichiersList.length) ? 'btn-primary' : 'btn-outline-primary'"
+                        class="d-flex justify-content-between"
+                        (click)="typeFilterSelectHelper.isAllItemSelected(typeFichiersList.length) ? typeFilterSelectHelper.clearSelection() : typeFilterSelectHelper.addSelectedItem(typeFichiersList);">
+                        <span> <i class="fad fa-file tx-primary"></i> Fichier</span>
+                        <i class="my-auto"
+                            [ngClass]="typeFilterSelectHelper.isAllItemSelected(typeFichiersList.length) ? 'fas fa-check-square' : 'fal fa-square'"></i>
+                    </button>
+                    <button ngbDropdownItem class="d-flex justify-content-between"
+                        *ngFor="let item of typeFichiersList; let i = index"
+                        (click)="typeFilterSelectHelper.toggleSelectedItem(item)"
+                        [ngClass]="typeFilterSelectHelper.hasSelectedItem(item) ? 'btn-primary' : 'btn-outline-primary'">
+                        <span> <i [class]="item.icon"></i> {{item.libelle | titlecase}}</span>
+                        <i class="my-auto"
+                            [ngClass]="typeFilterSelectHelper.hasSelectedItem(item) ? 'fas fa-check-square' : 'fal fa-square'"></i>
+                    </button>
+                    <ng-container *ngIf="typeFilterSelectHelper.selectedItemsNumber || showFolder">
+                        <div class="dropdown-divider"></div>
+                        <button ngbDropdownItem (click)="clearDropdownFilter()">
+                            <i class="fas fa-times-circle tx-danger" style="border-radius:50%"></i> Effacer le
+                            filtre
+                        </button>
+                    </ng-container>
+                </div>
+            </li>
+            <li class="nav-item " *ngIf="!(dossier && !dossier.is_user)">
+                <button class="btn btn-link" (click)="openFileModal()" ngbTooltip="Creer un fichier">
+                    <span class="tx-echos">
+                        <i class="fal fa-file-plus  bg-yeto tx-16 tx-white card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item " *ngIf="!(dossier && !dossier.is_user)">
+                <button class="btn btn-link" (click)="onShowCreateFolderForm()" ngbTooltip="Creer un dossier">
+                    <span class="tx-echos">
+                        <i class="fal fa-folder-plus  bg-yeto tx-16 tx-white card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link" (click)="openModal(newStructureModal)" ngbTooltip="Modifier la structure">
+                    <span class="tx-echos">
+                        <i class="fal fal fa-sitemap  bg-yeto tx-16 tx-white card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </button>
+            </li>
+        </ul>
     </div>
     <div class="col-12 mt-3" *ngIf="typeFilterSelectHelper.selectedItemsNumber || showFolder">
         <button class="btn btn-oblong btn-sm card-1 btn-outline-yeto mx-1" *ngIf="showFolder"
@@ -183,26 +183,6 @@
                             <h5 class="bd-b bd-3 pb-2 bd-info d-flex justify-content-between">
                                 <span class="badge badge-outlined badge-primary"><i class="fa fa-file"></i>
                                     Fichier</span>
-                                <span>
-                                    <button *ngIf="fichierSelectHelper.selectedItemsNumber > 0"
-                                        (click)="fichierSelectHelper.addSelectedItem(items)"
-                                        class="btn btn-sm btn-outline-primary card-1 mx-1">
-                                        <i class="fal fa-check-square"></i>
-                                        Cochez tous
-                                    </button>
-                                    <button *ngIf="fichierSelectHelper.selectedItemsNumber > 0"
-                                        (click)="fichierSelectHelper.clearSelection()"
-                                        class="btn btn-sm btn-outline-primary card-1 mx-1">
-                                        <i class="fal fa-square"></i>
-                                        Décochez tous
-                                    </button>
-                                    <button *ngIf="fichierSelectHelper.selectedItemsNumber > 0"
-                                        (click)="onTransfertFichier(fichierSelectHelper.selectedItem)"
-                                        class="btn btn-sm btn-outline-primary card-1 mx-1">
-                                        <i class="fal fa-sort-alt"></i>
-                                        Transférez les fichiers
-                                    </button>
-                                </span>
                             </h5>
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2" *ngFor="let fichier of items;">
@@ -248,26 +228,7 @@
                             <h5 class="bd-b bd-3 pb-2 bd-info d-flex justify-content-between">
                                 <span class="badge badge-outlined badge-primary"><i class="fa fa-file"></i>
                                     Fichier</span>
-                                <span>
-                                    <button *ngIf="fichierSelectHelper.selectedItemsNumber > 0"
-                                        (click)="fichierSelectHelper.addSelectedItem(items)"
-                                        class="btn btn-sm btn-outline-primary card-1 mx-1">
-                                        <i class="fal fa-check-square"></i>
-                                        Cochez tous
-                                    </button>
-                                    <button *ngIf="fichierSelectHelper.selectedItemsNumber > 0"
-                                        (click)="fichierSelectHelper.clearSelection()"
-                                        class="btn btn-sm btn-outline-primary card-1 mx-1">
-                                        <i class="fal fa-square"></i>
-                                        Décochez tous
-                                    </button>
-                                    <button *ngIf="fichierSelectHelper.selectedItemsNumber > 0"
-                                        (click)="onTransfertFichier(fichierSelectHelper.selectedItem)"
-                                        class="btn btn-sm btn-outline-primary card-1 mx-1">
-                                        <i class="fal fa-sort-alt"></i>
-                                        Transférez les fichiers
-                                    </button>
-                                </span>
+
                             </h5>
                             <div class="w-100">
                                 <ul class="list-group">
@@ -299,6 +260,34 @@
     </div>
 </ng-container>
 
+
+<div class="p-3 alert bg-soft-primary d-flex justify-content-between" style="position: fixed;bottom: 0;left: 30%;width: 40%; 
+z-index: 1000;" *ngIf="fichierSelectHelper.selectedItemsNumber > 0">
+        <span>
+            <button *ngIf="fichiersHelper.data$ | async as items"
+             class="btn btn-primary btn-with-icon btn-block">
+                <div class="ht-40">
+                <span class="icon wd-40" container="body" [ngbTooltip]="'Selectionnez Tous'" (click)="fichierSelectHelper.addSelectedItem(items)"><i class="fal fa-check-square"></i></span>
+                <span class="pd-x-15">{{fichierSelectHelper.selectedItemsNumber}} Elements</span>
+                </div>
+            </button>
+        </span>
+        <div class="btn-group">
+            <button class="btn btn-primary" container="body" [ngbTooltip]="'Transférer'" (click)="onTransfertFichier(fichierSelectHelper.selectedItem)">
+                <i class="fal fa-sort-alt fa-lg"></i> <br>
+            </button>
+            <button class="btn btn-primary mx-2" container="body" [ngbTooltip]="'Telecharger'" (click)="onDownloadMultipleFile()">
+                <i class="fal fa-download fa-lg"></i> <br>
+            </button>
+            <button class="btn btn-primary" container="body" [ngbTooltip]="'Supprimer'" (click)="onTransfertFichier(fichierSelectHelper.selectedItem)">
+                <i class="fal fa-trash-alt fa-lg"></i> <br>
+            </button>
+        </div>
+        <button (click)="fichierSelectHelper.clearSelection()" class="btn btn-light  mx-1">
+            <i class="fal fa-square"></i>
+            Annuler
+        </button>
+</div>
 
 
 <ng-template #emptyTemplate>

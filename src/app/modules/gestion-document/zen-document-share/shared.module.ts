@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { BloquerComponent } from './bloquer/bloquer.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
-
+import { ShareWTypeComponent } from './share-wtype/share-wtype.component';
 
 
 @NgModule({
@@ -16,7 +16,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
     CheckPassComponent,
     ShareComponent,
     SharedBaseComponent,
-    ShareMultiselect2Component
+    ShareMultiselect2Component,
+    ShareWTypeComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +30,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
     SharedBaseComponent,
     BloquerComponent, CheckPassComponent, ShareComponent, ShareMultiselect2Component
   ],
-  entryComponents: [BloquerComponent, CheckPassComponent, ShareComponent, ShareMultiselect2Component]
+  entryComponents: [BloquerComponent, CheckPassComponent, ShareComponent, ShareMultiselect2Component, ShareWTypeComponent]
 })
 export class SharedZenDocumentModule {
 

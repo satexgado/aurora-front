@@ -15,6 +15,7 @@ import { AppInjector } from 'src/app/shared/services';
 import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.factory';
 import { IDossier } from 'src/app/core/models/gestion-document/dossier.model';
 import { Filter } from 'src/app/shared/models/query-options';
+import { ShareWTypeComponent } from './share-wtype/share-wtype.component';
 
 @Component({
   selector: 'app-fichier-base',
@@ -145,16 +146,22 @@ export class SharedBaseComponent {
     const instance = modalRef.componentInstance as ChooseDossierComponent;
     instance.dossierFilter = filter;
     instance.hideUpdateDelete = true;
+    instance.hasRacine = true;
+    if(currentFolder) {
+      instance.exceptionId = [currentFolder.id];
+    }
     instance.selectedItemEmitter.subscribe(
       (data: IDossier)=> {
-        if(currentFolder && data.id == currentFolder.id) {
+        if((currentFolder && data.id == currentFolder.id) || ((!currentFolder)&&(!data.id)) ) {
           return this.notification.onInfo('Fichier dejà present dans ce dossier')
         }
+
+        let dossiersID = data && data.id ? [data.id] : [];
         const fichiersID = items.map((fichier=>fichier.id));
         this.service.setAffectations(
           fichiersID,
           {
-            dossiers: [data.id]
+            dossiers: dossiersID
           }
         ).subscribe(
           ()=> {
@@ -174,6 +181,7 @@ export class SharedBaseComponent {
   onTransfertDossier(item: IBase, currentFolder: IDossier = null,  filter = [
     {or: false, filters:[
       new Filter('isIns', true, 'eq'),
+      new Filter('noParent', true, 'eq'),
     ]},
   ]) {
     const result$ = new Subject<number>();
@@ -206,8 +214,8 @@ export class SharedBaseComponent {
   }
 
   onShare(item: IBase, share_users: Observable<{personne: IUser}[]>) {
-    const modalRef = this.modalService.open(ShareComponent, { size: 'lg', centered: true,  backdrop: 'static' });
-    const instance = modalRef.componentInstance as ShareComponent;
+    const modalRef = this.modalService.open(ShareWTypeComponent, { size: 'lg', centered: true,  backdrop: 'static' });
+    const instance = modalRef.componentInstance as ShareWTypeComponent;
     instance.init = share_users;
     instance.item = item;
     instance.service = new GedElementFactory();

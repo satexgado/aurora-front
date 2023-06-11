@@ -7,11 +7,13 @@ export interface IGedPartage extends IBase {
  element_id: number;
  personne_id: number;
  personne: IUser;
+ access: 'Lecteur' | 'Collaborateur' | 'Proprietaire';
 }
 
 export class GedPartage implements IGedPartage {
     id: number = 0;
     libelle: string = '';
+    access: 'Lecteur' | 'Collaborateur' | 'Proprietaire' = 'Lecteur';
 
     @adaptableMap('personne')
     personne_id = 0;

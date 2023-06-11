@@ -67,19 +67,19 @@ export class ZenDocumentTemplateComponent implements OnInit {
   }
 
   checkLength() {
-    return this.fichierRecent.length ? this.fichierRecent.filter(a=>a.upload.state == 'IN_PROGRESS').length : 0;
+    return this.fichierRecent.length ? this.fichierRecent.filter(a=> a.upload && a.upload.state == 'IN_PROGRESS').length : 0;
   }
 
   checkCompletedLength() {
-    return this.fichierRecent.length ? this.fichierRecent.filter(a=>a.upload.state == 'DONE').length : 0;
+    return this.fichierRecent.length ? this.fichierRecent.filter(a=>!(a.upload && a.upload.state != 'DONE')).length : 0;
   }
 
   checkProgress() {
-    return this.fichierRecent.length ? (this.fichierRecent.filter(a=>a.upload.state == 'IN_PROGRESS').map(a => a.upload.progress).reduce(function(a, b){return a + b;}) / this.fichierRecent.filter(a=>a.upload.state == 'IN_PROGRESS').length): 0;
+    return this.fichierRecent.length ? (this.fichierRecent.filter(a=>a.upload && a.upload.state == 'IN_PROGRESS').map(a => a.upload.progress).reduce(function(a, b){return a + b;}) / this.fichierRecent.filter(a=>a.upload && a.upload.state == 'IN_PROGRESS').length): 0;
   }
 
   checkSize() {
-    return this.fichierRecent.length ? this.fichierRecent.filter(a=>a.upload.state == 'IN_PROGRESS').map(a => a.size).reduce(function(a, b){return a + b;}) : 0;
+    return this.fichierRecent.length ? this.fichierRecent.filter(a=>a.upload && a.upload.state == 'IN_PROGRESS').map(a => a.size).reduce(function(a, b){return a + b;}) : 0;
   }
 
   onCloseDowloadPreview() {

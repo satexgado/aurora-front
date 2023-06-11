@@ -1,5 +1,5 @@
 <div class="d-flex" *ngIf="fichier">
-    <div class="w-100 card card-1 p-2" *ngIf="fichier.upload && fichier.upload.state != 'Done'; else details">
+    <div class="w-100 card card-1 p-2" *ngIf="fichier.upload && fichier.upload.state != 'DONE'; else details">
         <div class="d-flex justify-content-between">
             <h6 class="tx-uppercase tx-12 mg-b-0 tx-gray-500">{{fichier.size && fichier.upload.progress ? ( ((fichier.size*fichier.upload.progress)/100) | formatFileSize) : 0}}/{{ fichier.size | formatFileSize}}</h6>
             <span class="tx-12 tx-gray-500">{{fichier.upload.progress}}%</span>

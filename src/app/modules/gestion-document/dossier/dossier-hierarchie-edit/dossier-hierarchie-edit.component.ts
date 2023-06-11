@@ -118,7 +118,6 @@ export class DossierHierarchieEditComponent {
 
           if( data.children  && data.children.value  &&data.children.value.length)
           {
-            console.log(data.children);
             child = this.converData(data.children);
           }
 
