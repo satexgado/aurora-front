@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Fichier } from './../../models/gestion-document/fichier.model';
 import { Injectable } from '@angular/core';
 import { Factory } from '../factory';
-import { retryWhen, delay, take, map } from 'rxjs/operators';
+import { retryWhen, delay, take, map, tap } from 'rxjs/operators';
 import { upload, Upload } from 'src/app/shared';
 
 @Injectable({
@@ -47,6 +47,52 @@ export class FichierFactory extends Factory<Fichier> {
             return data;
           }
         )
+      );
+  }
+
+  public dowloadMulti(item: number[]): Observable<any> {
+    return this.authAccess
+      .post(`${this.url}${this.endpoint}/dowload-multi`, item, { 
+        responseType: 'blob',
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(
+        retryWhen(errors => errors.pipe(delay(5000), take(10))),
+        upload(),
+        tap(
+          (data)=> {
+            console.log(data);
+            if(data.state == 'DONE' &&  data.body) {
+              const blob = new Blob([data.body], { type: 'application/zip' });
+              const url= window.URL.createObjectURL(blob);
+              window.open(url);
+            }
+          }
+        ),
+      );
+  }
+
+  public dowloadFolder(id): Observable<any> {
+    return this.authAccess
+      .get(`${this.url}${this.endpoint}/dowload-folder/`+id,  { 
+        responseType: 'blob',
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(
+        retryWhen(errors => errors.pipe(delay(5000), take(10))),
+        upload(),
+        map(
+          (data)=> {
+            if(data.state == 'DONE' &&  data.body) {
+              const blob = new Blob([data.body], { type: 'application/zip' });
+              const url= window.URL.createObjectURL(blob);
+              window.open(url);
+            }
+            return data;
+          }
+        ),
       );
   }
 }

@@ -7,10 +7,10 @@
          <div class="d-flex align-items-end justify-content-between mg-b-5">
             <h5 class="mg-b-0 tx-dark tx-rubik tx-normal"><span class="counter">{{fichier.libelle}}</span></h5>
             <div class="d-flex align-items-center tx-gray-600">
-              <button class="btn btn-link" *ngIf="fichier.upload.state == 'DONE'"> <i class="fa fa-check-circle text-success"></i></button>   
-              <button class="btn btn-link" *ngIf="!fichier.upload.state" (click)="this.fichier.retryRequest();"> <i class="fa fa-redo"></i></button>                    
-              <button class="btn btn-link" *ngIf="fichier.upload.state == 'IN_PROGRESS'"> <i class="fad fa-spinner-third fa-spin"></i></button>                    
-              <button class="btn btn-link btn-link-danger" *ngIf="fichier.upload.state == 'IN_PROGRESS'"(click)="this.fichier.cancelSubscription()"> <i class="fa fa-times"></i></button>                    
+              <button class="btn btn-link" *ngIf="fichier.upload.state == 'DONE'"> <i class="fa fa-check-circle text-success"></i></button>
+              <button class="btn btn-link" *ngIf="!fichier.upload.state" (click)="this.fichier.retryRequest();"> <i class="fa fa-redo"></i></button>
+              <button class="btn btn-link" *ngIf="fichier.upload.state == 'IN_PROGRESS'"> <i class="fad fa-spinner-third fa-spin"></i></button>
+              <button class="btn btn-link btn-link-danger" *ngIf="fichier.upload.state == 'IN_PROGRESS'"(click)="this.fichier.cancelSubscription()"> <i class="fa fa-times"></i></button>
             </div>
          </div>
          <div class="progress ht-3 mg-b-0 op-5">
@@ -36,10 +36,14 @@
                 </button>
                 <div class="text-muted">
                     {{fichier.size > 0 ? (fichier.size | formatFileSize) : '0'}}
-                    <span class="text-dark mr-2" *ngIf="fichier.ged_element?.bloquer"><i class="fas fa-lock-alt"></i></span>
-                    <span class=" text-primary mr-2" *ngIf="fichier.ged_element?.user_favoris"><i
+                    <span class="text-dark mr-2" container="body" [ngbTooltip]="'Partagé'" *ngIf="!fichier.is_user"><i class="fas fa-users"></i></span>
+                    <span class="text-dark mr-2" container="body" [ngbTooltip]="'Bloqué'" *ngIf="fichier.ged_element?.bloquer"><i class="fas fa-lock-alt"></i></span>
+                    <span class=" text-primary mr-2" container="body" [ngbTooltip]="'Favoris'" *ngIf="fichier.ged_element?.user_favoris"><i
                           class="fas fa-star"></i></span>
-                    <span class=" tx-teal mr-2 " *ngIf="fichier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
+                    <span class=" tx-teal mr-2 " container="body" [ngbTooltip]="'Caché'" *ngIf="fichier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
+                    <span class=" text-primary mr-2" *ngIf="fichier.ged_element?.comments_count">
+                      {{fichier.ged_element?.comments_count}}  <i class="fal fa-comment"></i>
+                    </span>
                 </div>
             </div>
             <div class="users-grouped align-items-center">

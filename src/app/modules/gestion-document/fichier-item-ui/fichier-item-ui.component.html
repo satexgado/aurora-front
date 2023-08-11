@@ -31,9 +31,10 @@
           </ng-container>
           {{fichier.date | date: 'dd/MM/yyyy  H:mm'}}
         </span>
-        <span class="text-dark mr-2" *ngIf="fichier.ged_element?.bloquer"><i class="fas fa-lock-alt"></i></span>
-        <span class=" text-primary mr-2" *ngIf="fichier.user_favoris"><i class="fas fa-star"></i></span>
-        <span class=" tx-teal mr-2 " *ngIf="fichier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
+        <span class="text-dark mr-2" container="body" [ngbTooltip]="'Partagé'" *ngIf="!fichier.is_user"><i class="fas fa-users"></i></span>
+        <span class="text-dark mr-2" container="body" [ngbTooltip]="'Bloqué'" *ngIf="fichier.ged_element?.bloquer"><i class="fas fa-lock-alt"></i></span>
+        <span class=" text-primary mr-2" container="body" [ngbTooltip]="'Favoris'" *ngIf="fichier.user_favoris"><i class="fas fa-star"></i></span>
+        <span class=" tx-teal mr-2 " container="body" [ngbTooltip]="'Caché'" *ngIf="fichier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
     </div>
     <div class="flex-1 justify-content-center users-grouped align-items-center">
         <ng-container *ngIf="fichier.ged_element?.partages && fichier.ged_element?.partages.length">

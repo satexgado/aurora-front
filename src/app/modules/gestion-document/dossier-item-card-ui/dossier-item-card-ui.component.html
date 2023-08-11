@@ -12,6 +12,7 @@
                         <button (click)="fichierService.showFolderDetails.next(dossier)" ngbDropdownItem><i class="fal fa-info"></i>
                             Détails</button>
                         <ng-container *ngIf="dossier.is_user">
+                            <button (click)="onDownload()" ngbDropdownItem><i class="fal fa-download rounded-circle"></i> Télecharger</button>
                             <button (click)="onShareDossier()" ngbDropdownItem><i class="fal fa-share-alt"></i> Partager</button>
                             <button (click)="onShowUpdateForm()" ngbDropdownItem><i class="fal fa-edit"></i> Modifier</button>
                             <button (click)="onUpdateFavorisDossier()" ngbDropdownItem><i class="fa-star"
@@ -41,11 +42,11 @@
             <div class="text-muted mb-1">{{dossier.nb_element}} éléments</div>
             <div class="text-muted">
                 {{dossier.size > 0 ? (dossier.size | formatFileSize) : '0 kb'}}
-                <span class="text-dark mr-2" *ngIf="!dossier.is_user"><i class="fas fa-users"></i></span>
-                <span class="text-dark mr-2" *ngIf="dossier.ged_element.bloquer"><i class="fas fa-lock-alt"></i></span>
-                <span class=" text-primary mr-2" *ngIf="dossier.ged_element.user_favoris"><i
+                <span class="text-dark mr-2" container="body" [ngbTooltip]="'Partagé'" *ngIf="!dossier.is_user"><i class="fas fa-users"></i></span>
+                <span class="text-dark mr-2" container="body" [ngbTooltip]="'Bloqué'" *ngIf="dossier.ged_element.bloquer"><i class="fas fa-lock-alt"></i></span>
+                <span class=" text-primary mr-2" container="body" [ngbTooltip]="'Favoris'" *ngIf="dossier.ged_element.user_favoris"><i
                         class="fas fa-star"></i></span>
-                <span class=" tx-teal mr-2 " *ngIf="dossier.ged_element.cacher"><i class="fal fa-eye-slash"></i></span>
+                <span class=" tx-teal mr-2 " container="body" [ngbTooltip]="'Caché'" *ngIf="dossier.ged_element.cacher"><i class="fal fa-eye-slash"></i></span>
             </div>
         </div>
         <div class="users-grouped align-items-center">

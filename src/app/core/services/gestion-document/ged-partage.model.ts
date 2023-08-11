@@ -15,9 +15,9 @@ export class GedPartageFactory extends Factory<GedPartage> {
     super(GedPartage)
   }
 
-  public createmulti(item: any[]): Observable<GedPartage[]> {
+  public createmulti(item: {removedPartages?: any[], partages: any[]}): Observable<GedPartage[]> {
     return this.authAccess
-      .post(`${this.url}${this.endpoint}`, item.map(formData=>this.adapter.toFormData(formData)))
+      .post(`${this.url}${this.endpoint}/multi`, item)
       .pipe(
         retryWhen(errors => errors.pipe(delay(5000), take(10))),
         map(

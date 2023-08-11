@@ -25,6 +25,9 @@ import { GedElement, IGedElement } from 'src/app/core/models/gestion-document/ge
 import * as JSZip from 'jszip';
 import * as JSZipUtils from 'jszip-utils';
 import { saveAs } from 'file-saver';
+import { HttpClient } from '@angular/common/http';
+import { Storage } from 'src/app/helpers/storage/storage';
+
 @Component({
   selector: 'app-zen-dossier-ui',
   templateUrl: 'dossier-ui.component.html',
@@ -99,6 +102,8 @@ export class ZenDossierUiComponent implements OnInit {
     protected notificationService: NotificationService,
     public fichierService: ZenFichierUploadService,
     protected modalService: NgbModal,
+    public storage: Storage,
+    public http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
     protected cdRef:ChangeDetectorRef,
@@ -514,29 +519,27 @@ export class ZenDossierUiComponent implements OnInit {
   }
 
   onDownloadMultipleFile() {
-    let zip: JSZip = new JSZip();
-    let count = 0;
-    let zipFilename = "zipFilename.zip";
 
-    // let urls = this.fichierSelectHelper.selectedItem.map(((item:IFichier)=>item.fichier));
-    let urls = ['http://localhost:4200/assets/images/dossiers/demande_annulation.svg', 'http://localhost:4200/assets/images/dossiers/demande_annulation.svg', 'http://localhost:4200/assets/images/dossiers/demande_annulation.svg'];
-     urls.forEach(function(url){
-      let filename = `demande_annulation${count}.svg`;
-     // loading a file and add it in a zip file
-     JSZipUtils.getBinaryContent(url, function (err, data) {
-       if(err) {
-          throw err; // or handle the error
-       }
-       zip.file(filename, data, {binary:true});
-       count++;
-       if (count == urls.length) {
-        zip.generateAsync({type:'blob'}).then(function(content) {
-           saveAs(content, zipFilename);
-        });
-     }
+    if(! this.fichierSelectHelper.selectedItem.length) {
+      return;
+    }
+
+    if(this.fichierSelectHelper.selectedItem.length < 2) {
+      return this.fichierSelectHelper.selectedItem.forEach(((item:IFichier)=>window.open(item.fichier)));
+    }
+
+    const service = new FichierFactory();
+
+    // return service.dowloadFolder(1).subscribe();
+
+    service.dowloadMulti(
+      
+        this.fichierSelectHelper.selectedItem.map(((item:IFichier)=>item.id))
+      
+    ).subscribe((data)=>{
+      
     });
-  });
-    
+  
   }
 
   ngOnDestroy() {

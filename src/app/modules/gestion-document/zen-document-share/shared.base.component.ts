@@ -16,6 +16,7 @@ import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.f
 import { IDossier } from 'src/app/core/models/gestion-document/dossier.model';
 import { Filter } from 'src/app/shared/models/query-options';
 import { ShareWTypeComponent } from './share-wtype/share-wtype.component';
+import { IGedPartage } from 'src/app/core/models/gestion-document/ged-partage.model';
 
 @Component({
   selector: 'app-fichier-base',
@@ -213,8 +214,8 @@ export class SharedBaseComponent {
     return result$.asObservable();
   }
 
-  onShare(item: IBase, share_users: Observable<{personne: IUser}[]>) {
-    const modalRef = this.modalService.open(ShareWTypeComponent, { size: 'lg', centered: true,  backdrop: 'static' });
+  onShare(item: IBase, share_users: Observable<IGedPartage[]>) {
+    const modalRef = this.modalService.open(ShareWTypeComponent, { size: 'lg', centered: true, scrollable: true,  backdrop: 'static' });
     const instance = modalRef.componentInstance as ShareWTypeComponent;
     instance.init = share_users;
     instance.item = item;

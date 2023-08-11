@@ -11,6 +11,7 @@ import { Dossier, IDossier } from 'src/app/core/models/gestion-document/dossier.
 import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.factory';
 import { NotificationService } from 'src/app/shared';
 import { GedPartage } from 'src/app/core/models/gestion-document/ged-partage.model';
+import { FichierFactory } from 'src/app/core/services/gestion-document/fichier.factory';
 
 @Component({
   selector: 'app-dossier-item-card-ui',
@@ -171,5 +172,10 @@ export class DossierItemCardUiComponent implements OnInit {
       return  this.router.navigate([this.url, this.dossier.id]);
     };
     this.dossierGotoEmitter.emit(this.dossier);
+  }
+
+  onDownload() {
+    const service = new FichierFactory();
+    return service.dowloadFolder(this.dossier.id).subscribe();
   }
 }
