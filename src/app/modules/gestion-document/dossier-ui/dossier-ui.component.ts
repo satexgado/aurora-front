@@ -20,11 +20,8 @@ import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.f
 import { IBase } from 'src/app/core/models/base.interface';
 import { IFichierType } from 'src/app/core/models/gestion-document/fichier-type.model';
 import { FichierTypeFactory } from 'src/app/core/services/gestion-document/fichier-type.factory';
-import { Observable, Subscription } from 'rxjs';
-import { GedElement, IGedElement } from 'src/app/core/models/gestion-document/ged-element.model';
-import * as JSZip from 'jszip';
-import * as JSZipUtils from 'jszip-utils';
-import { saveAs } from 'file-saver';
+import { Subscription } from 'rxjs';
+
 import { HttpClient } from '@angular/common/http';
 import { Storage } from 'src/app/helpers/storage/storage';
 
@@ -258,7 +255,6 @@ export class ZenDossierUiComponent implements OnInit {
     console.log(dossier);
     if(dossier.ged_element.bloquer && !dossier.is_user) {
       if(this.cacheService.hasValidCachedValue('unlocked_folder_'+dossier.id)) {
-        console.log('freesenegal');
         return;
       }
       this.lockedElement = dossier;
@@ -528,16 +524,14 @@ export class ZenDossierUiComponent implements OnInit {
       return this.fichierSelectHelper.selectedItem.forEach(((item:IFichier)=>window.open(item.fichier)));
     }
 
+
     const service = new FichierFactory();
 
-    // return service.dowloadFolder(1).subscribe();
-
-    service.dowloadMulti(
-      
+    this.fichierService.compressingFile.next({
+      upload: service.downloadMulti(
         this.fichierSelectHelper.selectedItem.map(((item:IFichier)=>item.id))
-      
-    ).subscribe((data)=>{
-      
+      ),
+      name: "something something"
     });
   
   }

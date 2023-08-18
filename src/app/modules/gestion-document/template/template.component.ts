@@ -29,6 +29,11 @@ export class ZenDocumentTemplateComponent implements OnInit {
   isHidden = false;
   fichierRecent: IFichier[] = [];
 
+  compressingFiles: {
+    upload: Observable<Upload>,
+    name: string
+   }[] = [];
+
   constructor(
     protected fichierService: ZenFichierUploadService,
     protected cacheService: CacheService,
@@ -62,6 +67,14 @@ export class ZenDocumentTemplateComponent implements OnInit {
       (data)=> {
         this.fichierRecent.unshift(data);
         this.isHidden = false;
+      }
+    );
+    this.fichierService.compressingFile$.subscribe(
+      (data)=> {
+        console.log(data);
+        this.compressingFiles.unshift(data);
+        this.isHidden = false;
+        this.isCollapsed = false;
       }
     )
   }

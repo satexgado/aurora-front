@@ -50,7 +50,7 @@ export class FichierFactory extends Factory<Fichier> {
       );
   }
 
-  public dowloadMulti(item: number[]): Observable<any> {
+  public downloadMulti(item: number[]): Observable<any> {
     return this.authAccess
       .post(`${this.url}${this.endpoint}/dowload-multi`, item, { 
         responseType: 'blob',
@@ -62,18 +62,18 @@ export class FichierFactory extends Factory<Fichier> {
         upload(),
         tap(
           (data)=> {
-            console.log(data);
             if(data.state == 'DONE' &&  data.body) {
               const blob = new Blob([data.body], { type: 'application/zip' });
               const url= window.URL.createObjectURL(blob);
               window.open(url);
             }
+            return data;
           }
         ),
       );
   }
 
-  public dowloadFolder(id): Observable<any> {
+  public downloadFolder(id): Observable<any> {
     return this.authAccess
       .get(`${this.url}${this.endpoint}/dowload-folder/`+id,  { 
         responseType: 'blob',

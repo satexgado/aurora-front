@@ -27,7 +27,7 @@ import { ZenMesFavorisUiComponent } from './favoris-ui/favoris-ui.component'
 import { NotificationModule } from 'src/app/shared';
 import { ZenDocumentTypeUiComponent } from './type-ui/type-ui.component'
 import { DossierItemCardUiComponent } from './dossier-item-card-ui/dossier-item-card-ui.component';
-import { FichierItemCardUiComponent } from './fichier-item-card-ui/fichier-item-card-ui.component'
+import { FichierItemCardUiComponent } from './fichier-item-card-ui/fichier-item-card-ui.component';
 
 @NgModule({
   declarations: [

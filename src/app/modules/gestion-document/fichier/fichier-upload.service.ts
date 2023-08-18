@@ -17,6 +17,11 @@ export class ZenFichierUploadService  {
    name: string
   }[] = [];
 
+  fichierDownload: {
+    upload: Observable<Upload>,
+    name: string
+  }[] = [];
+
   showFolderDetails = new Subject<IDossier>();
   get showFolderDetails$() {
     return this.showFolderDetails.asObservable();
@@ -30,6 +35,15 @@ export class ZenFichierUploadService  {
   newFichier = new Subject<IFichier>();
   get newFichier$() {
     return this.newFichier.asObservable();
+  }
+
+  compressingFile = new Subject<{
+    upload: Observable<Upload>,
+    name: string
+  }>();
+
+  get compressingFile$() {
+    return this.compressingFile.asObservable();
   }
 
   // doUploadFile(files) {

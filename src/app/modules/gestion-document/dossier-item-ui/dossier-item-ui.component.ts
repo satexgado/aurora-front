@@ -174,6 +174,9 @@ export class DossierItemUiComponent implements OnInit {
 
   onDownload() {
     const service = new FichierFactory();
-    return service.dowloadFolder(this.dossier.id).subscribe();
+    this.fichierService.compressingFile.next({
+      upload: service.downloadFolder(this.dossier.id),
+      name: this.dossier.libelle
+    });
   }
 }
