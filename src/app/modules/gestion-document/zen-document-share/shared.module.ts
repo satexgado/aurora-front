@@ -8,7 +8,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { BloquerComponent } from './bloquer/bloquer.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { ShareWTypeComponent } from './share-wtype/share-wtype.component';
-
+import {IconChooseMultiItem2Component} from './icon-choose-multi/icon-choose-multi-item2.component' ;
+import { IconChooseItem2Component } from './icon-choose-multi/icon-choose-item.component'
+import { ItemSelectComponent } from './icon-select/icon-select.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,10 @@ import { ShareWTypeComponent } from './share-wtype/share-wtype.component';
     ShareComponent,
     SharedBaseComponent,
     ShareMultiselect2Component,
-    ShareWTypeComponent
+    ShareWTypeComponent,
+    IconChooseMultiItem2Component,
+    IconChooseItem2Component,
+    ItemSelectComponent
   ],
   imports: [
     CommonModule,
@@ -28,9 +33,12 @@ import { ShareWTypeComponent } from './share-wtype/share-wtype.component';
     CommonModule,
     SharedModule,
     SharedBaseComponent,
-    BloquerComponent, CheckPassComponent, ShareComponent, ShareMultiselect2Component
+    BloquerComponent, CheckPassComponent, ShareComponent, ShareMultiselect2Component,
+    IconChooseMultiItem2Component,
+    IconChooseItem2Component,
+    ItemSelectComponent
   ],
-  entryComponents: [BloquerComponent, CheckPassComponent, ShareComponent, ShareMultiselect2Component, ShareWTypeComponent]
+  entryComponents: [BloquerComponent, CheckPassComponent, ShareComponent, ShareMultiselect2Component, ShareWTypeComponent, IconChooseMultiItem2Component, IconChooseItem2Component]
 })
 export class SharedZenDocumentModule {
 

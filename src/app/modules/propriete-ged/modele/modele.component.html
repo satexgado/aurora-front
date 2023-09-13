@@ -12,7 +12,8 @@
 
     <div class="col-lg-5 bd-b">
         <div class="input-group ">
-            <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..." [(ngModel)]="dataHelper.searchTerm">
+            <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..."
+                [(ngModel)]="dataHelper.searchTerm">
         </div>
     </div>
 
@@ -21,21 +22,19 @@
             <li class="nav-item ">
                 <a class="nav-link3 " data-toggle="tab" href="#liste_entree">
                     <span class="tx-echos1">
-                        <i class="fas fa-th tx-echos1  tx-16 bg-white"
-                            style="padding:6px; border-radius:50%"></i>
+                        <i class="fas fa-th tx-echos1  tx-16 bg-white" style="padding:6px; border-radius:50%"></i>
                     </span>
                 </a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link3" data-toggle="tab" href="#card_entree"><span class="tx-echos1">
-                        <i class="fas fa-list tx-echos1  tx-16 bg-white"
-                            style="padding:6px; border-radius:50%"></i>
+                        <i class="fas fa-list tx-echos1  tx-16 bg-white" style="padding:6px; border-radius:50%"></i>
                     </span></a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link3" data-toggle="tab" href="#groupe"><span class="tx-echos1">
-                        <i class="fas fa-send-back bg-white tx-16 tx-echos1"
-                            style="padding:6px; border-radius:50%"></i> </span></a>
+                        <i class="fas fa-send-back bg-white tx-16 tx-echos1" style="padding:6px; border-radius:50%"></i>
+                    </span></a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link3" data-toggle="tab" href="#groupe"><span class="tx-echos1">
@@ -54,69 +53,91 @@
             </li>
             <li class="nav-item ">
                 <a class="nav-link3" data-toggle="tab" href="#"><span class="tx-echos1">
-                        <i class="fas fa-user  tx-16 bg-white tx-echos1"
-                            style="padding:6px; border-radius:50%"></i> </span></a>
+                        <i class="fas fa-user  tx-16 bg-white tx-echos1" style="padding:6px; border-radius:50%"></i>
+                    </span></a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link3" data-toggle="tab" href="#filter"><span class="tx-echos1">
-                        <i class="fas fa-filter  tx-16 bg-white tx-echos1"
-                            style="padding:6px; border-radius:50%"></i> </span></a>
+                        <i class="fas fa-filter  tx-16 bg-white tx-echos1" style="padding:6px; border-radius:50%"></i>
+                    </span></a>
             </li>
             <li class="nav-item ">
-                <button class="nav-link3 cursor-pointer btn btn-outline-primary" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();"><span class="tx-echos1">
+                <button class="nav-link3 cursor-pointer btn btn-outline-primary"
+                    [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();"><span class="tx-echos1">
                         <i class="fas fa-plus-circle  tx-16 bg-white tx-echos1"
                             style="padding:6px; border-radius:50%"></i> </span></button>
             </li>
         </ul>
     </div>
 </div>
-<div  [class.loading]="dataHelper.loading$ | async">
-    <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-11">
-        <ng-container  *ngIf="dataHelper.data$ | async as items">
-            <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4" *ngIf="items.length; else noItem" >
+<div [class.loading]="dataHelper.loading$ | async">
+    <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 "
+        (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-11">
+        <ng-container *ngIf="dataHelper.data$ | async as items">
+            <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4" *ngIf="items.length; else noItem">
                 <div class="col-lg-3 p-2" *ngFor="let modele of items;trackBy: dataHelper.trackByFn">
-                    <div class="card-body text-center p-2 bg-white bd-b">
-                        <img [src]="modele.image" alt="" class="img-fluid avatarmodele">
-                    </div>
+                    <div class="card">
+                        <div class=" text-center p-3 bg-white">
+                            <h6 class="tx-facebook tx-bold"> {{modele.libelle}}</h6>
+                        </div>
+                        <div class="card-body text-center p-2 bg-white bd-b">
+                            <img [src]="modele.fullpath" alt="" class="img-fluid avatarmodele">
+                        </div>
+                        <div class="p-2 tx-echos tx-center bg-soft-primary">
+                            <span class="badge badge-primary mx-1 card-2" container="body"
+                                [ngbTooltip]="modele.structure.libelle" *ngIf="modele.structure">
+                                {{modele.structure.cigle}} </span>
 
-                    <div class=" text-center p-3 bg-white">
-                        <span class="tx-echos1 tx-bold"> {{modele.libelle}}</span>
-
-                        <p class="">
-                            <span class=""> <i class="fas fa-dot-circle tx-echos1 bg-light"></i>
+                            <span (click)="onQuickUpdateItem(modele, modele.active ? 0 : 1, 'active')"
+                                [ngClass]="modele.active ? 'badge-success' : 'badge-danger'"
+                                class="badge mx-1 card-2 cursor-pointer" container="body">
+                                {{modele.active ? 'Exposer' : 'Cacher'}} <i class="fa"
+                                    [ngClass]="modele.active ? 'fa-eye' : 'fa-eye-slash'"></i>
                             </span>
-                            <span class=""> || </span>
-                            <span class="tx-bold"> <i class="fas fa-dot-circle tx-echos1 bg-light"
-                                    style="padding:6px; border-radius:50%"></i> </span>
-                        </p>
-                    </div>
-                    <div class="pt-2 bg-light ">
-                        <ul class="nav float-center list-inline justify-content-center">
-                            <li class="nav-item">
-                                <a class="nav-link3" container="body" ngbTooltip="Modifier" (click)="onShowUpdateForm(modele)">
-                                    <span class="tx-echos">
-                                      <i class="fas fa-edit tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link3" container="body" ngbTooltip="Dupliquer" (click)="onShowCreateForm(modele)">
-                                    <span class="tx-echos">
-                                      <i class="fas fa-clone tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link3" container="body" ngbTooltip="Supprimer" (click)="onDelete(modele)">
-                                    <span class="tx-echos">
-                                      <i class="fas fa-times-square tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
+                        </div>
+                        <div class="pt-2 bg-light ">
+                            <ul class="nav float-center list-inline justify-content-center">
+                                <li class="nav-item">
+                                    <a class="nav-link3" container="body" ngbTooltip="Modifier"
+                                        (click)="onShowUpdateForm(modele)">
+                                        <span class="tx-echos">
+                                            <i class="fas fa-edit tx-echos tx-echos  bg-white"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link3" container="body" ngbTooltip="Dupliquer"
+                                        (click)="onShowCreateForm(modele)">
+                                        <span class="tx-echos">
+                                            <i class="fas fa-clone tx-echos tx-echos  bg-white"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link3" container="body" ngbTooltip="Supprimer"
+                                        (click)="onDelete(modele)">
+                                        <span class="tx-echos">
+                                            <i class="fas fa-times-square tx-echos tx-echos  bg-white"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link3" container="body" [ngbTooltip]="modele.active ?  'Cacher' : 'Exposer'"
+                                        (click)="onQuickUpdateItem(modele, modele.active ? 0 : 1, 'active')">
+                                        <span class="tx-echos">
+                                            <i class="fas bg-white"
+                                                [ngClass]="modele.active ? 'fa-eye text-success' : 'fa-eye-slash text-danger'"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-    
             </div>
         </ng-container>
 
@@ -133,9 +154,10 @@
     <div class="modal-header ">
         <h4 class="modal-title ">
             {{modalData.libelle}}</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss( 'Cross click') ">
-      <span aria-hidden="true"><i class="icon-close"></i></span>
-    </button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss( 'Cross click') ">
+            <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
     </div>
     <div class="modal-body p-0">
         <ul class="list-group list-group-flush">
@@ -148,7 +170,9 @@
         </ul>
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button>
-        <button type="button " class="btn btn-sm btn-outline-primary " (click)="modal.close( 'Close click') ">Fermer</button>
+        <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); ">
+            <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button>
+        <button type="button " class="btn btn-sm btn-outline-primary "
+            (click)="modal.close( 'Close click') ">Fermer</button>
     </div>
 </ng-template>

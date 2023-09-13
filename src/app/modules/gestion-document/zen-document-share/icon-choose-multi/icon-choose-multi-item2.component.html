@@ -1,0 +1,129 @@
+<div class="modal-header p-1">
+    <h5 class="modal-title title">{{name | titlecase}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<div class="modal-body p-0 scroll-11">
+    <div>
+        <div [ngSwitch]="typeIcon">
+            <div *ngSwitchCase="null">
+                <div class="d-flex flex-wrap my-2">
+                    <div class="col-lg-3  col-md-4 col-xs-6 text-center" *ngFor="let item of iconSubfolderList">
+                        <a (click)="onChangeTypeIcon(item.id)"
+                            class="card card-1 text-primary bg-white border-light m-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12 card-text">
+                                        <div class="huge">{{item.libelle}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchDefault>
+                <div class="col-lg-12 d-flex align-items-center justify-content-between">
+                    <button class="btn btn-link  mr-3" *ngIf="!hideTypeSelector" (click)="onChangeTypeIcon(null)">
+                        <i class="fad fa-arrow-alt-left bg-light tx-success card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </button>
+                    <h5 class="text-dark"><i class="fal fa-paint-brush" style="padding: 6px; border-radius: 50%;"></i>
+                        {{typeIcon}} </h5>
+                </div>
+                <div class="row row-xs justify-content-between  mg-0 pd-0  pt-1  " style="background: #f5f5f4;">
+                    <div class="input-group ">
+                        <input type="text" class="form-control  border-0 " style="background: #f5f5f4;"
+                            placeholder="Recherches..." [(ngModel)]="searchTerm">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex scrollable-y-65 justify-content-center flex-wrap  mg-l-0 mg-r-0" [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 "
+                    [infiniteScrollThrottle]="50 " (scrolled)="checkData()">
+                        <ng-container *ngIf="!iconIsLoading">
+                            <ng-container
+                                *ngIf="(iconListReading && iconListReading.length); else  noItem">
+                                <div class="col-sm-3  mg-b-20" [@flyInOut]="'in'"
+                                    *ngFor="let item of iconListReading;">
+                                    <div class="card h-100 card-1" (click)="toggleSelectedItem(item)">
+                                        <div class="card-body d-flex align-items-center"
+                                            [class.info]="hasSelectedItemCode(item)">
+                                            <img [src]="storageUrl+item" [alt]="item" loading="lazy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="iconIsLoading">
+                            <ng-container *ngTemplateOutlet="loading"></ng-container>
+                        </ng-container>
+                        <div class="col-12 d-flex justify-content-center"
+                            *ngIf="(iconListChunk && iconListChunk.length) && !iconIsLoading">
+                            <button class="btn btn-outline-primary btn-oblong" (click)="checkData()">
+                                Voir plus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 d-flex flex-row flex-nowrap  pb-4 scroll-11" style="overflow-x: auto;"
+        *ngIf="selectedItem && selectedItem.length">
+        <button class="btn btn-oblong btn-sm card-1 btn-outline-primary m-2" *ngFor="let item of (selectedItem | convertToArray)"
+            (click)="toggleSelectedItem(item)">
+            <img style="max-height: 40px; height:40px" [src]="storageUrl+item" [alt]="item" loading="lazy">            
+            <i class="fal fa-times"></i>
+        </button>
+    </div>
+</div>
+<div class="modal-footer p-0">
+    <button type="button" class="btn btn-sm btn-primary"
+        (click)="onEmitChoosenItem();activeModal.close('Close click')">Valider</button>
+    <button type="button" class="btn btn-sm btn-outline-primary"
+        (click)="activeModal.close('Close click')">Fermer</button>
+    <button type="button" class="btn btn-sm btn-link" *ngIf="createModal" (click)="onShowCreateForm()">Ajouter</button>
+</div>
+
+
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #loading>
+    <div class="col-sm-6 mg-b-20" *ngFor="let e of [].constructor(5);">
+        <div class="loading-card card h-100 w-100">
+            <div class="image loading-placeholder">
+            </div>
+            <div class="bars">
+                <div class="bar bar1 loading-placeholder"></div>
+                <div class="bar bar2 loading-placeholder"></div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loadingLine>
+    <div class="row">
+        <div *ngFor="let e of [].constructor(5);" class="col-12 rounded-0">
+            <div class="loading-card card h-100 w-100  rounded-0">
+                <div class="bars h-100  p-2">
+                    <div class="bar bar2 w-100 loading-placeholder  m-0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
+    </div>
+</ng-template>

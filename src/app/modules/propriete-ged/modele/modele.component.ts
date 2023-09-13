@@ -42,12 +42,14 @@ export class ModeleComponent extends EditableListComponent implements OnInit {
           1,
           [new Sort('libelle','Asc')]
         );
+        this.dataHelper.relations = ['ged_modele_form_fields', 'structure'];
         this.parentData = data;
         this.dataHelper = new ResourceScrollableHelper(new GedModeleFactory(), queryOptions);
         super.ngOnInit()
       },
       ()=>{
         super.ngOnInit();
+        this.dataHelper.relations = ['ged_modele_form_fields', 'structure'];
         this.dataHelper.sortColumn = 'libelle';
         this.dataHelper.sortDirection = 'Asc';
       }
@@ -69,4 +71,9 @@ export class ModeleComponent extends EditableListComponent implements OnInit {
   this.modalData = data;
   this.modalService.open(content, { size: 'lg', centered: true,  backdrop: 'static' });
 }
+
+  onSwitchStatut(){
+
+  }
+
 }

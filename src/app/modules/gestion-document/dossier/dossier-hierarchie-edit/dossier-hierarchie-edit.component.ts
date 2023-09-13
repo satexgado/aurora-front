@@ -30,6 +30,10 @@ export class DossierHierarchieEditComponent {
   nomDossier: string;
   newDossierLoading = false;
   parentUpdate;
+  @Input() relation: {
+    name: string,
+    id: number
+  }
   @Output('onSelectItem') selectedItemEmitter = new EventEmitter<IDossier>();
   @Input() hideUpdateDelete = false;
   @Input() hasRacine = false;
@@ -141,9 +145,15 @@ export class DossierHierarchieEditComponent {
     const modalRef = this.modalService.open(DossierEditComponent,{ size: 'lg', centered: true,  backdrop: 'static' });
     const instance = modalRef.componentInstance as DossierEditComponent;
     instance.title = 'Ajouter un dossier';
+
     if(parent) {
       instance.dossierId = parent.value.id;
     }
+
+    if(this.relation) {
+      instance.relation =  this.relation;
+    }
+
     instance.newItem.subscribe(
       (data: any) => {
         this.newDossierEmitter.emit(data);
@@ -203,7 +213,7 @@ export class DossierHierarchieEditComponent {
         this.newDossierEmitter.emit(data);
         const converted = this.converData({
           'name': 'dossiers',
-          'value': [dossier]
+          'value': [data]
         }) as TreeviewItem[];
         if(!this.parentUpdate.children) {
           this.parentUpdate.children = [...converted];
@@ -223,8 +233,16 @@ export class DossierHierarchieEditComponent {
 
     let dossier = new Dossier();
     dossier.libelle = this.nomDossier;
+    let creatVal = {...dossier};
+
+    if(this.relation) {
+      creatVal = {...{
+        relation_name: this.relation.name,
+        relation_id: this.relation.id,
+      }, ...dossier}
+    }
     const service = new DossierFactory();
-    service.create(dossier).subscribe(
+    service.create(creatVal).subscribe(
       (data)=>{
         this.newDossierEmitter.emit(data);
         const converted = this.converData({

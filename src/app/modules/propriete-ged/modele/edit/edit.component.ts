@@ -13,13 +13,14 @@ import {
 import { GedModele, IGedModele } from 'src/app/core/models/gestion-document/ged-modele.model';
 import { GedModeleFactory } from 'src/app/core/services/gestion-document/ged-modele.factory';
 import { NgxPicaImageService, NgxPicaService } from '@digitalascetic/ngx-pica';
-import { requiredFileType } from 'src/app/shared/upload-file.validator';
 import { IFichierType } from 'src/app/core/models/gestion-document/fichier-type.model';
 import { CacheService } from 'src/app/shared/services';
 import { FichierTypeFactory } from 'src/app/core/services/gestion-document/fichier-type.factory';
 import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
 import { map, shareReplay } from 'rxjs/operators';
-
+import { StructureService } from 'src/app/express-courrier/structure/structure/structure.service';
+import { AuthService } from 'src/app/express-courrier/auth/auth.service';
+import { Helper } from 'src/app/helpers/helper/helper';
 
 @Component({
   selector: 'app-edit',
@@ -42,6 +43,25 @@ export class EditComponent extends BaseEditComponent  {
   @Input() item: IGedModele = new GedModele();
   typeEnum = JsonFormControlEnum;
   allTypeFichiers: IFichierType[] = [];
+  @Input() structure: any = null;
+  dependancies = {
+    structures: [],
+  };
+
+  dependanciesLoading = {
+    structures: false,
+  };
+
+  public getStructures(): void {
+    if(this.dependancies.structures && this.dependancies.structures.length) {
+      return;
+    }
+    this.dependanciesLoading.structures = true;
+    this.structureService.getByUserWCountCourrier(this.authService.user.id).subscribe((structures: any) => {
+      this.dependancies.structures = structures;
+      this.dependanciesLoading.structures = false;
+    });
+  }
 
   tagList = [
     {
@@ -59,6 +79,9 @@ export class EditComponent extends BaseEditComponent  {
     activeModal: NgbActiveModal,
     public ngxPicaService: NgxPicaService,
     public ngxPicaImageService: NgxPicaImageService,
+    public structureService: StructureService,
+    public authService: AuthService,
+    public helper2: Helper,
     protected cacheService: CacheService)
   {
     super(new GedModeleFactory(),cdRef, activeModal);
@@ -79,7 +102,25 @@ export class EditComponent extends BaseEditComponent  {
     )
 
     super.ngOnInit();
+    this.onChange();
   }
+
+  onChange() {
+    const structureIdControl = this.editForm.get('structure_id') as FormControl;
+    const structureControl = this.editForm.get('structure') as FormControl;
+    structureControl.valueChanges.subscribe(
+      (value)=>{
+        if(value && value.length) {
+          structureIdControl.setValue(value[0].id);
+        } else {
+          structureIdControl.setValue(null);
+        }
+        structureIdControl.markAsDirty();
+        structureIdControl.markAsTouched();
+      }
+    )
+  }
+
 
   createFormGroup(item: IGedModele) {
 
@@ -98,10 +139,24 @@ export class EditComponent extends BaseEditComponent  {
       )
     }
 
+    let structure_id ;
+    let structure ;
+
+    if(this.structure) {
+      structure_id = this.structure.id;
+      structure = this.structure;
+    } else {
+      structure_id = item.structure_id;
+      structure = item.structure;
+    }
+
     return this.formBuilder.group({
+      'structure': [structure ? [structure] : []],
+      'structure_id': [structure_id, Validators.required],
       'removedFormField': [],
       'form_field': form_fields,
-      'image': [item.image, [Validators.required, requiredFileType(['png', 'gif', 'jpeg', 'jpg', 'svg'])] ],
+      'image': [item.image, Validators.required ],
+      'active': [item.active ],
       'allowed_type': [item.allowed_type, Validators.required],
       'description': [item.description],
       'libelle': [item.libelle, Validators.required],
@@ -130,13 +185,4 @@ export class EditComponent extends BaseEditComponent  {
     }
     control.removeAt(child_index);
  }
-
- 
- onImageChange() {
-    const control = this.editForm.get('image');
-    let sub = this.editForm.get('image').valueChanges
-      .subscribe(type => {
-        control.markAsDirty();
-      });
-  }
 }

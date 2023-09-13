@@ -21,6 +21,11 @@ export class StoreMultipleFileComponent implements OnInit  {
     id: number
   }
 
+  @Input() gedRelation: {
+    name: string,
+    id: number
+  }
+
   constructor(
     protected fichierService: ZenFichierUploadService,
     protected modalService: NgbModal,
@@ -52,6 +57,11 @@ export class StoreMultipleFileComponent implements OnInit  {
       if(this.relation) {
         uploadData['relation_name'] = this.relation.name;
         uploadData['relation_id'] = this.relation.id;
+      }
+
+      if(this.gedRelation) {
+        uploadData['gedRelation_name'] = this.gedRelation.name;
+        uploadData['gedRelation_id'] = this.gedRelation.id;
       }
 
       newFile.upload$ = service.upload(

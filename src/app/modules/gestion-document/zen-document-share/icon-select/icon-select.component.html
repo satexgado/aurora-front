@@ -1,0 +1,10 @@
+<div class="file-drop-area" (click)="onChooseIcon()">
+  <ng-container [ngSwitch]="!!selected">
+      <p class="d-flex p-0 justify-content-center" *ngSwitchCase="true">
+          <img class="img-thumbnail m-3" style="max-height: 200px" [alt]="storageUrl+'/'+selected" [src]="storageUrl+'/'+selected">
+      </p>
+      <p class="d-flex p-0 justify-content-center" *ngSwitchDefault>
+          <img class="img-thumbnail m-3" style="max-height: 200px" [src]="placeholder">
+      </p>
+  </ng-container>
+</div>

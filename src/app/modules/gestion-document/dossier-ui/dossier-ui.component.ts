@@ -41,6 +41,8 @@ export class ZenDossierUiComponent implements OnInit {
   lockedElement: IDossier;
 
   owner: 'all' | 'mine' | 'shared' = 'all';
+  container: 'Home' | 'Folder' | 'Parent' = 'Home';
+  owner_id: number = 1;
 
   onChangeOwner(owner) {
     this.owner = owner;
@@ -146,9 +148,7 @@ export class ZenDossierUiComponent implements OnInit {
             this.route.parent.data.subscribe(
               (res)=> {
                 let parent = res.data.parent as IBase;
-                this.dossierAdditionalFilter = [{or: false, filters: [
-                  new Filter(this.route.routeConfig.data['folder_parent'], parent.id, 'eq')
-                ]}];
+                
                 this.parentData = {
                   relationId: +parent.id,
                   relationName: this.route.routeConfig.data['folder_parent']
@@ -236,23 +236,36 @@ export class ZenDossierUiComponent implements OnInit {
   }
 
   onloadContent() {
+    this.dossierAdditionalFilter = [];
+    this.fichierAdditionalFilter = [];
     if(this.dossier) {
+      console.log(this.dossier);
+      this.container = 'Folder';
       this.dossier_parent = [];
       this.lockedElement = null;
       this.fichierService.showFolderDetails.next(this.dossier);
-      this.checkLockedFolderShit(this.dossier);
+      this.checkLockedFolderKey(this.dossier);
       if(this.lockedElement) {
         return this.onUnlockFolder();
       }
-      this.onInitFolderContent();
       this.onSetBreadCrum(this.dossier);
-      return;
+      this.owner_id = this.dossier.id;
+      
+    } else if(this.parentData) {
+      this.container = 'Parent';
+      this.dossierAdditionalFilter = [{or: false, filters: [
+        new Filter(this.route.routeConfig.data['folder_parent'], this.parentData.relationId, 'eq')
+      ]}];
+      this.fichierAdditionalFilter = [{or: false, filters: [
+        new Filter(this.route.routeConfig.data['folder_parent'], this.parentData.relationId, 'eq')
+      ]}];
+    } else {
+      this.container = 'Home';
     }
-    this.onInitHomeContent();
+    this.onInitContent();
   }
 
-  checkLockedFolderShit(dossier: IDossier) {
-    console.log(dossier);
+  checkLockedFolderKey(dossier: IDossier) {
     if(dossier.ged_element.bloquer && !dossier.is_user) {
       if(this.cacheService.hasValidCachedValue('unlocked_folder_'+dossier.id)) {
         return;
@@ -261,7 +274,7 @@ export class ZenDossierUiComponent implements OnInit {
     }
 
     if(dossier.dossier) {
-      this.checkLockedFolderShit(dossier.dossier);
+      this.checkLockedFolderKey(dossier.dossier);
     }
   }
 
@@ -284,7 +297,45 @@ export class ZenDossierUiComponent implements OnInit {
       this.onSetBreadCrum(dossier.dossier);
     }
   }
+  
+  onInitContent() {
 
+    this.dossiersHelper = new ResourceScrollableHelper(
+      new DossierFactory(),  new QueryOptions(
+        [...[
+          {or: false, filters: [
+            new Filter('owner_'+this.owner+this.container, this.owner_id??true, 'eq'),
+          ]}
+        ], ... this.dossierAdditionalFilter],
+        [
+          'inscription', 'ged_element'
+        ],
+        undefined,
+        undefined,
+        [new Sort('libelle','ASC')])
+    );
+    this.dossiersHelper.withoutPaginate = true;
+    this.dossiersHelper.loadData();
+    
+    this.fichiersHelper = new ResourceScrollableHelper(
+      new FichierFactory(),  new QueryOptions(
+        [...[
+          {or: false, filters: [
+            new Filter('owner_'+this.owner+this.container, this.owner_id??true, 'eq'),
+          ]}
+        ], ... this.fichierAdditionalFilter],
+        [
+          'fichier_type', 'inscription', 'ged_element'
+        ],
+        undefined,
+        undefined,
+        [new Sort('libelle','ASC')])
+    );
+
+    this.fichiersHelper.loadData();
+
+    
+  }
   onInitHomeContent() {
 
     this.dossiersHelper = new ResourceScrollableHelper(
@@ -369,29 +420,29 @@ export class ZenDossierUiComponent implements OnInit {
     const modalRef = this.modalService.open(DossierEditComponent, { size: 'lg', centered: true, backdrop: 'static' });
     const instance = modalRef.componentInstance as DossierEditComponent;
     instance.title = `Creer un dossier`;
+
     if(this.dossier) {
       let item = new Dossier();
       item.dossier_id = this.dossier.id;
       instance.item = item;
       instance.dossierId = this.dossier.id;
+    } else if(this.parentData) {
+      instance.relation =  {
+        name:this.parentData.relationName, id: this.parentData.relationId
+      };
     }
+
     instance.newItem.subscribe(
       (data: IDossier) => {
         if(this.dossiersHelper) {
           this.dossiersHelper.addItem(data);
         }
         this.changeIndicator++;
-        if(!this.parentData) {return;}
-        const service = new GedElementFactory();
-        service.attachAffectation(data.ged_element.id, this.parentData.relationName, this.parentData.relationId).subscribe();
+        // if(!this.parentData) {return;}
+        // const service = new GedElementFactory();
+        // service.attachAffectation(data.ged_element.id, this.parentData.relationName, this.parentData.relationId).subscribe();
       }
     );
-  }
-
-  onAfterSaveDossier(dossier: IDossier) {
-    if(!this.parentData) {return;}
-    const service = new GedElementFactory();
-    service.attachAffectation(dossier.ged_element.id, this.parentData.relationName, this.parentData.relationId).subscribe();
   }
 
   onShowUpdateForm() {
@@ -419,6 +470,10 @@ export class ZenDossierUiComponent implements OnInit {
     if(this.dossier) {
       instance.relation =  {
         name:'dossiers', id: this.dossier.id
+      };
+    } else if(this.parentData) {
+      instance.gedRelation =  {
+        name:this.parentData.relationName, id: this.parentData.relationId
       };
     }
 

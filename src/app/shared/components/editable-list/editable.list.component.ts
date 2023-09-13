@@ -9,6 +9,7 @@ import { ResourceScrollableHelper } from '../../state/resource.scrollable.helper
 import { ItemSelectHelper } from '../../state/item.select.helper';
 import { NotificationService } from '../../notification';
 import { Resource } from '../../state';
+import { IBase } from 'src/app/core/models/base.interface';
 
 @Directive({
   selector: 'whynot'
@@ -128,6 +129,21 @@ export class EditableListComponent extends ItemSelectHelper implements OnInit {
           this._isEditorLoading= false;
         }
       )
+  }
+
+  onQuickUpdateItem(item: IBase, value, colname: string, saveAfter = true) {
+    item[colname] = value;
+    if(saveAfter) {
+      let data = {};
+      data['id'] = item.id;
+      data[colname] = value;
+      this.dataHelper.service.update(data)
+        .subscribe(
+          (data) => {
+            // this.dataHelper.updateItem(data);
+          }
+        )
+    }
   }
 
   onDelete(item: Resource) {

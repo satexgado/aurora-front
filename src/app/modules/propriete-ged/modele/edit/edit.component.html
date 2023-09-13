@@ -9,9 +9,7 @@
         <form class="custom-placeholder" [formGroup]="editForm">
             <div class="formSep form-group d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label for="">Image</label>
-                    <app-image-upload formControlName="image" [image]="editForm.get('image').value"></app-image-upload>
-                    <small class="form-text text-muted">Format autorisé PNG, GIF</small>
+                    <app-icon-select formControlName="image" [label]="'Icon'"></app-icon-select>
                     <div class="invalid-feedback d-block">
                         <ng-container *ngIf="hasError('image', 'required')">Veuillez choisir une image</ng-container>
                         <ng-container *ngIf="hasError('image', 'requiredFileType')">Seulement PNG, Gif</ng-container>
@@ -31,11 +29,30 @@
                 <div class="inv_notes">
                     <span class="badge badge-info">Information</span>
                     <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                        <div class="col-12">
+                        <div class="col-12 col-sm-6">
+                            <!-- Label -->
+                            <label class="control-label" for="structure">
+                              Structure
+                              <i class="fad fa-circle-notch fa-spin"
+                                  *ngIf="dependanciesLoading.structures"></i>
+                            </label>
+          
+                            <angular2-multiselect [data]="dependancies.structures" formControlName="structure" [settings]="helper2.dropdownSettings.single" [ngClass]="{'is-invalid': shouldShowRequiredError( 'structure_id'), 'is-valid': isValid('structure_id')}" (click)="getStructures()"
+                                class="form-control p-0 ">
+                            </angular2-multiselect>
+          
+                            <div *ngIf="shouldShowRequiredError('structure_id')" class="invalid-feedback">veillez remplir ce champ.</div>
+          
+                        </div>
+                        <div class="col-12 col-sm-6">
                             <label class="control-label" for="salle">Modele</label>
-                            <input type="text" autofocus class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                            <input type="text" autofocus class="form-control" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
                             <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
                         </div>
+                    </div>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input"   [formControlName]="'active'" value="1" id="customSwitchValue">
+                        <label class="custom-control-label" for="customSwitchValue"></label>
                     </div>
                     <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                         <div class="col-12">

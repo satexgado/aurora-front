@@ -14,6 +14,10 @@ export class EditComponent extends BaseEditComponent  {
   heading = 'masque-budget';
   @Input() item: IDossier = new Dossier();
   @Input() dossierId: number;
+  @Input() relation: {
+    name: string,
+    id: number
+  }
 
   constructor(
     protected cacheService: CacheService,
@@ -36,6 +40,8 @@ export class EditComponent extends BaseEditComponent  {
       'description': [item.description],
       'libelle': [item.libelle, Validators.required],
       'dossier_id': [dossierid],
+      'relation_name': [this.relation ? this.relation.name : null],
+      'relation_id': [this.relation ? this.relation.id : null],
       'id': [item.id]
     });
   }

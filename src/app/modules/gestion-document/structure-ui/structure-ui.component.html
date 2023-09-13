@@ -1,37 +1,57 @@
-<router-outlet *ngIf="parent; else listeStructures"></router-outlet>
-
-<ng-template #listeStructures>
-    <div class="card mb-2">
-        <div class="pl-2">
-            <h5 class="pt-2 pb-2"><i class="fad fa-chart-network  tx-20"></i> Mes Structures </h5>
+<div class="row m-0">
+    <div class=" col-lg-3 bd-r bd-2 " style="background:#FFFF; height:100vh ">
+        <div class="row  justify-content-between  bg-light pt-2 bd-b">
+            <div class="col-lg-12 p-0 pt-3">
+                <h5 class="tx-echos "><i class="fas fa-folders" style="padding:6px; border-radius: 50%; "></i> Documents
+                    administratifs</h5>
+            </div>
         </div>
-        <div class="scroll-11 scrollable-y-75 p-3">
-            <div class="w-100">
-                <ul class="list-group" [class.loading]="structure_loading">
-                    <ng-container *ngIf="structures as items">
-                        <ng-container *ngIf="items.length;  else emptyTemplate">
-                            <li class="card-1 list-group-item p-2 mb-2" *ngFor="let structure of items;">
-                                <div class="d-flex">
-                                    <div class="">
-                                        <i class="fad fa-chart-network tx-facebook mr-2 tx-30 pt-1"></i>
-                                    </div>
-                                    <div class="pd-sm-l-10">
-                                        <p class="tx-dark mg-b-0" style="word-break: break-all;">{{ structure.libelle }}</p>
-                                    </div>
-                                    <div class="mg-l-auto text-right">
-                                        <button class="btn btn-oblong btn-outline-primary bd-0 btn-icon mx-2" [routerLink]="['/document/structure', structure.id]">
-                                      <i class="fal fa-arrow-circle-right tx-14 rounded-circle" ></i>
-                                    </button>
-                                    </div>
-                                </div>
-                            </li>
-                        </ng-container>
+
+        <div class=" p-0 ">
+            <div class="row bg-light">
+                <div class="col-lg-10 p-0">
+                    <div class="input-group ">
+                        <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches...">
+                    </div>
+                </div>
+                <div class="col-lg-2 p-0">
+                    <ul class="nav float-right list-inline justify-content-end">
+                        <li class="nav-item ">
+                            <a class="nav-link3 " data-toggle="tab" href="#">
+                                <span class="tx-echos">
+                                    <i class="fas fa-plus-circle bg-echos1 tx-16 tx-white"
+                                        style="padding:6px; border-radius:50%"></i> </span></a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="scroll-1" style="overflow:auto;height:70vh" [class.loading]="structure_loading">
+                <ng-container *ngIf="structures as items">
+                    <ng-container *ngIf="items.length;  else emptyTemplate">
+                        <div class="d-flex align-items-center bd-b " *ngFor="let structure of items;">
+                            <a class=" pt-2 bd-b" [routerLink]="['/document/structure', structure.id]">
+                                <h6 class="tx-echos tx-14"><i class="fas fa-folder tx-18 tx-echos1 mr-2"></i><i
+                                        class="fas fa-key-skeleton tx-18 tx-danger"></i> {{ structure.libelle }}</h6>
+                                <span class=" tx-14 mg-b-5 tx-teal pl-2 ">Documents</span>
+                                <span class="  mg-b-5 tx-echos1 ">58</span>
+                                <span class=" tx-14 mg-b-5 tx-warning "> Fichiers</span>
+                                <span class=" mg-b-5 tx-echos1 ">10 </span>
+                            </a>
+                        </div>
                     </ng-container>
-                </ul>
+                </ng-container>
+                
             </div>
         </div>
     </div>
-</ng-template>
+
+
+    <div class="col-lg-9 bg-light p-0">
+        <router-outlet></router-outlet>
+    </div>
+
+</div>
 
 <ng-template #emptyTemplate>
     <div class="row mx-0 h-75 text-center">
@@ -41,3 +61,4 @@
         </div>
     </div>
 </ng-template>
+

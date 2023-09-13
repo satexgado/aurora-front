@@ -11,4 +11,5 @@ export { CountPipe } from './count.pipe';
 export { SelectedSortPipe } from './selected-sort.pipe';
 export { SearchFilterObsPipe } from './search-filter-observable.pipe'
 export { BaseColumnIdFilterPipe } from './base-column-id.pipe';
+export { ConvertToArrayPipe } from './convertToArray.pipe';
 

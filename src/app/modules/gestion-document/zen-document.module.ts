@@ -28,6 +28,9 @@ import { NotificationModule } from 'src/app/shared';
 import { ZenDocumentTypeUiComponent } from './type-ui/type-ui.component'
 import { DossierItemCardUiComponent } from './dossier-item-card-ui/dossier-item-card-ui.component';
 import { FichierItemCardUiComponent } from './fichier-item-card-ui/fichier-item-card-ui.component';
+import { GedDossierAdministratifUiComponent } from './dossier-administratif-ui/dossier-administratif-ui.component';
+import { GedDossierAdministratifEditComponent } from './dossier-administratif-ui/edit/edit.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,9 @@ import { FichierItemCardUiComponent } from './fichier-item-card-ui/fichier-item-
     SidebarDocumentComponent,
     ZenDocumentTypeUiComponent,
     DossierItemCardUiComponent,
-    FichierItemCardUiComponent
+    FichierItemCardUiComponent,
+    GedDossierAdministratifUiComponent,
+    GedDossierAdministratifEditComponent
   ],
   imports: [
     CommonModule,
@@ -60,13 +65,15 @@ import { FichierItemCardUiComponent } from './fichier-item-card-ui/fichier-item-
     ZenDocumentRoutingModule,
     ZenDossierFichierModule,
     ZenFichierModule,
-    SharedZenDocumentModule
+    SharedZenDocumentModule,
+    AngularMultiSelectModule
   ],
   exports: [
     FichierItemUiComponent,
     DossierItemUiComponent,
   ],
   entryComponents: [
+    GedDossierAdministratifEditComponent
   ]
 })
 export class ZenDocumentModule {

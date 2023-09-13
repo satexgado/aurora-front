@@ -21,20 +21,22 @@ export class ZenDossierResolver implements Resolve<Observable<Dossier>> {
       ]},
     ], ['dossier', 'inscription', 'ged_element']);
 
-    if(route.routeConfig.data[ 'additionnal_filter' ]) {
-      queryOptions.filter_groups.push(
-        route.routeConfig.data[ 'additionnal_filter' ]
-      )
+    if(route.routeConfig?.data) {
+      if(route.routeConfig.data[ 'additionnal_filter' ]) {
+        queryOptions.filter_groups.push(
+          route.routeConfig.data[ 'additionnal_filter' ]
+        )
+      }
+  
+      if(route.routeConfig.data['folder_parent']) {
+        queryOptions.filter_groups.push(
+          {or: false, filters: [
+            new Filter(route.routeConfig.data['folder_parent'], route.parent.paramMap.get('id'), 'eq')
+          ]}
+        )
+      }
     }
-
-    if(route.routeConfig.data['folder_parent']) {
-      queryOptions.filter_groups.push(
-        {or: false, filters: [
-          new Filter(route.routeConfig.data['folder_parent'], route.parent.paramMap.get('id'), 'eq')
-        ]}
-      )
-    }
-
+    
     return service.list(queryOptions).pipe(
         map(data => {
             if (data && data.data.length) {

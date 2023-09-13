@@ -12,7 +12,7 @@ import { CacheService } from 'src/app/shared/services/cache.service';
 import { Component, Input, ChangeDetectorRef, ViewChild} from '@angular/core';
 import { BaseEditComponent } from 'src/app/shared/components/edit/base-edit.component';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { FormArray, Validators, FormControl, FormGroup } from '@angular/forms';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { CrCourrierEntrant, ICrCourrierEntrant } from 'src/app/core/models/gestion-courrier/cr-courrier-entrant';
 import { CrCourrierEntrantFactory } from 'src/app/core/services/gestion-courrier/cr-courrier-entrant';
 import { CrCourrier } from 'src/app/core/models/gestion-courrier/cr-courrier';
@@ -30,11 +30,8 @@ import { CrEtapeFactory } from 'src/app/core/services/gestion-courrier/cr-etape'
 import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CrStatutFactory } from 'src/app/core/services/gestion-courrier/cr-statut';
-import { UserFactory } from 'src/app/core/services/user.factory';
 import { ICrNature } from 'src/app/core/models/gestion-courrier/cr-nature';
-import { IJsonFormControl } from 'src/app/core/models/json-form/json-form-control';
 import { CrDossierFactory } from 'src/app/core/services/gestion-courrier/cr-dossier';
-import { requiredFileType } from 'src/app/shared/upload-file.validator';
 import { CourrierValidator } from 'src/app/shared';
 import { JsonForm2Component, JsonFormData } from '../../json-form/form/json-form2.component';
 

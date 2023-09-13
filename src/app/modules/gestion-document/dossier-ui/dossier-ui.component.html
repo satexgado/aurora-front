@@ -115,7 +115,7 @@
                 </div>
             </li>
             <li class="nav-item " *ngIf="!(dossier && !dossier.is_user)">
-                <button class="btn btn-link" (click)="openFileModal()" ngbTooltip="Creer un fichier">
+                <button class="btn btn-link" (click)="openFileModal()" ngbTooltip="Ajouter des fichiers">
                     <span class="tx-echos">
                         <i class="fal fa-file-plus  bg-yeto tx-16 tx-white card-1"
                             style="padding:6px; border-radius:50%"></i>
@@ -309,7 +309,7 @@ z-index: 1000;" *ngIf="fichierSelectHelper.selectedItemsNumber > 0">
         </button>
     </div>
     <div class="modal-body">
-        <app-dossier-hierarchie-edit (newDossierEmitter)="onAfterSaveDossier($event)" [filter]="dossierFilter">
+        <app-dossier-hierarchie-edit  [relation]="parentData && (!this.dossier) ? {name:parentData.relationName, id: this.parentData.relationId} : null" [filter]="dossierFilter">
         </app-dossier-hierarchie-edit>
     </div>
     <div class="modal-footer">

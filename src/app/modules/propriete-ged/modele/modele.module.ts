@@ -7,6 +7,8 @@ import { InlineEditorModule } from 'src/app/inline-editor/inline-editor.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UploadModule } from 'src/app/upload';
 import { CustomInputModule } from 'src/app/shared/components/custom-input/custom-input.module';
+import { SharedZenDocumentModule } from '../../gestion-document/zen-document-share/shared.module';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 @NgModule({
     declarations: [
@@ -19,7 +21,9 @@ import { CustomInputModule } from 'src/app/shared/components/custom-input/custom
         InlineEditorModule,
         InfiniteScrollModule,
         CustomInputModule,
-        UploadModule
+        UploadModule,
+        SharedZenDocumentModule,
+        AngularMultiSelectModule
     ],
     exports: [
         ModeleComponent,
