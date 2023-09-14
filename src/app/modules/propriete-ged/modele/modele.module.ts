@@ -9,10 +9,12 @@ import { UploadModule } from 'src/app/upload';
 import { CustomInputModule } from 'src/app/shared/components/custom-input/custom-input.module';
 import { SharedZenDocumentModule } from '../../gestion-document/zen-document-share/shared.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { GedModeleUiComponent }  from './ui/ged-modele-ui.component'
 
 @NgModule({
     declarations: [
         ModeleComponent,
+        GedModeleUiComponent,
         EditComponent
     ],
     imports: [
