@@ -1,4 +1,4 @@
-<div class="select-area d-md-flex justify-content-center" *ngIf="items && items.length < 6; else moreThanFive">
+<div class="select-area d-flex flex-wrap justify-content-center" *ngIf="items && items.length < 6; else moreThanFive">
     <div class="mx-2 flex-fill mb-2 cursor-pointer" *ngFor="let item of items" (click)="onSetSelected(item.id)">
         <div class="card" [ngClass]="{'text-white': item.id == selected, 'bg-info': item.id && item.id == selected, 'bg-danger': (!item.id)&&item.id==selected}">
             <div class="card-body text-center p-2">
