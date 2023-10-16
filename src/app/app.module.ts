@@ -15,43 +15,31 @@ import { TreeviewModule } from 'ngx-treeview';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TemplateWritomeComponent } from './template-writome/template.component';
 
 registerLocaleData(localeFr, 'fr');
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'authentification',
     loadChildren: () =>
-      import('./modules/propriete-ged/propriete-ged.module').then(
-        (module) => module.ProprieteGedModule
+      import('./express-courrier/auth/auth.module').then(
+        (module) => module.AuthModule
       ),
   },
-  //  {
-  //   path: '',
-  //   component: TemplateWritomeComponent
-  //  }
-  // {
-  //   path: 'authentification',
-  //   loadChildren: () =>
-  //     import('./express-courrier/auth/auth.module').then(
-  //       (module) => module.AuthModule
-  //     ),
-  // },
-  // {
-  //   path: '',
-  //   canActivate: [AuthGuard],
-  //   canLoad: [AuthGuard],
-  //   canActivateChild: [AuthGuard], 
-  //   loadChildren: () =>
-  //     import('./express-courrier/express-courrier.module').then(
-  //       (module) => module.ExpressCourrierModule
-  //     ),
-  // },
-  // {
-  //   path: 'bad-url',
-  //   component: PageBadUrlComponent,
-  // },
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
+    canActivateChild: [AuthGuard], 
+    loadChildren: () =>
+      import('./express-courrier/express-courrier.module').then(
+        (module) => module.ExpressCourrierModule
+      ),
+  },
+  {
+    path: 'bad-url',
+    component: PageBadUrlComponent,
+  },
 
 
   // {
@@ -61,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, TemplateWritomeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserAnimationsModule,
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
