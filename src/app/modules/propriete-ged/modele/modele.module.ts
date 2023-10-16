@@ -29,6 +29,7 @@ import { GedModeleUiComponent }  from './ui/ged-modele-ui.component'
     ],
     exports: [
         ModeleComponent,
+        GedModeleUiComponent
     ],
     entryComponents: [EditComponent],
 })

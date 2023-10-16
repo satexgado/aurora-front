@@ -1,0 +1,192 @@
+<div class="p-4 d-flex justify-content-between">
+    <div>
+        <h6 class="tx-facebook tx-left m-0"><i class="fas fa-solar-system tx-facebook   tx-16"></i>
+            Espace Workspaces</h6>
+    </div>
+
+    <div>
+        <div>
+            <span class="tx-bold tx-facebook"> <i class="fas fa-solar-system tx-facebook tx-16 pr-2"></i>
+                Workspaces</span>
+            <span class="tx-bold tx-facebook"> <i class="fas fa-chair-office tx-facebook tx-16 pr-2"></i>
+                Services</span>
+            <span class="tx-bold tx-facebook"> <i class="fas fa-users tx-facebook tx-16 pr-2"></i>
+                Groupes</span>
+        </div>
+    </div>
+</div>
+<div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4">
+
+    <div class="col-lg-5 bd-b">
+        <div class="input-group ">
+            <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches..."
+                [(ngModel)]="dataHelper.searchTerm">
+        </div>
+    </div>
+
+    <div class="col-lg-7 bd-b">
+        <ul class="nav float-right list-inline justify-content-end">
+            <li class="nav-item ">
+                <a class="nav-link3 " data-toggle="tab" href="#liste_entree">
+                    <span class="tx-echos1">
+                        <i class="fas fa-th tx-echos1  tx-16 bg-white" style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#card_entree"><span class="tx-echos1">
+                        <i class="fas fa-list tx-echos1  tx-16 bg-white" style="padding:6px; border-radius:50%"></i>
+                    </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#groupe"><span class="tx-echos1">
+                        <i class="fas fa-send-back bg-white tx-16 tx-echos1" style="padding:6px; border-radius:50%"></i>
+                    </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#groupe"><span class="tx-echos1">
+                        <i class="fas fa-folder-open bg-white tx-16 tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#"><span class="tx-echos1">
+                        <i class="fas fa-calendar-alt bg-white tx-16 tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#"><span class="tx-echos1">
+                        <i class="fas fa-chair-office bg-light tx-16 tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#"><span class="tx-echos1">
+                        <i class="fas fa-user  tx-16 bg-white tx-echos1" style="padding:6px; border-radius:50%"></i>
+                    </span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link3" data-toggle="tab" href="#filter"><span class="tx-echos1">
+                        <i class="fas fa-filter  tx-16 bg-white tx-echos1" style="padding:6px; border-radius:50%"></i>
+                    </span></a>
+            </li>
+            <li class="nav-item ">
+                <button class="nav-link3 cursor-pointer btn btn-outline-primary"
+                    [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();"><span class="tx-echos1">
+                        <i class="fas fa-plus-circle  tx-16 bg-white tx-echos1"
+                            style="padding:6px; border-radius:50%"></i> </span></button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div [class.loading]="dataHelper.loading$ | async">
+    <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 "
+        (scrolled)="checkData()" class="card-body p-0 scrollable-y-65 scroll-11">
+        <ng-container *ngIf="dataHelper.data$ | async as items">
+            <div class="row row-xs mg-0 pd-0 clearfix pt-2 pb-4" *ngIf="items.length; else noItem">
+                <div class="col-lg-3 p-2" *ngFor="let workspace of items;trackBy: dataHelper.trackByFn">
+                    <div class="card">
+                        <div class=" text-center p-3 bg-white">
+                            <h6 class="tx-facebook tx-bold"> {{workspace.libelle}}</h6>
+                        </div>
+                        <div class="card-body text-center p-2 bg-white bd-b">
+                            <img [src]="workspace.fullpath" alt="" class="img-fluid avatarmodele">
+                        </div>
+                        <div class="p-2 tx-echos tx-center bg-soft-primary">
+                            <span class="badge badge-primary mx-1 card-2" container="body"
+                                [ngbTooltip]="workspace.structure.libelle" *ngIf="workspace.structure">
+                                {{workspace.structure.cigle}} </span>
+
+                            <span (click)="onQuickUpdateItem(workspace, workspace.public ? 0 : 1, 'public')"
+                                [ngClass]="workspace.public ? 'badge-success' : 'badge-danger'"
+                                class="badge mx-1 card-2 cursor-pointer" container="body">
+                                {{workspace.public ? 'Public' : 'Priver'}} <i class="fa"
+                                    [ngClass]="workspace.public ? 'fa-eye' : 'fa-eye-slash'"></i>
+                            </span>
+                        </div>
+                        <div class="pt-2 bg-light ">
+                            <ul class="nav float-center list-inline justify-content-center">
+                                <li class="nav-item">
+                                    <a class="nav-link3" [routerLink]="['./',workspace.id]">
+                                        <span class="tx-echos">
+                                            <i class="fas fa-address-card tx-echos tx-echos  bg-white"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link3" container="body" ngbTooltip="Modifier"
+                                        (click)="onShowUpdateForm(workspace)">
+                                        <span class="tx-echos">
+                                            <i class="fas fa-edit tx-echos tx-echos  bg-white"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link3" container="body" ngbTooltip="Dupliquer"
+                                        (click)="onShowCreateForm(workspace)">
+                                        <span class="tx-echos">
+                                            <i class="fas fa-clone tx-echos tx-echos  bg-white"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link3" container="body" ngbTooltip="Supprimer"
+                                        (click)="onDelete(workspace)">
+                                        <span class="tx-echos">
+                                            <i class="fas fa-times-square tx-echos tx-echos  bg-white"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link3" container="body" [ngbTooltip]="workspace.public ?  'Priver' : 'Public'"
+                                        (click)="onQuickUpdateItem(workspace, workspace.public ? 0 : 1, 'public')">
+                                        <span class="tx-echos">
+                                            <i class="fas bg-white"
+                                                [ngClass]="workspace.public ? 'fa-eye text-success' : 'fa-eye-slash text-danger'"
+                                                style="padding:6px; border-radius:50%"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title ">
+            {{modalData.libelle}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss( 'Cross click') ">
+            <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
+    </div>
+    <div class="modal-body p-0">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="modalData.description">
+                <div class="tx-yeto2"><i class="fal fa-info-square text-info mx-2"></i> Description </div>
+                <div class="">
+                    {{modalData.description}}
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); ">
+            <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button>
+        <button type="button " class="btn btn-sm btn-outline-primary "
+            (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>

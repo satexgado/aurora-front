@@ -13,6 +13,8 @@ import { ZenDocumentTypeUiResolver } from './type-ui/type-ui.resolver';
 import { AuthorisationGuardService } from 'src/app/shared/guard/authorisation.guard';
 import { GedDossierAdministratifUiComponent } from './dossier-administratif-ui/dossier-administratif-ui.component';
 import { GedDossierAdministratifResolver } from './dossier-administratif-ui/dossier-administratif-ui.resolver';
+import { GedModeleUiComponent } from '../propriete-ged/modele/ui/ged-modele-ui.component';
+import { GedModeleResolver } from '../propriete-ged/modele/ui/ged-modele-ui.resolver';
 
 
 const routes: Routes = [
@@ -58,6 +60,27 @@ const routes: Routes = [
       }
     ]
   },
+  { path: 'modele', component: GedModeleUiComponent},
+  {
+    path: 'modele/:id', component: GedModeleUiComponent,
+    resolve: { data: GedModeleResolver },
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dossier' },
+      {
+        path: 'dossier', component: ZenDossierUiComponent,
+        data: {
+          folder_parent: 'modeles'
+        },
+      },
+      {
+        data: {
+          folder_parent: 'modeles'
+        },
+        path: 'dossier/:id', component: ZenDossierUiComponent,
+        resolve: { dossier: GedModeleResolver }
+      }
+    ]
+  },
   {
     path: '', component: ZenDocumentTemplateComponent,
     data: {
@@ -94,6 +117,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],
-  providers: [ZenDossierResolver, ZenStructureResolver, ZenDocumentTypeUiResolver, GedDossierAdministratifResolver]
+  providers: [ZenDossierResolver, ZenStructureResolver, ZenDocumentTypeUiResolver, GedDossierAdministratifResolver,GedModeleResolver]
 })
 export class ZenDocumentRoutingModule { }

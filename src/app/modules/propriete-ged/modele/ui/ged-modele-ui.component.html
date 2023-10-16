@@ -6,49 +6,36 @@
                     administratifs</h5>
             </div>
         </div>
-
-        <div class=" p-0 ">
-            <div class="row bg-light">
-                <div class="col-lg-10 p-0">
-                    <div class="input-group ">
-                        <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches...">
-                    </div>
+        <div class="flex-fill pd-1  pb-4 ">
+            <nav class="nav flex-column  " [class.loading]="dataHelper.loading$ | async">
+                <div class="d-flex align-items-center justify-content-between pb-1 pt-1 bg-light">
+                    <a href="#" data-toggle="pill" class="nav-link3 tx-echos1"><i class="fas fa-home tx-20 pr-2"></i>
+                        Acceuil</a>
                 </div>
-                <div class="col-lg-2 p-0">
-                    <ul class="nav float-right list-inline justify-content-end">
-                        <li class="nav-item ">
-                            <button class="btn btn-link nav-link3 " [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();">
-                                <span class="tx-echos">
-                                    <i class="fas fa-plus-circle bg-echos1 tx-16 tx-white"
-                                        style="padding:6px; border-radius:50%"></i> </span></button>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-            <div class="scroll-1" style="overflow:auto;height:70vh" [class.loading]="dataHelper.loading$ | async">
                 <ng-container *ngIf="dataHelper.data$ | async as items">
                     <ng-container *ngIf="items.length; else noItem">
-                        <div class="d-flex align-items-center bd-b " *ngFor="let dossier_administratif of items;trackBy: dataHelper.trackByFn">
-                            <a [routerLink]="['/document/dossier-administratif', dossier_administratif.id]" class=" p-2">
-                                <span>
-                                    <h6 class="tx-echos tx-14"><i class="fas fa-folders tx-18 tx-echos"></i> {{ dossier_administratif.libelle }}</h6>
-                                    <span class=" tx-14 mg-b-5 tx-teal pl-2 ">Documents</span>
-                                    <span class="  mg-b-5 tx-echos1 ">58</span>
-                                    <span class=" tx-14 mg-b-5 tx-warning "> Fichiers</span>
-                                    <span class=" mg-b-5 tx-echos1 ">10 </span>
-                                </span>
-                                <span>
-                                    <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(dossier_administratif) "><i class="fal fa-times-square tx-second "></i></a>
-                                    <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Dupliquer'" (click)="onShowCreateForm(dossier_administratif) "><i class="fal fa-clone tx-second "></i></a>
-                                    <a class="table-action cursor-pointer float-right mx-2" container="body" [ngbTooltip]="'Modifier'" (click)="onShowUpdateForm(dossier_administratif) "><i class="fal fa-edit tx-second "></i></a> 
-                                </span>
-                            </a>
+                        <div *ngFor="let modele of items;trackBy: dataHelper.trackByFn"
+                            class="d-flex align-items-center justify-content-between pb-1 pt-1">
+                            <a [routerLink]="['/document/modele', modele.id]" class="nav-link3 tx-echos1">
+                                <img [src]="modele.fullpath" class="" style="width: 30px;" alt=""> {{ modele.libelle
+                                }}</a>
+                            <span class="small ml-auto badge rounded-circle  bg-light tx-echos1"
+                                style="padding:6px 6px">45</span>
+                            <span>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    [ngbTooltip]="'Supprimer'" (click)="onDelete(modele) "><i
+                                        class="fal fa-times-square tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    [ngbTooltip]="'Dupliquer'" (click)="onShowCreateForm(modele) "><i
+                                        class="fal fa-clone tx-second "></i></a>
+                                <a class="table-action cursor-pointer float-right mx-2" container="body"
+                                    [ngbTooltip]="'Modifier'" (click)="onShowUpdateForm(modele) "><i
+                                        class="fal fa-edit tx-second "></i></a>
+                            </span>
                         </div>
                     </ng-container>
                 </ng-container>
-                
-            </div>
+            </nav>
         </div>
     </div>
 
@@ -67,4 +54,3 @@
         </div>
     </div>
 </ng-template>
-

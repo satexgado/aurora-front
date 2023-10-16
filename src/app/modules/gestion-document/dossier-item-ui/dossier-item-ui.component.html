@@ -14,12 +14,12 @@
       {{dossier.created_at | date: 'dd/MM/yyyy H:mm'}}
     </span>
     <span class="text-dark mr-2" container="body" [ngbTooltip]="'Partagé'" *ngIf="!dossier.is_user"><i class="fas fa-users"></i></span>
-    <span class="text-dark mr-2" container="body" [ngbTooltip]="'Bloqué'" *ngIf="dossier.ged_element.bloquer"><i class="fas fa-lock-alt"></i></span>
-    <span class=" text-primary mr-2" container="body" [ngbTooltip]="'Favoris'" *ngIf="dossier.ged_element.user_favoris"><i class="fas fa-star"></i></span>
-    <span class=" tx-teal mr-2 " container="body" [ngbTooltip]="'Caché'" *ngIf="dossier.ged_element.cacher"><i class="fal fa-eye-slash"></i></span>
+    <span class="text-dark mr-2" container="body" [ngbTooltip]="'Bloqué'" *ngIf="dossier.ged_element?.bloquer"><i class="fas fa-lock-alt"></i></span>
+    <span class=" text-primary mr-2" container="body" [ngbTooltip]="'Favoris'" *ngIf="dossier.ged_element?.user_favoris"><i class="fas fa-star"></i></span>
+    <span class=" tx-teal mr-2 " container="body" [ngbTooltip]="'Caché'" *ngIf="dossier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
   </div>
   <div class="flex-1 justify-content-center users-grouped align-items-center">
-    <ng-container *ngIf="dossier.ged_element.partages && dossier.ged_element.partages.length">
+    <ng-container *ngIf="dossier.ged_element && dossier.ged_element.partages && dossier.ged_element.partages.length">
       <img container="body" *ngFor="let item of dossier.ged_element.partages | slice:0:3"
         [title]="item.personne.libelle" [src]="item.personne.avatar">
       <button *ngIf="dossier.ged_element.partages.length > 3" class="users-grouped__more">
@@ -40,15 +40,15 @@
           <button (click)="onShareDossier()" ngbDropdownItem><i class="fal fa-share-alt"></i> Partager</button>
           <button (click)="onShowUpdateForm()" ngbDropdownItem><i class="fal fa-edit"></i> Modifier</button>
           <button (click)="onUpdateFavorisDossier()" ngbDropdownItem><i class="fa-star"
-              [ngClass]="dossier.ged_element.user_favoris ? 'fas text-primary': 'fal'"></i>
-            {{dossier.ged_element.user_favoris ? 'Retirer des favoris' :'Ajouter au Favoris'}}</button>
+              [ngClass]="dossier.ged_element?.user_favoris ? 'fas text-primary': 'fal'"></i>
+            {{dossier.ged_element?.user_favoris ? 'Retirer des favoris' :'Ajouter au Favoris'}}</button>
           <button (click)="onToggleCacherDossier()" ngbDropdownItem><i class="fa-eye-slash"
-              [ngClass]="dossier.ged_element.cacher ? 'fas tx-teal': 'fal'"></i> {{dossier.ged_element.cacher ? 'Exposer'
+              [ngClass]="dossier.ged_element?.cacher ? 'fas tx-teal': 'fal'"></i> {{dossier.ged_element?.cacher ? 'Exposer'
             : 'Cacher' }}</button>
           <button (click)="onBloquerDossier()" ngbDropdownItem><i
-              [ngClass]="dossier.ged_element.bloquer ?  'fal fa-key': 'fal fa-lock-alt'"></i>
-            {{dossier.ged_element.bloquer ? 'Modifier le mot de passe' : 'Bloquer' }}</button>
-          <button (click)="onDebloquerDossier()" *ngIf="dossier.ged_element.bloquer" ngbDropdownItem><i
+              [ngClass]="dossier.ged_element?.bloquer ?  'fal fa-key': 'fal fa-lock-alt'"></i>
+            {{dossier.ged_element?.bloquer ? 'Modifier le mot de passe' : 'Bloquer' }}</button>
+          <button (click)="onDebloquerDossier()" *ngIf="dossier.ged_element?.bloquer" ngbDropdownItem><i
               class="fal fa-unlock"></i> Débloquer</button>
           <button (click)="onTransfertDossier()" ngbDropdownItem><i class="fal fa-sort-alt"></i> Transférer </button>
           <button (click)="onDeleteDossier()" ngbDropdownItem><i class="fal fa-trash-alt"></i> Supprimer</button>

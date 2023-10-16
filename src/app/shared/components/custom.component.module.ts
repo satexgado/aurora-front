@@ -10,7 +10,7 @@ import { BaseEditSimpleComponent } from './edit/base-edit-simple.component';
     declarations: [
       EditableListComponent,
       BaseEditComponent,
-      BaseEditSimpleComponent
+      BaseEditSimpleComponent,
     ],
     imports: [
         CommonModule,
@@ -21,6 +21,8 @@ import { BaseEditSimpleComponent } from './edit/base-edit-simple.component';
       EditableListComponent,
       BaseEditSimpleComponent,
       BaseEditComponent
+    ],
+    entryComponents:[
     ]
 })
 export class CustomComponentModule {

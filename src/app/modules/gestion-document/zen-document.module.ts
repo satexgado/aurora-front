@@ -31,6 +31,7 @@ import { FichierItemCardUiComponent } from './fichier-item-card-ui/fichier-item-
 import { GedDossierAdministratifUiComponent } from './dossier-administratif-ui/dossier-administratif-ui.component';
 import { GedDossierAdministratifEditComponent } from './dossier-administratif-ui/edit/edit.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { ModeleModule } from '../propriete-ged/modele/modele.module';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
     ZenDossierFichierModule,
     ZenFichierModule,
     SharedZenDocumentModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    ModeleModule
   ],
   exports: [
     FichierItemUiComponent,

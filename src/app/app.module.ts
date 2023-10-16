@@ -27,6 +27,13 @@ const routes: Routes = [
           (module) => module.ProprieteGedModule
         ),
     },
+    {
+      path: 'workspace',
+      loadChildren: () =>
+        import('./modules/workspace/workspace-ged.module').then(
+          (module) => module.WorkspaceGedModule
+        ),
+    },
    {
     path: '',
     component: TemplateWritomeComponent

@@ -37,11 +37,11 @@
         <span class=" tx-teal mr-2 " container="body" [ngbTooltip]="'Caché'" *ngIf="fichier.ged_element?.cacher"><i class="fal fa-eye-slash"></i></span>
     </div>
     <div class="flex-1 justify-content-center users-grouped align-items-center">
-        <ng-container *ngIf="fichier.ged_element?.partages && fichier.ged_element?.partages.length">
-          <img container="body" *ngFor="let item of fichier.ged_element.partages | slice:0:3"
+        <ng-container *ngIf="fichier.ged_element && fichier.ged_element?.partages && fichier.ged_element?.partages.length">
+          <img container="body" *ngFor="let item of fichier.ged_element?.partages | slice:0:3"
             [title]="item.personne.libelle" [src]="item.personne.avatar">
-          <button *ngIf="fichier.ged_element.partages.length > 3" class="users-grouped__more">
-            +{{fichier.ged_element.partages.length-
+          <button *ngIf="fichier.ged_element?.partages.length > 3" class="users-grouped__more">
+            +{{fichier.ged_element?.partages.length-
             3}} </button>
         </ng-container>
       </div>
