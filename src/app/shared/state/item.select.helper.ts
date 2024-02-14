@@ -54,10 +54,19 @@ export class ItemSelectHelper{
     }
 
     toggleSelectedItem(index: any) {
+
+        if(index.id) {
+            let filtered = Array.from(this._selectedItems).filter(
+                (opt: {id})=> opt.id == index.id
+            );
+           index = filtered.length ? filtered[0] : index;
+        }
+        
         if(this.hasSelectedItem(index))
         {
           this._selectedItems.delete(index);
-        } else {
+        } 
+         else {
           this._selectedItems.add(index);
         }
         this.sendData();

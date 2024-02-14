@@ -2,8 +2,6 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/shared';
-import { Helper } from 'src/app/helpers/helper/helper';
-import * as moment from 'moment';
 import {
   trigger,
   state,

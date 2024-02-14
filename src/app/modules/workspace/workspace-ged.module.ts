@@ -10,10 +10,15 @@ import { WorkspaceGedRoutingModule } from './workspace-ged-routing.module';
 import { WorkspaceGedComponent } from './workspace-ged.component';
 import { WorkspaceListComponent } from './workspace-list/workspace-list.component';
 import { SharedZenDocumentModule } from '../gestion-document/zen-document-share/shared.module';
-import {EditComponent} from './workspace-list/edit/edit.component'
+import { EditComponent} from './workspace-list/edit/edit.component'
 import { GedWorkspaceUiComponent } from './workspace-ui/workspace-ui.component'
 import { WorkspaceMembreComponent } from './workspace-membres/workspace-membre.component';
 import { ChooseItemModule } from '../choose-item/choose-item.module';
+import { WorkspaceCoordonneeComponent } from './workspace-coordonnee/workspace-coordonnee.component'
+import { CalendrierModule } from 'src/app/modules/calendrier/calendrier.module';
+import { GestionnaireTacheModule } from '../tache/tache.module';
+import { ZenDocumentModule } from '../gestion-document/zen-document.module';
+import { GedWorkspaceDetailsUiComponent } from './workspace-details-ui/workspace-details-ui.component';
 
 @NgModule({
     declarations: [
@@ -21,6 +26,8 @@ import { ChooseItemModule } from '../choose-item/choose-item.module';
         WorkspaceListComponent,
         GedWorkspaceUiComponent,
         WorkspaceMembreComponent,
+        WorkspaceCoordonneeComponent,
+        GedWorkspaceDetailsUiComponent,
         EditComponent
     ],
     imports: [
@@ -33,8 +40,11 @@ import { ChooseItemModule } from '../choose-item/choose-item.module';
         DragDropModule,
         WorkspaceGedRoutingModule,
         SharedZenDocumentModule,
+        ZenDocumentModule,
         AngularMultiSelectModule,
-        ChooseItemModule
+        ChooseItemModule,
+        CalendrierModule,
+        GestionnaireTacheModule
     ],
     exports: [
         

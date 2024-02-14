@@ -28,8 +28,8 @@
             <article class="invoice_preview px-4 mb-4">
                 <div class="inv_notes">
                     <span class="badge badge-info">Information</span>
-                    <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                        <div class="col-12 col-sm-6">
+                    <div class="formSep form-group  d-flex justify-content-center flex-wrap pb-0 pt-3">
+                        <div class="col-12 col-md-5">
                             <!-- Label -->
                             <label class="control-label" for="structure">
                               Structure
@@ -44,15 +44,17 @@
                             <div *ngIf="shouldShowRequiredError('structure_id')" class="invalid-feedback">veillez remplir ce champ.</div>
           
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-md-5">
                             <label class="control-label" for="salle">Modele</label>
                             <input type="text" autofocus class="form-control" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
                             <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
                         </div>
-                    </div>
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input"   [formControlName]="'active'" value="1" id="customSwitchValue">
-                        <label class="custom-control-label" for="customSwitchValue">Exposer</label>
+                        <div class="col-12 col-md-2">
+                            <div class="custom-control custom-switch mt-2">
+                                <input type="checkbox" class="custom-control-input"   [formControlName]="'active'" value="1" id="customSwitchValue">
+                                <label class="custom-control-label" for="customSwitchValue">Exposer</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                         <div class="col-12">

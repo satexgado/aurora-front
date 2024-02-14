@@ -1,0 +1,279 @@
+<ng-container *ngIf="workspaceCoordonneeHelper.data$ | async as items">
+    <ng-container *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [0,null] }] as withoutGroup">
+        <div class="d-flex justify-content-start">
+            <div class="mx-1">
+                <button (click)="quickAdd()" class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
+                    <span class="fa fa-plus green" aria-hidden="true"></span>
+                    <span class="fa fa-users green" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="mx-1">
+                <button (click)="onChooseMembre(withoutGroup)" class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
+                    <span class="fa fa-plus green" aria-hidden="true"></span>
+                </button>
+            </div>
+        
+            <div class="mx-1">
+                <button (click)="onChooseMembre(withoutGroup)" class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
+                    <span class="fa fa-edit" aria-hidden="true"></span>
+                </button>
+            </div>
+        
+            <div class="mx-1">
+                <button (click)="onChooseMembre(withoutGroup)" class="btn btn-brand btn-spotify bg-echos  btn-xs" type="button">
+                    <span class="fa fa-times" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <ng-container
+            *ngIf="withoutGroup.length; else ((!(workspaceCoordonneeHelper.loading$ | async)) && true ? noItem : loading)">
+            <div class="row m-0 ">
+                <div class="col-lg-12 ">
+                    <ul class="list-group list-group-flush tx-13 ">
+                        <ng-container *ngFor="let workspaceCoordonnee of withoutGroup;trackBy: workspaceCoordonneeHelper.trackByFn">
+                            <ng-container
+                                *ngTemplateOutlet="workspaceCoordonneeItem; context: {item: workspaceCoordonnee}"></ng-container>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+            <ng-container *ngIf="workspaceCoordonneeHelper.loading$ | async">
+                <ng-container *ngTemplateOutlet="loading"></ng-container>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+    <div class="pt-4">
+        <div *ngFor="let item of groupelist">
+            <div class="d-flex justify-content-between">
+                <ng-container *ngIf="!(updatingGroupeId == item.id); then dataView else formView"></ng-container>
+
+                <ng-template #formView>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" [(ngModel)]="item.libelle" autofocus
+                            (keyup.enter)="quickConsole(item)" (focusout)="quickConsole(item)"
+                            [placeholder]="!item.id ? 'Nouveau Groupe' : 'modifier le groupe' " aria-label="Folder">
+                    </div>
+                </ng-template>
+
+                <ng-template #dataView>
+                    <!-- <div class="bg-light">
+                        <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa bold tx-facebook tx-16 op-7" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+                    </div> -->
+                    <a [class.loading]="!item.id"
+                        class="flex-1 tx-16 text-primary mx-2 text-truncate cursor-pointer cusor-pointer">
+                        <i class="tx-yeto2 fad fa-users"></i> {{item.libelle | capitalizeFirst}}
+                    </a>
+                    <div *ngIf="item.id">
+                        <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm text-primary" *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [item.id] }] as withGroup" (click)="onChooseMembre(withGroup, item)"
+                            placement="top" ngbTooltip="Ajouter un dossier" tooltipClass="my-tooltip-class">
+                            <i class="fal fa-layer-plus"></i>
+                        </button>
+                        <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm text-primary" (click)="quickAdd(item)"
+                            placement="top" ngbTooltip="Modifier le dossier" tooltipClass="my-tooltip-class">
+                            <i class="fal fa-pencil"></i>
+                        </button>
+                        <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm" (click)="removeChild(item)"
+                            placement="top" ngbTooltip="Supprimer" tooltipClass="my-tooltip-class">
+                            <i class="fal fa-times-square text-danger"></i>
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+            <ng-container *ngIf="item.id">
+                <ng-container *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [item.id] }] as withGroup">
+                    <ng-container
+                    *ngIf="withGroup.length; else ((!(workspaceCoordonneeHelper.loading$ | async)) && true ? noItem : loading)">
+                    <div>
+                        <ul class="list-group list-group-flush tx-13 ">
+                            <ng-container *ngFor="let workspaceCoordonnee of withGroup;trackBy: workspaceCoordonneeHelper.trackByFn">
+                                <ng-container
+                                    *ngTemplateOutlet="workspaceCoordonneeItem; context: {item: workspaceCoordonnee}"></ng-container>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </ng-container>
+                </ng-container>
+            </ng-container> 
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #loading>
+    <div class="row">
+        <div *ngFor="let e of [].constructor(5);" class="col-12 rounded-0">
+            <div class="loading-card card h-100 w-100  rounded-0">
+                <div class="bars h-100  p-2">
+                    <div class="bar bar2 w-100 loading-placeholder  m-0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loadMore>
+    <div class="col-12 d-flex justify-content-center"
+        *ngIf="this.workspaceCoordonneeHelper.hasMoreData && !(this.workspaceCoordonneeHelper.loading$ | async)">
+        <button class="btn btn-outline-primary btn-oblong" (click)="checkData()">
+            Voir plus
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-3">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #workspaceCoordonneeItem let-item='item'>
+    <li class="list-group-item d-flex pd-sm-x-10 bd-b p-2">
+        <div class="d-flex align-items-center">
+            <img *ngIf="item.coordonnee.avatar" class="avatarpegasus" [src]="item.coordonnee.avatar" alt="avatar">
+            <!-- <i *ngIf="!item.coordonnee.avatar" container="body" [ngbTooltip]="item.coordonnee.libelle"
+                class="fad fa-dot-circle fa-3x"></i> -->
+            <div *ngIf="!item.coordonnee.avatar" class="avatar" style="width: 40px;height: 40px;"><span class="avatar-initial rounded-circle bg-primary op-6">{{item.coordonnee.libelle | slice:0:1}}</span></div>
+        </div>
+        <div class="pd-sm-l-10">
+            <p class="tx-ether4 mg-b-0 tx-bolder"> {{item.coordonnee.libelle}} </p>
+            <span class="tx-14  tx-warning mr-2"><i class="fas fa-at tx-echos1"></i> {{item.coordonnee.email}}</span> <br>
+            <span class="tx-14  tx-danger mr-4"><i class="fas fa-palette tx-echos1"></i> {{item.coordonnee.tag}}</span>
+        </div>
+        <div class="mg-l-auto text-right">
+            <ul class="nav ">
+                <li class="nav-item ">
+                    <a class="nav-link1 " (click)="open(content, item.coordonnee)" data-toggle="tab" href="#">
+                        <span class="">
+                            <i class="fas fa-calendar-alt tx-echos1 tx-14"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link1 " (click)="open(updatable, item.coordonnee)" data-toggle="tab" href="#">
+                        <span class="">
+                            <i class="fas fa-calendar-alt tx-success tx-14"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link1 " data-toggle="tab" href="#">
+                        <span class="">
+                            <i class="fas fa-comment-alt-lines  tx-echos1 tx-14"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link1 " (click)="open(content2, item.coordonnee)">
+                        <span class="">
+                            <i class="fas fa-address-card  tx-echos1 tx-14"></i>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Emploie du temps: {{modalData.libelle}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-calendar-view-ui [queryOptions]="modalCalendarQuery"></app-calendar-view-ui>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+    </div>
+</ng-template>
+
+<ng-template #updatable let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Emploie du temps: {{modalData.libelle}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-calendar-ui [eventParent]="{name: 'cr_coordonnee', id: modalData.id}"></app-calendar-ui>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+    </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title ">
+            {{modalData.libelle}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss( 'Cross click') ">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+      </button>
+    </div>
+    <div class="modal-body p-0">
+        <ul class="list-group list-group-flush">
+
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-at text-info mx-2"></i> Email </div>
+                <div class=""> {{modalData.email}}</div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-phone-square-alt text-info mx-2"></i> Telephone </div>
+                <div class=""> {{modalData.telephone}}</div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-map-marked-alt text-info mx-2"></i> Adresse </div>
+                <div class="">
+                    {{modalData.adresse}}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap">
+                <div class="tx-yeto2"><i class="fal fa-tag text-info mx-2"></i> Tag </div>
+                <div class="">
+                    {{modalData.tag}}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="modalData.condition_suivi">
+                <div class="tx-yeto2"><i class="fal fa-clipboard-check text-info mx-2"></i> Condition de suivi </div>
+                <div class="">
+                    {{modalData.condition_suivi}}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between tx-16 flex-wrap" *ngIf="modalData.commentaire">
+                <div class="tx-yeto2"><i class="fal fa-comments text-info mx-2"></i> Commentaire </div>
+                <div class="">
+                    {{modalData.commentaire}}
+                </div>
+            </li>
+            <li class="list-group-item  tx-16 flex-wrap" *ngIf="modalData.groupes && modalData.groupes.length">
+                <div class="tx-yeto2 mb-2"><i class="fal fa-users text-info mx-2"></i> Groupes </div>
+                <div class="row row-xs mg-0 pd-0 clearfix py-2 bg-light bd-t">
+                    <a class="col-lg-6 p-2"  *ngFor="let groupe of modalData.groupes;">
+                        <div class="mycard4" style="border-radius: 0% 10% 10% 10%;">
+                            <div class="text-center bd-b bg-white p-3"> <i class=" fa-object-group  tx-50" [ngClass]="groupe.groupe_id ? 'fal tx-echos1' : ' fas tx-echos' "></i></div>
+                            <div class=" text-center p-2">
+                                <h6 class="tx-echos1 tx-bold"> {{groupe.libelle | titlecase}} </h6>
+                
+                                <p class="p-0 tx-14">
+                                    <span class=" mr-1 tx-14 mg-b-5 tx-echos1 pl-2 ">Sous groupes</span>
+                                    <span class=" mr-1  mg-b-5 tx-warning ">{{groupe.nb_coordonnee_groupes}}</span>
+                                    <span class=" mr-1 tx-14 mg-b-5 tx-echos1 ">Eléments</span>
+                                    <span class=" mr-1 mg-b-5 tx-danger ">{{groupe.nb_coordonnees}} </span>
+                                </p>
+            
+                            </div>
+                
+                        </div>
+                    </a>
+                </div>   
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer ">
+        <!-- <button [routerLink]="['./',modalData.id]" (click)="modal.close( 'Close click')" class="btn btn-sm btn-primary mx-2 "> Voir plus</button>
+        <button class="btn btn-sm btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color: #99600b "></i> Modifier</button> -->
+        <button type="button " class="btn btn-sm btn-outline-primary " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+

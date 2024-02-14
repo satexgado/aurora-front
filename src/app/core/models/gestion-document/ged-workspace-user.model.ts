@@ -13,7 +13,6 @@ export interface IGedWorkspaceUser extends IBase {
 export class GedWorkspaceUser implements IGedWorkspaceUser {
     id: number = 0;
     libelle: string = '';
-    type: 'user' |'coordonnee' = 'user';
     workspace_id: number = null;
     personne_id: number = null;
     groupe_id: number = null;

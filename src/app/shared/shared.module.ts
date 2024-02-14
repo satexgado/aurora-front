@@ -36,7 +36,8 @@ import {
   SelectedSortPipe,
   SearchFilterObsPipe,
   BaseColumnIdFilterPipe,
-  ConvertToArrayPipe
+  ConvertToArrayPipe,
+  BaseColumnFilterPipe
 } from './pipes';
 import { CallbackPipe } from './pipes/callback.pipe';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -70,7 +71,8 @@ import { AuthorizationInterceptor } from './interceptors/authorization.intercept
     SelectedSortPipe,
     SearchFilterObsPipe,
     BaseColumnIdFilterPipe,
-    ConvertToArrayPipe
+    ConvertToArrayPipe,
+    BaseColumnFilterPipe
   ],
   providers: [
     {
@@ -137,7 +139,8 @@ import { AuthorizationInterceptor } from './interceptors/authorization.intercept
     SelectedSortPipe,
     SearchFilterObsPipe,
     BaseColumnIdFilterPipe,
-    ConvertToArrayPipe
+    ConvertToArrayPipe,
+    BaseColumnFilterPipe
   ],
 })
 export class SharedModule {}

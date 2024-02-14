@@ -1,0 +1,1209 @@
+<div class="row  bd-b m-0">
+  <div class="col-lg-10 p-0">
+      <div class="row  bd-b m-0 pt-1 m-0">
+          <div class="col-lg-6 p-0">
+              <ul class="list-group list-group-flush tx-13 ">
+                  <li class="list-group-item d-flex pd-sm-x-10 bd-b p-2 bg-light">
+                      <!-- <div class="">
+                          <img class="avatarpegasus" src="assets/images/xs/avatar14.jpg" alt="avatar">
+                      </div> -->
+                      <div class="mx-auto my-2 avatar-md">
+                        <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
+                      </div>
+                      <div class="pd-sm-l-10">
+                          <p class="tx-ether4 mg-b-0 tx-bolder"> {{selectedCoordonnee.libelle}}  </p>
+                          <span class="tx-14  tx-warning mr-2"><i class="fas fa-globe tx-echos1"></i>
+                            {{selectedCoordonnee.telephone}} | {{selectedCoordonnee.email}} </span>
+                          <span class="tx-14  tx-danger mr-4"><i class="fas fa-palette tx-echos1"></i>
+                            {{selectedCoordonnee.tag}}</span>
+                      </div>
+                  </li>
+              </ul>
+          </div>
+          <div class="col-lg-6 p-0">
+              <ul class="list-group list-group-flush tx-13 float-right">
+                  <li class="list-group-item d-flex pd-sm-x-10 bd-b p-2 bg-light ">
+                      <span class="tx-18 mr-1"><i class="fas fa-at tx-echos1  bg-white"
+                              style="padding:6px; border-radius:50%"></i></span>
+                      <span class="tx-18 mr-1"><i class="fas fa-comment-alt-lines tx-echos1 bg-white"
+                              style="padding:6px; border-radius:50%"></i></span>
+                  </li>
+              </ul>
+          </div>
+
+      </div>
+
+      <div class="tab-content">
+
+          <div class="tab-pane fade " id="workspace_tableau">
+              <div class="row m-0 pt-2 bd-b">
+                  <div class="col-lg-6">
+                      <h5 class="tx-echos1"><i class="fas fa-square   tx-echos1"
+                              style="padding:6px; border-radius:50%"></i> Tableau
+                          d'activité</h5>
+                  </div>
+
+
+                  <div class="col-lg-6 ">
+                      <div class="float-right pb-1">
+                          <a type="role" class="btn btn-brand btn-spotify bg-echos" data-toggle="tab"
+                              href="#iste_activite" data-toggle="tab">
+                              <i class="fas fa-list tx-white"></i><span>Liste </span>
+                          </a>
+                          <a type="role" class="btn btn-brand btn-spotify bg-echos" data-toggle="tab"
+                              href="#creation_tache" data-toggle="tab">
+                              <i class="fas fa-plus-circle tx-white"></i><span>Nouvelle</span>
+                          </a>
+                      </div>
+                  </div>
+
+              </div>
+
+              <div class="tab-content">
+                  <div class="tab-pane fade active show" id="iste_activite">
+                      <div class=" row  m-0 bg-white bd-b">
+                          <div class="col-lg-6 p-0  ">
+                              <ul class="nav list-inline justify-content-left">
+
+
+                                  <li class="nav-item ">
+                                      <a class="nav-link3 " data-toggle="tab" href="#"><span
+                                              class="tx-echos1">
+                                              Aujourd'hui <span
+                                                  class="small ml-auto badge rounded-circle  bg-lbleu tx-nbleu"
+                                                  style="padding:6px">45</span></span></a>
+                                  </li>
+                                  <li class="nav-item ">
+                                      <a class="nav-link3 " data-toggle="tab" href="#"><span
+                                              class="tx-echos1"> Hier <span
+                                                  class="small ml-auto badge rounded-circle  bg-lbleu tx-nbleu"
+                                                  style="padding:6px">45</span></span></a>
+                                  </li>
+                                  <li class="nav-item ">
+                                      <a class="nav-link3 " data-toggle="tab" href="#"><span
+                                              class="tx-echos1"> Semaine
+                                              <span
+                                                  class="small ml-auto badge rounded-circle  bg-lbleu tx-nbleu"
+                                                  style="padding:6px">45</span></span></a>
+                                  </li>
+                                  <li class="nav-item ">
+                                      <a class="nav-link3 " data-toggle="tab" href="#"><span
+                                              class="tx-echos1"> Mois <span
+                                                  class="small ml-auto badge rounded-circle  bg-lbleu tx-nbleu"
+                                                  style="padding:6px">45</span></span></a>
+                                  </li>
+                              </ul>
+
+
+                          </div>
+                          <div class="col-lg-6 p-0  ">
+                              <ul class="nav float-right list-inline justify-content-end">
+                                  <li class="nav-item ">
+                                      <a class="nav-link1 " data-toggle="tab" href="#workspace_tache"><span
+                                              class="tx-echos1">
+                                              <i class="fas fa-tasks tx-echos1  tx-16 bg-white"
+                                                  style="padding:6px; border-radius:50%"></i>
+                                              Tâches</span>
+                                      </a>
+                                  </li>
+
+                                  <li class="nav-item ">
+                                      <a class="nav-link1 " data-toggle="tab"
+                                          href="#workspace_notification"><span class="tx-echos1">
+                                              <i class="fas fa-flag tx-echos1  tx-16 bg-white"
+                                                  style="padding:6px; border-radius:50%"></i>
+                                              Notifications</span></a>
+                                  </li>
+                                  <li class="nav-item ">
+                                      <a class="nav-link1 " data-toggle="tab" href="#workspace_filter"><span
+                                              class="tx-echos1">
+                                              <i class="fas fa-filter tx-echos1  tx-16 bg-white"
+                                                  style="padding:6px; border-radius:50%"></i>
+                                              Filtres</span></a>
+                                  </li>
+
+                              </ul>
+                          </div>
+
+                      </div>
+                      <div class=" row  m-0 pt-4 p-0">
+
+                          <div class="col"></div>
+                          <div class="col-lg-10 p-0">
+                              <div class=" row m-0 bg-white bd-b ">
+
+                                  <div class="col-lg-8 float-left">
+                                      <a href="" class="media p-2 ">
+                                          <div class="mr-2 ">
+                                              <div class="">
+                                                  <img class="rounded-circle"
+                                                      src="assets/images/xs/avatar7.jpg" alt="avatar"
+                                                      width="50">
+                                              </div>
+                                          </div>
+                                          <div class=" d-flex justify-content-between mg-t-2 mg-b-5 wd-100p">
+                                              <div class="d-inline-block">
+                                                  <h6 class="mb-0 tx-13 tx-echos">
+                                                      Azia Marie Estelle Lorou</h6>
+                                                  <span class="tx-gray-600 tx-10">
+                                                      Comptabilité Matière</span><span
+                                                      class="tx-danger tx-10"> 11 Juin
+                                                      2022, 13:01</span>
+                                              </div>
+                                          </div>
+                                      </a>
+                                  </div>
+                                  <div class="col-lg-4 ">
+                                      <div
+                                          class="profiles d-flex justify-content-end align-items-center h-100">
+                                          <img class="rounded-circle ml-4" src="assets/images/xs/avatar7.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar6.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar5.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar3.jpg"
+                                              alt="avatar" width="30">
+                                      </div>
+                                  </div>
+
+
+                              </div>
+                              <div class="col-lg-12 p-0 bg-white">
+                                  <div class="card-body  p-0 text-center">
+                                      <p class="tx-echos tx-bold text-center tx-14 p-3 mg-0 bg-light"
+                                          style="text-align:justify">
+                                          <span class=""> Réunion d'urgence demain à
+                                              09 Heure dans la Salle "Pensée
+                                              Commune"</span>
+                                      </p>
+                                      <p class="p-0 tx-20 bg-light pb-2">
+                                          <span class=" badge badge-primary bg-primary tx-white  tx-bolder">
+                                              Programme Réunion</span>
+                                      </p>
+                                      <p class="tx-echos tx-bold text-center tx-14 mg-0"
+                                          style="text-align:justify">
+
+                                          <span class="tx-echos1"> 15 Juillet 2022
+                                          </span>
+                                          <span class=""> || </span>
+                                          <span class="tx-echos1"> 15 Juillet 2022
+                                          </span>
+                                          <span class=""> || </span>
+                                          <span class="tx-bold"> 16:24 </span>
+                                          <span class=""> || </span>
+                                          <span class="bg-soft-warning badge badge-primary tx-white  tx-bold">
+                                              1</span>
+
+
+
+                                      </p>
+                                  </div>
+                              </div>
+
+                              <div class=" row m-0 p-2 bd-t bg-white">
+                                  <div class="col-lg-6 ">
+                                      <div class="flexbox   float-left bd-light">
+                                          <div class="gap-items">
+                                              <a class="publisher-btn pt-2 " href="">
+                                                  <i class="fas fa-bell tx-16 tx-warning"></i>
+                                              </a>
+
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6 ">
+                                      <div class="flexbox  float-right bd-light">
+                                          <div class="gap-items">
+                                              <a class="publisher-btn pt-2 " href="">
+                                                  <i
+                                                      class="fas fa-comment-alt-lines tx-16 tx-gray-500"></i>12</a>
+
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col"></div>
+                      </div>
+                      <div class=" row  m-0 pt-4 ">
+                          <div class="col"></div>
+                          <div class="col-lg-10 ">
+                              <div class=" row m-0 bg-white bd-b ">
+                                  <div class="col-lg-8 float-left">
+                                      <a href="" class="media p-2 ">
+                                          <div class="mr-2 ">
+                                              <div class="">
+                                                  <img class="rounded-circle"
+                                                      src="assets/images/xs/avatar7.jpg" alt="avatar"
+                                                      width="50">
+                                              </div>
+                                          </div>
+                                          <div class=" d-flex justify-content-between mg-t-2 mg-b-5 wd-100p">
+                                              <div class="d-inline-block">
+                                                  <h6 class="mb-0 tx-13 tx-echos">
+                                                      Azia Marie Estelle Lorou</h6>
+                                                  <span class="tx-gray-600 tx-10">
+                                                      Comptabilité Matière</span><span
+                                                      class="tx-danger tx-10"> 11 Juin
+                                                      2022, 13:01</span>
+                                              </div>
+                                          </div>
+                                      </a>
+                                  </div>
+                                  <div class="col-lg-4 ">
+                                      <div
+                                          class="profiles d-flex justify-content-end align-items-center h-100">
+                                          <img class="rounded-circle ml-4" src="assets/images/xs/avatar7.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar6.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar5.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar3.jpg"
+                                              alt="avatar" width="30">
+                                      </div>
+                                  </div>
+
+
+                              </div>
+                              <div class="col-lg-12 p-0 bg-white">
+                                  <div class="card-body  p-0 text-center">
+                                      <p class="tx-echos tx-bold text-center tx-14 p-3 mg-0 bg-light"
+                                          style="text-align:justify">
+                                          Nous vous prions de bien vouloir traiter ce
+                                          meessage dans les plus brefs délais
+                                      </p>
+                                      <p class="p-0 tx-20 bg-light pb-2">
+                                          <span class=" badge badge-primary bg-primary tx-white  tx-bolder">
+                                              Messages à traiter</span>
+                                      </p>
+                                      <p class="tx-echos tx-bold text-center tx-14 mg-0"
+                                          style="text-align:justify">
+
+                                          <span class=""> 15 Juillet 2022 </span>
+                                          <span class=""> || </span>
+                                          <span class=""> 15 Juillet 2022 </span>
+                                          <span class=""> || </span>
+                                          <span class="tx-bold"> 16:24 </span>
+                                          <span class=""> || </span>
+                                          <span class="bg-soft-warning badge badge-primary tx-white  tx-bold">
+                                              1</span>
+
+                                          <span class=""> || </span>
+                                          <span
+                                              class="bg-soft-danger badge badge-primary tx-white  tx-bolder">
+                                              Urgent</span>
+
+                                      </p>
+                                  </div>
+                              </div>
+
+                              <div class=" row m-0 p-2 bd-t bg-white">
+                                  <div class="col-lg-6 ">
+                                      <div class="flexbox   float-left bd-light">
+                                          <div class="gap-items">
+                                              <a class="publisher-btn pt-2 " href="">
+                                                  <i class="fas fa-smile tx-16 tx-gray-500"></i>
+                                                  147</a>
+
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6 ">
+                                      <div class="flexbox  float-right bd-light">
+                                          <div class="gap-items">
+                                              <a class="publisher-btn pt-2 " href="">
+                                                  <i class="fas fa-link tx-16 tx-gray-500"></i></a>
+
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col"></div>
+                      </div>
+
+                      <div class=" row  m-0 pt-4 ">
+                          <div class="col"></div>
+                          <div class="col-lg-10 ">
+                              <div class=" row m-0 bg-white bd-b ">
+                                  <div class="col-lg-8 float-left">
+                                      <a href="" class="media p-2 ">
+                                          <div class="mr-2 ">
+                                              <div class="">
+                                                  <img class="rounded-circle"
+                                                      src="assets/images/xs/avatar7.jpg" alt="avatar"
+                                                      width="50">
+                                              </div>
+                                          </div>
+                                          <div class=" d-flex justify-content-between mg-t-2 mg-b-5 wd-100p">
+                                              <div class="d-inline-block">
+                                                  <h6 class="mb-0 tx-13 tx-echos">
+                                                      Azia Marie Estelle Lorou</h6>
+                                                  <span class="tx-gray-600 tx-10">
+                                                      Comptabilité Matière</span><span
+                                                      class="tx-danger tx-10"> 11 Juin
+                                                      2022, 13:01</span>
+                                              </div>
+                                          </div>
+                                      </a>
+                                  </div>
+                                  <div class="col-lg-4 ">
+                                      <div
+                                          class="profiles d-flex justify-content-end align-items-center h-100">
+                                          <img class="rounded-circle ml-4" src="assets/images/xs/avatar7.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar6.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar5.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar3.jpg"
+                                              alt="avatar" width="30">
+                                      </div>
+                                  </div>
+
+
+                              </div>
+                              <div class="col-lg-12 p-0 bg-white">
+                                  <div class="card-body  p-0 text-center">
+                                      <p class="tx-echos tx-bold text-center tx-14 p-3 mg-0 bg-light"
+                                          style="text-align:justify">
+                                          <span class=""> Réunion d'urgence demain à
+                                              09 Heure dans la Salle "Pensée
+                                              Commune"</span>
+                                      </p>
+                                      <p class="p-0 tx-20 bg-light pb-2">
+                                          <span class=" badge badge-primary bg-primary tx-white  tx-bolder">
+                                              Programme Réunion</span>
+                                      </p>
+                                      <p class="tx-echos tx-bold text-center tx-14 mg-0"
+                                          style="text-align:justify">
+
+                                          <span class="tx-echos1"> 15 Juillet 2022
+                                          </span>
+                                          <span class=""> || </span>
+                                          <span class="tx-echos1"> 15 Juillet 2022
+                                          </span>
+                                          <span class=""> || </span>
+                                          <span class="tx-bold"> 16:24 </span>
+                                          <span class=""> || </span>
+                                          <span class="bg-soft-warning badge badge-primary tx-white  tx-bold">
+                                              1</span>
+
+                                          <span class=""> || </span>
+                                          <span
+                                              class="bg-soft-danger badge badge-primary tx-white  tx-bolder">
+                                              Urgent</span>
+
+                                      </p>
+                                  </div>
+                              </div>
+
+                              <div class=" row m-0 p-2 bd-t bg-white">
+                                  <div class="col-lg-6 ">
+                                      <div class="flexbox   float-left bd-light">
+                                          <div class="gap-items">
+                                              <a class="publisher-btn pt-2 " href="">
+                                                  <i class="fas fa-smile tx-16 tx-gray-500"></i>
+                                                  147</a>
+
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6 ">
+                                      <div class="flexbox  float-right bd-light">
+                                          <div class="gap-items">
+                                              <a class="publisher-btn pt-2 " href="">
+                                                  <i class="fas fa-link tx-16 tx-gray-500"></i></a>
+
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col"></div>
+                      </div>
+                      <div class=" row  m-0 pt-4 ">
+                          <div class="col"></div>
+                          <div class="col-lg-10 ">
+                              <div class=" row m-0 bg-white bd-b ">
+                                  <div class="col-lg-8 float-left">
+                                      <a href="" class="media p-2 ">
+                                          <div class="mr-2 ">
+                                              <div class="">
+                                                  <img class="rounded-circle"
+                                                      src="assets/images/xs/avatar7.jpg" alt="avatar"
+                                                      width="50">
+                                              </div>
+                                          </div>
+                                          <div class=" d-flex justify-content-between mg-t-2 mg-b-5 wd-100p">
+                                              <div class="d-inline-block">
+                                                  <h6 class="mb-0 tx-13 tx-echos">
+                                                      Azia Marie Estelle Lorou</h6>
+                                                  <span class="tx-gray-600 tx-10">
+                                                      Comptabilité Matière</span><span
+                                                      class="tx-danger tx-10"> 11 Juin
+                                                      2022, 13:01</span>
+                                              </div>
+                                          </div>
+                                      </a>
+                                  </div>
+                                  <div class="col-lg-4 ">
+                                      <div
+                                          class="profiles d-flex justify-content-end align-items-center h-100">
+                                          <img class="rounded-circle ml-4" src="assets/images/xs/avatar7.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar6.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar5.jpg"
+                                              alt="avatar" width="30">
+                                          <img class="rounded-circle" src="assets/images/xs/avatar3.jpg"
+                                              alt="avatar" width="30">
+                                      </div>
+                                  </div>
+
+
+                              </div>
+                              <div class="col-lg-12 p-0 bg-white">
+                                  <div class="card-body  p-0 text-center">
+                                      <p class="tx-echos tx-bold text-center tx-14 p-3 mg-0 bg-light"
+                                          style="text-align:justify">
+                                          Nous vous prions de bien vouloir traiter ce
+                                          meessage dans les plus brefs délais
+                                      </p>
+                                      <p class="p-0 tx-20 bg-light pb-2">
+                                          <span class=" badge badge-primary bg-primary tx-white  tx-bolder">
+                                              Messages à traiter</span>
+                                      </p>
+                                      <p class="tx-echos tx-bold text-center tx-14 mg-0"
+                                          style="text-align:justify">
+
+                                          <span class=""> 15 Juillet 2022 </span>
+                                          <span class=""> || </span>
+                                          <span class=""> 15 Juillet 2022 </span>
+                                          <span class=""> || </span>
+                                          <span class="tx-bold"> 16:24 </span>
+                                          <span class=""> || </span>
+                                          <span class="bg-soft-warning badge badge-primary tx-white  tx-bold">
+                                              1</span>
+
+                                          <span class=""> || </span>
+                                          <span
+                                              class="bg-soft-danger badge badge-primary tx-white  tx-bolder">
+                                              Urgent</span>
+
+                                      </p>
+                                  </div>
+                              </div>
+
+                              <div class=" row m-0 p-2 bd-t bg-white">
+                                  <div class="col-lg-6 ">
+                                      <div class="flexbox   float-left bd-light">
+                                          <div class="gap-items">
+                                              <a class="publisher-btn pt-2 " href="">
+                                                  <i class="fas fa-smile tx-16 tx-gray-500"></i>
+                                                  147</a>
+
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6 ">
+                                      <div class="flexbox  float-right bd-light">
+                                          <div class="gap-items">
+                                              <a class="publisher-btn pt-2 " href="">
+                                                  <i class="fas fa-link tx-16 tx-gray-500"></i></a>
+
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col"></div>
+                      </div>
+                  </div>
+                  <div class="tab-pane fade " id="creation_tache">
+                      <div class="row m-0 app-block bd-t bg-light">
+                          <div class="col"></div>
+                          <div class="col-lg-10 app-content  p-0">
+                              <div class="accordion  custom-accordion">
+                                  <div class="accordion-row pt-4">
+                                      <a href="#" class="accordion-header bd-b bd-2 pt-2 bd-white bg-light">
+                                          <span class="tx-bolder tx-echos d-flex align-items-center">
+                                              <i class="fas fa-list tx-warning tx-16 avatarfont mr-1"></i>
+                                              Nouvelle Activité
+                                          </span>
+                                      </a>
+                                      <div class="accordion-body p-1">
+                                          <form class=" ">
+                                              <div class="form-group ">
+                                                  <div class="row bg-white m-0 pl-5  pr-5 pt-3">
+
+                                                      <div class="col-lg-6 p-1">
+                                                          <div class="input-group mb-3">
+                                                              <input type="text"
+                                                                  class="form-control form-control-lg  bg-light"
+                                                                  placeholder="Dossiers" aria-label="Sujet"
+                                                                  aria-describedby="basic-addon5">
+                                                          </div>
+                                                      </div>
+                                                      <div class="col-lg-6 p-1">
+                                                          <div class="input-group mb-3">
+                                                              <input type="text"
+                                                                  class="form-control form-control-lg  bg-light"
+                                                                  placeholder="Activités ou Tâches"
+                                                                  aria-label="Sujet"
+                                                                  aria-describedby="basic-addon5">
+                                                          </div>
+                                                      </div>
+                                                      <div class="col-lg-6 p-1">
+                                                          <div class="input-group mb-3">
+                                                              <input type="text"
+                                                                  class="form-control form-control-lg  bg-light"
+                                                                  placeholder="Début de la tâche"
+                                                                  aria-label="Sujet"
+                                                                  aria-describedby="basic-addon5">
+                                                          </div>
+                                                      </div>
+                                                      <div class="col-lg-6 p-1">
+                                                          <div class="input-group mb-3">
+                                                              <input type="text"
+                                                                  class="form-control form-control-lg  bg-light"
+                                                                  placeholder="Fin de la tâche"
+                                                                  aria-label="Sujet"
+                                                                  aria-describedby="basic-addon5">
+                                                          </div>
+                                                      </div>
+                                                      <div class="col-lg-6 p-1">
+                                                          <div class="input-group mb-3">
+                                                              <input type="text"
+                                                                  class="form-control form-control-lg  bg-light"
+                                                                  placeholder="Priorité" aria-label="Sujet"
+                                                                  aria-describedby="basic-addon5">
+                                                          </div>
+                                                      </div>
+                                                      <div class="col-lg-6 p-1">
+                                                          <div class="input-group mb-3">
+                                                              <input type="text"
+                                                                  class="form-control form-control-lg  bg-light"
+                                                                  placeholder="Couleur" aria-label="Sujet"
+                                                                  aria-describedby="basic-addon5">
+                                                          </div>
+                                                      </div>
+                                                      <div class="col-lg-6 p-1">
+                                                          <div class="input-group mb-3">
+                                                              <input type="text"
+                                                                  class="form-control form-control-lg  bg-light"
+                                                                  placeholder="Assistants" aria-label="Sujet"
+                                                                  aria-describedby="basic-addon5">
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </form>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="app-content-body p-1">
+                                  <div class="  ">
+                                      <ul class="nav float-right list-inline align-justify">
+
+
+                                          <li class="nav-item bg-success pr-4 bd-r bd-white bd-2">
+                                              <a class="nav-link3" data-toggle="tab" href="#">
+                                                  <span class="tx-white d-flex align-items-center">
+                                                      <i
+                                                          class="fas fa-paper-plane avatarfont tx-16  tx-white mr-1"></i>
+                                                      Créer</span></a>
+                                          </li>
+
+                                      </ul>
+                                  </div>
+                              </div>
+
+
+
+
+                          </div>
+                      </div>
+                      <div class="col"></div>
+                  </div>
+
+
+              </div>
+          </div>
+          <div class="tab-pane fade " id="workspace_bibliotheque">
+
+              <div class="row m-0">
+
+
+                  <div class="col-lg-12 bg-light p-0">
+                      <div class="tab-content">
+                          <div class="tab-pane fade active show" id="">
+
+                              <div class=" row bg-white m-0" style="z-index: auto !important;">
+                                  <div class="col-lg-9 pt-2 tx-echos1">
+                                      <h6 class=""><i class="fas fa-folder-open tx-20"
+                                              style="padding:6px; border-radius: 50%; "></i>
+                                          Modèles de contrats
+                                      </h6>
+                                  </div>
+                                  <div class="col-lg-3    ">
+
+                                  </div>
+                              </div>
+                              <div class="row m-0 pt-2 pb-4">
+
+                                  <div class="col-lg-7 bd-b">
+                                      <div class="input-group ">
+                                          <input type="text" class="form-control  border-0 bg-light"
+                                              placeholder="Recherches...">
+                                      </div>
+                                  </div>
+
+                                  <div class="col-lg-5 bd-b">
+                                      <ul class="nav float-right list-inline justify-content-end">
+
+
+                                          <li class="nav-item ">
+                                              <a class="nav-link3" data-toggle="tab" href="#groupe"><span
+                                                      class="tx-echos1">
+                                                      <i class="fas fa-folder-open bg-white tx-16 tx-echos1"
+                                                          style="padding:6px; border-radius:50%"></i>
+                                                  </span></a>
+                                          </li>
+                                          <li class="nav-item ">
+                                              <a class="nav-link3" data-toggle="tab" href="#"><span
+                                                      class="tx-echos1">
+                                                      <i class="fas fa-calendar-alt bg-white tx-16 tx-echos1"
+                                                          style="padding:6px; border-radius:50%"></i>
+                                                  </span></a>
+                                          </li>
+                                          <li class="nav-item ">
+                                              <a class="nav-link3" data-toggle="tab" href="#"><span
+                                                      class="tx-echos1">
+                                                      <i class="fas fa-chair-office bg-light tx-16 tx-echos1"
+                                                          style="padding:6px; border-radius:50%"></i>
+                                                  </span></a>
+                                          </li>
+                                          <li class="nav-item ">
+                                              <a class="nav-link3" data-toggle="tab" href="#"><span
+                                                      class="tx-echos1">
+                                                      <i class="fas fa-user  tx-16 bg-white tx-echos1"
+                                                          style="padding:6px; border-radius:50%"></i>
+                                                  </span></a>
+                                          </li>
+                                          <li class="nav-item ">
+                                              <a class="nav-link3" data-toggle="tab" href="#filter"><span
+                                                      class="tx-echos1">
+                                                      <i class="fas fa-filter  tx-16 bg-white tx-echos1"
+                                                          style="padding:6px; border-radius:50%"></i>
+                                                  </span></a>
+                                          </li>
+                                          <li class="nav-item ">
+                                              <a class="nav-link3" data-toggle="tab" href="#filter"><span
+                                                      class="tx-echos1">
+                                                      <i class="fas fa-plus-circle  tx-16 bg-white tx-echos1"
+                                                          style="padding:6px; border-radius:50%"></i>
+                                                  </span></a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+
+                              <div class="row m-0 pb-4">
+
+                                  <div class="col-lg-10 p-2 bd-b p-2 bd-2 bd-white">
+                                      <h6 class="tx-echos1 tx-left "><i
+                                              class="fas fa-folder tx-echos1   tx-16"></i>
+                                          Dossiers</h6>
+                                  </div>
+
+                                  <div class="col-lg-2 p-2 bd-b p-2 bd-2 bd-white">
+                                      <div class="float-right">
+                                          <span class="tx-bold"> <i
+                                                  class="fas fa-filter tx-echos1 tx-16 pr-2"></i>
+                                          </span>
+                                          <span class="tx-bold"> <i
+                                                  class="fas fa-plus-circle tx-echos1 tx-16 pr-2"></i>
+                                          </span>
+
+                                      </div>
+                                  </div>
+
+                                  <div class="col-lg-4 p-2">
+                                      <div class="mycard4" style="border-radius:5% 5% 5% 5%">
+                                          <div class="text-center bd-b bg-white p-2">
+                                              <i class="fas fa-folder tx-echos tx-30"></i>
+                                          </div>
+                                          <div class=" text-center p-3">
+                                              <span class="tx-echos tx-bold"><i
+                                                      class="fas fa-line-columns tx-echos tx-20 pr-2"></i>
+                                                  Certification de naissance et de non
+                                                  naissance </span>
+
+                                              <p class="">
+                                                  <span class=""> 15 Juillet 2022
+                                                  </span>
+                                                  <span class=""> || </span>
+                                                  <span class="tx-bold"> 16:24 </span>
+                                              </p>
+                                          </div>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-4 p-2">
+                                      <div class="mycard4" style="border-radius: 5% 5% 5% 5%">
+                                          <div class="text-center bd-b bg-white p-2">
+                                              <i class="fas fa-folder tx-echos tx-30"></i>
+                                          </div>
+                                          <div class=" text-center p-3">
+                                              <span class="tx-echos tx-bold"> <i
+                                                      class="fas fa-line-columns tx-echos tx-20 pr-2"></i>Certification
+                                                  de naissance et de non naissance
+                                              </span>
+                                              <p class="">
+                                                  <span class=""> 15 Juillet 2022
+                                                  </span>
+                                                  <span class=""> || </span>
+                                                  <span class="tx-bold"> 16:24 </span>
+                                              </p>
+                                          </div>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-4 p-2">
+                                      <div class="mycard4" style="border-radius: 5% 5% 5% 5%">
+                                          <div class="text-center bd-b bg-white p-2">
+                                              <i class="fas fa-folder tx-echos tx-30"></i>
+                                          </div>
+                                          <div class=" text-center p-3">
+                                              <span class="tx-echos tx-bold"><i
+                                                      class="fas fa-line-columns tx-echos tx-20 pr-2"></i>
+                                                  Certification de naissance et de non
+                                                  naissance </span>
+                                              <p class="">
+                                                  <span class=""> 15 Juillet 2022
+                                                  </span>
+                                                  <span class=""> || </span>
+                                                  <span class="tx-bold"> 16:24 </span>
+                                              </p>
+                                          </div>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-4 p-2">
+                                      <div class="mycard4" style="border-radius: 5% 5% 5% 5%">
+                                          <div class="text-center bd-b bg-white p-2">
+                                              <i class="fas fa-folder tx-echos tx-30"></i>
+                                          </div>
+                                          <div class=" text-center p-3">
+                                              <span class="tx-echos tx-bold"><i
+                                                      class="fas fa-line-columns tx-echos tx-20 pr-2"></i>
+                                                  Certification de naissance et de non
+                                                  naissance </span>
+                                              <p class="">
+                                                  <span class=""> 15 Juillet 2022
+                                                  </span>
+                                                  <span class=""> || </span>
+                                                  <span class="tx-bold"> 16:24 </span>
+                                              </p>
+                                          </div>
+
+                                      </div>
+                                  </div>
+
+                              </div>
+
+                              <div class="row row-xs mg-0 pd-0 clearfix  pb-4">
+
+                                  <div class="col-lg-10 p-2 bd-b p-2 bd-2 bd-white">
+                                      <h6 class="tx-echos1 tx-left "><i
+                                              class="fas fa-file-alt tx-echos1   tx-16"></i>
+                                          Fichiers</h6>
+                                  </div>
+
+                                  <div class="col-lg-2 p-2 bd-b p-2 bd-2 bd-white">
+                                      <div class="float-right">
+                                          <span class="tx-bold"> <i
+                                                  class="fas fa-filter tx-echos1 tx-16 pr-2"></i>
+                                          </span>
+                                          <span class="tx-bold"> <i
+                                                  class="fas fa-file-alt tx-echos1 tx-16 pr-2"></i>
+                                          </span>
+                                          <span class="tx-bold"> <i
+                                                  class="fas fa-plus-circle tx-echos1 tx-16 pr-2"></i>
+                                          </span>
+
+                                      </div>
+                                  </div>
+
+                                  <div class="col-lg-4 p-2">
+                                      <div class="mycard4" style="border-radius:5% 5% 5% 5%">
+                                          <div class="text-center bd-b bg-white p-2">
+                                              <img src="assets/images/fichiers/aac.svg" alt=""
+                                                  class="img-fluid avatarmodele2">
+                                          </div>
+                                          <div class=" text-center p-3">
+                                              <span class="tx-echos tx-bold">Certification
+                                                  de naissance et de non naissance
+                                              </span>
+                                              <p class="">
+                                                  <span class=""> 15 Juillet 2022
+                                                  </span>
+                                                  <span class=""> || </span>
+                                                  <span class="tx-bold"> 16:24 </span>
+                                              </p>
+                                          </div>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-4 p-2">
+                                      <div class="mycard4" style="border-radius: 5% 5% 5% 5%">
+                                          <div class="text-center bd-b bg-white p-2">
+                                              <img src="assets/images/fichiers/apk.svg" alt=""
+                                                  class="img-fluid avatarmodele2">
+                                          </div>
+                                          <div class=" text-center p-3">
+                                              <span class="tx-echos tx-bold">Certification
+                                                  de naissance et de non naissance
+                                              </span>
+                                              <p class="">
+                                                  <span class=""> 15 Juillet 2022
+                                                  </span>
+                                                  <span class=""> || </span>
+                                                  <span class="tx-bold"> 16:24 </span>
+                                              </p>
+                                          </div>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-4 p-2">
+                                      <div class="mycard4" style="border-radius: 5% 5% 5% 5%">
+                                          <div class="text-center bd-b bg-white p-2">
+                                              <img src="assets/images/fichiers/csv.svg" alt=""
+                                                  class="img-fluid avatarmodele2">
+                                          </div>
+                                          <div class=" text-center p-3">
+                                              <span class="tx-echos tx-bold">Certification
+                                                  de naissance et de non naissance
+                                              </span>
+
+                                              <p class="">
+                                                  <span class=""> 15 Juillet 2022
+                                                  </span>
+                                                  <span class=""> || </span>
+                                                  <span class="tx-bold"> 16:24 </span>
+                                              </p>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-4 p-2">
+                                      <div class="mycard4" style="border-radius: 5% 5% 5% 5%">
+                                          <div class="text-center bd-b bg-white p-2">
+                                              <img src="assets/images/fichiers/audio.svg" alt=""
+                                                  class="img-fluid avatarmodele2">
+                                          </div>
+                                          <div class=" text-center p-3">
+                                              <span class="tx-echos tx-bold">Certification
+                                                  de naissance et de non naissance
+                                              </span>
+
+                                              <p class="">
+                                                  <span class=""> 15 Juillet 2022
+                                                  </span>
+                                                  <span class=""> || </span>
+                                                  <span class="tx-bold"> 16:24 </span>
+                                              </p>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+
+              </div>
+          </div>
+          <div class="tab-pane fade " id="classeur_collaborateur">
+              <router-outlet></router-outlet>
+          </div>
+          <div class="tab-pane fade active show" id="prodoc">
+              <div class="row m-0 bd-t bd-b">
+
+
+                  <div class="col-lg-12  p-0 m-0">
+                      <ul class="nav float-right list-inline align-justify">
+
+                          <li class="nav-item ">
+                              <a class="nav-link3" data-toggle="tab" href="#workspace_liste">
+                                  <span class="tx-echos1 d-flex align-items-center">
+                                      <i class="fas fa-list-alt avatarfont tx-16 tx-echos1 mr-1"></i>
+                                      Liste</span></a>
+                          </li>
+                          <li class="nav-item ">
+                              <a class="nav-link3 " data-toggle="tab" href="#card_workspace">
+                                  <span class="tx-echos1 d-flex align-items-center">
+                                      <i class="fas fa-th avatarfont tx-16 tx-echos1 mr-1"></i>
+                                      Carte</span></a>
+                          </li>
+
+                          <li class="nav-item ">
+                              <a class="nav-link3" data-toggle="tab" href="#tableau_workspace">
+                                  <span class="tx-echos1 d-flex align-items-center">
+                                      <i class="fas fa-stream avatarfont tx-16  tx-echos1 mr-1"></i>
+                                      Tableau</span></a>
+                          </li>
+                          <li class="nav-item ">
+                              <a class="nav-link3" data-toggle="tab" href="#workspace_kanban">
+                                  <span class="tx-echos1 d-flex align-items-center">
+                                      <i class="fas fa-poll-h avatarfont tx-16  tx-echos1 mr-1"></i>
+                                      Kanban</span></a>
+                          </li>
+
+                      </ul>
+                  </div>
+              </div>
+              <div class="tab-content">
+                  <div class="tab-pane fade active show" id="tache_document" style="height:100vh">
+                      <div class="row m-0 p-0">
+                          <div class="col-lg-12 p-0">
+                              <div class="d-flex m-0 p-0">
+
+                                  <div class="col-4 p-0  bd-r bd-white">
+                                      <div class=" border-0 mg-b-5  pd-y-5 bd-b bd-4 bd-white bg-white">
+                                          <span class="tx-16 tx-echos1"><i
+                                                  class="fas fa-calendar-alt tx-info tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-filter tx-echos tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-chair-office tx-primary tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-user tx-ether tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i>
+                                              Production</span>
+                                      </div>
+                                      <div class=" card-body bg-kanban1 p-2" style="height:100vh">
+                                          <div class="card card-accent-primary mg-1">
+                                              <div class="card-body p-2">
+                                                  <h6 class="card-title tx-echos1 mb-1">
+                                                      Réunion de Coordination</h6>
+                                                  <p class="card-text mb-0 tx-12">
+                                                      Revoir
+                                                      la stratégie de la coordination
+                                                  </p>
+                                              </div>
+                                              <div class="card-body  p-1 bg-light">
+                                                  <div class="row  m-0">
+                                                      <div
+                                                          class="col-lg-10 float-left  justify-content-end p-0">
+                                                          <p class="pt-2">
+                                                              <span class="tx-echos1 mr-1"><i
+                                                                      class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
+                                                              <span class="tx-echos1 mr-1"><i
+                                                                      class="fas fa-flag tx-warning  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-file-alt tx-success  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
+                                                              <span class="tx-primary"><i
+                                                                      class="fas fa-at tx-jaune  tx-14"></i></span>
+                                                          </p>
+                                                      </div>
+                                                      <div class="col-lg-2">
+                                                          <div class=" justify-content-end float-right w-100">
+                                                              <p class="pt-2">
+                                                                  <span class="tx-echos1"><i
+                                                                          class="fas fa-plus-circle tx-ether avatarfont tx-14"></i></span>
+                                                              </p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-4 p-0  bd-r bd-white">
+                                      <div class=" border-0 mg-b-5  pd-y-5 bd-b bd-4 bd-white bg-white">
+                                          <span class="tx-16 tx-echos1"><i
+                                                  class="fas fa-calendar-alt tx-info tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-filter tx-echos tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-chair-office tx-primary tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-user tx-ether tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i>
+                                              Traitement</span>
+                                      </div>
+                                      <div class=" card-body bg-kanban p-2" style="height:100vh">
+                                          <div class="card card-accent-primary mg-1">
+                                              <div class="card-body p-2">
+                                                  <h5 class="card-title tx-echos1 mb-1">
+                                                      Réunion de Coordination</h5>
+                                                  <p class="card-text mb-0 tx-12">
+                                                      Revoir
+                                                      la stratégie de la coordination
+                                                  </p>
+                                              </div>
+                                              <div class="card-body  p-1 bg-light">
+                                                  <div class="row  m-0">
+                                                      <div
+                                                          class="col-lg-10 float-left  justify-content-end p-0">
+                                                          <p class="pt-2">
+                                                              <span class="tx-echos1 mr-1"><i
+                                                                      class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
+                                                              <span class="tx-echos1 mr-1"><i
+                                                                      class="fas fa-flag tx-warning  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-file-alt tx-success  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
+                                                              <span class="tx-primary"><i
+                                                                      class="fas fa-at tx-jaune  tx-14"></i></span>
+                                                          </p>
+                                                      </div>
+                                                      <div class="col-lg-2">
+                                                          <div class=" justify-content-end float-right w-100">
+                                                              <p class="pt-2">
+                                                                  <span class="tx-echos1"><i
+                                                                          class="fas fa-plus-circle tx-ether avatarfont tx-14"></i></span>
+                                                              </p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-4 p-0  bd-r bd-white">
+                                      <div class=" border-0 mg-b-5  pd-y-5 bd-b bd-4 bd-white bg-white">
+                                          <span class="tx-16 tx-echos1"><i
+                                                  class="fas fa-calendar-alt tx-info tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-filter tx-echos tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-chair-office tx-primary tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i><i
+                                                  class="fas fa-user tx-ether tx-16 "
+                                                  style="padding:2px; border-radius:50%"></i>
+                                              Approbation</span>
+                                      </div>
+                                      <div class=" card-body bg-kanban1 p-2" style="height:100vh">
+                                          <div class="card card-accent-primary mg-1">
+                                              <div class="card-body p-2">
+                                                  <h5 class="card-title tx-echos1 mb-1">
+                                                      Réunion de Coordination</h5>
+                                                  <p class="card-text mb-0 tx-12">
+                                                      Revoir
+                                                      la stratégie de la coordination
+                                                  </p>
+                                              </div>
+                                              <div class="card-body  p-1 bg-light">
+                                                  <div class="row  m-0">
+                                                      <div
+                                                          class="col-lg-10 float-left  justify-content-end p-0">
+                                                          <p class="pt-2">
+                                                              <span class="tx-echos1 mr-1"><i
+                                                                      class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
+                                                              <span class="tx-echos1 mr-1"><i
+                                                                      class="fas fa-flag tx-warning  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-file-alt tx-success  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
+                                                              <span class="tx-primary mr-1"><i
+                                                                      class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
+                                                              <span class="tx-primary"><i
+                                                                      class="fas fa-at tx-jaune  tx-14"></i></span>
+                                                          </p>
+                                                      </div>
+                                                      <div class="col-lg-2">
+                                                          <div class=" justify-content-end float-right w-100">
+                                                              <p class="pt-2">
+                                                                  <span class="tx-echos1"><i
+                                                                          class="fas fa-plus-circle tx-ether avatarfont tx-14"></i></span>
+                                                              </p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                      </div>
+
+
+                  </div>
+              </div>
+
+
+          </div>
+          <div class="tab-pane fade" id="prodoc2">
+              <app-gestionnaire-tache [init]="filterTask"></app-gestionnaire-tache>
+          </div>
+      </div>
+  </div>
+
+  <div class="col-lg-2 bd-l " style="height:100vh">
+      <div class="row m-0 ">
+
+          <nav class="nav flex-column  ">
+
+              <div class="d-flex align-items-center justify-content-between pb-1 pt-1 ">
+                  <a class="nav-link1" data-toggle="tab" href="#workspace_tableau">
+                      <span class="tx-echos1 d-flex align-items-center"> <i
+                              class="fas fa-square tx-14 tx-echos1 avatarfont mr-1"></i>
+                          Tableau</span></a>
+              </div>
+              <div class="d-flex align-items-center justify-content-between pb-1 pt-1 ">
+                  <a class="nav-link1 " data-toggle="tab" href="#workspace_bibliotheque">
+                      <span class="tx-echos1 d-flex align-items-center"><i
+                              class="fas fa-folders tx-14 tx-echos1 avatarfont mr-1"></i>
+                          Bibliothèques</span></a>
+              </div>
+              <div class="d-flex align-items-center justify-content-between pb-1 pt-1 ">
+                  <a class="nav-link1 " data-toggle="tab" href="#classeur_collaborateur">
+                      <span class="tx-echos1 d-flex align-items-center"> <i
+                              class="fas fa-folder-open tx-14 tx-echos1 avatarfont mr-1"></i>
+                          classeurs</span></a>
+              </div>
+              <div class="d-flex align-items-center justify-content-between pb-1 pt-1 ">
+                  <a class="nav-link1 " data-toggle="tab" href="#prodoc">
+                      <span class="tx-echos1 d-flex align-items-center"> <i
+                              class="fas fa-line-columns tx-14 tx-echos1 avatarfont mr-1"></i>
+                          Prodoc</span></a>
+              </div>
+              <div class="d-flex align-items-center justify-content-between pb-1 pt-1">
+                  <a class="nav-link1 " data-toggle="tab" href="#workspace_labcolab">
+                      <span class="tx-echos1 d-flex align-items-center"> <i
+                              class="fas fa-union tx-14 tx-echos1 avatarfont mr-1"></i>
+                          LabColab</span></a>
+              </div>
+
+          </nav>
+      </div>
+
+  </div>
+</div> 
+
+<ng-template #chooseGroupe>
+    <div class="col-md-12 text-center mt-4">                     
+        <div class="col-lg-12">
+          <div style="text-align: center">
+            <img class="bg-white rounded-circle monimage2" [src]="'assets/images/taches_ether.svg'" width="" />
+            <p class="tx-20 mb-0 tx-echos"> Veuillez selectionner un groupe </p>
+          </div>      
+        </div>
+     </div>
+</ng-template>

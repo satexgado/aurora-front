@@ -16,9 +16,8 @@
                     </div>
                 </div>
             </div>
-            <span class="badge badge-info">Information</span>
-            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-12 col-sm-6">
+            <div class="formSep form-group  d-flex justify-content-center flex-wrap pb-0 pt-3">
+                <div class="col-12 col-sm-5">
                     <!-- Label -->
                     <label class="control-label" for="structure">
                         Structure
@@ -35,7 +34,7 @@
                         champ.</div>
 
                 </div>
-                <div class="col-12 col-sm-6">
+                <div class="col-12 col-sm-5">
                     <label class="control-label" for="salle">Workspace</label>
                     <input type="text" autofocus class="form-control" required [formControlName]="'libelle'"
                         [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}"
@@ -43,13 +42,13 @@
                     <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.
                     </div>
                 </div>
-            </div>
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" [formControlName]="'public'" value="1"
-                    id="customSwitchValue">
-                <label class="custom-control-label" for="customSwitchValue">Public</label>
-            </div>
-            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12 col-md-2 d-flex align-items-center">
+                    <div class="custom-control custom-switch mt-2">
+                        <input type="checkbox" class="custom-control-input" [formControlName]="'public'" value="1"
+                            id="customSwitchValue">
+                        <label class="custom-control-label" for="customSwitchValue">Public</label>
+                    </div>
+                </div>
                 <div class="col-12">
                     <label class="control-label" for="description">Description<small></small></label>
                     <textarea name="description" class="form-control  form-control-sm" cols="30" rows="3"

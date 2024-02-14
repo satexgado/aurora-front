@@ -1,0 +1,317 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+  </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body tx-dark p-0" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <ul ngbNav #nav2="ngbNav" class="nav-tabs nav-fill" [destroyOnHide]="false">
+                <li [ngbNavItem]="2">
+                    <a ngbNavLink class="tx-16">
+                        <i class="fal fa-calendar-alt tx-facebook bold"></i>
+                        <span class="tx-facebook"> Evenement</span>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                            <div class="col-10">
+                                <label class="control-label" for="type">Type</label>
+                                <select mySelectFirstOption class="form-control form-control-sm" [class.loading]="allTypeCalendar$ | async" required name="type" [formControlName]="'type_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_id'), 'is-valid': isValid('type_id')}"
+                                    required>
+                            <ng-container *ngFor="let item of (allTypeCalendar$ | async)">
+                                <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                            </ng-container>
+                        </select>
+                                <div *ngIf="shouldShowRequiredError('type_id')" class="invalid-feedback">veillez choisir le type.</div>
+                            </div>
+                        </div>
+                        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                            <div class="col-10">
+                                <label class="control-label" for="libelle">Libelle</label>
+                                <input type="text" class="form-control form-control-sm" [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                                <div class="invalid-feedback" *ngIf="shouldShowRequiredError('libelle')">veillez saisir le libellé.</div>
+                            </div>
+                        </div>
+                        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="(!hideRepeter) && !isUpdating">
+                            <div class="col-10">
+                                <div class="d-flex justify-content-center">
+                                    <div class="custom-control  custom-control-sm custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" [formControlName]="'repeter'" id="repeter">
+                                        <label class="custom-control-label" for="repeter">Répéter</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="this.editForm.get('repeter').value">
+                            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                                <div class="col-10">
+                                    <label class="control-label" for="libelle">Frequence</label>
+                                    <textarea readonly required (click)="open(content, $event)" [formControlName]="'rrule_text'" [ngClass]="{'is-invalid': shouldShowRequiredError('rrule_text'), 'is-valid': isValid('rrule_text')}" class="form-control form-control-sm" cols="30" rows="2"></textarea>
+                                    <div class="invalid-feedback" *ngIf="shouldShowRequiredError('rrule_text')">veillez choisir la frequence.</div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="!editForm.get('repeter').value">
+
+                            <div class="col-10 row mx-0 px-0">
+                                <div class="col-12">
+                                    <div class="custom-control  custom-control-sm custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" [formControlName]="'allDay'" id="allDay">
+                                        <label class="custom-control-label" for="allDay">Journée entière</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 ">
+                                    <ngbd-datetimepicker [formControl]="editForm.controls['date_debut']" [time]="!this.editForm.get('allDay').value"></ngbd-datetimepicker>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <ngbd-datetimepicker [formControl]="editForm.controls['date_fin']" [time]="!this.editForm.get('allDay').value"></ngbd-datetimepicker>
+                                </div>
+                                <div class="col-12">
+                                    <small class="text-danger" *ngIf="editForm.hasError('dateSuperieur')">La période de fin doit être àpres le debut</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                            <div class="col-10">
+                                <label class="control-label" for="libelle">Description <small>optionnel</small></label>
+                                <textarea name="description symbole" maxlength="2000" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}" class="form-control form-control-sm" cols="30" rows="3"></textarea>
+                                <small>{{editForm.get('description').value?.length}}/2000</small>
+                                <div class="invalid-feedback" *ngIf="shouldShowRequiredError('description')">veillez saisir la description.</div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="3">
+                    <a ngbNavLink class="tx-16">
+                        <i class="fal fa-link tx-facebook bold"></i>
+                        <span class="tx-facebook"> Affectation</span>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <!-- <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                            <div class="col-10" [class.loading]="is_loading_matiere">
+                                <label class="control-label col-12 p-0" for="description">
+                          Matieres
+                        </label>
+                                <select *ngIf="matiereSelect2Data$" appSelect2Default style="width: 100%" [data]="matiereSelect2Data$" multiple="multiple" [formControlName]="'matieres'" [ngClass]="{'is-invalid': shouldShowRequiredError('matieres'), 'is-valid': isValid('matieres')}"
+                                    class="form-control" placeholder="Select">
+                        </select>
+                                <div *ngIf="shouldShowRequiredError('matieres')" class="invalid-feedback">veillez choisir les matieres.</div>
+                            </div>
+                        </div>
+                        <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                            <div class="col-10" [class.loading]="is_loading_personnel">
+                                <label class="control-label col-12 p-0" for="description">
+                          Personnels
+                        </label>
+                                <select *ngIf="personnelSelect2Data$" appSelect2Default style="width: 100%" [data]="personnelSelect2Data$" multiple="multiple" [formControlName]="'personnels'" [ngClass]="{'is-invalid': shouldShowRequiredError('personnels'), 'is-valid': isValid('personnels')}"
+                                    class="form-control" placeholder="Select">
+                        </select>
+                                <div *ngIf="shouldShowRequiredError('personnels')" class="invalid-feedback">veillez choisir les membres.</div>
+                            </div>
+                        </div> -->
+                    </ng-template>
+                </li>
+            </ul>
+            <div [ngbNavOutlet]="nav2"></div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+        <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">Réinitialiser</button>
+    </div>
+
+</ng-container>
+
+<ng-template #content let-modal>
+    <div class="modal-header px-2 py-1">
+        <h4 class="modal-title" id="modal-basic-title">Repetition</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
+    </div>
+    <div class="modal-body p-0">
+        <form [formGroup]="rruleGroup">
+            <div class="form-group formSep  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="type">Répéter</label>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white">Chaque</span>
+                        </div>
+                        <input type="number" min="1" class="form-control" [formControlName]="'interval'" name="interval">
+                        <select class="form-control form-control-sm" name="type" [formControlName]="'freq'">
+                          <ng-container *ngFor="let item of frequenceSelect">
+                              <option [ngValue]="item.id">{{item.libelle}}</option>
+                          </ng-container>
+                        </select>
+                    </div>
+                    <div *ngIf="shouldShowRequiredErrorRRuleGrp('freq')" class="invalid-feedback">veillez choisir la frequence.</div>
+                </div>
+            </div>
+            <ng-container [ngSwitch]="this.rruleGroup.get('freq').value">
+                <ng-container *ngSwitchCase="frequencyEnum.DAILY">
+
+                </ng-container>
+                <ng-container *ngSwitchCase="frequencyEnum.WEEKLY">
+                    <div class="form-group formSep d-flex justify-content-center flex-wrap pb-0 pt-3">
+                        <div class="col-10">
+                            <label class="control-label" for="libelle">Jour de la semaine</label>
+                            <select *ngIf="weekdaySelect2" appSelect2Default style="width: 100%" required [data]="weekdaySelect2" multiple="multiple" [formControlName]="'byweekday'" class="form-control" placeholder="Select">
+                            </select>
+                            <div class="invalid-feedback" *ngIf="shouldShowRequiredErrorRRuleGrp('byweekday')">veillez saisir au moins un jour de la semaine.</div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="frequencyEnum.MONTHLY">
+                    <div class="form-group formSep  d-flex justify-content-center flex-wrap pb-0 pt-3">
+                        <div class="col-10">
+                            <div class="d-flex align-items-center col-12">
+                                <div class="custom-control custom-control-sm custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="bymonthtype" value="weekday" [formControlName]="'bymonthtype'" id="jourmois2">
+                                    <label class="custom-control-label" for="jourmois2">Le</label>
+                                </div>
+                                <div class="input-group input-group-sm mb-3">
+                                    <select class="form-control form-control-sm" mySelectFirstOption name="type" [formControlName]="'bysetpos'">
+                                  <option *ngFor="let item of setPosSelect" [ngValue]="item.id">{{item.text}}</option>
+                                </select>
+                                    <select class="form-control form-control-sm" mySelectFirstOption name="type" [formControlName]="'bysingleweekday'">
+                                  <option *ngFor="let item of weekdaySelect" [ngValue]="item.id">{{item.text}}</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center col-12">
+                                <div class="custom-control custom-control-sm custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="bymonthtype" value="monthday" [formControlName]="'bymonthtype'" id="jourmois">
+                                    <label class="custom-control-label" for="jourmois">Le</label>
+                                </div>
+                                <select class="form-control form-control-sm" mySelectFirstOption name="type" [formControlName]="'bymonthday'">
+                                  <option *ngFor="let item of monthdaySelect">{{item}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <div class="form-group formSep d-flex justify-content-center flex-wrap pb-0 pt-3">
+                        <div class="col-10">
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-white">En</span>
+                                </div>
+                                <select class="form-control form-control-sm" (change)="getMonthDayBymonth()" mySelectFirstOption name="type" [formControlName]="'bymonth'">
+                                  <option *ngFor="let item of monthSelect" [ngValue]="item.id">{{item.text}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-10">
+                            <div class="d-flex align-items-center col-12">
+                                <div class="custom-control custom-control-sm custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="bymonthtype" value="weekday" [formControlName]="'bymonthtype'" id="jourmois2">
+                                    <label class="custom-control-label" for="jourmois2">Le</label>
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <select class="form-control form-control-sm" mySelectFirstOption name="type" [formControlName]="'bysetpos'">
+                                <option *ngFor="let item of setPosSelect" [ngValue]="item.id">{{item.text}}</option>
+                              </select>
+                                    <select class="form-control form-control-sm" mySelectFirstOption name="type" [formControlName]="'bysingleweekday'">
+                                <option *ngFor="let item of weekdaySelect" [ngValue]="item.id">{{item.text}}</option>
+                              </select>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center col-12 mb-3" *ngIf="(monthdatselectByMonth$ | async) as days">
+                                <div class="custom-control custom-control-sm custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="bymonthtype" value="monthday" [formControlName]="'bymonthtype'" id="jourmois">
+                                    <label class="custom-control-label" for="jourmois">Le</label>
+                                </div>
+                                <select class="form-control form-control-sm" mySelectFirstOption name="type" [formControlName]="'bymonthday'">
+                                <option *ngFor="let item of days">{{item}}</option>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <div class="form-group formSep  d-flex justify-content-center flex-wrap pb-0 pt-3">
+                <div class="col-10">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white">Debut</span>
+                        </div>
+                        <input class="form-control" placeholder="yyyy-mm-dd" (click)="d.toggle()" name="dp" [formControlName]="'dtstart'" ngbDatepicker #d="ngbDatepicker">
+                    </div>
+                </div>
+                <div class="col-10">
+                    <label class="control-label">Fin</label>
+                    <div class="d-flex align-items-center col-12 mb-3">
+                        <div class="custom-control custom-control-sm custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" name="endtype" value="no" [formControlName]="'endtype'" id="endtype3">
+                            <label class="custom-control-label pl-3" for="endtype3">Pas de fin</label>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center col-12 mb-3">
+                        <div class="custom-control custom-control-sm custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" name="endtype" value="count" [formControlName]="'endtype'" id="endtype2">
+                            <label class="custom-control-label" for="endtype2"></label>
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <input type="number" min="1" class="form-control" [formControlName]="'count'" name="count">
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-white">fois</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="custom-control custom-control-sm custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" name="endtype" value="until" [formControlName]="'endtype'" id="endtype">
+                                <label class="custom-control-label" for="endtype"></label>
+                            </div>
+                            <input class="form-control" placeholder="yyyy-mm-dd" (click)="d2.toggle()" name="dp" [formControlName]="'until'" ngbDatepicker #d2="ngbDatepicker">
+                        </div>
+                        <small class="text-danger" *ngIf="rruleGroup.hasError('dateSuperieur') && this.rruleGroup.get('endtype').value =='until'">La période de fin doit être après le debut</small>
+                    </div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <div class="d-flex justify-content-center">
+                        <div class="custom-control  custom-control-sm custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" [formControl]="this.editForm.get('allDay')" id="allDay">
+                            <label class="custom-control-label" for="allDay">Journée entière</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center flex-wrap pb-0 pt-3" *ngIf="!this.editForm.get('allDay').value">
+                <div class="col-10 d-flex align-items-center ">
+                    <label class="control-label mb-0 mr-2" for="libelle">Heure debut</label>
+                    <div class="d-flex align-items-center">
+                        <ngb-timepicker [formControlName]="'dtstarttime'" required></ngb-timepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center flex-wrap pb-0 pt-3" *ngIf="!this.editForm.get('allDay').value">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Durée</label>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white">Heure(s)</span>
+                        </div>
+                        <input type="number" min="0" required class="form-control" [formControlName]="'duree_heure'" name="duree_heure">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-white">minute(s)</span>
+                        </div>
+                        <input type="number" min="0" required class="form-control" [formControlName]="'duree_minute'" name="duree_minute">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer px-2 py-1">
+        <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSaveRRule();modal.close('Save click');" [disabled]="shouldDisableSubmitRRuleGrp()">Valider</button>
+    </div>
+</ng-template>

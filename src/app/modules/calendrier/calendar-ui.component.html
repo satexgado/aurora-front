@@ -1,0 +1,10 @@
+<div class="card" id="mycalendar-item" [class.loading]="isCalendarLoading">
+    <div class="card-header" *ngIf="typeEvenement$ | async as  types">
+        <div class="d-flex col-12 justify-content-around tx-16">
+            <div *ngFor="let type of types"><i class="fad fa-circle tx-10" [ngStyle]="{'color': type.couleur}"></i> {{type.libelle}}</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'></full-calendar>
+    </div>
+</div>

@@ -239,7 +239,7 @@
                     {{modalData.commentaire}}
                 </div>
             </li>
-            <li class="list-group-item  tx-16 flex-wrap" *ngIf="modalData.commentaire">
+            <li class="list-group-item  tx-16 flex-wrap" *ngIf="modalData.groupes && modalData.groupes.length">
                 <div class="tx-yeto2 mb-2"><i class="fal fa-users text-info mx-2"></i> Groupes </div>
                 <div class="row row-xs mg-0 pd-0 clearfix py-2 bg-light bd-t">
                     <a class="col-lg-6 p-2" (click)="modal.close( 'Close click')" [routerLink]="['/groupe-contact', groupe.id]" *ngFor="let groupe of modalData.groupes;">

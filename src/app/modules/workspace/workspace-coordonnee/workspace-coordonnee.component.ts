@@ -1,27 +1,29 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserChooseMultiItem2Component } from '../../choose-item/user-choose/user-choose-multi-item2.component';
+import { CoordonneeChooseMultiItem2Component } from '../../choose-item/coordonnee-choose/coordonnee-choose-multi-item2.component';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
 import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options';
-import { GedWorkspaceUserFactory } from 'src/app/core/services/gestion-document/ged-workspace-user.factory';
+import { GedWorkspaceCoordonneeFactory } from 'src/app/core/services/gestion-document/ged-workspace-coordonnee.factory';
 import { GedWorkspaceGroupe, IGedWorkspaceGroupe } from 'src/app/core/models/gestion-document/ged-workspace-groupe.model';
 import { GedWorkspaceGroupeFactory } from 'src/app/core/services/gestion-document/ged-workspace-groupe.factory';
 import { IGedWorkspace } from 'src/app/core/models/gestion-document/ged-workspace.model';
-import { IGedWorkspaceUser } from 'src/app/core/models/gestion-document/ged-workspace-user.model';
-import { IUser } from 'src/app/core/models/user';
+import { IGedWorkspaceCoordonnee } from 'src/app/core/models/gestion-document/ged-workspace-coordonnee.model';
 import { take } from 'rxjs/operators';
+import { ICrCoordonnee } from 'src/app/core/models/gestion-courrier/cr-coordonnee';
 
 @Component({
-    selector: 'app-workspace-membre',
-    templateUrl: 'workspace-membre.component.html'
+    selector: 'app-workspace-coordonnee',
+    templateUrl: 'workspace-coordonnee.component.html'
 })
 
-export class WorkspaceMembreComponent implements OnInit {
+export class WorkspaceCoordonneeComponent implements OnInit {
     
-    workspaceUserHelper: ResourceScrollableHelper;
+    workspaceCoordonneeHelper: ResourceScrollableHelper;
     groupelist: GedWorkspaceGroupe[] = [];
     workspace:IGedWorkspace; 
     updatingGroupeId = null;
+    modalData: ICrCoordonnee;
+    modalCalendarQuery: QueryOptions;
     @Input() view: 'card'|'list' = 'list';
 
     @Input() set init(workspace: IGedWorkspace) {
@@ -29,22 +31,22 @@ export class WorkspaceMembreComponent implements OnInit {
         if(!workspace) {
             return;
         }
-        this.workspaceUserHelper = new ResourceScrollableHelper(
-            new GedWorkspaceUserFactory(),
+        this.workspaceCoordonneeHelper = new ResourceScrollableHelper(
+            new GedWorkspaceCoordonneeFactory(),
             new QueryOptions().setFilterGroups(
                 [
                   {or: true, filters:[new Filter('workspace_id', workspace.id, 'eq')]},
                 ]
-            ).setIncludes(['personne_inscription'])
+            ).setIncludes(['cr_coordonnee.cr_coordonnee_groupes'])
         );
-        this.workspaceUserHelper.withoutPaginate = true;
-        this.workspaceUserHelper.loadData();
+        this.workspaceCoordonneeHelper.withoutPaginate = true;
+        this.workspaceCoordonneeHelper.loadData();
         const service = new GedWorkspaceGroupeFactory();        
         service.list(
             new QueryOptions().setFilterGroups(
                 [
                   {or: true, filters:[new Filter('workspace_id', workspace.id, 'eq')]},
-                  {or: true, filters:[new Filter('type', 'user', 'eq')]},
+                  {or: true, filters:[new Filter('type', 'coordonnee', 'eq')]},
                 ]
               )
         ).subscribe(
@@ -68,23 +70,23 @@ export class WorkspaceMembreComponent implements OnInit {
         // });
     }
 
-    onChooseMembre(preselected:IGedWorkspaceUser[],  item?: IGedWorkspaceGroupe)
+    onChooseMembre(preselected:IGedWorkspaceCoordonnee[],  item?: IGedWorkspaceGroupe)
     {
-        const modalRef = this.modalService.open(UserChooseMultiItem2Component,{ size: 'lg', centered: true,  backdrop: 'static' });
-        const instance = modalRef.componentInstance as UserChooseMultiItem2Component;
-        instance.preselected = preselected.map((element:IGedWorkspaceUser)=>element.personne);
+        const modalRef = this.modalService.open(CoordonneeChooseMultiItem2Component,{ size: 'lg', centered: true,  backdrop: 'static' });
+        const instance = modalRef.componentInstance as CoordonneeChooseMultiItem2Component;
+        instance.preselected = preselected.map((element:IGedWorkspaceCoordonnee)=>element.coordonnee);
         instance.multipleItemChoosen.subscribe(
             (data)=>{
                 let ids = data.map(element=>element.id);
-                const removedUsers = preselected.filter(
-                (element:IGedWorkspaceUser)=> !ids.includes(element.personne_id))
+                const removedCoordonnees = preselected.filter(
+                (element:IGedWorkspaceCoordonnee)=> !ids.includes(element.coordonnee_id))
                 .map(
-                    (element:IGedWorkspaceUser)=>element.id
+                    (element:IGedWorkspaceCoordonnee)=>element.id
                 );
-                const users = data.map(
-                    (element:IUser)=>{
+                const coordonnees = data.map(
+                    (element:ICrCoordonnee)=>{
                         let mapped = {
-                            personne_id: element.id,
+                            coordonnee_id: element.id,
                             workspace_id: this.workspace.id,
                         }   
                         if(item){
@@ -93,13 +95,13 @@ export class WorkspaceMembreComponent implements OnInit {
                         return mapped;
                     }
                 );
-                let service = new GedWorkspaceUserFactory();
+                let service = new GedWorkspaceCoordonneeFactory();
                 service.createmulti(
-                    {users:users, removedUsers:removedUsers}
+                    {coordonnees:coordonnees, removedCoordonnees:removedCoordonnees}
                 ).subscribe(
                     (newdata)=> {
-                    this.workspaceUserHelper.clearData();
-                    this.workspaceUserHelper.loadData();
+                    this.workspaceCoordonneeHelper.clearData();
+                    this.workspaceCoordonneeHelper.loadData();
                     }
                 );
             }
@@ -113,7 +115,7 @@ export class WorkspaceMembreComponent implements OnInit {
             let workspaceGroupe = new GedWorkspaceGroupe();
             workspaceGroupe.id = null;
             workspaceGroupe.workspace_id = this.workspace.id;
-            workspaceGroupe.type = 'user';
+            workspaceGroupe.type = 'coordonnee';
             this.groupelist.unshift(workspaceGroupe);
             this.updatingGroupeId = null;
         }    
@@ -153,5 +155,16 @@ export class WorkspaceMembreComponent implements OnInit {
             const service = new GedWorkspaceGroupeFactory();
             service.delete(item.id).subscribe();
         }
+    }
+
+    open(content, coordonnee: ICrCoordonnee) {
+        this.modalCalendarQuery = new QueryOptions(
+          [
+            // {or: false, filters:[new Filter('coordonnee_id', coordonnee.id, 'eq')]},
+          ],
+          ['cal_type_calendrier', 'participants']
+        );
+        this.modalData = coordonnee;
+        this.modalService.open(content,  { size: 'lg', centered: true,  backdrop: 'static' });
     }
 }

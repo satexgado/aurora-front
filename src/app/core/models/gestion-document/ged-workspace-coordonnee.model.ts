@@ -1,5 +1,4 @@
 import { IBase } from 'src/app/core/models/base.interface';
-import { environment } from 'src/environments/environment';
 import { CrCoordonnee, ICrCoordonnee } from '../gestion-courrier/cr-coordonnee';
 import { hasOneMap } from 'src/app/shared/decorator/adapter/relation-map';
 
