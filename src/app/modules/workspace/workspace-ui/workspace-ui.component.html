@@ -56,7 +56,7 @@
                 <li class="nav-item ">
                     <a class="nav-link3 " (click)="has_child=!has_child">
                         <span class="">
-                            <i class="fas fa-file-invoice  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Dossier</span>
+                            <i class="fas fa-window  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Test</span>
                         </span>
                     </a>
                 </li>
@@ -66,14 +66,14 @@
 
         <div class="tab-content">
             <div class="tab-pane fade" [ngClass]="{'active show': tabs=='membres'}" id="membres">
-                <app-workspace-membre [init]="workspace" *ngIf="workspace"></app-workspace-membre>
+                <app-workspace-membre [init]="workspace" [view]="has_child ? 'list' : 'card'" *ngIf="workspace"></app-workspace-membre>
             </div>
 
             <div class="tab-pane fade " [ngClass]="{'active show': tabs=='mes_collaborateurs'}" id="mes_collaborateurs">
 
 
 
-                <app-workspace-coordonnee [init]="workspace" *ngIf="workspace"></app-workspace-coordonnee>
+                <app-workspace-coordonnee [view]="has_child ? 'list' : 'card'" [init]="workspace" *ngIf="workspace"></app-workspace-coordonnee>
 
             </div>
 

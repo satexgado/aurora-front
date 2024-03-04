@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 
 import { Observable, of } from 'rxjs';
 import { QueryOptions, Filter } from 'src/app/shared/models/query-options';
@@ -24,33 +24,36 @@ export class GedWorkspaceDetailsUiResolver implements Resolve<Observable<any>> {
                     if (data && data.id == +route.paramMap.get('id')) {
                         return of(data);
                     }
-                    return route.parent.data.pipe(
-                        switchMap(
-                            (parent_data: { workspace: IGedWorkspace }) => {
-                                // let filter = route.parent.routeConfig.data && route.parent.routeConfig.data[ 'filter' ] ? route.parent.routeConfig.data[ 'filter' ] : new Filter('inbox_ins', true, 'eq');
-                                const service = new CrCoordonneeFactory();
+                   console.log(route.parent.data);
+                    const service = new CrCoordonneeFactory();
                                 const queryOptions: QueryOptions = new QueryOptions([
                                     {
                                         or: false, filters: [
                                             new Filter('id', route.paramMap.get('id'), 'eq'),
-                                            new Filter('workspace_id', parent_data.workspace.id, 'eq'),
+                                            new Filter('workspaces_id', route.parent.data.workspace.id, 'eq'),
                                         ]
-                                    },
-                                    { or: false, filters: [new Filter('IsIns2', 1, 'eq')] }
-                                ]).setIncludes(['cr_coordonnee']);
+                                    }
+                                ]);
 
                                 return service.list(queryOptions).pipe(
                                     map(data => {
+                                        console.log(data);
                                         if (data && data.data.length) {
                                             this.coodService.coordonneeData = data.data[0];
-                                            return data.data[0];
+                                            let foo = {};
+                                            foo[data.data[0].id] = {'workspace':route.parent.data.workspace.id};
+                                            return {
+                                                parent: {
+                                                    libelle: data.data[0].libelle,
+                                                    id: foo
+                                                },
+                                                url: '/workspace/'+route.parent.data.workspace.id+'/'+route.paramMap.get('id')+'/bibliotheque'
+                                            };
                                         }
                                         this.coodService.coordonneeData = null;
                                         return null;
                                     })
                                 );
-                            })
-                    )
                 }
             )
         )

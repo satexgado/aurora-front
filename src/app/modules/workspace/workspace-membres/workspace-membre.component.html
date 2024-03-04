@@ -29,12 +29,22 @@
             *ngIf="withoutGroup.length; else ((!(workspaceUserHelper.loading$ | async)) && true ? noItem : loading)">
             <div class="row m-0 ">
                 <div class="col-lg-12 ">
-                    <ul class="list-group list-group-flush tx-13 ">
-                        <ng-container *ngFor="let workspaceUser of withoutGroup;trackBy: workspaceUserHelper.trackByFn">
+                    <ul class="list-group list-group-flush tx-13 " *ngIf="view == 'list'; else cardView ">
+                        <ng-container
+                            *ngFor="let workspaceUser of withoutGroup;trackBy: workspaceUserHelper.trackByFn">
                             <ng-container
                                 *ngTemplateOutlet="workspaceUserItem; context: {item: workspaceUser}"></ng-container>
                         </ng-container>
                     </ul>
+                    <ng-template #cardView>
+                        <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                            <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'"
+                                *ngFor="let workspaceUser of withoutGroup;trackBy: workspaceUserHelper.trackByFn">
+                                <ng-container
+                                    *ngTemplateOutlet="workspaceUserItemCard; context: {item: workspaceUser}"></ng-container>
+                            </div>
+                        </div>
+                    </ng-template>
                 </div>
             </div>
             <ng-container *ngIf="workspaceUserHelper.loading$ | async">
@@ -84,12 +94,22 @@
                     <ng-container
                     *ngIf="withGroup.length; else ((!(workspaceUserHelper.loading$ | async)) && true ? noItem : loading)">
                     <div>
-                        <ul class="list-group list-group-flush tx-13 ">
-                            <ng-container *ngFor="let workspaceUser of withGroup;trackBy: workspaceUserHelper.trackByFn">
+                        <ul class="list-group list-group-flush tx-13 " *ngIf="view == 'list'; else cardView ">
+                            <ng-container
+                                *ngFor="let workspaceUser of withGroup;trackBy: workspaceUserHelper.trackByFn">
                                 <ng-container
                                     *ngTemplateOutlet="workspaceUserItem; context: {item: workspaceUser}"></ng-container>
                             </ng-container>
                         </ul>
+                        <ng-template #cardView>
+                            <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                                <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'"
+                                    *ngFor="let workspaceUser of withGroup;trackBy: workspaceUserHelper.trackByFn">
+                                    <ng-container
+                                        *ngTemplateOutlet="workspaceUserItemCard; context: {item: workspaceUser}"></ng-container>
+                                </div>
+                            </div>
+                        </ng-template>
                     </div>
                 </ng-container>
                 </ng-container>
@@ -123,6 +143,80 @@
     <h4 class="text-center title m-2 p-3">
         {{ 'Aucun Element' }}
     </h4>
+</ng-template>
+
+<ng-template #workspaceUserItemCard let-item='item'>
+    <div class="mycard4 card-profile-1 mb-3" *ngIf="item.personne as user">
+        <a class="card-body tx-center p-0">
+            <div class="mx-auto my-2 avatar-md" *ngIf="!user.avatar">
+                <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
+            </div>
+            <div class="d-flex justify-content-center mt-2" *ngIf="user.avatar">
+                <div class="image_outer_container {{user.online_statut}}" >
+                    <div class="icon_statut" ></div>
+                    <div class="image_inner_container">
+                        <img [src]="user.avatar">
+                    </div>
+                </div>
+            </div>
+            <h6 class="m-0 tx-primary">{{user.libelle}}
+            </h6>
+            <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{user.telephone}} </p>
+            <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{user.email}} </p>
+            <div class="p-2 tx-echos tx-center bg-soft-primary">
+                <ng-container *ngFor="let tag of user.affectation_structures">
+                    <span class="badge badge-primary mx-1 card-2"  container="body" *ngIf="tag.structure" [ngbTooltip]="tag?.structure?.libelle"> {{tag.structure?.cigle}}{{tag.poste ? ' - '+tag.poste?.libelle : ''}}</span>
+                </ng-container>
+            </div>
+        </a>
+        <div class="pt-2 bg-light ">
+            <ul class="nav float-center list-inline justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link3" container="body" ngbTooltip="Details" (click)="openModal(content, user)">
+                        <span class="tx-echos">
+                          <i class="fas fa-address-card tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                      <span class="tx-echos">
+                        <i class="fas fa-comment-alt-lines tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                      </span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                    <span class="tx-echos">
+                      <i class="fas fa-at tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                    <span class="tx-echos">
+                      <i class="fas fa-sitemap tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                    <span class="tx-echos">
+                      <i class="fas fa-envelope tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                    <span class="tx-echos">
+                      <i class="fas fa-chair-office tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                    </span>
+                </a>
+            </li>
+                
+            </ul>
+        </div>
+    </div>
 </ng-template>
 
 <ng-template #workspaceUserItem let-item='item'>

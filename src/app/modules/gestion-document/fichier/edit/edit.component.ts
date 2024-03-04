@@ -18,12 +18,12 @@ export class StoreMultipleFileComponent implements OnInit  {
   fichierRecent: IFichier[] = [];
   @Input() relation: {
     name: string,
-    id: number
+    id: number|any[]
   }
 
   @Input() gedRelation: {
     name: string,
-    id: number
+    id: number|any[]
   }
 
   constructor(

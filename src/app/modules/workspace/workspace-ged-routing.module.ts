@@ -8,6 +8,7 @@ import { GedWorkspaceUserResolver } from './workspace-membres/workspace-membre.r
 import { GedWorkspaceCoordonneeResolver } from './workspace-coordonnee/workspace-coordonnee.resolver';
 import { ZenDossierResolver } from '../gestion-document/dossier-ui/dossier-resolver';
 import { GedWorkspaceDetailsUiResolver } from './workspace-details-ui/workspace-details-ui.resolver';
+import { GedWorkspaceDetailsUiComponent } from './workspace-details-ui/workspace-details-ui.component';
 
 const routes: Routes = [
   {
@@ -20,21 +21,23 @@ const routes: Routes = [
     resolve: { workspace: GedWorkspaceResolver },
     children: [
       {
-        path: ':id', component: GedWorkspaceCoordonneeResolver,
-        resolve: { data: GedWorkspaceUserResolver },
+        path: ':id', component: GedWorkspaceDetailsUiComponent,
+        resolve: { data: GedWorkspaceDetailsUiResolver },
         children: [
-          { path: '', pathMatch: 'full', redirectTo: 'dossier' },
+          { path: '', pathMatch: 'full', redirectTo: 'bibliotheque' },
+          { path: 'produc'},
+          { path: 'bibliotheque/dossier', pathMatch: 'full', redirectTo: 'bibliotheque' },
           {
-            path: 'dossier', component: ZenDossierUiComponent,
+            path: 'bibliotheque', component: ZenDossierUiComponent,
             data: {
-              folder_parent: 'workspace_users'
+              folder_parent: 'coordonnee_linked_workspaces'
             },
           },
           {
             data: {
-              folder_parent: 'workspace_users'
+              folder_parent: 'coordonnee_linked_workspaces'
             },
-            path: 'dossier/:id', component: ZenDossierUiComponent,
+            path: 'bibliotheque/dossier/:id', component: ZenDossierUiComponent,
             resolve: { dossier: ZenDossierResolver }
           }
         ]

@@ -28,6 +28,16 @@ import { Storage } from 'src/app/helpers/storage/storage';
 @Component({
   selector: 'app-zen-dossier-ui',
   templateUrl: 'dossier-ui.component.html',
+  styles: [`
+    .btn .btn-text-hidden {
+            display: none;
+    }
+
+    .btn.active .btn-text-hidden,
+    .btn:hover .btn-text-hidden {
+          display: initial;
+    }
+  `],
   providers: [ZenFichierBaseComponent, SharedBaseComponent]
 })
 
@@ -54,7 +64,7 @@ export class ZenDossierUiComponent implements OnInit {
     this.showFolder = false;
   }
 
-  parentData: {relationName: string, relationId: number} = null;
+  parentData: {relationName: string, relationId: number|any[]} = null;
   title = 'Acceuil';
 
   fichiersHelper: ResourceScrollableHelper;
@@ -148,9 +158,9 @@ export class ZenDossierUiComponent implements OnInit {
             this.route.parent.data.subscribe(
               (res)=> {
                 let parent = res.data.parent as IBase;
-                
+                console.log(res);
                 this.parentData = {
-                  relationId: +parent.id,
+                  relationId: parent.id,
                   relationName: this.route.routeConfig.data['folder_parent']
                 };
                 this.title = parent.libelle;

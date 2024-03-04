@@ -16,7 +16,7 @@ export class EditComponent extends BaseEditComponent  {
   @Input() dossierId: number;
   @Input() relation: {
     name: string,
-    id: number
+    id: number|any[]
   }
 
   constructor(

@@ -113,7 +113,7 @@ export class DossierItemCardUiComponent implements OnInit {
     this.onTransfertDossier = () => {
       let currentDossier = new Dossier();
       currentDossier.id = this.dossier.dossier_id;
-      dossierSharedBaseComponent.onTransfertDossier(this.dossier, currentDossier).subscribe(
+      dossierSharedBaseComponent.onTransfertDossier(this.dossier, currentDossier, this.dossierAdditionalFilter).subscribe(
         (data)=> {
          this.dossierTransfertEmitter.emit({
            dossier:this.dossier,

@@ -45,11 +45,11 @@
     <div class="w-100 d-flex flex-wrap bg-white">
         <div>
             <a class="btn m-2 p-2" (click)="onChangeOwner('all')" [class.bg-soft-primary]="owner == 'all'"> <i
-                    class="fal fa-folders"></i><span class="hidden-sm hidden-xs"> Voir Tout</span></a>
+                    class="fal fa-folders"></i><span class="hidden-sm hidden-xs" [class.btn-text-hidden]="owner != 'all'"> Voir Tout</span></a>
             <a class="btn m-2 p-2" (click)="onChangeOwner('mine')" [class.bg-soft-primary]="owner == 'mine'"> <i
-                    class="fal fa-user-crown"></i><span class="hidden-sm hidden-xs"> Mes Elements</span></a>
+                    class="fal fa-user-crown"></i><span class="hidden-sm hidden-xs" [class.btn-text-hidden]="owner != 'mine'"> Mes Elements</span></a>
             <a class="btn m-2 p-2" (click)="onChangeOwner('shared')" [class.bg-soft-primary]="owner == 'shared'"> <i
-                    class="fal fa-users"></i> <span class="hidden-sm hidden-xs"> Elements Partagers</span></a>
+                    class="fal fa-users"></i> <span class="hidden-sm hidden-xs" [class.btn-text-hidden]="owner != 'shared'"> Elements Partagers</span></a>
         </div>
         <div class=" align-items-center d-flex px-2 flex-1">
             <div class="input-group my-auto">

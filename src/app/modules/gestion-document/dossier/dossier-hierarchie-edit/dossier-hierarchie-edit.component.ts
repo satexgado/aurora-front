@@ -76,6 +76,8 @@ export class DossierHierarchieEditComponent {
         this.hierarchieItems = this.converData({name: 'dossiers', value: dossiers}) as TreeviewItem[];
         this.is_loading_tree = false;
 
+        return; 
+        
         if(this.hasRacine) {
           this.is_loading_tree = true;
           const structureService = new StructureService();
