@@ -1,0 +1,114 @@
+<div class="grid-container">
+    <div class="sidebar" [class.sidebar_small]="selectedTache">
+        <div class="row row-xs justify-content-between  mg-0 p-2" >
+            <div class="flex-1">
+                <div class="input-group ">
+                    <input type="text" class="form-control  border-0 " style="background: #f5f5f4;" placeholder="Recherches..." [(ngModel)]="searchTerm" >
+                </div>
+            </div>
+            <div class="">
+                <ul class="nav float-right list-inline h-100  justify-content-end">
+                    <li class="nav-item ">
+                        <button class="btn btn-link" [ngbTooltip]="'En attente'" container="body" (click)="filterStatutHelper.toggleSelectedItem(CrTacheStatut.attente)">
+                          <span class="tx-ether4">
+                           <i class="fad fa-exclamation-circle  card-1  tx-16" [ngClass]="filterStatutHelper.hasSelectedItem(CrTacheStatut.attente) ? 'bg-soft-primary text-primary' : 'bg-white'" style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                    </li>
+                    <li class="nav-item ">
+                        <button class="btn btn-link" [ngbTooltip]="'Traitement en cours'" container="body" (click)="filterStatutHelper.toggleSelectedItem(CrTacheStatut.traitement)">
+                          <span class="tx-ether4">
+                           <i class="fad fa-typewriter card-1  tx-16" [ngClass]="filterStatutHelper.hasSelectedItem(CrTacheStatut.traitement) ? 'bg-soft-warning text-warning' : 'bg-white'" style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                    </li>
+                    <li class="nav-item ">
+                        <button class="btn btn-link" [ngbTooltip]="'Validées'" container="body" (click)="filterStatutHelper.toggleSelectedItem(CrTacheStatut.valide)">
+                          <span class="tx-ether4">
+                           <i class="fad fa-badge-check card-1  tx-16" [ngClass]="filterStatutHelper.hasSelectedItem(CrTacheStatut.valide) ? 'bg-soft-success text-success' : 'bg-white'" style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                    </li>
+                    <li class="nav-item ">
+                        <button class="btn btn-link" [ngbTooltip]="'Non Validées'" container="body" (click)="filterStatutHelper.toggleSelectedItem(CrTacheStatut.nonvalide)">
+                          <span class="tx-ether4">
+                           <i class="fad fa-badge-check card-1  tx-16" [ngClass]="filterStatutHelper.hasSelectedItem(CrTacheStatut.nonvalide) ? 'bg-soft-danger text-danger' : 'bg-white'" style="padding:6px; border-radius:50%"></i>
+                          </span>
+                      </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link" (click)="onChangeView('kanban')">
+                            <span class="tx-echos">
+                                <i class="fad fa-th card-1  tx-16"
+                                    [ngClass]="view == 'kanban' ? 'bg-echos tx-white' : 'tx-echos bg-white'"
+                                    style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link" (click)="onChangeView('list')">
+                            <span class="tx-echos">
+                                <i class="fad fa-th-list card-1 tx-16 "
+                                    [ngClass]="view == 'list' ? 'bg-echos tx-white' : 'tx-echos bg-white' "
+                                    style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link" [disabled]="is_loading_schema" (click)="onShowCreateTacheForm();">
+                            <span class="tx-echos">
+                                <i class="fal fa-plus-circle bg-yeto tx-16 tx-white card-1"
+                                    style="padding:6px; border-radius:50%"></i>
+                            </span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div [class.loading]="is_loading_schema">
+            <app-gestionnaire-tache-kanban *ngIf="view == 'kanban'" [filterStatut$]="filterStatutHelper.selectedItem$" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator" (tacheUpdateFormEmitter)="onShowUpdateTacheForm($event)" (tacheArchivateEmitter)="onArchivateTache($event)" (tacheCommentaireEmitter)="onShowComment($event)" (tacheDeleteEmitter)="onDeleteTache($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (courrierAffectationFormEmitter)="onShowAffectationCourrierForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-kanban>
+            <app-gestionnaire-tache-list *ngIf="view == 'list'" [taches$]="taches$ | searchFilterObs:searchTerm:changeIndicator | tacheStatutObs:filterStatutHelper.selectedItem" (courrierAffectationFormEmitter)="onShowAffectationCourrierForm($event)" (tacheArchivateEmitter)="onArchivateTache($event)" (tacheCommentaireEmitter)="onShowComment($event)" (tacheAffectationFormEmitter)="onShowAffectationTacheForm($event)" (tacheSoftUpdateEmitter)="onSoftUpdate($event)"></app-gestionnaire-tache-list>
+        </div>        
+    </div>
+    <div class="main-content scroll-11 " [class.main-content_large]="selectedTache">
+        <div *ngIf="selectedTache">
+            <ul class=" list-group list-group-flush border-top border-bottom">
+                <li class="list-group-item">
+                    <div class="todo-indicator {{selectedTache.statut_bgcolor}}"></div>
+                    <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                            <div class="widget-content-left">
+                                <div class="widget-heading tx-24 tx-dark">{{selectedTache.libelle}}
+                                </div>
+                                <div class="widget-subheading">
+                                    <p class="tx-12 mb-0" *ngIf="selectedTache.date_limit">Echeance: <strong [ngClass]="isEcheanceExpired(selectedTache.date_limit) ? 'text-danger' : 'text-dark'">{{selectedTache?.date_limit | date:'mediumDate' : undefined : 'fr'}}</strong></p>
+                                    <p class="tx-12">Creer par: <strong class="text-dark">{{selectedTache?.inscription?.libelle}}</strong></p>
+                                    <p class="tx-12 text-dark">{{selectedTache.description}}</p>
+                                    <a class="cursor-pointer bg-light my-1 tx-12" [routerLink]="[selectedTache.courriers[0].link]" *ngIf="selectedTache.courriers && selectedTache.courriers.length">
+                                     <i class="fa fa-mail-bulk"></i> <span> {{selectedTache.courriers[0].libelle}}</span>
+                                    </a>
+                                    <p class="tx-12 text-dark text-center" *ngIf="selectedTache.affectations&&selectedTache.affectations.length"><strong>Collaborateurs</strong></p>
+                                    <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center">
+                                        <li *ngFor="let structure of selectedTache.affectations" class="mg-l--10">
+                                            <div class="avatar">
+                                                <span class="bg-soft-info avatar-initial rounded-circle bg-primary" *ngIf="structure.cigle">{{structure.cigle}}</span>
+                                                <img [src]="structure.image" *ngIf="structure.image" title="{{structure.libelle}}" class="avatar-initial border border-secondary rounded-circle" alt="">
+                                                <img [src]="structure.avatar" *ngIf="structure.avatar" title="{{structure.libelle}}" class="avatar-initial border border-secondary rounded-circle" alt="">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="widget-content-right">
+                                <button class="border-0 btn-transition btn btn-sm btn-oblong btn-danger" (click)="onShowComment()">
+                                    <i class="fal fa-times fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <app-commentaire-simplelist [init]="commentData"></app-commentaire-simplelist>
+        </div>
+    </div>
+</div>

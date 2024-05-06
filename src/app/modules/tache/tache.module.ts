@@ -46,6 +46,10 @@ import { CommentaireModule } from '../commentaire';
     ],
     exports: [
         GestionnaireTacheComponent,
+        GestionnaireTacheKanbanComponent,
+        GestionnaireTacheListComponent,
+        TacheStatutPipe,
+        TacheStatutObsPipe,
     ],
     entryComponents: [EditComponent],
 })

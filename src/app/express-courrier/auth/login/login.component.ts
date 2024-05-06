@@ -5,8 +5,8 @@ import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login2.component.html',
-  styleUrls: ['./login.component.scss'],
+  templateUrl: './login3.component.html',
+  styleUrls: ['./login3.component.css'],
   styles: [`
   .title-header:before {
     border-top: 2px solid #0d47a1!important;

@@ -1,17 +1,35 @@
 <div class="d-flex justify-content-between p-2 bd-b bd-2">
     <div class="">
         <a href="" class="d-flex flex-row pt-1 ml-2">
-            <i class="fas fa-paperclip tx-echos tx-28 mr-2"></i>
-            <span class="d-none d-sm-block tx-echos tx-24 " style="font-family: ''; text-align: center; ; vertical-align: middle; text-shadow: 0px 1px 0px #ffff;">
-             Link Up 
-          </span>
+            <i class="fas fa-feather tx-echos tx-28 mr-2"></i>
+            <span class="d-none d-sm-block tx-echos tx-20 "
+                style="font-family: ''; text-align: center; ; vertical-align: middle; text-shadow: 0px 1px 0px #ffff;">
+                Write To Me
+            </span>
         </a>
     </div>
 
-    <div class="">
-        <div class="input-group ">
+    <div class="d-flex">
+        <div class="input-group mr-3">
             <input type="text" class="form-control  border-0 bg-light" placeholder="Recherches...">
         </div>
+        <ul class="nav bg-white flex-nowrap">
+            <li class="nav-item bg-light bd-r bd-4 bd-white">
+                <a class="nav-link3" data-toggle="tab" href="#filtres">
+                    <i class="fas fa-filter avatarfont tx-18 tx-echos "></i> <span class="tx-echos1 "> </span></a>
+            </li>
+            <li class="nav-item bg-light bd-r bd-4 bd-white">
+                <a class="nav-link3 " [routerLink]="['config']" routerLinkActive="active">
+                    <i class="fas fa-union avatarfont tx-18 tx-echos1 "></i> <span class="tx-echos1 "> </span></a>
+            </li>
+            <li class="nav-item bg-light bd-r bd-4 bd-white">
+                <a class="nav-link3 " [routerLink]="['workspace']" routerLinkActive="active">
+                    <i class="fas fa-solar-system avatarfont tx-18 tx-echos1 "></i> <span class="tx-echos1 ">
+                    </span></a>
+            </li>
+
+
+        </ul>
     </div>
 
     <div class="">
@@ -20,11 +38,14 @@
 
                 <li class="nav-item ">
                     <a class="nav-link3 " [routerLink]="['administration']" routerLinkActive="active">
-                        <i class="fas fa-cog tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos">   </span></a>
+                        <i class="fas fa-cog tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span
+                            class="tx-echos"> </span></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link3 " href="" role="button" (click)="newNotification = false" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-bells tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos">   </span></a>
+                    <a class="nav-link3 " href="" role="button" (click)="newNotification = false" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bells tx-18 tx-echos bg-light"
+                            style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> </span></a>
                     <div class="dropdown-menu dropdown-menu-right shadow-2">
                         <!-- Top Notifications Area -->
                         <app-notifications-list></app-notifications-list>
@@ -32,22 +53,28 @@
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link3 " data-toggle="tab" href="#">
-                        <i class="fas fa-question-circle tx-18 tx-echos bg-light" style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> </span></a>
+                        <i class="fas fa-question-circle tx-18 tx-echos bg-light"
+                            style="padding: 6px; border-radius: 50%"></i><span class="tx-echos"> </span></a>
                 </li>
                 <li class="nac-item dropdown">
                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="select-profile" [ngStyle]="{'vertical-align': authService.user.photo ? 'sub' : 'super'}">Bonjour, {{ authService.user.prenom }}!</span>
-                        <img *ngIf="authService.user.photo" [src]="authService.user.photo" style="object-fit: cover; object-position: center;" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
-                        <i *ngIf="!authService.user.photo" class="fad fa-user-circle" style="font-size: 35px; vertical-align: bottom;"></i>
+                        <span class="select-profile"
+                            [ngStyle]="{'vertical-align': authService.user.photo ? 'sub' : 'super'}">Bonjour, {{
+                            authService.user.prenom }}!</span>
+                        <img *ngIf="authService.user.photo" [src]="authService.user.photo"
+                            style="object-fit: cover; object-position: center;"
+                            class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                        <i *ngIf="!authService.user.photo" class="fad fa-user-circle"
+                            style="font-size: 35px; vertical-align: bottom;"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-profile shadow-2">
                         <div class="user-profile-area">
                             <div class="user-profile-heading">
                                 <div class="profile-thumbnail">
-                                    <img *ngIf="authService.user.photo" [src]="authService.user.photo" class="img-fluid wd-35 ht-35 rounded-circle" alt="">
+                                    <img *ngIf="authService.user.photo" [src]="authService.user.photo"
+                                        class="img-fluid wd-35 ht-35 rounded-circle" alt="">
                                     <span *ngIf="!authService.user.photo">
-                                      <i class="fad fa-user-circle"
-                                         style="font-size: 35px;"></i>
+                                        <i class="fad fa-user-circle" style="font-size: 35px;"></i>
                                     </span>
                                 </div>
                                 <div class="profile-text">
@@ -61,24 +88,22 @@
                           || helper.authorisation.check('courrier sortant', 'LECTURE', undefined)
                           || helper.authorisation.check('suivis', 'LECTURE', undefined)
                           || helper.authorisation.check('dashboard', 'LECTURE', undefined)
-                          " class="dropdown-item"><i class="fas fa-mail-bulk"
-                            aria-hidden="true"></i> Courrier </a>
+                          " class="dropdown-item"><i class="fas fa-mail-bulk" aria-hidden="true"></i> Courrier </a>
                             <a [routerLink]="['document']" *ngIf="
                           helper.authorisation.check('fichier', 'LECTURE', undefined)
-                          " class="dropdown-item"><i class="fas fa-file-alt"
-                              aria-hidden="true"></i> Document </a>
-                            <a [routerLink]="['marche-public/marche']" class="dropdown-item"><i class="fas fa-balance-scale"
-                                aria-hidden="true"></i> Marche Public </a>
+                          " class="dropdown-item"><i class="fas fa-file-alt" aria-hidden="true"></i> Document </a>
+                            <a [routerLink]="['marche-public/marche']" class="dropdown-item"><i
+                                    class="fas fa-balance-scale" aria-hidden="true"></i> Marche Public </a>
                             <a [routerLink]="['organisation']" class="dropdown-item"><i class="fal fa-chart-network"
-                   aria-hidden="true"></i> Mes structures </a>
-                            <a [routerLink]="['organisation/organigramme']" class="dropdown-item"><i class="far fa-network-wired"
-                   aria-hidden="true"></i> Organigramme</a>
-                            <a [routerLink]="['organisation/structures/all']" class="dropdown-item"><i class="fad fa-chart-network"
-                   aria-hidden="true"></i> Liste des structures</a>
+                                    aria-hidden="true"></i> Mes structures </a>
+                            <a [routerLink]="['organisation/organigramme']" class="dropdown-item"><i
+                                    class="far fa-network-wired" aria-hidden="true"></i> Organigramme</a>
+                            <a [routerLink]="['organisation/structures/all']" class="dropdown-item"><i
+                                    class="fad fa-chart-network" aria-hidden="true"></i> Liste des structures</a>
                             <a [routerLink]="['users', authService.user.id]" class="dropdown-item"><i class="icon-user"
-                    aria-hidden="true"></i> Mon profile</a>
-                            <a (click)="logout()" class="dropdown-item"><i class="icon-power"
-                   aria-hidden="true"></i> Deconnexion</a>
+                                    aria-hidden="true"></i> Mon profile</a>
+                            <a (click)="logout()" class="dropdown-item"><i class="icon-power" aria-hidden="true"></i>
+                                Deconnexion</a>
                         </div>
                     </div>
                 </li>
@@ -97,94 +122,67 @@
 
                 <ul class="navbar nav  pb-2 " role="tablist">
                     <li class="nav-item card-1-hoverable tx-center  ">
-                        <a class="nav-link3 " [routerLink]="['courrier/acceuil']" routerLinkActive="active">
-                            <i class="fas fa-door-open tx-facebook  tx-16 bg-light" style="padding:10px; border-radius:50%"></i>
+                        <a class="nav-link3 " [routerLink]="['dashboard']" routerLinkActive="active">
+                            <i class="fas fa-box-alt tx-facebook  tx-16 bg-light"
+                                style="padding:10px; border-radius:50%"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0 pl-2">Messages</p> -->
                         </a>
                     </li>
 
 
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Dossier'">
-                        <a class="nav-link3 " [routerLink]="['courrier/dossier']" routerLinkActive="active">
-                            <i class="fas  fa-folder-open tx-facebook  tx-16"></i>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Document'">
+                        <a class="nav-link3 " [routerLink]="['document']" routerLinkActive="active">
+                            <i class="fas  fa-box tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Entrant'">
-                        <a class="nav-link3 " [routerLink]="['courrier/entrant']" routerLinkActive="active">
-                            <i class="fas  fa-envelope tx-facebook  tx-16"></i>
+                    <li class="nav-item card-1-hoverable tx-center" container="body"
+                        [ngbTooltip]="'Document Administratifs'">
+                        <a class="nav-link3 " [routerLink]="['document/document-administratif']"
+                            routerLinkActive="active">
+                            <i class="fas fa-boxes tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Sortant'">
-                        <a class="nav-link3 " [routerLink]="['courrier/sortant']" routerLinkActive="active">
-                            <i class="fas  fa-envelope-open tx-facebook  tx-16"></i>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Modele'">
+                        <a class="nav-link3 " [routerLink]="['document/modele']" routerLinkActive="active">
+                            <i class="fas  fa-folder-upload tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
                     <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Interne'">
                         <a class="nav-link3 " [routerLink]="['courrier/interne']" routerLinkActive="active">
-                            <i class="fas  fa-envelope-open-text tx-facebook  tx-16"></i>
+                            <i class="fas  fa-folder tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Affectation'">
-                        <a class="nav-link3 " [routerLink]="['courrier/affectation']" routerLinkActive="active">
-                            <ng-container *ngIf="expressService.reaffectation$ | async as reaffectations">
-                                <ng-container *ngIf="reaffectations.length">
-                                    {{reaffectations.length > 99 ? '+99' : reaffectations.length}}                                
-                                </ng-container>
-                            </ng-container> <i class="fas fa-link tx-facebook  tx-16"></i>
-                        </a>
-                    </li>
-
-                    <li class="nav-item card-1-hoverable tx-center  mt-4  " container="body" [ngbTooltip]="'Labcolab'">
-                        <a class="nav-link3 " [routerLink]="['labcolab']" routerLinkActive="active">
-                            <i class="fas fa-union tx-facebook  tx-16"></i>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Interne'">
+                        <a class="nav-link3 " [routerLink]="['courrier/interne']" routerLinkActive="active">
+                            <i class="fas fa-calendar-alt tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Tableur Plus'">
-                        <a class="nav-link3 " [routerLink]="['tableur']" routerLinkActive="active">
-                            <i class="fas  fa-th-large tx-facebook  tx-16"></i>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Interne'">
+                        <a class="nav-link3 " [routerLink]="['courrier/interne']" routerLinkActive="active">
+                            <i class="fas fa-tasks-alt tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'MG - MARGE PROGRESSIVE'">
-                        <a class="nav-link3 " [routerLink]="['marge-progressive']" routerLinkActive="active">
-                            <i class="fas  fa-alarm-clock tx-facebook  tx-16"></i>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Interne'">
+                        <a class="nav-link3 " [routerLink]="['courrier/interne']" routerLinkActive="active">
+                            <i class="fas fa-th-large tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'GANTTER ZERO'">
-                        <a class="nav-link3 " [routerLink]="['gantter-zero']" routerLinkActive="active">
-                            <i class="fas  fa-line-columns tx-facebook  tx-16"></i>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Interne'">
+                        <a class="nav-link3 " [routerLink]="['courrier/interne']" routerLinkActive="active">
+                            <i class="fas fa-line-columns tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Aurora-Ban'">
-                        <a class="nav-link3 " [routerLink]="['aurora-ban']" routerLinkActive="active">
-                            <i class="fas  fa-tasks-alt tx-facebook  tx-16"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
-                        </a>
-                    </li>
-
-                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Rapport'">
-                        <a class="nav-link3 " [routerLink]="['courrier/rapport']" routerLinkActive="active">
-                            <i class="fas  fa-clock tx-facebook  tx-16"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
-                        </a>
-                    </li>
-                    <li class="nav-item card-1-hoverable tx-center    " container="body" [ngbTooltip]="'Suivi'">
-                        <a class="nav-link3 " [routerLink]="['courrier/suivi']" routerLinkActive="active">
-                            <i class="fas fa-history tx-facebook  tx-16"></i>
-                            <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
-                        </a>
-                    </li>
-
-                     <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Analyse'">
-                        <a class="nav-link3 " [routerLink]="['courrier/analyse']" routerLinkActive="active">
-                            <i class="fas fa-analytics tx-facebook  tx-16"></i>
+                    <li class="nav-item card-1-hoverable tx-center" container="body" [ngbTooltip]="'Interne'">
+                        <a class="nav-link3 " [routerLink]="['courrier/interne']" routerLinkActive="active">
+                            <i class="fas fa-globe-stand tx-facebook  tx-16"></i>
                             <!-- <p class=" tx-white tx-12 p-0 mb-0">Documents</p> -->
                         </a>
                     </li>
@@ -205,52 +203,64 @@
                 <div class="p-0 pb-6">
                     <ul class="navbar nav justify-content-center " role="tablist">
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3" container="body" ngbTooltip="Mes services" [routerLink]="['service']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Mes services" [routerLink]="['service']"
+                                [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
                                 <i class="fas fa-chair-office tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3" container="body" ngbTooltip="Organigramme" [routerLink]="['service/organigramme']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Organigramme"
+                                [routerLink]="['service/organigramme']" [routerLinkActiveOptions]="linkActiveOptions"
+                                routerLinkActive="active">
                                 <i class="fas fa-sitemap tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100 ">
-                            <a class="nav-link3" container="body" ngbTooltip="Autres services" routerLinkActive="active" [routerLinkActiveOptions]="linkActiveOptions" [routerLink]="['service/all']">
+                            <a class="nav-link3" container="body" ngbTooltip="Autres services" routerLinkActive="active"
+                                [routerLinkActiveOptions]="linkActiveOptions" [routerLink]="['service/all']">
                                 <i class="fas fa-chart-network tx-echos  tx-16"></i>
                             </a>
                         </li>
 
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3" container="body" ngbTooltip="Taches" [routerLink]="['tache']" routerLinkActive="active">
+                            <a class="nav-link3" container="body" ngbTooltip="Taches" [routerLink]="['tache']"
+                                routerLinkActive="active">
                                 <i class="fas fa-tasks  tx-echos tx-16"></i>
                             </a>
                         </li>
 
                         <li class="nav-item tx-center w-100 mt-4 ">
-                            <a class="nav-link3" container="body" ngbTooltip="Liste des Utilisateurs" [routerLink]="['utilisateur']" routerLinkActive="active">
-                                <i class="fas fa-user  tx-echos  tx-16" ></i>
+                            <a class="nav-link3" container="body" ngbTooltip="Liste des Utilisateurs"
+                                [routerLink]="['utilisateur']" routerLinkActive="active">
+                                <i class="fas fa-user  tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100  ">
-                            <a class="nav-link3" container="body" ngbTooltip="Partenaires" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'partenaire'" routerLinkActive="active">
-                                <i class="fas fa-handshake-alt  tx-echos  tx-16" ></i>
+                            <a class="nav-link3" container="body" ngbTooltip="Partenaires" [routerLink]="['annuaire']"
+                                [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'partenaire'"
+                                routerLinkActive="active">
+                                <i class="fas fa-handshake-alt  tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3   " container="body" ngbTooltip="Fournisseurs" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" [fragment]="'fournisseur'" routerLinkActive="active">
-                                <i class="fas fa-people-carry  tx-echos  tx-16" ></i>
+                            <a class="nav-link3   " container="body" ngbTooltip="Fournisseurs"
+                                [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions"
+                                [fragment]="'fournisseur'" routerLinkActive="active">
+                                <i class="fas fa-people-carry  tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100">
-                            <a class="nav-link3  " container="body" ngbTooltip="Groupe de contact" [routerLink]="['groupe-contact']" routerLinkActive="active">
-                                <i class="fas fa-users tx-echos  tx-16" ></i>
+                            <a class="nav-link3  " container="body" ngbTooltip="Groupe de contact"
+                                [routerLink]="['groupe-contact']" routerLinkActive="active">
+                                <i class="fas fa-users tx-echos  tx-16"></i>
                             </a>
                         </li>
                         <li class="nav-item tx-center w-100 ">
-                            <a class="nav-link3" container="body" ngbTooltip="Annuaire" [routerLink]="['annuaire']" [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
-                                <i class="fas fa-address-card tx-echos  tx-16" ></i>
+                            <a class="nav-link3" container="body" ngbTooltip="Annuaire" [routerLink]="['annuaire']"
+                                [routerLinkActiveOptions]="linkActiveOptions" routerLinkActive="active">
+                                <i class="fas fa-address-card tx-echos  tx-16"></i>
                             </a>
-                        </li>                        
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -259,8 +269,9 @@
             <div class="   p-0 pt-6 pr-1 tx-center">
                 <ng-container *ngIf="expressService.onlineUsers$ | async as users">
                     <ng-container *ngIf="users.length">
-                        <a class="nav-link3" [routerLink]="['utilisateur',user.id]" *ngFor="let user of (users | slice:0:3);  trackBy:trackByFn;">
-                            <div class="image_outer_container" >
+                        <a class="nav-link3" [routerLink]="['utilisateur',user.id]"
+                            *ngFor="let user of (users | slice:0:3);  trackBy:trackByFn;">
+                            <div class="image_outer_container">
                                 <div class="icon_statut" [ngClass]="user.away ? ' bg-warning' : ' bg-success' "></div>
                                 <div class="image_inner_container" [class.warning]="user.away">
                                     <img [src]="user.photo">
@@ -270,7 +281,7 @@
                     </ng-container>
                 </ng-container>
                 <a class="nav-link3 py-1" (click)="open(onlineUsers)">
-                    <i class="fas fa-user-circle tx-echos  tx-30" ></i>
+                    <i class="fas fa-user-circle tx-echos  tx-30"></i>
                 </a>
             </div>
 
@@ -299,7 +310,7 @@
             <i class="fa-user-circle fad ng-star-inserted"></i> Utilisateurs en ligne
         </h5>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <i  class="ion-ios-close-empty"></i>
+            <i class="ion-ios-close-empty"></i>
         </button>
     </div>
     <div class="modal-body scroll-11" style="max-width: 460px; overflow: auto;">
@@ -312,7 +323,9 @@
                                 <img class="avatar" style="height: 36px; width: 36px;" [src]="user.photo" alt="avatar">
                                 <div class="about">
                                     <div class="name">{{user.prenom}} {{user.nom}}</div>
-                                    <div class="status"> <i class="fa fa-circle" [ngClass]="user.away ? ' text-warning' : ' text-success' "></i> {{user.last_activity_at | dateagofr}} </div>                                            
+                                    <div class="status"> <i class="fa fa-circle"
+                                            [ngClass]="user.away ? ' text-warning' : ' text-success' "></i>
+                                        {{user.last_activity_at | dateagofr}} </div>
                                 </div>
                             </a>
                         </li>

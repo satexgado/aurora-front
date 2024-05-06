@@ -34,6 +34,8 @@ export class GestionnaireTacheComponent implements OnDestroy {
     CrTacheStatut = CrTacheStatut;
     @Input() selectedTache: ICrTache;
     @Input() courrier_id = null;
+    @Input() parentData: {relationName: string, relationId: number|any[]} = null;
+
     commentData: {filters: filterGrp[], parent: {type: string, id: number}};
     removeAfterArchive=false;
 
@@ -102,6 +104,10 @@ export class GestionnaireTacheComponent implements OnDestroy {
       instance.title = `Creer:`;
       if(this.courrier_id) {
         instance.courrier_id = this.courrier_id;
+      } else if(this.parentData) {
+        instance.relation =  {
+          name:this.parentData.relationName, id: this.parentData.relationId
+        };
       }
       instance.newItem.subscribe(
         (data) => {

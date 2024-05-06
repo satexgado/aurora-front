@@ -13,14 +13,13 @@ import { TunelModule } from './messagerie/tunel/tunel.module';
 import { UserShowComponent } from './users/user-show/user-show.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthorisationGuardService } from 'src/app/shared/guard/authorisation.guard'
-import { ShortNumberPipe } from '../shared/pipes';
 import { SharedModule } from '../shared';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent
-  },
+  // {
+  //   path: '',
+  //   component: HomeComponent
+  // },
   {
     path: '',
     component: ExpressCourrierComponent,
@@ -48,7 +47,7 @@ const routes: Routes = [
             access: 'LECTURE'
           }]
         },
-        canLoad:[AuthorisationGuardService],
+        canLoad: [AuthorisationGuardService],
         loadChildren: () =>
           import('./coordonnee/coordonnee.module').then(
             (module) => module.CoordonneeModule
@@ -62,7 +61,7 @@ const routes: Routes = [
             access: 'LECTURE'
           }]
         },
-        canLoad:[AuthorisationGuardService],
+        canLoad: [AuthorisationGuardService],
         loadChildren: () =>
           import('./coordonnee-groupe/coordonnee-groupe.module').then(
             (module) => module.CoordonneeGroupeModule
@@ -82,13 +81,13 @@ const routes: Routes = [
             (module) => module.GestionMailModule
           ),
       },
-      
+
       {
         path: 'service',
         loadChildren: () =>
-        import('./structure/structure/structure.module').then(
-          (module) => module.StructureModule
-        ),
+          import('./structure/structure/structure.module').then(
+            (module) => module.StructureModule
+          ),
       },
       {
         path: 'messagerie',
@@ -96,21 +95,6 @@ const routes: Routes = [
           import('./messagerie/messagerie.module').then(
             (module) => module.MessagerieModule
           ),
-      },
-      {
-        path: 'marche-public',
-        data: {
-          topbar: 'marche',
-          guards: [{
-            scope: 'marche public',
-            access: 'LECTURE'
-          }]
-        },
-        canLoad:[AuthorisationGuardService],
-        loadChildren: () =>
-          import('../modules/marche-public/marche-public.module').then(
-            (module) => module.MarchePublicModule
-          )
       },
       {
         path: 'utilisateur',
@@ -132,48 +116,24 @@ const routes: Routes = [
             access: 'LECTURE'
           }]
         },
-        canLoad:[AuthorisationGuardService],
+        canLoad: [AuthorisationGuardService],
         loadChildren: () =>
           import('../modules/gestion-document/zen-document.module').then(
             (m) => m.ZenDocumentModule
           ),
       },
       {
-        path: 'courrier',
-        data: {
-          topbar: 'courrier',
-          guards: [{
-            scope: 'courrier entrant',
-            access: 'LECTURE'
-          },
-          {
-            scope: 'courrier sortant',
-            access: 'LECTURE'
-          },
-          {
-            scope: 'proprietes courrier',
-            access: 'LECTURE'
-          },
-          {
-            scope: 'suivis',
-            access: 'LECTURE'
-          },
-          {
-            scope: 'dashboard',
-            access: 'LECTURE'
-          }]
-        },
-        canLoad:[AuthorisationGuardService],
+        path: 'config',
         loadChildren: () =>
-          import('../modules/gestion-courrier/gestion-courrier.module').then(
-            (m) => m.GestionCourrierModule
+          import('../modules/propriete-ged/propriete-ged.module').then(
+            (module) => module.ProprieteGedModule
           ),
       },
       {
-        path: 'labcolab',
+        path: 'workspace',
         loadChildren: () =>
-          import('../labcolab/labcolab.module').then(
-            (module) => module.LabcolabModule
+          import('../modules/workspace/workspace-ged.module').then(
+            (module) => module.WorkspaceGedModule
           ),
       },
       {
@@ -202,4 +162,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class ExpressCourrierModule {}
+export class ExpressCourrierModule { }

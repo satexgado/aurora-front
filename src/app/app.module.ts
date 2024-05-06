@@ -20,65 +20,66 @@ import { TemplateWritomeComponent } from './template-writome/template.component'
 registerLocaleData(localeFr, 'fr');
 
 const routes: Routes = [
-    {
-      path: 'config',
-      loadChildren: () =>
-        import('./modules/propriete-ged/propriete-ged.module').then(
-          (module) => module.ProprieteGedModule
-        ),
-    },
-    {
-      path: 'workspace',
-      loadChildren: () =>
-        import('./modules/workspace/workspace-ged.module').then(
-          (module) => module.WorkspaceGedModule
-        ),
-    },
-   {
-    path: '',
-    component: TemplateWritomeComponent
-   },
-   {
-    path: 'document',
-    data: {
-      topbar: 'document',
-      guards: [{
-        scope: 'fichier',
-        access: 'LECTURE'
-      }]
-    },
-    loadChildren: () =>
-      import('./modules/gestion-document/zen-document.module').then(
-        (m) => m.ZenDocumentModule
-      ),
-    },
-  // {
-  //   path: 'authentification',
-  //   loadChildren: () =>
-  //     import('./express-courrier/auth/auth.module').then(
-  //       (module) => module.AuthModule
-  //     ),
-  // },
-  // {
+  //   {
+  //     path: 'config',
+  //     loadChildren: () =>
+  //       import('./modules/propriete-ged/propriete-ged.module').then(
+  //         (module) => module.ProprieteGedModule
+  //       ),
+  //   },
+  //   {
+  //     path: 'workspace',
+  //     loadChildren: () =>
+  //       import('./modules/workspace/workspace-ged.module').then(
+  //         (module) => module.WorkspaceGedModule
+  //       ),
+  //   },
+  //  {
   //   path: '',
-  //   canActivate: [AuthGuard],
-  //   canLoad: [AuthGuard],
-  //   canActivateChild: [AuthGuard], 
+  //   component: TemplateWritomeComponent
+  //  },
+  //  {
+  //   path: 'document',
+  //   data: {
+  //     topbar: 'document',
+  //     guards: [{
+  //       scope: 'fichier',
+  //       access: 'LECTURE'
+  //     }]
+  //   },
   //   loadChildren: () =>
-  //     import('./express-courrier/express-courrier.module').then(
-  //       (module) => module.ExpressCourrierModule
+  //     import('./modules/gestion-document/zen-document.module').then(
+  //       (m) => m.ZenDocumentModule
   //     ),
-  // },
-  // {
-  //   path: 'bad-url',
-  //   component: PageBadUrlComponent,
-  // },
+  //   },
+  // reboot
+  {
+    path: 'authentification',
+    loadChildren: () =>
+      import('./express-courrier/auth/auth.module').then(
+        (module) => module.AuthModule
+      ),
+  },
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
+    canActivateChild: [AuthGuard], 
+    loadChildren: () =>
+      import('./express-courrier/express-courrier.module').then(
+        (module) => module.ExpressCourrierModule
+      ),
+  },
+  {
+    path: 'bad-url',
+    component: PageBadUrlComponent,
+  },
 
 
-  // {
-  //   path: '**',
-  //   redirectTo: 'authentification',
-  // },
+  {
+    path: '**',
+    redirectTo: 'authentification',
+  },
 ];
 
 @NgModule({

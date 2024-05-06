@@ -1,51 +1,54 @@
+
 <ng-container *ngIf="workspaceUserHelper.data$ | async as items">
     <ng-container *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [0,null] }] as withoutGroup">
+        
         <div class="d-flex justify-content-start">
             <div class="mx-1">
-                <button (click)="quickAdd()" class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
+                <button (click)="quickAdd()" class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left"
+                    type="button">
                     <span class="fa fa-plus green" aria-hidden="true"></span>
                     <span class="fa fa-users green" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="mx-1">
-                <button (click)="onChooseMembre(withoutGroup)" class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
+                <button (click)="onChooseMembre(withoutGroup)"
+                    class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
                     <span class="fa fa-plus green" aria-hidden="true"></span>
                 </button>
             </div>
-        
+
             <div class="mx-1">
-                <button (click)="onChooseMembre(withoutGroup)" class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
+                <button (click)="onChooseMembre(withoutGroup)"
+                    class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
                     <span class="fa fa-edit" aria-hidden="true"></span>
                 </button>
             </div>
-        
+
             <div class="mx-1">
-                <button (click)="onChooseMembre(withoutGroup)" class="btn btn-brand btn-spotify bg-echos  btn-xs" type="button">
+                <button (click)="onChooseMembre(withoutGroup)" class="btn btn-brand btn-spotify bg-echos  btn-xs"
+                    type="button">
                     <span class="fa fa-times" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
         <ng-container
             *ngIf="withoutGroup.length; else ((!(workspaceUserHelper.loading$ | async)) && true ? noItem : loading)">
-            <div class="row m-0 ">
-                <div class="col-lg-12 ">
-                    <ul class="list-group list-group-flush tx-13 " *ngIf="view == 'list'; else cardView ">
+            <div>
+                <ul class="list-group list-group-flush tx-13 " *ngIf="view == 'list'; else cardView ">
+                    <ng-container *ngFor="let workspaceUser of withoutGroup;trackBy: workspaceUserHelper.trackByFn">
                         <ng-container
+                            *ngTemplateOutlet="workspaceUserItem; context: {item: workspaceUser}"></ng-container>
+                    </ng-container>
+                </ul>
+                <ng-template #cardView>
+                    <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                        <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'"
                             *ngFor="let workspaceUser of withoutGroup;trackBy: workspaceUserHelper.trackByFn">
                             <ng-container
-                                *ngTemplateOutlet="workspaceUserItem; context: {item: workspaceUser}"></ng-container>
-                        </ng-container>
-                    </ul>
-                    <ng-template #cardView>
-                        <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0">
-                            <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'"
-                                *ngFor="let workspaceUser of withoutGroup;trackBy: workspaceUserHelper.trackByFn">
-                                <ng-container
-                                    *ngTemplateOutlet="workspaceUserItemCard; context: {item: workspaceUser}"></ng-container>
-                            </div>
+                                *ngTemplateOutlet="workspaceUserItemCard; context: {item: workspaceUser}"></ng-container>
                         </div>
-                    </ng-template>
-                </div>
+                    </div>
+                </ng-template>
             </div>
             <ng-container *ngIf="workspaceUserHelper.loading$ | async">
                 <ng-container *ngTemplateOutlet="loading"></ng-container>
@@ -53,6 +56,13 @@
         </ng-container>
     </ng-container>
     <div class="pt-4">
+        <div class="mx-1">
+            <button (click)="quickAdd()" class="btn w-100 btn-brand btn-spotify bg-echos  btn-xs  pull-left"
+                type="button">
+                Ajouter un groupe
+                <span class="fa fa-users green" aria-hidden="true"></span>
+            </button>
+        </div>
         <div *ngFor="let item of groupelist">
             <div class="d-flex justify-content-between">
                 <ng-container *ngIf="!(updatingGroupeId == item.id); then dataView else formView"></ng-container>
@@ -74,8 +84,10 @@
                         <i class="tx-yeto2 fad fa-users"></i> {{item.libelle | capitalizeFirst}}
                     </a>
                     <div *ngIf="item.id">
-                        <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm text-primary" *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [item.id] }] as withGroup" (click)="onChooseMembre(withGroup, item)"
-                            placement="top" ngbTooltip="Ajouter un dossier" tooltipClass="my-tooltip-class">
+                        <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm text-primary"
+                            *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [item.id] }] as withGroup"
+                            (click)="onChooseMembre(withGroup, item)" placement="top" ngbTooltip="Ajouter un dossier"
+                            tooltipClass="my-tooltip-class">
                             <i class="fal fa-layer-plus"></i>
                         </button>
                         <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm text-primary" (click)="quickAdd(item)"
@@ -90,30 +102,31 @@
                 </ng-template>
             </div>
             <ng-container *ngIf="item.id">
-                <ng-container *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [item.id] }] as withGroup">
+                <ng-container
+                    *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [item.id] }] as withGroup">
                     <ng-container
-                    *ngIf="withGroup.length; else ((!(workspaceUserHelper.loading$ | async)) && true ? noItem : loading)">
-                    <div>
-                        <ul class="list-group list-group-flush tx-13 " *ngIf="view == 'list'; else cardView ">
-                            <ng-container
-                                *ngFor="let workspaceUser of withGroup;trackBy: workspaceUserHelper.trackByFn">
+                        *ngIf="withGroup.length; else ((!(workspaceUserHelper.loading$ | async)) && true ? noItem : loading)">
+                        <div>
+                            <ul class="list-group list-group-flush tx-13 " *ngIf="view == 'list'; else cardView ">
                                 <ng-container
-                                    *ngTemplateOutlet="workspaceUserItem; context: {item: workspaceUser}"></ng-container>
-                            </ng-container>
-                        </ul>
-                        <ng-template #cardView>
-                            <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0">
-                                <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'"
                                     *ngFor="let workspaceUser of withGroup;trackBy: workspaceUserHelper.trackByFn">
                                     <ng-container
-                                        *ngTemplateOutlet="workspaceUserItemCard; context: {item: workspaceUser}"></ng-container>
+                                        *ngTemplateOutlet="workspaceUserItem; context: {item: workspaceUser}"></ng-container>
+                                </ng-container>
+                            </ul>
+                            <ng-template #cardView>
+                                <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                                    <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'"
+                                        *ngFor="let workspaceUser of withGroup;trackBy: workspaceUserHelper.trackByFn">
+                                        <ng-container
+                                            *ngTemplateOutlet="workspaceUserItemCard; context: {item: workspaceUser}"></ng-container>
+                                    </div>
                                 </div>
-                            </div>
-                        </ng-template>
-                    </div>
+                            </ng-template>
+                        </div>
+                    </ng-container>
                 </ng-container>
-                </ng-container>
-            </ng-container> 
+            </ng-container>
         </div>
     </div>
 </ng-container>
@@ -149,11 +162,12 @@
     <div class="mycard4 card-profile-1 mb-3" *ngIf="item.personne as user">
         <a class="card-body tx-center p-0">
             <div class="mx-auto my-2 avatar-md" *ngIf="!user.avatar">
-                <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
+                <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i
+                        class="fas fa-3x fa-user-circle"></i></div>
             </div>
             <div class="d-flex justify-content-center mt-2" *ngIf="user.avatar">
-                <div class="image_outer_container {{user.online_statut}}" >
-                    <div class="icon_statut" ></div>
+                <div class="image_outer_container {{user.online_statut}}">
+                    <div class="icon_statut"></div>
                     <div class="image_inner_container">
                         <img [src]="user.avatar">
                     </div>
@@ -161,11 +175,15 @@
             </div>
             <h6 class="m-0 tx-primary">{{user.libelle}}
             </h6>
-            <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{user.telephone}} </p>
-            <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{user.email}} </p>
+            <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i>
+                {{user.telephone}} </p>
+            <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{user.email}}
+            </p>
             <div class="p-2 tx-echos tx-center bg-soft-primary">
                 <ng-container *ngFor="let tag of user.affectation_structures">
-                    <span class="badge badge-primary mx-1 card-2"  container="body" *ngIf="tag.structure" [ngbTooltip]="tag?.structure?.libelle"> {{tag.structure?.cigle}}{{tag.poste ? ' - '+tag.poste?.libelle : ''}}</span>
+                    <span class="badge badge-primary mx-1 card-2" container="body" *ngIf="tag.structure"
+                        [ngbTooltip]="tag?.structure?.libelle"> {{tag.structure?.cigle}}{{tag.poste ? ' -'+tag.poste?.libelle : ''}}
+                    </span>
                 </ng-container>
             </div>
         </a>
@@ -174,46 +192,51 @@
                 <li class="nav-item">
                     <a class="nav-link3" container="body" ngbTooltip="Details" (click)="openModal(content, user)">
                         <span class="tx-echos">
-                          <i class="fas fa-address-card tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                            <i class="fas fa-address-card tx-echos tx-echos  bg-white"
+                                style="padding:6px; border-radius:50%"></i>
                         </span>
                     </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link3" container="body" ngbTooltip="Commentaires">
-                      <span class="tx-echos">
-                        <i class="fas fa-comment-alt-lines tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
-                      </span>
-                  </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
-                    <span class="tx-echos">
-                      <i class="fas fa-at tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
-                    </span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
-                    <span class="tx-echos">
-                      <i class="fas fa-sitemap tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
-                    </span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
-                    <span class="tx-echos">
-                      <i class="fas fa-envelope tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
-                    </span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link3" container="body" ngbTooltip="Commentaires">
-                    <span class="tx-echos">
-                      <i class="fas fa-chair-office tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
-                    </span>
-                </a>
-            </li>
-                
+                    <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                        <span class="tx-echos">
+                            <i class="fas fa-comment-alt-lines tx-echos tx-echos  bg-white"
+                                style="padding:6px; border-radius:50%"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                        <span class="tx-echos">
+                            <i class="fas fa-at tx-echos tx-echos  bg-white" style="padding:6px; border-radius:50%"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                        <span class="tx-echos">
+                            <i class="fas fa-sitemap tx-echos tx-echos  bg-white"
+                                style="padding:6px; border-radius:50%"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                        <span class="tx-echos">
+                            <i class="fas fa-envelope tx-echos tx-echos  bg-white"
+                                style="padding:6px; border-radius:50%"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link3" container="body" ngbTooltip="Commentaires">
+                        <span class="tx-echos">
+                            <i class="fas fa-chair-office tx-echos tx-echos  bg-white"
+                                style="padding:6px; border-radius:50%"></i>
+                        </span>
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>

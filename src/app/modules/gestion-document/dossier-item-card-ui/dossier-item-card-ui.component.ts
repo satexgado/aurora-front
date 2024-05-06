@@ -133,13 +133,7 @@ export class DossierItemCardUiComponent implements OnInit {
       ).pipe(map(data=> data.data));
       dossierSharedBaseComponent.onShare(this.dossier.ged_element,shared_users).subscribe(
         (data)=> {
-          this.dossier.ged_element.partages = data.map(item=> {
-            let partage = new GedPartage();
-            partage.personne = item;
-            partage.personne_id = item.id;
-            partage.element_id = this.dossier.ged_element.id;
-            return partage;
-          });
+          this.dossier.ged_element.partages = data;
           this.dossierUpdateEmitter.emit(this.dossier);
         }
       );

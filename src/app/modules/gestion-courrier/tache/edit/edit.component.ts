@@ -21,6 +21,10 @@ export class EditComponent extends BaseEditComponent  {
   heading = 'tache';
   @Input() item: CrTache = new CrTache();
   @Input() courrier_id: number = null;
+  @Input() relation: {
+    name: string,
+    id: number|any[]
+  }
 
   constructor(
     cdRef:ChangeDetectorRef,
@@ -40,6 +44,8 @@ export class EditComponent extends BaseEditComponent  {
       'courrier_id': [courrier_id],
       'description': [item.description],
       'libelle': [item.libelle, Validators.required],
+      'relation_name': [this.relation ? this.relation.name : null],
+      'relation_id': [this.relation ? this.relation.id : null],
       'id': [item.id]
     });
   }

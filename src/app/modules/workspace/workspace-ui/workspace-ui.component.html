@@ -1,19 +1,19 @@
-<div class="row  m-0 ">
+<div class="row  m-0 bg-white">
 
     <div class="bd-l  bd-2 border-l p-0" [class.col-lg-3]="has_child" [class.col-lg-12]="!has_child">
-        <div class="  pb-2 pt-4 bd-b p-0 ">
+        <div class="  pb-2 pt-3 bd-b p-0 ">
             <ul class="nav justify-content-between">
                 <li class="nav-item ">
                     <a class="nav-link3 " (click)="tabs='membres'">
                         <span class="">
-                            <i class="fas fa-users  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Membre</span>
+                            <i class="fas fa-users  tx-echos1 tx-16"></i> <span *ngIf="!has_child"> Membre</span>
                         </span>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link3 " (click)="tabs='mes_collaborateurs'">
                         <span class="">
-                            <i class="fas fa-user-plus  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Annuaire</span>
+                            <i class="fas fa-user-plus  tx-echos1 tx-16"></i> <span *ngIf="!has_child"> Annuaire</span>
                         </span>
                     </a>
                 </li>
@@ -21,46 +21,39 @@
                 <li class="nav-item ">
                     <a class="nav-link3 " (click)="tabs='bibliotheque'">
                         <span class="">
-                            <i class="fas fa-folder-open  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Dossier</span>
+                            <i class="fas fa-folder-open  tx-echos1 tx-16"></i> <span *ngIf="!has_child"> Dossier</span>
                         </span>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link3 " (click)="tabs='arbre'">
                         <span class="">
-                            <i class="fas fa-sitemap tx-echos1 tx-16"></i> <span *ngIf="!has_child">Arbre</span>
+                            <i class="fas fa-sitemap tx-echos1 tx-16"></i> <span *ngIf="!has_child"> Arbre</span>
                         </span>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link3 " (click)="tabs='liaison'">
                         <span class="">
-                            <i class="fas fa-link  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Lien</span>
+                            <i class="fas fa-link  tx-echos1 tx-16"></i> <span *ngIf="!has_child"> Lien</span>
                         </span>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link3 " (click)="tabs='workspace_calendrier'">
                         <span class="">
-                            <i class="fas fa-calendar-alt  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Calendrier</span>
+                            <i class="fas fa-calendar-alt  tx-echos1 tx-16"></i> <span *ngIf="!has_child"> Calendrier</span>
                         </span>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link3 " (click)="tabs='workspace_document'">
                         <span class="">
-                            <i class="fas fa-file-invoice  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Dossier</span>
+                            <i class="fas fa-file-invoice  tx-echos1 tx-16"></i> <span *ngIf="!has_child"> Dossier</span>
                         </span>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link3 " (click)="has_child=!has_child">
-                        <span class="">
-                            <i class="fas fa-window  tx-echos1 tx-16"></i> <span *ngIf="!has_child">Test</span>
-                        </span>
-                    </a>
-                </li>
-
+              
             </ul>
         </div>
 
@@ -70,8 +63,6 @@
             </div>
 
             <div class="tab-pane fade " [ngClass]="{'active show': tabs=='mes_collaborateurs'}" id="mes_collaborateurs">
-
-
 
                 <app-workspace-coordonnee [view]="has_child ? 'list' : 'card'" [init]="workspace" *ngIf="workspace"></app-workspace-coordonnee>
 

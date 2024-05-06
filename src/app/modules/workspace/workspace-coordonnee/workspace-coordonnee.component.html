@@ -1,5 +1,6 @@
 <ng-container *ngIf="workspaceCoordonneeHelper.data$ | async as items">
     <ng-container *ngIf="items | baseColumnFilter:[{column: 'groupe_id', filterBase: [0,null] }] as withoutGroup">
+
         <div class="d-flex justify-content-start">
             <div class="mx-1">
                 <button (click)="quickAdd()" class="btn btn-brand btn-spotify bg-echos  btn-xs  pull-left"
@@ -31,25 +32,23 @@
         </div>
         <ng-container
             *ngIf="withoutGroup.length; else ((!(workspaceCoordonneeHelper.loading$ | async)) && true ? noItem : loading)">
-            <div class="row m-0 ">
-                <div class="col-lg-12 ">
-                    <ul class="list-group list-group-flush tx-13 " *ngIf="view == 'list'; else cardView ">
+            <div>
+                <ul class="list-group list-group-flush tx-13 " *ngIf="view == 'list'; else cardView ">
+                    <ng-container
+                        *ngFor="let workspaceCoordonnee of withoutGroup;trackBy: workspaceCoordonneeHelper.trackByFn">
                         <ng-container
+                            *ngTemplateOutlet="workspaceCoordonneeItem; context: {item: workspaceCoordonnee}"></ng-container>
+                    </ng-container>
+                </ul>
+                <ng-template #cardView>
+                    <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                        <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'"
                             *ngFor="let workspaceCoordonnee of withoutGroup;trackBy: workspaceCoordonneeHelper.trackByFn">
                             <ng-container
-                                *ngTemplateOutlet="workspaceCoordonneeItem; context: {item: workspaceCoordonnee}"></ng-container>
-                        </ng-container>
-                    </ul>
-                    <ng-template #cardView>
-                        <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0">
-                            <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'"
-                                *ngFor="let workspaceCoordonnee of withoutGroup;trackBy: workspaceCoordonneeHelper.trackByFn">
-                                <ng-container
-                                    *ngTemplateOutlet="workspaceCoordonneeItemCard; context: {item: workspaceCoordonnee}"></ng-container>
-                            </div>
+                                *ngTemplateOutlet="workspaceCoordonneeItemCard; context: {item: workspaceCoordonnee}"></ng-container>
                         </div>
-                    </ng-template>
-                </div>
+                    </div>
+                </ng-template>
             </div>
             <ng-container *ngIf="workspaceCoordonneeHelper.loading$ | async">
                 <ng-container *ngTemplateOutlet="loading"></ng-container>
@@ -57,6 +56,12 @@
         </ng-container>
     </ng-container>
     <div class="pt-4">
+        <div class="mx-1">
+            <button (click)="quickAdd()" class="btn w-100 btn-brand btn-spotify bg-echos  btn-xs  pull-left" type="button">
+                Ajouter un groupe
+                <span class="fa fa-users green" aria-hidden="true"></span>
+            </button>
+        </div>
         <div *ngFor="let item of groupelist">
             <div class="d-flex justify-content-between">
                 <ng-container *ngIf="!(updatingGroupeId == item.id); then dataView else formView"></ng-container>
@@ -182,7 +187,7 @@
                                 style="padding:6px; border-radius:50%"></i>
                         </span>
                     </a>
-                </li>                
+                </li>
                 <li class="nav-item">
                     <a class="nav-link3" container="body" ngbTooltip="view calendar"
                         (click)="open(content, coordonnee)">
@@ -219,41 +224,26 @@
         </div>
         <div class="pd-sm-l-10" [routerLink]="['./',item.coordonnee.id]">
             <p class="tx-ether4 mg-b-0 tx-bolder"> {{item.coordonnee.libelle}} </p>
-            <span class="tx-14  tx-warning mr-2"><i class="fas fa-at tx-echos1"></i> {{item.coordonnee.email}}</span>
+            <span class="tx-14  tx-warning mr-2"><i class="fas fa-at tx-echos1"></i> {{item.coordonnee.email |
+                shorten:18}}</span>
             <br>
             <span class="tx-14  tx-danger mr-4"><i class="fas fa-palette tx-echos1"></i> {{item.coordonnee.tag}}</span>
         </div>
-        <div class="mg-l-auto text-right">
-            <ul class="nav ">
-                <li class="nav-item ">
-                    <a class="nav-link1 " (click)="open(content, item.coordonnee)" data-toggle="tab" href="#">
-                        <span class="">
-                            <i class="fas fa-calendar-alt tx-echos1 tx-14"></i>
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link1 " (click)="open(updatable, item.coordonnee)" data-toggle="tab" href="#">
-                        <span class="">
-                            <i class="fas fa-calendar-alt tx-success tx-14"></i>
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link1 " data-toggle="tab" href="#">
-                        <span class="">
-                            <i class="fas fa-comment-alt-lines  tx-echos1 tx-14"></i>
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link1 " (click)="open(content2, item.coordonnee)">
-                        <span class="">
-                            <i class="fas fa-address-card  tx-primary tx-14"></i>
-                        </span>
-                    </a>
-                </li>
-            </ul>
+        <div class="mg-l-auto text-right d-flex no-caret" ngbDropdown [container]="'body'">
+            <button class="btn btn-sm btn-outline-primary rounded-pill my-auto" ngbDropdownToggle><i
+                    class="fal fa-ellipsis-h-alt tx-18 "></i></button>
+
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button (click)="open(content, item.coordonnee)" ngbDropdownItem><i class="fal fa-calendar-alt"></i>
+                    Vue Calendrier
+                </button>
+                <button (click)="open(updatable, item.coordonnee)" ngbDropdownItem><i class="fal fa-calendar-alt"></i>
+                    Modification Calendrier
+                </button>
+                <button (click)="open(content2, item.coordonnee)" ngbDropdownItem><i class="fal fa-address-card"></i>
+                    Details
+                </button>
+            </div>
         </div>
     </li>
 </ng-template>

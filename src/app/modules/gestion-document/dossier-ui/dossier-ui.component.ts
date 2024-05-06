@@ -158,7 +158,6 @@ export class ZenDossierUiComponent implements OnInit {
             this.route.parent.data.subscribe(
               (res)=> {
                 let parent = res.data.parent as IBase;
-                console.log(res);
                 this.parentData = {
                   relationId: parent.id,
                   relationName: this.route.routeConfig.data['folder_parent']
@@ -249,11 +248,9 @@ export class ZenDossierUiComponent implements OnInit {
     this.dossierAdditionalFilter = [];
     this.fichierAdditionalFilter = [];
     if(this.dossier) {
-      console.log(this.dossier);
       this.container = 'Folder';
       this.dossier_parent = [];
       this.lockedElement = null;
-      this.fichierService.showFolderDetails.next(this.dossier);
       this.checkLockedFolderKey(this.dossier);
       if(this.lockedElement) {
         return this.onUnlockFolder();

@@ -21,6 +21,7 @@ import {
 } from '@angular/animations';
 import { GedPartageFactory } from 'src/app/core/services/gestion-document/ged-partage.model';
 import { print } from 'src/app/shared/helperfonction';
+import { AuthService } from 'src/app/express-courrier/auth/auth.service';
 
 @Component({
   selector: 'app-share-wtype',
@@ -89,6 +90,7 @@ import { print } from 'src/app/shared/helperfonction';
 export class ShareWTypeComponent   {
   heading = 'classe';
   @Input() item: IBase;
+  @Output('partages') partageEmitter = new EventEmitter<IGedPartage[]>();
   allUsers: IUser[];
   userSelect2Data$;
   is_loading_user;
@@ -110,7 +112,6 @@ export class ShareWTypeComponent   {
     map(data => data.data as IUser[])
   );
   @Input() service: Factory<IBase>;
-  @Output('selectedUsers') selectedUsersEmetter = new EventEmitter<IUser[]>();
   @Input() set init(share_users: Observable<IGedPartage[]>) {
     this.is_loading_user = true;
     share_users.pipe
@@ -129,7 +130,13 @@ export class ShareWTypeComponent   {
       retryWhen(errors => errors.pipe(delay(5000), take(10)))
     ).subscribe(
       (data)=> {
-        this.allUsers = data;
+        this.allUsers = data.filter(element => element.id != this.authService.user.id).sort((a, b) =>
+        {        
+            if (a.prenom.localeCompare(b.prenom))
+                return a.prenom.localeCompare(b.prenom);
+            else
+                return a.nom.localeCompare(b.nom);
+        });
         this.is_loading_user = false;
       }
     )
@@ -139,6 +146,7 @@ export class ShareWTypeComponent   {
     protected cacheService: CacheService,
     protected notification: NotificationService,
     protected formBuilder: FormBuilder,
+    public authService: AuthService,
     public helper2: Helper,
     protected activeModal: NgbActiveModal)
   {
@@ -155,73 +163,6 @@ export class ShareWTypeComponent   {
   onCloseModal(raison) {
     this.activeModal.close(raison);
   }
-
-  onSubmit(closeModalAfter = true) {
-    this.is_loading = true;
-    let preselectedId  = this.personneControl.value.map((element) => {
-      return element.id;
-    });
-    this.selectedUsersEmetter.emit(
-      this.personneControl.value
-    );
-    this.service.setAffectations(
-      this.item.id,
-      {
-        partage_a_personnes: preselectedId
-      }
-    ).subscribe(
-      (res: {result})=> {
-        const response = res.result[this.item.id] as {detached: number[], attached: number[]};
-        if(!response) return;
-        // Sometimes server send object insteads of array
-        if(response.detached instanceof Object)
-        {
-          response.detached = Object.values(response.detached);
-        }
-
-        if(response.attached instanceof Object)
-        {
-          response.attached = Object.values(response.attached);
-        }
-
-        const userCollection = collect(this.allUsers);
-        let attached = userCollection.whereIn('id', response.attached).all();
-        let detached = userCollection.whereIn('id', response.detached).all();
-
-        if(attached.length)
-        {
-          attached.forEach(element => {
-            this.notification.body = this.notification.body+' "'+element.libelle+'",'
-          });
-          this.notification.body = this.notification.body.substring(0, this.notification.body.length - 1)
-          this.notification.onInfo(this.notification.body, 'Partager avec');
-          this.notification.body = '';
-        }
-
-        if(detached.length)
-        {
-          detached.forEach(element => {
-            this.notification.body = this.notification.body+' "'+element.libelle+'",'
-          });
-          this.notification.body = this.notification.body.substring(0, this.notification.body.length - 1)
-          this.notification.onInfo(this.notification.body, 'Retirer de');
-          this.notification.body = '';
-        }
-
-
-        if(closeModalAfter){
-          this.onCloseModal('done');
-        }
-
-        this.is_loading =false;
-      }
-    );
-  }
-
-  onItemSelect(item) {
-    console.log(item);
-  }
-
   
   createFormGroup(item: IGedPartage[]) {
 
@@ -277,16 +218,9 @@ export class ShareWTypeComponent   {
 
   removePartages(child_index, removeFromPersonneControl = false) {
     const control = this.sharedForm.get('partages') as FormArray;
-    const data = control.at(child_index).get('id').value;
-    if(data) {
+    const id = control.at(child_index).get('id').value;
 
-      if(removeFromPersonneControl) {
-        const personneControlData = this.personneControl.value;
-        this.personneControl.setValue(
-          personneControlData.filter(element => element.id != data)
-        );
-      }
-
+    if(id) {
       const removeControl = this.sharedForm.get('removedPartages') as FormControl;
       let data = removeControl.value ? removeControl.value : [];
       data.push(control.at(child_index).get('id').value);
@@ -294,9 +228,14 @@ export class ShareWTypeComponent   {
       removeControl.markAsDirty();
       removeControl.markAsTouched();
     }
-    control.removeAt(child_index);
 
-    
+    if(removeFromPersonneControl) {
+      const personneControlData = this.personneControl.value;
+      this.personneControl.setValue(
+        personneControlData.filter(element => element.id != control.at(child_index).get('personne').value)
+      );
+    }
+    control.removeAt(child_index);    
  }
 
  getPartagesPersonne(child_index) {
@@ -304,22 +243,33 @@ export class ShareWTypeComponent   {
   return control.at(child_index).get('personneData').value ? control.at(child_index).get('personneData').value : null;
  }
 
- somethingsomething(user:IUser) {
+ OnItemDeSelect(user:IUser) {
   const control = this.sharedForm.get('partages') as FormArray;
   let data = control.value ? control.value : [];
   const index = data.findIndex(element => element.personne === user.id);
   this.removePartages(index);
  }
 
- somethingsomething2() {
+ onDeSelectAll() {
   const control = this.sharedForm.get('partages') as FormArray;
-  control.clear();
+  let data = control.value ? control.value : [];
+  data.forEach((element)=>{
+    this.OnItemDeSelect(element.personneData);
+  })
  }
 
- onSubmitSomething(closeModalAfter = true) {
+ onSubmit(closeModalAfter = true) {
+  this.is_loading =true;
   const service = new GedPartageFactory();
   service.createmulti(this.sharedForm.value).subscribe(
-    print
+    (data)=>{
+      this.createFormGroup(data);
+      this.partageEmitter.emit(data);
+      if(closeModalAfter){
+        this.onCloseModal('done');
+      }
+      this.is_loading =false;
+    }
   );
  }
 }

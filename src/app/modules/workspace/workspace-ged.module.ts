@@ -19,6 +19,9 @@ import { CalendrierModule } from 'src/app/modules/calendrier/calendrier.module';
 import { GestionnaireTacheModule } from '../tache/tache.module';
 import { ZenDocumentModule } from '../gestion-document/zen-document.module';
 import { GedWorkspaceDetailsUiComponent } from './workspace-details-ui/workspace-details-ui.component';
+import { WorkspaceTableauComponent } from './workspace-tableau/workspace-tableau.component';
+import { WorkspaceTacheComponent } from './workspace-tache/workspace-tache.component';
+import { WorkspaceProdocComponent } from './workspace-prodoc/workspace-prodoc.component'
 
 @NgModule({
     declarations: [
@@ -27,7 +30,10 @@ import { GedWorkspaceDetailsUiComponent } from './workspace-details-ui/workspace
         GedWorkspaceUiComponent,
         WorkspaceMembreComponent,
         WorkspaceCoordonneeComponent,
+        WorkspaceTableauComponent,
+        WorkspaceTacheComponent,
         GedWorkspaceDetailsUiComponent,
+        WorkspaceProdocComponent,
         EditComponent
     ],
     imports: [

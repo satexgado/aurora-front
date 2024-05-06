@@ -141,13 +141,7 @@ export class FichierItemCardUiComponent implements OnInit {
       ).pipe(map(data=> data.data));
       fichierSharedBaseComponent.onShare(this.fichier.ged_element,shared_users).subscribe(
         (data)=> {
-          this.fichier.ged_element.partages = data.map(item=> {
-            let partage = new GedPartage();
-            partage.personne = item;
-            partage.personne_id = item.id;
-            partage.element_id = this.fichier.ged_element.id;
-            return partage;
-          });
+          this.fichier.ged_element.partages = data;
           this.fichierUpdateEmitter.emit(this.fichier);
         }
       );

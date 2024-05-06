@@ -24,7 +24,6 @@ export class GedWorkspaceDetailsUiResolver implements Resolve<Observable<any>> {
                     if (data && data.id == +route.paramMap.get('id')) {
                         return of(data);
                     }
-                   console.log(route.parent.data);
                     const service = new CrCoordonneeFactory();
                                 const queryOptions: QueryOptions = new QueryOptions([
                                     {
@@ -37,7 +36,6 @@ export class GedWorkspaceDetailsUiResolver implements Resolve<Observable<any>> {
 
                                 return service.list(queryOptions).pipe(
                                     map(data => {
-                                        console.log(data);
                                         if (data && data.data.length) {
                                             this.coodService.coordonneeData = data.data[0];
                                             let foo = {};

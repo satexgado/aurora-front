@@ -1,11 +1,12 @@
 import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
 import { ZenFichierUploadService } from '../fichier/fichier-upload.service';
 import { IFichier } from 'src/app/core/models/gestion-document/fichier.model';
 import { IDossier } from 'src/app/core/models/gestion-document/dossier.model';
 import { DossierFactory } from 'src/app/core/services/gestion-document/dossier.factory';
 import { FichierFactory } from 'src/app/core/services/gestion-document/fichier.factory';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,10 +17,13 @@ export class SidebarComponent implements OnInit {
   dossierRecenthelper: ResourceScrollableHelper;
   fichierRecenthelper: ResourceScrollableHelper;
   modalData: IFichier | IDossier;
+  @ViewChild('details')
+  detailsModal;
 
   active = 1;
   constructor(
-    protected fichierService: ZenFichierUploadService
+    protected fichierService: ZenFichierUploadService,
+    protected modalService: NgbModal
   ) {
    }
 
@@ -64,5 +68,10 @@ export class SidebarComponent implements OnInit {
 
   onShowDetails(data: IFichier | IDossier) {
     this.modalData = data;
+    this.modalService.open(this.detailsModal, {ariaLabelledBy: 'modal-basic-title', modalDialogClass: 'modal-right modal-right-100vh', }).result.then((result) => {
+
+    }, (reason) => {
+
+    });
   }
 }

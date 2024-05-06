@@ -8,7 +8,7 @@
     <div class="modal-body  tx-dark" [ngClass]="{'loading': is_loading_user || is_loading }">
         <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
             <div class="col-12 input-group" *ngIf="allUsers">
-                <angular2-multiselect [data]="allUsers" [formControl]="personneControl" (onSelect)="addPartages($event)" (onDeSelect)="somethingsomething($event)" (onDeSelectAll)="somethingsomething2()"
+                <angular2-multiselect [data]="allUsers" [formControl]="personneControl" (onSelect)="addPartages($event)" (onDeSelect)="OnItemDeSelect($event)" (onDeSelectAll)="onDeSelectAll()"
                     (onSelectAll)="addPartages($event)" [settings]="multiSetting" class="form-control p-0 ">
                     <c-badge>
                         <ng-template let-item="item">
@@ -52,28 +52,36 @@
                         <li [@flyInOut]="'in'" class="clearfix d-flex justify-content-between"
                             *ngFor="let partage of sharedForm.get('partages')['controls']; let y = index;"
                             [formGroupName]="y">
-                            <div class="w-100" *ngIf="getPartagesPersonne(y) as user">
-                                <img class="avatar" style="height: 36px; width: 36px;" [src]="user.avatar" alt="avatar">
-                                <div class="about">
-                                    <div class="name">{{user.prenom}} {{user.nom}}</div>
-                                    <div class="status"> <i class="fa fa-circle"
-                                            [ngClass]="user.away ? ' text-warning' : ' text-success' "></i>
-                                        {{user.last_activity_at | dateagofr}} </div>
+                            <div class="w-100 d-flex justify-content-between" *ngIf="getPartagesPersonne(y) as user">
+                                <div>
+                                    <img class="avatar" style="height: 36px; width: 36px;" [src]="user.avatar" alt="avatar">
+                                    <div class="about">
+                                        <div class="name">{{user.prenom}} {{user.nom}}</div>
+                                        <div class="status"> <i class="fa fa-circle"
+                                                [ngClass]="user.away ? ' text-warning' : ' text-success' "></i>
+                                            {{user.last_activity_at | dateagofr}} </div>
+                                    </div>
                                 </div>
-                                <div style="float: right;" class="my-1">
-                                    <select class="custom-select custom-select-sm" [formControlName]="'access'">
-                                        <option value="Lecteur">Lecteur</option>
-                                        <option value="Collaborateur">Collaborateur </option>
-                                    </select>
-                                    <!-- <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                                    aria-expanded="false">{{typeSomething}}</button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" (click)="onChangeAccessPartages(y,'Lecteur')">Lecteur</a>
-                                        <a class="dropdown-item" (click)="onChangeAccessPartages(y,'Collaborateur')">Collaborateur <small>- ajout de fichier</small></a>
-                                        <div role="separator" class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Retirer l'acces</a>
-                                    </div> -->
+                                <div>
+                                    <div class="my-1 d-flex">
+                                        <select class="custom-select custom-select-sm mr-1" [formControlName]="'access'">
+                                            <option value="Lecteur">Lecteur</option>
+                                            <option value="Collaborateur">Collaborateur </option>
+                                        </select>
+                                        <button class="btn btn-sm btn-outline-danger" (click)="removePartages(y,true);">
+                                            Retirer l'acces
+                                        </button>
+                                        <!-- <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                                        aria-expanded="false">{{typeSomething}}</button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" (click)="onChangeAccessPartages(y,'Lecteur')">Lecteur</a>
+                                            <a class="dropdown-item" (click)="onChangeAccessPartages(y,'Collaborateur')">Collaborateur <small>- ajout de fichier</small></a>
+                                            <div role="separator" class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Retirer l'acces</a>
+                                        </div> -->
+                                    </div>
                                 </div>
+                               
                             </div>
                         </li>
                     </ul>
@@ -84,8 +92,8 @@
 </ng-container>
 
 <div class="modal-footer">
-    <button type="button" (click)="onSubmitSomething()" [disabled]="is_loading || is_loading_user"
+    <button type="button" (click)="onSubmit()" [disabled]="is_loading || is_loading_user"
         class="btn btn-sm btn-primary mr-3">Enregistrer et Quitter</button>
-    <button type="button" (click)="onSubmitSomething(false)" [disabled]="is_loading || is_loading_user"
+    <button type="button" (click)="onSubmit(false)" [disabled]="is_loading || is_loading_user"
         class="btn btn-sm btn-outline-primary">Appliquer</button>
 </div>

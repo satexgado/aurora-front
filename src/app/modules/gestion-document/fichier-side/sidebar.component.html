@@ -1,4 +1,4 @@
-<ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill" [(activeId)]="active">
+<!-- <ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill" [(activeId)]="active">
     <li [ngbNavItem]="3" *ngIf="modalData">
         <a ngbNavLink>
             <span class="tx-16"><i class="fal fa-info"></i></span>
@@ -88,9 +88,24 @@
         </ng-template>
     </li>
 </ul>
-<div class="scrollable scrollable-y-75 scroll-11 bg-white" [ngbNavOutlet]="nav"></div>
+<div class="scrollable scrollable-y-75 scroll-11 bg-white" [ngbNavOutlet]="nav"></div> -->
 
-
+<ng-template #details let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">
+            <i class="fa-info fad ng-star-inserted"></i> Details
+        </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <i class="ion-ios-close-empty"></i>
+        </button>
+    </div>
+    <div class="modal-body scroll-11" style="max-width: 460px; overflow: auto;">
+        <app-sidebar-details-ui [init]="modalData"></app-sidebar-details-ui>
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-facebook" (click)="modal.close('Save click'); doFilter()">Valider</button>
+    </div> -->
+</ng-template>
 
 <ng-template #emptyTemplate>
     <div class="row mx-0 h-75 text-center">
