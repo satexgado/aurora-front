@@ -1,0 +1,176 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark p-0" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <!-- <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12 col-sm-6">
+                    <label class="control-label" for="salle">Libelle de la tache</label>
+                    <input type="text" autofocus class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <label class="control-label" for="libelle">Echeance</label>
+                    <input class="form-control form-control-sm" name="date_limit" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_limit'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_limit'), 'is-valid': isValid('date_limit')}" required>
+                    <div *ngIf="shouldShowRequiredError('date_limit')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12">
+                    <label class="control-label" for="description">Description<small></small></label>
+                    <textarea name="description" class="form-control  form-control-sm" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'description'), 'is-valid': isValid('description')}"></textarea>
+                    <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+            </div> -->
+            <div class="d-flex flex-wrap  bg-light">
+                <div class="col-lg-9 bg-write p-0">
+                    <div class="d-flex justify-content-between bd-b">
+                        <div class="media pl-3 align-items-center">
+                            <div class=" tx-echos1 tx-12 tx-bold mr-2 bd-b bd-warning bd-2 mg-0 ">
+                                <div class=" d-block">
+                                    <i class="fas fa-calendar-alt tx-echos tx-20 pt-1"></i>
+                                </div>
+                            </div>
+                            <div class=" d-flex justify-content-between pt-1 mg-b-5 wd-100p">
+                                <div class="d-inline-block">
+                                    <span class="tx-gray-600 tx-14"> 23/04/2024 </span>
+
+                                    <span class="tx-gray-600 tx-14"> au
+                                        23/04/2024 </span>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav ">
+
+                            <li class="nav-item  ">
+                                <a class="nav-link2 tx-echos1" data-toggle="tab" href="#liste_ticket"><span class="">
+                                        <i class="fas fa-share-all  tx-echos tx-14 bg-white"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span> </a>
+                            </li>
+                            <li class="nav-item  ">
+                                <a class="nav-link2 tx-echos1" data-toggle="tab" href="#tableau_ticket"><span class="">
+                                        <i class="fas fa-comment-alt-lines  tx-warning tx-14 bg-white"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span> </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link2 tx-echos1" data-toggle="tab" href="#calendrier_ticket"><span
+                                        class="">
+                                        <i class="fas fa-file-alt  tx-teal tx-14 bg-white"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span> </a>
+                            </li>
+
+
+
+                        </ul>
+                    </div>
+
+
+                    <div class=" bt-b p-3">
+                        <div class="mb-2">
+                            <span class="tx-echos1 tx-16">Nom de la Tâche <i class="fas fa-pen  tx
+    echos1 tx-12"></i><i class="fas fa-plus  tx-echos1 tx-12 ml-2"></i></span>
+                            <input type="text" autofocus class="form-control form-control-sm" required
+                                [formControlName]="'libelle'"
+                                [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}"
+                                name="libelle" required>
+                            <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le
+                                libellé.</div>
+
+
+                        </div>
+
+
+                        <div class="mb-2">
+                            <span class="tx-echos1 tx-16">Description de la tache <i class="fas fa
+    pen  tx-echos1 tx-12"></i><i class="fas fa-plus  tx-echos1 tx-12 ml-2"></i></span>
+                            <textarea name="description" class="form-control  form-control-sm" cols="30" rows="3"
+                                [formControlName]="'description'"
+                                [ngClass]="{'is-invalid': shouldShowRequiredError( 'description'), 'is-valid': isValid('description')}"></textarea>
+                            <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez remplir
+                                ce champ.</div>
+                        </div>
+                        <div class="mb-2">
+                            <app-user-select [userFilter]="userFilter" [formControlName]="'responsables'" [label]="'Suivi par'"></app-user-select>
+                        </div>
+                        <div>
+                            <app-user-select [userFilter]="userFilter" [formControlName]="'user2'" [label]="'Affectée à'"></app-user-select>
+
+                            <div class="mt-3">
+                                <span class="tx-echos1 tx-16 ">Documents <i class="fas fa-plus  tx-echos1 
+    tx-12 ml-2"></i></span>
+                                <p class="tx-echos tx-14 bg-lvert p-2" style="text-align:justify"> Tous
+                                    les
+                                    documents en mode liste </p>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+
+
+
+                <div class="col-lg-3 bg-light bd-l  bd-2 border-l p-0">
+
+
+                    <div class="pb-4">
+                        <p class="tx-gray
+    600 tx-16  bd-b mg-1 bg-light p-2"> Priorités</p>
+                            <div class="pl-2">
+                                <div class="custom-control custom-control-sm col-12 custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="priorite" value="Pas Urgent" [formControlName]="'priorite'" id="endtype1">
+                                    <label class="custom-control-label" for="endtype1">Pas Urgent</label>
+                                </div>
+                                <div class="custom-control custom-control-sm col-12 custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="priorite" value="Normal" [formControlName]="'priorite'" id="endtype2">
+                                    <label class="custom-control-label" for="endtype2">Normal</label>
+                                </div>
+                                <div class="custom-control custom-control-sm col-12 custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="priorite" value="Moyenne" [formControlName]="'priorite'" id="endtype3">
+                                    <label class="custom-control-label" for="endtype3">Moyenne</label>
+                                </div>
+                                <div class="custom-control custom-control-sm col-12 custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="priorite" value="Elévée" [formControlName]="'priorite'" id="endtype4">
+                                    <label class="custom-control-label" for="endtype4">Elévée</label>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="pb-4">
+                        <p class="tx-gray
+    600 tx-16  bd-b mg-1 bg-light p-2"> Statuts</p>
+                            <div class="pl-2">
+                                <div class="custom-control custom-control-sm col-12 custom-radio custom-control-inline" *ngFor="let tacheStatut of TacheStatutSelect; let i = index">
+                                    <input type="radio" class="custom-control-input" name="statut" [value]="tacheStatut.id" [formControlName]="'statut'" id="statut{{i}}">
+                                    <label class="custom-control-label" for="statut{{i}}">{{tacheStatut.libelle}}</label>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()"
+        [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)"
+        [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+</div>

@@ -18,6 +18,8 @@ import { TacheHomeComponent } from './home/tache-home.component';
 import { TacheCollabComponent } from './collab/tache-collab.component';
 import { TacheBatchComponent } from './batch/tache-batch.component';
 import { CommentaireModule } from '../commentaire';
+import { Edit2Component } from './edit2/edit2.component';
+import { ChooseItemModule } from '../choose-item/choose-item.module';
 
 @NgModule({
     declarations: [
@@ -29,7 +31,8 @@ import { CommentaireModule } from '../commentaire';
         GestionnaireTacheComponent,
         GestionnaireTacheKanbanComponent,
         GestionnaireTacheListComponent,
-        EditComponent
+        EditComponent,
+        Edit2Component
     ],
     imports: [
         CommonModule,
@@ -42,7 +45,8 @@ import { CommentaireModule } from '../commentaire';
         TacheModule,
         DragDropModule,
         ZenDocumentModule,
-        CommentaireModule
+        CommentaireModule,
+        ChooseItemModule
     ],
     exports: [
         GestionnaireTacheComponent,
@@ -51,7 +55,7 @@ import { CommentaireModule } from '../commentaire';
         TacheStatutPipe,
         TacheStatutObsPipe,
     ],
-    entryComponents: [EditComponent],
+    entryComponents: [EditComponent, Edit2Component],
 })
 export class GestionnaireTacheModule {
 

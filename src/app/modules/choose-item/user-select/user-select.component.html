@@ -1,0 +1,39 @@
+<!-- <div class="custom-placeholder">
+  <div class="input-group">
+    <input class="form-control" container="body" [ngbTooltip]="selected ? selected.objet : ''" [class.is-valid]="selected" (click)="onChooseCourrier()" type="text" [placeholder]="libelle" readonly>
+    <span class="custom-span" *ngIf="label">{{label}}</span>
+    <div class="input-group-append" *ngIf="libelle">
+      <button class="btn btn-outline-secondary" (click)="onSetSelected()" type="button" id="button-addon2">
+        <i class="fa fa-times-circle"></i>
+      </button>
+    </div>
+  </div>
+</div> -->
+
+<div class="d-flex m-0 bg-white p-2">
+  <div class="cursor-pointer" (click)="onChooseUsers()">
+    <div class="float-left d-flex justify content-end align-items-center h-100"><span class="tx-echos1 tx 16">{{label}}
+        <i class="fas fa-pen tx-echos1 tx-12"></i><i class="fas fa-plus tx-echos1 tx-12 ml-2"></i></span></div>
+  </div>
+  <div *ngIf="selected && selected.length"
+    class="flex-1  d-flex justify-content-end align-items-center h-100 flex-wrap">
+    <ng-container *ngFor="let user of selected | slice:0:7">
+      <div  class="profiles avatar avatar-xs">
+        <img *ngIf="user.avatar" [src]="user.avatar" alt="avatar" class="rounded-circle avatar" container="body" [ngbTooltip]="user.libelle">
+      </div>
+      <div *ngIf="!user.avatar" class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle" container="body" [ngbTooltip]="user.libelle">
+        <i class="fas fa-2x fa-user-circle"></i></div>
+    </ng-container>
+    <ng-template #tipContent>
+    <ul>
+      <li *ngFor="let user of selected">
+        {{user.libelle}}
+      </li>
+    </ul>  
+    </ng-template>
+    <div *ngIf="selected.length > 7" [ngbTooltip]="tipContent">
+      <div class="avatar avatar-xs"><span class="bg-soft-primary avatar-initial  rounded-circle">{{selected.length-
+          7}}+</span></div>
+    </div>
+  </div>
+</div>

@@ -22,6 +22,7 @@ import { GedWorkspaceDetailsUiComponent } from './workspace-details-ui/workspace
 import { WorkspaceTableauComponent } from './workspace-tableau/workspace-tableau.component';
 import { WorkspaceTacheComponent } from './workspace-tache/workspace-tache.component';
 import { WorkspaceProdocComponent } from './workspace-prodoc/workspace-prodoc.component'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
@@ -47,10 +48,10 @@ import { WorkspaceProdocComponent } from './workspace-prodoc/workspace-prodoc.co
         WorkspaceGedRoutingModule,
         SharedZenDocumentModule,
         ZenDocumentModule,
-        AngularMultiSelectModule,
         ChooseItemModule,
         CalendrierModule,
-        GestionnaireTacheModule
+        GestionnaireTacheModule,
+        NgbModule
     ],
     exports: [
         

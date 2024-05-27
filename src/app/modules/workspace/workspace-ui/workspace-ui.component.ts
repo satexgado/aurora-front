@@ -16,6 +16,7 @@ export class GedWorkspaceUiComponent implements OnInit, OnDestroy {
     subscription: Subscription = new Subscription();
     tabs = 'membres';
     has_child = false; 
+    isCollapsed = true;
     @Input('workspace')  set initWorkspace(workspace: IGedWorkspace) {
         this.workspace = workspace;
     };

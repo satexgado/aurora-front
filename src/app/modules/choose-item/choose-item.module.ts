@@ -7,15 +7,17 @@ import { UserChooseMultiItem2Component } from './user-choose/user-choose-multi-i
 import { UserChooseItem2Component } from './user-choose/user-choose-item.component';
 import { CoordonneeChooseMultiItem2Component } from './coordonnee-choose/coordonnee-choose-multi-item2.component';
 import { CoordonneeChooseItem2Component } from './coordonnee-choose/coordonnee-choose-item.component';
-
+import { UserSelectComponent } from './user-select/user-select.component';
 @NgModule({
     declarations: [
         ChooseMultiItem2Component,
         ChooseItem2Component,
         UserChooseMultiItem2Component,
         UserChooseItem2Component,
+        UserSelectComponent,
         CoordonneeChooseMultiItem2Component,
-        CoordonneeChooseItem2Component
+        CoordonneeChooseItem2Component,
+
     ],
     imports: [
         CommonModule,
@@ -27,7 +29,8 @@ import { CoordonneeChooseItem2Component } from './coordonnee-choose/coordonnee-c
         UserChooseMultiItem2Component,
         UserChooseItem2Component,
         CoordonneeChooseMultiItem2Component,
-        CoordonneeChooseItem2Component
+        CoordonneeChooseItem2Component,
+        UserSelectComponent,
     ],
     entryComponents: [
         ChooseMultiItem2Component,
@@ -35,7 +38,8 @@ import { CoordonneeChooseItem2Component } from './coordonnee-choose/coordonnee-c
         UserChooseMultiItem2Component,
         UserChooseItem2Component,
         CoordonneeChooseMultiItem2Component,
-        CoordonneeChooseItem2Component
+        CoordonneeChooseItem2Component,
+        UserSelectComponent,
     ]
 })
 export class ChooseItemModule {

@@ -15,6 +15,7 @@ import { IUser } from 'src/app/core/models/user';
 import { UserFactory } from 'src/app/core/services/user.factory';
 import { ExpressCourrierService } from 'src/app/express-courrier/express-courrier.service';
 import { ResourceScrollableHelper } from 'src/app/shared/state';
+import { filterGrp } from 'src/app/shared/models/query-options/query-options.model';
 
 @Component({
   selector: 'app-user-choose-multi-item2',
@@ -50,7 +51,7 @@ export class UserChooseMultiItem2Component extends ChooseMultiItem2Component {
   }
 
   UserHelper: ResourceScrollableHelper = new ResourceScrollableHelper(new UserFactory());
-
+  @Input() userFilter: filterGrp[];
   constructor(
     public activeModal: NgbActiveModal,
     public modalService: NgbModal,
@@ -70,6 +71,9 @@ export class UserChooseMultiItem2Component extends ChooseMultiItem2Component {
     this.UserHelper.relations = [
       'affectation_structures.structure', 'affectation_structures.fonctions', 'affectation_structures.poste', 'affectation_structures.role'
     ];
+    if(this.userFilter){
+      this.UserHelper.query = this.userFilter;
+    }
     this.UserHelper.loadData(1);
     this.expressService.onlineUsers$.subscribe(
       (data)=> {

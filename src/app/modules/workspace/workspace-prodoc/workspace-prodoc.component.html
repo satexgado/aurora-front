@@ -5,15 +5,16 @@
         <div class="col-lg-12  p-0 m-0">
             <ul class="nav float-right list-inline align-justify">
                 <li class="nav-item ">
-                    <a class="nav-link3" (click)="open(newModal)">
+                    <a class="nav-link3" (click)="onShowCreateTacheForm()">
                         <span class="tx-echos1 d-flex align-items-center">
-                            <i class="fas fa-plus avatarfont tx-16 tx-echos1 mr-1"></i> Nouveau</span></a>
+                            <i class="fas fa-list-alt avatarfont tx-16 tx-echos1 mr-1"></i> Liste</span></a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link3" data-toggle="tab" href="#workspace_liste">
                         <span class="tx-echos1 d-flex align-items-center">
                             <i class="fas fa-list-alt avatarfont tx-16 tx-echos1 mr-1"></i> Liste</span></a>
                 </li>
+
                 <li class="nav-item ">
                     <a class="nav-link3 " data-toggle="tab" href="#card_workspace">
                         <span class="tx-echos1 d-flex align-items-center">
@@ -36,254 +37,129 @@
     </div>
     <div class="tab-content">
         <div class="tab-pane fade active show" id="tache_document" style="height:100vh">
-            <div class="row m-0 p-0">
+            <div class="row m-0 p-0" [class.loading]="is_loading_schema">
                 <div class="col-lg-12 p-0">
                     <div class="d-flex m-0 p-0" style="overflow: auto;">
+                        <ng-container *ngIf="tache_lists$ | async as tache_lists">
+                            <ng-container *ngIf="tache_lists && tache_lists.length">
+                                <div class="col-4 p-0  bd-r bd-white"
+                                    *ngFor="let tache_list of tache_lists; let even = even;">
 
-                        <div class="col-4 p-0  bd-r bd-white">
-                            <div class=" border-0 mg-b-5  pd-y-5 bd-b bd-4 bd-white bg-white">
-                                <span class="tx-16 tx-echos1"><i class="fas fa-calendar-alt tx-info tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-filter tx-echos tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-chair-office tx-primary tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-user tx-ether tx-16 " style="padding:2px; border-radius:50%"></i>
-                                    Production</span>
-                            </div>
-                            <div class=" card-body bg-kanban1 p-2" style="height:100vh">
-                                <div class="card card-accent-primary mg-1">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title tx-echos1 mb-1">
-                                            Réunion de Coordination</h6>
-                                        <p class="card-text mb-0 tx-12">Revoir la stratégie de la coordination </p>
-                                    </div>
-                                    <div class="card-body  p-1 bg-light">
-                                        <div class="row  m-0">
-                                            <div class="col-lg-10 float-left  justify-content-end p-0">
-                                                <p class="pt-2">
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-flag tx-warning  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-file-alt tx-success  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
-                                                    <span class="tx-primary"><i
-                                                            class="fas fa-at tx-jaune  tx-14"></i></span>
-                                                </p>
+                                    <ng-container
+                                        *ngIf="tache_list.id == taskListData?.id; then formView else dataView"></ng-container>
+
+                                    <ng-template #formView>
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" [(ngModel)]="taskListData.text"
+                                                autofocus (keyup.enter)="saveTaskListData(tache_list)"
+                                                (focusout)="saveTaskListData(tache_list)" placeholder="Nouveau dossier"
+                                                aria-label="Folder">
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template #dataView>
+                                        <div
+                                            class=" border-0 mg-b-5 px-1 pd-y-5 bd-b bd-4 bd-white bg-white d-flex justify-content-between">
+                                            <span class="tx-16 tx-echos1 flex-1" (click)="updateTaskList(tache_list)">
+                                                {{tache_list.libelle}}
+                                            </span>
+                                            <span>
+                                                <i class="fas fa-calendar-alt tx-info tx-16 "
+                                                    style="padding:2px; border-radius:50%"></i><i
+                                                    class="fas fa-filter tx-echos tx-16 "
+                                                    style="padding:2px; border-radius:50%"></i><i
+                                                    class="fas fa-chair-office tx-primary tx-16 "
+                                                    style="padding:2px; border-radius:50%"></i><i
+                                                    class="fas fa-user tx-ether tx-16 "
+                                                    style="padding:2px; border-radius:50%"></i>
+                                                <i class="fas fa-plus tx-ether tx-16 " (click)="updateTask(tache_list)"
+                                                    style="padding:2px; border-radius:50%"></i>
+                                                    <i class="fas fa-plus tx-ether tx-16 " (click)="updateTask(tache_list)"
+                                                    style="padding:2px; border-radius:50%"></i>
+                                            </span>
+                                        </div>
+                                    </ng-template>
+                                    <div class=" card-body p-2" [ngClass]="even ? 'bg-kanban1' : 'bg-kanban'"
+                                        style="height:100vh">
+                                        <div class="card card-accent-primary mb-2"
+                                            *ngIf="taskData?.parentId == tache_list.id && taskData?.id ==0">
+                                            <div class="card-body p-2">
+                                                <input type="text" class="form-control" [(ngModel)]="taskData.text"
+                                                    autofocus (keyup.enter)="saveTaskData()" (focusout)="saveTaskData()"
+                                                    placeholder="Nouvelle tache" aria-label="Folder">
                                             </div>
-                                            <div class="col-lg-2">
-                                                <div class=" justify-content-end float-right w-100">
-                                                    <p class="pt-2">
-                                                        <span class="tx-echos1"><i
-                                                                class="fas fa-plus-circle tx-ether avatarfont tx-14"></i></span>
+                                        </div>
+                                        <div class="card card-accent-{{statut_color(tache.statut)}} mb-2"
+                                            *ngFor="let tache of tache_list.taches">
+                                            <div class="card-body p-2">
+                                                <ng-container
+                                                    *ngIf="tache.id == taskData?.id; then formView2 else dataView2"></ng-container>
+
+                                                <ng-template #formView2>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="taskData.text" autofocus
+                                                            (keyup.enter)="saveTaskData(tache)"
+                                                            (focusout)="saveTaskData(tache)"
+                                                            [placeholder]=" tache.libelle" aria-label="Folder">
+                                                        
+                                                    </div>
+                                                </ng-template>
+
+                                                <ng-template #dataView2>
+                                                    <h6 class="card-title tx-echos1 mb-1"
+                                                        (click)="updateTask(tache_list, tache)">
+                                                        {{tache.libelle}}</h6>
+                                                    <p class="card-text mb-0 tx-12">{{tache.description}}
                                                     </p>
+                                                </ng-template>
+
+                                            </div>
+                                            <div class="card-body  p-1 bg-light" (click)="onShowUpdateTacheForm(tache)">
+                                                <div class="row  m-0">
+                                                    <div class="col-lg-10 float-left  justify-content-end p-0">
+                                                        <p class="pt-2">
+                                                            <span class="tx-echos1 mr-1"><i
+                                                                    class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
+                                                            <span class="tx-echos1 mr-1"><i
+                                                                    class="fas fa-flag tx-warning  tx-14"></i></span>
+                                                            <span class="tx-primary mr-1"><i
+                                                                    class="fas fa-file-alt tx-success  tx-14"></i></span>
+                                                            <span class="tx-primary mr-1"><i
+                                                                    class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
+                                                            <span class="tx-primary mr-1"><i
+                                                                    class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
+                                                            <span class="tx-primary"><i
+                                                                    class="fas fa-at tx-jaune  tx-14"></i></span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class=" justify-content-end float-right w-100">
+                                                            <p class="pt-2">
+                                                                <span class="tx-echos1"><i
+                                                                        class="fas fa-pencil tx-ether avatarfont tx-14"></i></span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </ng-container>
+                        </ng-container>
+                        <div class="col-4 p-0  bd-r bd-white" *ngIf="taskListData?.id == 0">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" [(ngModel)]="taskListData.text" autofocus
+                                    (keyup.enter)="saveTaskListData()" (focusout)="saveTaskListData()"
+                                    placeholder="Nouvelle list de tache" aria-label="Folder">
                             </div>
                         </div>
-                        <div class="col-4 p-0  bd-r bd-white">
-                            <div class=" border-0 mg-b-5  pd-y-5 bd-b bd-4 bd-white bg-white">
-                                <span class="tx-16 tx-echos1"><i class="fas fa-calendar-alt tx-info tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-filter tx-echos tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-chair-office tx-primary tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-user tx-ether tx-16 " style="padding:2px; border-radius:50%"></i>
-                                    Traitement</span>
-                            </div>
-                            <div class=" card-body bg-kanban p-2" style="height:100vh">
-                                <div class="card card-accent-primary mg-1">
-                                    <div class="card-body p-2">
-                                        <h5 class="card-title tx-echos1 mb-1">
-                                            Réunion de Coordination</h5>
-                                        <p class="card-text mb-0 tx-12">Revoir la stratégie de la coordination </p>
-                                    </div>
-                                    <div class="card-body  p-1 bg-light">
-                                        <div class="row  m-0">
-                                            <div class="col-lg-10 float-left  justify-content-end p-0">
-                                                <p class="pt-2">
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-flag tx-warning  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-file-alt tx-success  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
-                                                    <span class="tx-primary"><i
-                                                            class="fas fa-at tx-jaune  tx-14"></i></span>
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class=" justify-content-end float-right w-100">
-                                                    <p class="pt-2">
-                                                        <span class="tx-echos1"><i
-                                                                class="fas fa-plus-circle tx-ether avatarfont tx-14"></i></span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4 p-0  bd-r bd-white">
-                            <div class=" border-0 mg-b-5  pd-y-5 bd-b bd-4 bd-white bg-white">
-                                <span class="tx-16 tx-echos1"><i class="fas fa-calendar-alt tx-info tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-filter tx-echos tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-chair-office tx-primary tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-user tx-ether tx-16 " style="padding:2px; border-radius:50%"></i>
-                                    Approbation</span>
-                            </div>
-                            <div class=" card-body bg-kanban1 p-2" style="height:100vh">
-                                <div class="card card-accent-primary mg-1">
-                                    <div class="card-body p-2">
-                                        <h5 class="card-title tx-echos1 mb-1">
-                                            Réunion de Coordination</h5>
-                                        <p class="card-text mb-0 tx-12">Revoir la stratégie de la coordination </p>
-                                    </div>
-                                    <div class="card-body  p-1 bg-light">
-                                        <div class="row  m-0">
-                                            <div class="col-lg-10 float-left  justify-content-end p-0">
-                                                <p class="pt-2">
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-flag tx-warning  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-file-alt tx-success  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
-                                                    <span class="tx-primary"><i
-                                                            class="fas fa-at tx-jaune  tx-14"></i></span>
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class=" justify-content-end float-right w-100">
-                                                    <p class="pt-2">
-                                                        <span class="tx-echos1"><i
-                                                                class="fas fa-plus-circle tx-ether avatarfont tx-14"></i></span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4 p-0  bd-r bd-white">
-                            <div class=" border-0 mg-b-5  pd-y-5 bd-b bd-4 bd-white bg-white">
-                                <span class="tx-16 tx-echos1"><i class="fas fa-calendar-alt tx-info tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-filter tx-echos tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-chair-office tx-primary tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-user tx-ether tx-16 " style="padding:2px; border-radius:50%"></i>
-                                    Traitement</span>
-                            </div>
-                            <div class=" card-body bg-kanban p-2" style="height:100vh">
-                                <div class="card card-accent-primary mg-1">
-                                    <div class="card-body p-2">
-                                        <h5 class="card-title tx-echos1 mb-1">
-                                            Réunion de Coordination</h5>
-                                        <p class="card-text mb-0 tx-12">Revoir la stratégie de la coordination </p>
-                                    </div>
-                                    <div class="card-body  p-1 bg-light">
-                                        <div class="row  m-0">
-                                            <div class="col-lg-10 float-left  justify-content-end p-0">
-                                                <p class="pt-2">
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-flag tx-warning  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-file-alt tx-success  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
-                                                    <span class="tx-primary"><i
-                                                            class="fas fa-at tx-jaune  tx-14"></i></span>
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class=" justify-content-end float-right w-100">
-                                                    <p class="pt-2">
-                                                        <span class="tx-echos1"><i
-                                                                class="fas fa-plus-circle tx-ether avatarfont tx-14"></i></span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4 p-0  bd-r bd-white">
-                            <div class=" border-0 mg-b-5  pd-y-5 bd-b bd-4 bd-white bg-white">
-                                <span class="tx-16 tx-echos1"><i class="fas fa-calendar-alt tx-info tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-filter tx-echos tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-chair-office tx-primary tx-16 "
-                                        style="padding:2px; border-radius:50%"></i><i
-                                        class="fas fa-user tx-ether tx-16 " style="padding:2px; border-radius:50%"></i>
-                                    Approbation</span>
-                            </div>
-                            <div class=" card-body bg-kanban1 p-2" style="height:100vh">
-                                <div class="card card-accent-primary mg-1">
-                                    <div class="card-body p-2">
-                                        <h5 class="card-title tx-echos1 mb-1">
-                                            Réunion de Coordination</h5>
-                                        <p class="card-text mb-0 tx-12">Revoir la stratégie de la coordination </p>
-                                    </div>
-                                    <div class="card-body  p-1 bg-light">
-                                        <div class="row  m-0">
-                                            <div class="col-lg-10 float-left  justify-content-end p-0">
-                                                <p class="pt-2">
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-comment-alt-lines tx-echos1  tx-14"></i></span>
-                                                    <span class="tx-echos1 mr-1"><i
-                                                            class="fas fa-flag tx-warning  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-file-alt tx-success  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-tasks-alt tx-orange  tx-14"></i></span>
-                                                    <span class="tx-primary mr-1"><i
-                                                            class="fas fa-calendar-alt tx-primary  tx-14"></i></span>
-                                                    <span class="tx-primary"><i
-                                                            class="fas fa-at tx-jaune  tx-14"></i></span>
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class=" justify-content-end float-right w-100">
-                                                    <p class="pt-2">
-                                                        <span class="tx-echos1"><i
-                                                                class="fas fa-plus-circle tx-ether avatarfont tx-14"></i></span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-4 p-0  bd-r bd-white" *ngIf="taskListData?.id != 0">
+                            <button (click)="updateTaskList()" container="body" [ngbTooltip]="'Ajouter'"
+                                class="btn btn-outline-primary tx-32 w-100 h-100 p-5">
+                                <i class="fa fa-clipboard-list fa-4x"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -359,8 +235,7 @@
                         <span class="tx-echos1 tx-16">Nom de la Tâche <i class="fas fa-pen  tx
 echos1 tx-12"></i><i class="fas fa-plus  tx-echos1 tx-12 ml-2"></i></span>
                         <p class="tx-echos tx-14 bg-white p-2" style="text-align:justify">
-                            Document
-                            relatif à la prise en charge des bugs du logiciel sigecam
+                            {{modalData.libelle}}
                         </p>
 
 
@@ -611,5 +486,14 @@ radio">
     <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
         <button type="button" class="btn btn-echos"> Valider</button>
+    </div>
+</ng-template>
+
+<ng-template #emptyTemplate>
+    <div class="row mx-0 h-75 text-center">
+        <div class="col-sm-12 my-auto">
+            <i class="fal fa-folder-open fa-4x" style="color: #003d79"></i>
+            <br> Vide
+        </div>
     </div>
 </ng-template>

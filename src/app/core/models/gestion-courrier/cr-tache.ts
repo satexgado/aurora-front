@@ -20,6 +20,7 @@ export interface ICrTache extends IBase {
   statut: string;
   affectations: any[];
   comments_count: number;
+  tache_list_id: number;
 }
 
 export enum  CrTacheStatut {
@@ -37,6 +38,7 @@ export class CrTache implements ICrTache {
     structures: any[] = null;
     statut: string = 'En attente';
     comments_count = 0;
+    tache_list_id: number = null;
 
     get statut_color() {
       switch(this.statut) {

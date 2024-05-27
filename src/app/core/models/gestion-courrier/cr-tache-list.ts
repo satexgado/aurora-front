@@ -12,5 +12,5 @@ export class CrTacheList implements ICrTacheList {
     libelle: string = '';
 
     @hasManyMap({field: 'cr_taches', class: CrTache})
-    etapes: ICrTache[] = null;
+    taches: ICrTache[] = null;
 }
